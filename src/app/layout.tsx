@@ -4,7 +4,10 @@ import "./globals.css";
 
 const siteUrl = "https://anunciaai.app";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { 
+    verification: {
+    google: "b4j8I76A1LeM5Xw-4E4JDeZMgAKKIAyNI3UjxQViiks",
+  },
   metadataBase: new URL(siteUrl),
   title: {
     default: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
