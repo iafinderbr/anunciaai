@@ -4,7 +4,15 @@ import { generations } from "@/db/schema";
 
 export const dynamic = "force-dynamic";
 
-const CHANNELS = new Set(["mercado-livre", "shopee", "loja-virtual", "instagram", "olx", "outro"]);
+const CHANNELS = new Set([
+  "mercado-livre",
+  "shopee",
+  "loja-virtual",
+  "instagram",
+  "olx",
+  "facebook-marketplace",
+  "outro",
+]);
 const TONES = new Set(["profissional", "persuasivo", "simples", "premium"]);
 
 function str(value: unknown, max: number): string {

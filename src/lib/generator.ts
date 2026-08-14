@@ -3,6 +3,7 @@ import {
   CHANNEL_LABEL,
   CONDITION_RULES,
   GENERIC_BENEFITS,
+  MARKETPLACE_CTAS,
   OBJECTIONS,
   OLX_CTAS,
   TONE_CTA,
@@ -208,7 +209,7 @@ function shortFeatures(features: string[]): string[] {
     .map((feature) => clean(feature.replace(/\.$/, "")));
 }
 
-/** Infere o estado de conservação para anúncios OLX a partir das características. */
+/** Infere o estado de conservação para anúncios de classificado (OLX e Facebook Marketplace). */
 function inferCondition(features: string[]): string | null {
   for (const feature of features) {
     for (const rule of CONDITION_RULES) {
@@ -262,6 +263,17 @@ function buildTitles(features: string[], input: GeneratorInput, variant: number)
           truncate(`${titleCase(product)}${state ? ` — ${state}` : ""}${o1 ? ` · ${upperFirst(o1)}` : ""}`, 65),
           truncate(`${titleCase(product)}${o1 ? ` ${upperFirst(o1)}` : ""}${o2 ? ` ${upperFirst(o2)}` : ""}${state ? ` · ${state}` : ""}`, 65),
           truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""}${state ? ` — ${state}` : ""}`, 65),
+        ];
+      }
+      case "facebook-marketplace": {
+        const state = inferCondition(features);
+        const sold = shorts.filter((short) => !CONDITION_RULES.some((rule) => rule.match.test(short)));
+        const m1 = sold[0] ?? "";
+        const m2 = sold[1] ?? "";
+        return [
+          truncate(`${titleCase(product)}${state ? ` (${state})` : ""}${m1 ? ` ${upperFirst(m1)}` : ""}`, 65),
+          truncate(`${titleCase(product)}${state ? ` (${state})` : ""}${m2 ? ` ${upperFirst(m2)}` : ""}`, 65),
+          truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""}${m1 ? ` · ${upperFirst(m1)}` : ""}`, 65),
         ];
       }
       default:
@@ -319,6 +331,28 @@ function buildDescription(features: string[], benefits: string[], input: Generat
       blocks.push(`VALOR\n${price.formatted}.`);
     }
     blocks.push(pick(OLX_CTAS, variant));
+    return blocks.join("\n\n");
+  }
+
+  if (input.channel === "facebook-marketplace") {
+    const condition = inferCondition(features);
+    const detailFeatures = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
+    blocks.push(
+      `${opener}. Estou vendendo ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? ` — ideal para ${audience}` : ""}.`,
+    );
+    if (detailFeatures.length) {
+      blocks.push(
+        `SOBRE O PRODUTO\n${detailFeatures.map((feature) => `• ${upperFirst(feature)}`).join("\n")}`,
+      );
+    }
+    blocks.push(`POR QUE VALE A PENA\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
+    if (condition) {
+      blocks.push(`ESTADO DE CONSERVAÇÃO\n${condition}.`);
+    }
+    if (price.formatted) {
+      blocks.push(`VALOR\n${price.formatted}.`);
+    }
+    blocks.push(pick(MARKETPLACE_CTAS, variant));
     return blocks.join("\n\n");
   }
 
@@ -385,6 +419,30 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
     olxLines.push("");
     olxLines.push(pick(OLX_CTAS, variant, 1));
     return olxLines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+
+  if (input.channel === "facebook-marketplace") {
+    const condition = inferCondition(features);
+    const mpLines: string[] = [];
+    mpLines.push(
+      `${titleCase(product).toLocaleUpperCase("pt-BR")}${condition ? ` — ${condition.toLocaleUpperCase("pt-BR")}` : ""}`,
+    );
+    mpLines.push("");
+    mpLines.push(`Está procurando ${lowerFirst(input.category || product)} e quer um bom negócio?`);
+    mpLines.push("");
+    mpLines.push(benefits.slice(0, 4).map((benefit) => `› ${benefit}`).join("\n"));
+    const details = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
+    if (details.length) {
+      mpLines.push("");
+      mpLines.push(`Detalhes do produto: ${details.slice(0, 5).map(lowerFirst).join(", ")}.`);
+    }
+    if (price.formatted) {
+      mpLines.push("");
+      mpLines.push(`Valor: ${price.formatted}.`);
+    }
+    mpLines.push("");
+    mpLines.push(pick(MARKETPLACE_CTAS, variant, 1));
+    return mpLines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
   }
 
   const hooks = [
@@ -568,4 +626,3 @@ export const EXAMPLE_INPUT: GeneratorInput = {
 };
 
 export type { Channel, GeneratedAd, GeneratorInput, SpecItem, Tone };
-

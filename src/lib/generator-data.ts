@@ -6,6 +6,7 @@ export const CHANNELS: { value: Channel; label: string; hint: string }[] = [
   { value: "loja-virtual", label: "Loja virtual", hint: "Descrição longa e otimizada para SEO" },
   { value: "instagram", label: "Instagram", hint: "Legenda curta com hashtags" },
   { value: "olx", label: "OLX", hint: "Título curto e claro, estilo classificado" },
+  { value: "facebook-marketplace", label: "Facebook Marketplace", hint: "Título natural e descrição direta, pessoa para pessoa" },
   { value: "outro", label: "Outro", hint: "Formato neutro, serve para qualquer canal" },
 ];
 
@@ -22,6 +23,7 @@ export const CHANNEL_LABEL: Record<Channel, string> = {
   "loja-virtual": "Loja virtual",
   instagram: "Instagram",
   olx: "OLX",
+  "facebook-marketplace": "Facebook Marketplace",
   outro: "Outros canais",
 };
 
@@ -171,9 +173,21 @@ export const OLX_CTAS = [
 ];
 
 /**
+ * Chamadas para ação pessoa a pessoa, usadas apenas no canal Facebook
+ * Marketplace. Sem "link na bio", sem hashtags e sem pressão de e-commerce:
+ * o fechamento é conversa pelo Messenger.
+ */
+export const MARKETPLACE_CTAS = [
+  "Se interessar, chame no Messenger — respondo rápido.",
+  "Tem alguma dúvida? Mande mensagem aqui pelo Marketplace.",
+  "Gostou? Chama no chat para mais detalhes.",
+];
+
+/**
  * Infere o estado de conservação a partir das características informadas.
- * A ordem importa: a primeira regra que casar vence. Usado apenas no canal
- * OLX, que não tem campo próprio para estado/conservação.
+ * A ordem importa: a primeira regra que casar vence. Usado nos canais de
+ * classificado (OLX e Facebook Marketplace), que não têm campo próprio
+ * para estado/conservação.
  */
 export const CONDITION_RULES: { match: RegExp; state: string }[] = [
   { match: /seminov|semi-nov/i, state: "Seminovo" },
@@ -182,4 +196,3 @@ export const CONDITION_RULES: { match: RegExp; state: string }[] = [
   { match: /usado|segunda mão|segunda mao/i, state: "Usado, em bom estado" },
   { match: /nov[oa]\b/i, state: "Novo" },
 ];
-

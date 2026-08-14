@@ -1,4 +1,11 @@
-export type Channel = "mercado-livre" | "shopee" | "loja-virtual" | "instagram" | "olx" | "outro";
+export type Channel =
+  | "mercado-livre"
+  | "shopee"
+  | "loja-virtual"
+  | "instagram"
+  | "olx"
+  | "facebook-marketplace"
+  | "outro";
 
 export type Tone = "profissional" | "persuasivo" | "simples" | "premium";
 
