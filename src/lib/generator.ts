@@ -1,8 +1,10 @@
 import {
   BENEFIT_RULES,
   CHANNEL_LABEL,
+  CONDITION_RULES,
   GENERIC_BENEFITS,
   OBJECTIONS,
+  OLX_CTAS,
   TONE_CTA,
   TONE_LABEL,
   TONE_MODIFIERS,
@@ -206,6 +208,16 @@ function shortFeatures(features: string[]): string[] {
     .map((feature) => clean(feature.replace(/\.$/, "")));
 }
 
+/** Infere o estado de conservação para anúncios OLX a partir das características. */
+function inferCondition(features: string[]): string | null {
+  for (const feature of features) {
+    for (const rule of CONDITION_RULES) {
+      if (rule.match.test(feature)) return rule.state;
+    }
+  }
+  return null;
+}
+
 function buildTitles(features: string[], input: GeneratorInput, variant: number): { title: string; alternatives: string[] } {
   const product = clean(input.productName);
   const category = clean(input.category);
@@ -241,6 +253,17 @@ function buildTitles(features: string[], input: GeneratorInput, variant: number)
           truncate(`Novidade: ${titleCase(product)}${f1 ? ` ${lowerFirst(f1)}` : ""} 🚀`, 65),
           truncate(`${titleCase(product)}${price.formatted ? ` por ${price.formatted}` : ""} — corre que voa! 🔥`, 65),
         ];
+      case "olx": {
+        const state = inferCondition(features);
+        const sold = shorts.filter((short) => !CONDITION_RULES.some((rule) => rule.match.test(short)));
+        const o1 = sold[0] ?? "";
+        const o2 = sold[1] ?? "";
+        return [
+          truncate(`${titleCase(product)}${state ? ` — ${state}` : ""}${o1 ? ` · ${upperFirst(o1)}` : ""}`, 65),
+          truncate(`${titleCase(product)}${o1 ? ` ${upperFirst(o1)}` : ""}${o2 ? ` ${upperFirst(o2)}` : ""}${state ? ` · ${state}` : ""}`, 65),
+          truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""}${state ? ` — ${state}` : ""}`, 65),
+        ];
+      }
       default:
         return [
           truncate(`${titleCase(product)}${f1 ? ` ${upperFirst(f1)}` : ""}${category ? ` — ${titleCase(category)}` : ""}`, 70),
@@ -274,6 +297,28 @@ function buildDescription(features: string[], benefits: string[], input: Generat
     if (features.length) blocks.push(features.slice(0, 5).map((feature) => `✅ ${upperFirst(feature)}`).join("\n"));
     if (price.formatted) blocks.push(`💰 ${price.formatted}${price.installments ? ` ou ${price.installments}` : ""}`);
     blocks.push(`${cta} Link na bio 👆`);
+    return blocks.join("\n\n");
+  }
+
+  if (input.channel === "olx") {
+    const condition = inferCondition(features);
+    const detailFeatures = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
+    blocks.push(
+      `${opener}. Estou anunciando ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? ` — ideal para ${audience}` : ""}.`,
+    );
+    if (detailFeatures.length) {
+      blocks.push(
+        `CARACTERÍSTICAS E DIFERENCIAIS\n${detailFeatures.map((feature) => `• ${upperFirst(feature)}`).join("\n")}`,
+      );
+    }
+    blocks.push(`BENEFÍCIOS\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
+    if (condition) {
+      blocks.push(`ESTADO DE CONSERVAÇÃO\n${condition}.`);
+    }
+    if (price.formatted) {
+      blocks.push(`VALOR\n${price.formatted}.`);
+    }
+    blocks.push(pick(OLX_CTAS, variant));
     return blocks.join("\n\n");
   }
 
@@ -317,6 +362,30 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
   const price = parsePrice(input.price);
   const cta = pick(TONE_CTA[input.tone], variant, 1);
   const useEmoji = input.channel === "shopee" || input.channel === "instagram" || input.tone === "persuasivo";
+
+  if (input.channel === "olx") {
+    const condition = inferCondition(features);
+    const olxLines: string[] = [];
+    olxLines.push(
+      `${titleCase(product).toLocaleUpperCase("pt-BR")}${condition ? ` — ${condition.toLocaleUpperCase("pt-BR")}` : ""}`,
+    );
+    olxLines.push("");
+    olxLines.push(`Está procurando ${lowerFirst(input.category || product)} em bom estado e com preço justo?`);
+    olxLines.push("");
+    olxLines.push(benefits.slice(0, 4).map((benefit) => `› ${benefit}`).join("\n"));
+    const highlights = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
+    if (highlights.length) {
+      olxLines.push("");
+      olxLines.push(`Destaques: ${highlights.slice(0, 5).map(lowerFirst).join(", ")}.`);
+    }
+    if (price.formatted) {
+      olxLines.push("");
+      olxLines.push(`Valor: ${price.formatted}.`);
+    }
+    olxLines.push("");
+    olxLines.push(pick(OLX_CTAS, variant, 1));
+    return olxLines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
 
   const hooks = [
     `Procurando ${lowerFirst(input.category || product)} e não acha nada que entregue o que promete?`,
@@ -499,3 +568,4 @@ export const EXAMPLE_INPUT: GeneratorInput = {
 };
 
 export type { Channel, GeneratedAd, GeneratorInput, SpecItem, Tone };
+

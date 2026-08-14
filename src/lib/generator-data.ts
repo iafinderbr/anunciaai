@@ -5,6 +5,7 @@ export const CHANNELS: { value: Channel; label: string; hint: string }[] = [
   { value: "shopee", label: "Shopee", hint: "Título com palavras-chave e emojis" },
   { value: "loja-virtual", label: "Loja virtual", hint: "Descrição longa e otimizada para SEO" },
   { value: "instagram", label: "Instagram", hint: "Legenda curta com hashtags" },
+  { value: "olx", label: "OLX", hint: "Título curto e claro, estilo classificado" },
   { value: "outro", label: "Outro", hint: "Formato neutro, serve para qualquer canal" },
 ];
 
@@ -20,6 +21,7 @@ export const CHANNEL_LABEL: Record<Channel, string> = {
   shopee: "Shopee",
   "loja-virtual": "Loja virtual",
   instagram: "Instagram",
+  olx: "OLX",
   outro: "Outros canais",
 };
 
@@ -156,3 +158,28 @@ export const OBJECTIONS: Record<Tone, string[]> = {
   simples: ["Envio rápido", "Compra segura", "Suporte por mensagem"],
   premium: ["Embalagem premium para presente", "Atendimento consultivo", "Garantia estendida disponível"],
 };
+
+/**
+ * Chamadas para ação no estilo classificado, usadas apenas no canal OLX.
+ * Sem "link na bio" e sem pressão de e-commerce: o fechamento é negociação
+ * e retirada/entrega.
+ */
+export const OLX_CTAS = [
+  "Interessado? Chame no chat da OLX e combine retirada ou entrega.",
+  "Quer ver de perto? Chama no chat e combina um horário.",
+  "Valor à vista tem desconto. Chame no chat para negociar.",
+];
+
+/**
+ * Infere o estado de conservação a partir das características informadas.
+ * A ordem importa: a primeira regra que casar vence. Usado apenas no canal
+ * OLX, que não tem campo próprio para estado/conservação.
+ */
+export const CONDITION_RULES: { match: RegExp; state: string }[] = [
+  { match: /seminov|semi-nov/i, state: "Seminovo" },
+  { match: /lacrado|novo na caixa|na caixa|nunca usado|zero uso/i, state: "Novo" },
+  { match: /pouco uso|quase novo|como novo|impec|excelente estado|perfeito estado|estado de novo|conservad|revisad/i, state: "Pouco uso, em ótimo estado" },
+  { match: /usado|segunda mão|segunda mao/i, state: "Usado, em bom estado" },
+  { match: /nov[oa]\b/i, state: "Novo" },
+];
+
