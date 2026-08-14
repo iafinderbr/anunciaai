@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 
-const siteUrl = "https://anunciaai.app";
+const siteUrl = "https://anunciaai.vercel.app";
 
 export const metadata: Metadata = { 
     verification: {
@@ -58,6 +58,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "AnunciaAI",
+  url: siteUrl,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "pt-BR",

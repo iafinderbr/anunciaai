@@ -51,8 +51,8 @@ export default async function HomePage() {
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Use inteligência artificial para criar títulos, descrições, benefícios e anúncios completos para seus
-                produtos em segundos.
+                A AnunciaAI é um gerador de anúncios com inteligência artificial que cria títulos, descrições, benefícios e
+                conteúdo otimizado para seus produtos em segundos.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
