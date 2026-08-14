@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { GENERATION_EVENT } from "@/components/live-stats";
 import { ResultPanel } from "@/components/generator/result-panel";
 import { EMPTY_INPUT, EXAMPLE_INPUT, generateAd, parseFeatures } from "@/lib/generator";
-import { CHANNELS, TONES } from "@/lib/generator-data";
-import type { GeneratedAd, GeneratorInput } from "@/lib/types";
+import { CHANNEL_LABEL, CHANNELS, TONES } from "@/lib/generator-data";
+import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
 
 type Status = "form" | "loading" | "result";
 type FieldKey = "productName" | "category" | "features";
@@ -18,8 +18,31 @@ const LOADING_STEPS = [
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function GeneratorTool() {
-  const [input, setInput] = useState<GeneratorInput>(EMPTY_INPUT);
+/**
+ * Todas as props são opcionais. Sem nenhuma prop, o componente se comporta
+ * exatamente como na home: canal selecionável e exemplo padrão.
+ */
+export interface GeneratorToolProps {
+  /** Fixa o canal e esconde o seletor "Onde você vai vender?". */
+  lockedChannel?: Channel;
+  /** Estado inicial do formulário. */
+  initialInput?: GeneratorInput;
+  /** Dados usados pelo botão "Preencher com exemplo". */
+  exampleInput?: GeneratorInput;
+  title?: string;
+  subtitle?: string;
+}
+
+export function GeneratorTool({
+  lockedChannel,
+  initialInput,
+  exampleInput = EXAMPLE_INPUT,
+  title = "Crie seu anúncio",
+  subtitle = "Preencha os campos abaixo. Leva menos de um minuto e o resultado sai personalizado.",
+}: GeneratorToolProps = {}) {
+  const [input, setInput] = useState<GeneratorInput>(
+    () => initialInput ?? (lockedChannel ? { ...EMPTY_INPUT, channel: lockedChannel } : EMPTY_INPUT),
+  );
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
   const [status, setStatus] = useState<Status>("form");
   const [step, setStep] = useState(0);
@@ -133,15 +156,13 @@ export function GeneratorTool() {
         >
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Crie seu anúncio</h3>
-              <p className="mt-1 text-sm text-muted">
-                Preencha os campos abaixo. Leva menos de um minuto e o resultado sai personalizado.
-              </p>
+              <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h3>
+              <p className="mt-1 text-sm text-muted">{subtitle}</p>
             </div>
             <button
               type="button"
               onClick={() => {
-                setInput(EXAMPLE_INPUT);
+                setInput(lockedChannel ? { ...exampleInput, channel: lockedChannel } : exampleInput);
                 setErrors({});
               }}
               className="rounded-lg border border-line-strong bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:border-brand-500 hover:text-brand-600"
@@ -255,6 +276,18 @@ export function GeneratorTool() {
             </div>
           </div>
 
+          {lockedChannel ? (
+            <div className="mt-7 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-canvas px-4 py-3">
+              <span className="text-sm font-medium text-ink">Onde você vai vender?</span>
+              <span className="inline-flex items-center gap-2 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-white">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-500" />
+                {CHANNEL_LABEL[lockedChannel]}
+              </span>
+              <span className="text-xs text-muted">
+                {CHANNELS.find((channel) => channel.value === lockedChannel)?.hint}
+              </span>
+            </div>
+          ) : (
           <fieldset className="mt-7">
             <legend className="mb-2.5 text-sm font-medium text-ink">Onde você vai vender?</legend>
             <div className="flex flex-wrap gap-2">
@@ -286,6 +319,7 @@ export function GeneratorTool() {
               {CHANNELS.find((channel) => channel.value === input.channel)?.hint}
             </p>
           </fieldset>
+          )}
 
           <fieldset className="mt-6">
             <legend className="mb-2.5 text-sm font-medium text-ink">Tom do anúncio</legend>

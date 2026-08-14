@@ -1,14 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const siteUrl = "https://anunciaai.vercel.app";
-
-export const metadata: Metadata = { 
-    verification: {
-    google: "b4j8I76A1LeM5Xw-4E4JDeZMgAKKIAyNI3UjxQViiks",
-  },
-  metadataBase: new URL(siteUrl),
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
     template: "%s | AnunciaAI",
@@ -29,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: siteUrl,
+    url: SITE_URL,
     siteName: "AnunciaAI",
     title: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
     description:
@@ -58,7 +54,6 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "AnunciaAI",
-  url: siteUrl,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "pt-BR",
