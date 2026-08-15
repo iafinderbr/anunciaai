@@ -52,7 +52,7 @@ export const TITLES_ANATOMY: { title: string; text: string }[] = [
   },
   {
     title: "Respeite o limite do canal",
-    text: "Cada plataforma corta ou esconde o título que passa do máximo de caracteres.",
+    text: "Cada plataforma possui orientações próprias de tamanho e apresentação do título.",
   },
 ];
 
@@ -66,7 +66,7 @@ export const TITLES_FEATURE_MAP: { feature: string; inTitle: string }[] = [
 export const TITLES_FEATURES: { title: string; text: string }[] = [
   {
     title: "Título no limite de cada canal",
-    text: "O texto sai pronto para o canal escolhido, com o tamanho certo e sem cortes no meio de uma palavra.",
+    text: "O texto sai pronto para o canal escolhido, com tamanho adequado e sem cortes no meio de uma palavra.",
   },
   {
     title: "Fórmula produto + atributo + diferencial",
@@ -74,11 +74,11 @@ export const TITLES_FEATURES: { title: string; text: string }[] = [
   },
   {
     title: "Variações para testar",
-    text: "Receba o título principal e versões alternativas para rodar testes e descobrir o que converte mais.",
+    text: "Receba o título principal e versões alternativas para comparar abordagens diferentes.",
   },
   {
     title: "Termos de busca incluídos",
-    text: "Palavras que o comprador realmente pesquisa, prontas para distribuir entre título e ficha técnica.",
+    text: "Palavras relacionadas ao produto, prontas para distribuir entre título e ficha técnica.",
   },
   {
     title: "Tom ajustável",
@@ -105,26 +105,26 @@ export const TITLES_MISTAKES: { wrong: string; right: string }[] = [
   },
   {
     wrong: "Título copiado do fornecedor, idêntico ao de todos os concorrentes",
-    right: "Título com o seu diferencial na frente e o tamanho certo",
+    right: "Título claro, específico e fiel ao produto anunciado",
   },
 ];
 
 export const TITLES_CHANNELS: { title: string; text: string }[] = [
   {
     title: "Mercado Livre",
-    text: "Até 60 caracteres, sem emoji e sem CAPS LOCK. Foco em produto + marca + especificação.",
+    text: "Até 60 caracteres, sem exageros e com foco em produto + marca + especificação.",
   },
   {
     title: "Shopee",
-    text: "Até 100 caracteres, com espaço para emojis e palavras-chave que o comprador busca.",
+    text: "Até 120 caracteres, com espaço para marca, modelo e características relevantes para a busca.",
   },
   {
     title: "Loja virtual",
-    text: "Entre 50 e 70 caracteres, otimizado para SEO e para o snippet exibido no Google.",
+    text: "Entre 50 e 70 caracteres, pensado para leitura clara e SEO da página do produto.",
   },
   {
     title: "Instagram",
-    text: "Curto e com personalidade: emoji, sensação de novidade e chamada para a bio.",
+    text: "Curto e com personalidade, adaptado à linguagem da legenda ou publicação.",
   },
 ];
 
@@ -137,32 +137,32 @@ export const TITLES_FAQ: FaqItem[] = [
   {
     question: "Como criar um bom título para produto?",
     answer:
-      "Comece pelo nome do produto, adicione a característica que mais diferencia (material, tamanho, função) e termine com um termo de busca. Evite promessas vazias e respeite o limite de caracteres do canal onde vai publicar.",
+      "Comece pelo nome do produto, adicione a característica que mais diferencia, como material, tamanho ou função, e inclua termos que ajudem o comprador a identificar o item. Evite promessas vazias e respeite as orientações do canal onde vai publicar.",
   },
   {
     question: "Qual o tamanho ideal de um título de produto?",
     answer:
-      "Depende do canal. Mercado Livre usa até 60 caracteres, Shopee até 100 e lojas virtuais costumam trabalhar entre 50 e 70. A ferramenta gera o título já no limite do canal selecionado e mostra o contador.",
+      "Depende do canal. O Mercado Livre trabalha com até 60 caracteres e a documentação atual da Shopee indica até 120. Em lojas virtuais, títulos entre 50 e 70 caracteres costumam manter boa leitura. A ferramenta mostra o contador para você conferir.",
   },
   {
     question: "O que devo colocar no título de um produto?",
     answer:
-      "Produto + marca + característica que vende + termo de busca. Pense no que o comprador digitaria para encontrar o seu item e coloque essas palavras no título, na ordem certa.",
+      "Produto + marca + modelo + característica relevante costuma ser uma boa base. Pense no que o comprador precisa ler para reconhecer exatamente a versão anunciada.",
   },
   {
     question: "Devo usar emoji ou letras maiúsculas no título?",
     answer:
-      "Depende da plataforma. Mercado Livre não recomenda emojis nem CAPS LOCK em excesso; Shopee e Instagram aceitam emojis com naturalidade. A ferramenta adapta o título ao canal escolhido automaticamente.",
+      "Em marketplaces, priorize clareza e evite símbolos ou caixa alta desnecessários. Em redes sociais, emojis podem fazer sentido quando combinam com o tom da publicação. A ferramenta adapta a estrutura ao canal escolhido.",
   },
   {
     question: "O gerador de títulos é gratuito?",
     answer:
-      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e testar quantos títulos quiser durante o período de testes.",
+      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e testar títulos durante o período de testes.",
   },
   {
     question: "Posso gerar mais de uma versão do título?",
     answer:
-      "Sim. A ferramenta entrega o título principal e variações, e o botão “Gerar novamente” cria versões alternativas para você testar qual converte mais no seu anúncio.",
+      "Sim. A ferramenta entrega o título principal e variações, e o botão “Gerar novamente” cria versões alternativas para você comparar.",
   },
 ];
 
