@@ -162,7 +162,7 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
     <>
       <SiteHeader ctaHref="/gerador-de-anuncios-mercado-livre#ferramenta" />
 
-      <main id="topo">
+      <main id="ferramenta">
         <article>
           <header className="relative overflow-hidden border-b border-line bg-white">
             <div
@@ -454,6 +454,20 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
 
         <section aria-labelledby="proximos-titulo" className="border-t border-line bg-white">
           <div className="container-page py-12 sm:py-16">
+            <div className="mb-8 rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Aprofunde a descrição</p>
+              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div className="max-w-2xl">
+                  <h2 className="text-xl font-semibold sm:text-2xl">Aprenda a descrever qualquer tipo de produto</h2>
+                  <p className="mt-2 text-sm leading-7 text-ink-soft">
+                    Veja uma estrutura em seis partes, um modelo editável e exemplos para eletrônicos, roupas, casa e acessórios.
+                  </p>
+                </div>
+                <Link href="/como-fazer-descricao-de-produto" className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+                  Ler o guia de descrição
+                </Link>
+              </div>
+            </div>
             <h2 id="proximos-titulo" className="text-xl font-semibold sm:text-2xl">
               Ferramentas para completar seu anúncio
             </h2>
@@ -469,6 +483,13 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
                 </Link>
               ))}
             </div>
+            <p className="mt-7 text-center text-sm text-muted">
+              Quer ver todos os conteúdos?{" "}
+              <Link href="/guias" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
+                Acesse a central de guias
+              </Link>
+              .
+            </p>
           </div>
         </section>
       </main>
