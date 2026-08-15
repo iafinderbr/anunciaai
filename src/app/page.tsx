@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { FeaturesSection, HowItWorksSection, TrustSection } from "@/components/sections/marketing";
 import { FaqSection, PricingSection, SiteFooter } from "@/components/sections/pricing";
 import { RecentStrip } from "@/components/sections/recent-strip";
+import { ToolsSection } from "@/components/sections/tools";
 import { db } from "@/db";
 import { generations } from "@/db/schema";
 
@@ -92,6 +93,7 @@ export default async function HomePage() {
         </section>
 
         <RecentStrip />
+        <ToolsSection />
         <TrustSection />
         <HowItWorksSection />
         <FeaturesSection />
