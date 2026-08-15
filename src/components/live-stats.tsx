@@ -24,10 +24,13 @@ export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = window.setTimeout(() => void load(), 0);
     const handler = () => void load();
     window.addEventListener(GENERATION_EVENT, handler);
-    return () => window.removeEventListener(GENERATION_EVENT, handler);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener(GENERATION_EVENT, handler);
+    };
   }, [load]);
 
   const formatted = new Intl.NumberFormat("pt-BR").format(total);

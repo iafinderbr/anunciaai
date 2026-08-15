@@ -27,6 +27,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: "https://anunciaai.vercel.app/gerador-de-nomes-para-produtos",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: "https://anunciaai.vercel.app/gerador-de-palavras-chave-para-produtos",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://anunciaai.vercel.app/gerador-de-anuncios-shopee",
       lastModified: new Date(),
       changeFrequency: "weekly",
