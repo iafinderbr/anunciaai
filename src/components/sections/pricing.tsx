@@ -136,7 +136,7 @@ const faqs = [
   {
     question: "O conteúdo serve para Mercado Livre e Shopee?",
     answer:
-      "Sim. Você escolhe o canal antes de gerar e o texto sai no formato de cada plataforma: limite de caracteres do título, uso de emojis e estrutura da descrição.",
+      "Sim. Você escolhe o canal antes de gerar e o texto é adaptado à estrutura e aos limites indicados para cada plataforma.",
   },
   {
     question: "Posso editar o texto depois?",
@@ -225,6 +225,11 @@ export function SiteFooter() {
             <li>
               <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">
                 Como criar anúncio no Mercado Livre
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-shopee">
+                Como criar anúncio na Shopee
               </Link>
             </li>
             <li>
