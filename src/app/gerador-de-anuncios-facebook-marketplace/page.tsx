@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { GeneratorTool } from "@/components/generator/generator-tool";
 import { SiteHeader } from "@/components/site-header";
 import {
@@ -88,9 +89,9 @@ export default function FacebookMarketplacePage() {
             <nav aria-label="Trilha de navegação" className="mx-auto max-w-3xl">
               <ol className="flex flex-wrap items-center gap-2 text-xs text-muted">
                 <li>
-                  <a href="/" className="transition-colors hover:text-ink">
+                  <Link href="/" className="transition-colors hover:text-ink">
                     Início
-                  </a>
+                  </Link>
                 </li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="font-medium text-ink-soft">
@@ -209,9 +210,9 @@ export default function FacebookMarketplacePage() {
                 Crie a descrição do seu produto
               </a>
               {" · "}
-              <a href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
+              <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
                 Veja todos os geradores
-              </a>
+              </Link>
               .
             </p>
           </div>
