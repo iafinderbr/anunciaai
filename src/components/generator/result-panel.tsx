@@ -9,7 +9,7 @@ const TITLE_LIMIT: Record<Channel, number> = {
   shopee: 120,
   "loja-virtual": 70,
   instagram: 65,
-  olx: 65,
+  olx: 90,
   "facebook-marketplace": 65,
   outro: 70,
 };
