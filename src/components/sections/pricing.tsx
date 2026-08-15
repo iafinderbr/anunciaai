@@ -237,6 +237,11 @@ export function SiteFooter() {
                 Como criar título de produto
               </Link>
             </li>
+            <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">
+                Como escolher palavras-chave
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
