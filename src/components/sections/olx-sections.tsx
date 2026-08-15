@@ -17,7 +17,7 @@ export function OlxHowItWorks() {
             Do produto na caixa ao anúncio publicado em 3 passos
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você não precisa saber escrever para vender bem na OLX. Precisa apenas ser honesto sobre o que está
+            Você não precisa saber escrever para vender bem na OLX. Precisa apenas ser claro sobre o que está
             anunciando.
           </p>
         </div>
@@ -48,8 +48,8 @@ export function OlxStructure() {
             O que um bom anúncio na OLX precisa ter
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Na OLX, quem compra está em contato direto com quem vende. Clareza e honestidade valem mais do que um
-            texto de vitrine.
+            Na OLX, quem compra está em contato direto com quem vende. Clareza e informações corretas ajudam o
+            interessado a avaliar o item.
           </p>
 
           <ol className="mt-6 space-y-4">
@@ -75,10 +75,10 @@ export function OlxStructure() {
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
-                48/65 caracteres
+                55/90 caracteres
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                Sem emoji
+                Produto nas primeiras palavras
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
                 Estado de conservação incluído
@@ -91,8 +91,8 @@ export function OlxStructure() {
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
               A IA identifica sinais de <strong className="font-medium text-ink">novo</strong>,{" "}
               <strong className="font-medium text-ink">seminovo</strong> ou{" "}
-              <strong className="font-medium text-ink">usado</strong> nas características que você digita e destaca no
-              título e na descrição — sem campo extra no formulário.
+              <strong className="font-medium text-ink">usado</strong> nas características que você digita e pode destacar
+              essa informação no título e na descrição — sem inventar a condição do item.
             </p>
           </div>
         </div>
@@ -111,7 +111,7 @@ export function OlxFeatures() {
             Um anúncio de classificado, gerado de uma vez
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você informa o produto uma única vez e recebe o texto pronto, no estilo direto e honesto que a OLX pede.
+            Você informa o produto uma única vez e recebe uma primeira versão para revisar antes de publicar na OLX.
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export function OlxMistakes() {
           Erros comuns em anúncios na OLX
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          A ferramenta entrega o texto do lado direito. Você só precisa colar e revisar.
+          Use os exemplos abaixo como revisão antes de publicar o anúncio.
         </p>
       </div>
 
@@ -171,7 +171,7 @@ export function OlxMistakes() {
 
       <div className="mt-10">
         <h3 className="text-base font-semibold">Na prática: anúncio fraco × anúncio melhor</h3>
-        <p className="mt-1.5 text-sm text-muted">Mesmo produto, resultados bem diferentes.</p>
+        <p className="mt-1.5 text-sm text-muted">Mesmo produto, com níveis de informação bem diferentes.</p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           <div className="rounded-2xl border border-rose-200 bg-rose-50/40 p-5">
@@ -201,7 +201,7 @@ export function OlxFaq() {
               Perguntas sobre anúncios na OLX
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerado por IA.
+              Respostas para revisar o anúncio antes de publicar.
             </p>
           </div>
 

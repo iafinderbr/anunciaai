@@ -66,6 +66,17 @@ const guides = [
     toolLabel: "Gerador para Shopee",
   },
   {
+    href: "/como-criar-anuncio-na-olx",
+    eyebrow: "OLX",
+    title: "Como criar um anúncio na OLX",
+    description:
+      "Guia atualizado para organizar título, fotos, categoria, descrição, preço, localização e revisão antes de publicar.",
+    readingTime: "8 min de leitura",
+    topics: ["8 etapas", "Limites atuais", "Modelo de descrição"],
+    toolHref: "/gerador-de-anuncios-olx#ferramenta",
+    toolLabel: "Gerador para OLX",
+  },
+  {
     href: "/como-fazer-descricao-de-produto",
     eyebrow: "Descrição de produto",
     title: "Como fazer uma descrição de produto",
