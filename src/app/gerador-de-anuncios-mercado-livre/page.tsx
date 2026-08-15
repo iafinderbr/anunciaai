@@ -152,6 +152,30 @@ export default function MercadoLivrePage() {
         <MlAnatomy />
         <MlFeatures />
         <MlMistakes />
+
+        <section aria-labelledby="ml-guia-titulo" className="border-y border-line bg-white">
+          <div className="container-page py-12 sm:py-16">
+            <div className="grid items-center gap-7 rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9 lg:grid-cols-[1fr_auto]">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guia completo</p>
+                <h2 id="ml-guia-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
+                  Veja como criar o anúncio do início ao fim
+                </h2>
+                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
+                  Aprenda a escolher categoria, preparar fotos, preencher a ficha técnica e revisar todas as informações
+                  antes de publicar no Mercado Livre.
+                </p>
+              </div>
+              <Link
+                href="/como-criar-anuncio-no-mercado-livre"
+                className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              >
+                Ler o guia passo a passo
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <PricingSection />
         <MlFaq />
 
