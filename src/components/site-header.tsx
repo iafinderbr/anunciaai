@@ -7,7 +7,7 @@ const links = [
   { href: "/#ferramentas", label: "Ferramentas" },
   { href: "/#como-funciona", label: "Como funciona" },
   { href: "/#recursos", label: "Recursos" },
-  { href: "/como-criar-anuncio-no-mercado-livre", label: "Guias" },
+  { href: "/guias", label: "Guias" },
   { href: "/#precos", label: "Preços" },
 ];
 

@@ -216,10 +216,20 @@ export function SiteFooter() {
             ))}
           </ul>
           <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Guias práticos</p>
-          <ul className="mt-4 text-sm text-muted">
+          <ul className="mt-4 grid gap-2.5 text-sm text-muted">
+            <li>
+              <Link className="font-medium text-ink-soft transition-colors hover:text-brand-600" href="/guias">
+                Ver todos os guias
+              </Link>
+            </li>
             <li>
               <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">
                 Como criar anúncio no Mercado Livre
+              </Link>
+            </li>
+            <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">
+                Como fazer descrição de produto
               </Link>
             </li>
           </ul>
