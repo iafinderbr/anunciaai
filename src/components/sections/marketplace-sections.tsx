@@ -18,11 +18,10 @@ export function MarketplaceHowItWorks() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
           <h2 id="marketplace-como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Do produto na garagem ao anúncio publicado em 3 passos
+            Do produto ao classificado em 3 passos
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você não precisa saber escrever para vender pelo Marketplace. Precisa apenas ser honesto sobre o que está
-            anunciando.
+            Você informa os dados do item, recebe uma primeira versão e revisa antes de preencher o Marketplace.
           </p>
         </div>
 
@@ -52,8 +51,7 @@ export function MarketplaceStructure() {
             O que um bom anúncio no Marketplace precisa ter
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            No Marketplace, quem compra é uma pessoa do seu bairro ou da sua cidade. Clareza e transparência valem
-            mais do que texto de loja.
+            Fotos, informações corretas e uma descrição coerente com a condição do item ajudam o comprador a avaliar o produto.
           </p>
 
           <ol className="mt-6 space-y-4">
@@ -75,17 +73,17 @@ export function MarketplaceStructure() {
           <div className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Exemplo de título gerado</p>
             <p className="mt-3 font-mono text-[15px] leading-relaxed text-ink">
-              Bicicleta Aro 29 21 Marchas (Seminovo) Quadro de Alumínio
+              Bicicleta Aro 29 21 Marchas Seminova Quadro de Alumínio
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
-                57/65 caracteres
+                Título curto e identificável
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                Sem emoji
+                Sem limite oficial atribuído à Meta
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                Estado de conservação incluído
+                Condição incluída
               </span>
             </div>
           </div>
@@ -95,8 +93,8 @@ export function MarketplaceStructure() {
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
               A IA identifica sinais de <strong className="font-medium text-ink">novo</strong>,{" "}
               <strong className="font-medium text-ink">seminovo</strong> ou{" "}
-              <strong className="font-medium text-ink">usado</strong> nas características que você digita e destaca no
-              título e na descrição — sem campo extra no formulário.
+              <strong className="font-medium text-ink">usado</strong> somente quando essas informações aparecem nos dados
+              que você fornece.
             </p>
           </div>
         </div>
@@ -112,11 +110,10 @@ export function MarketplaceFeatures() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
           <h2 id="marketplace-recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Um anúncio de Marketplace, gerado de uma vez
+            Uma primeira versão do classificado, gerada de uma vez
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você informa o produto uma única vez e recebe o texto pronto, no tom direto e honesto que o Marketplace
-            pede.
+            Você informa o produto uma única vez e recebe texto para revisar antes de preencher os campos do Marketplace.
           </p>
         </div>
 
@@ -142,7 +139,7 @@ export function MarketplaceMistakes() {
           Erros comuns em anúncios no Marketplace
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          A ferramenta entrega o texto do lado direito. Você só precisa colar e revisar.
+          Use os exemplos abaixo para conferir o texto antes de publicar.
         </p>
       </div>
 
@@ -153,21 +150,11 @@ export function MarketplaceMistakes() {
             className="grid gap-3 rounded-2xl border border-line bg-white p-5 shadow-card sm:grid-cols-2 sm:gap-6"
           >
             <div className="flex gap-3">
-              <span
-                aria-hidden="true"
-                className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-rose-50 text-[11px] font-bold text-rose-600"
-              >
-                ✕
-              </span>
+              <span aria-hidden="true" className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-rose-50 text-[11px] font-bold text-rose-600">✕</span>
               <p className="text-sm leading-relaxed text-muted line-through decoration-rose-300">{item.wrong}</p>
             </div>
             <div className="flex gap-3 border-t border-line pt-3 sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
-              <span
-                aria-hidden="true"
-                className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-[11px] font-bold text-emerald-600"
-              >
-                ✓
-              </span>
+              <span aria-hidden="true" className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-[11px] font-bold text-emerald-600">✓</span>
               <p className="text-sm font-medium leading-relaxed text-ink-soft">{item.right}</p>
             </div>
           </li>
@@ -176,8 +163,7 @@ export function MarketplaceMistakes() {
 
       <div className="mt-10">
         <h3 className="text-base font-semibold">Na prática: anúncio fraco × anúncio melhor</h3>
-        <p className="mt-1.5 text-sm text-muted">Mesmo produto, resultados bem diferentes.</p>
-
+        <p className="mt-1.5 text-sm text-muted">Mesmo produto, com níveis de informação diferentes.</p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           <div className="rounded-2xl border border-rose-200 bg-rose-50/40 p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">Anúncio fraco</p>
@@ -185,9 +171,7 @@ export function MarketplaceMistakes() {
           </div>
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-700">Anúncio melhor</p>
-            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-emerald-900/80">
-              {MARKETPLACE_EXAMPLE.good}
-            </p>
+            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-emerald-900/80">{MARKETPLACE_EXAMPLE.good}</p>
           </div>
         </div>
       </div>
@@ -205,9 +189,7 @@ export function MarketplaceFaq() {
             <h2 id="marketplace-faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
               Perguntas sobre anúncios no Marketplace
             </h2>
-            <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerado por IA.
-            </p>
+            <p className="mt-3 text-[15px] text-muted">Respostas para revisar o classificado antes de publicar.</p>
           </div>
 
           <div className="divide-y divide-line rounded-2xl border border-line bg-canvas shadow-card">
@@ -215,12 +197,7 @@ export function MarketplaceFaq() {
               <details key={faq.question} className="group p-5 sm:p-6">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">
                   <h3 className="text-[15px] font-medium">{faq.question}</h3>
-                  <span
-                    aria-hidden="true"
-                    className="grid size-6 shrink-0 place-items-center rounded-full border border-line-strong text-muted transition-transform group-open:rotate-45"
-                  >
-                    +
-                  </span>
+                  <span aria-hidden="true" className="grid size-6 shrink-0 place-items-center rounded-full border border-line-strong text-muted transition-transform group-open:rotate-45">+</span>
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
               </details>
