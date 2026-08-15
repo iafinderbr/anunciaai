@@ -18,7 +18,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Shopee com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos de até 100 caracteres, descrições, benefícios e palavras-chave para seus anúncios da Shopee com inteligência artificial. Grátis e sem cadastro.";
+  "Crie títulos de até 120 caracteres, descrições, benefícios e palavras-chave para seus anúncios da Shopee com inteligência artificial. Grátis e sem cadastro.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -65,7 +65,7 @@ const structuredData = {
 };
 
 const highlights = [
-  "Título com até 100 caracteres",
+  "Título com até 120 caracteres",
   "Descrição dentro das regras da Shopee",
   "Palavras-chave de busca",
   "Ficha técnica pronta",
@@ -78,7 +78,6 @@ export default function ShopeePage() {
       <SiteHeader />
 
       <main id="topo">
-        {/* HERO + FERRAMENTA */}
         <section aria-labelledby="shopee-hero-titulo" className="relative overflow-hidden">
           <div
             aria-hidden="true"
@@ -167,7 +166,30 @@ export default function ShopeePage() {
         <PricingSection />
         <ShopeeFaq />
 
-        {/* CTA FINAL + LINKS INTERNOS */}
+        <section aria-labelledby="shopee-guia" className="border-t border-line bg-white">
+          <div className="container-page py-12 sm:py-16">
+            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
+              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div className="max-w-2xl">
+                  <h2 id="shopee-guia" className="text-xl font-semibold sm:text-2xl">
+                    Aprenda como criar um anúncio na Shopee do início ao fim
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-ink-soft">
+                    Veja como organizar categoria, título, fotos, atributos, variações e descrição antes de publicar.
+                  </p>
+                </div>
+                <Link
+                  href="/como-criar-anuncio-na-shopee"
+                  className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                >
+                  Ler o guia da Shopee
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section aria-labelledby="shopee-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
@@ -188,19 +210,19 @@ export default function ShopeePage() {
 
             <p className="mt-8 text-center text-sm text-muted">
               Vende em outros canais também?{" "}
-              <a
+              <Link
                 href="/gerador-de-anuncios-mercado-livre"
                 className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
               >
                 Use o gerador para Mercado Livre
-              </a>
+              </Link>
               {" · "}
-              <a
+              <Link
                 href="/gerador-de-descricao-de-produto"
                 className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
               >
                 Crie a descrição do seu produto
-              </a>
+              </Link>
               {" · "}
               <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
                 Veja todos os geradores
@@ -217,4 +239,3 @@ export default function ShopeePage() {
     </>
   );
 }
-

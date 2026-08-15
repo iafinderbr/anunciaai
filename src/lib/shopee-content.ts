@@ -36,7 +36,7 @@ export const SHOPEE_STEPS: { title: string; text: string }[] = [
 export const SHOPEE_ANATOMY: { title: string; text: string }[] = [
   {
     title: "Título com palavra-chave",
-    text: "Até 100 caracteres, com o nome do produto, o diferencial e os termos que o comprador busca.",
+    text: "Até 120 caracteres, com nome do produto, marca, modelo e características relevantes para a busca.",
   },
   {
     title: "Descrição que apresenta e convence",
@@ -48,11 +48,11 @@ export const SHOPEE_ANATOMY: { title: string; text: string }[] = [
   },
   {
     title: "Ficha técnica completa",
-    text: "Material, medidas, garantia e itens inclusos preenchidos para o produto aparecer nos filtros.",
+    text: "Material, medidas, garantia e itens inclusos preenchidos para deixar o anúncio mais claro.",
   },
   {
-    title: "Prova de confiança",
-    text: "Garantia e troca explicadas para reduzir a hesitação de compra.",
+    title: "Informações consistentes",
+    text: "Título, fotos, atributos e descrição precisam representar a mesma versão do produto.",
   },
 ];
 
@@ -60,17 +60,17 @@ export const SHOPEE_TITLE_BREAKDOWN: { label: string; value: string }[] = [
   { label: "Produto", value: "Carregador Portátil" },
   { label: "Diferencial", value: "20000mAh" },
   { label: "Palavra-chave", value: "Carregamento Rápido" },
-  { label: "Toque Shopee", value: "Duas Portas USB 🔥" },
+  { label: "Atributo", value: "Duas Portas USB" },
 ];
 
 export const SHOPEE_FEATURES: { title: string; text: string }[] = [
   {
-    title: "Título de até 100 caracteres",
-    text: "A Shopee exibe títulos longos. A ferramenta aproveita o espaço com palavras-chave, sem exagerar.",
+    title: "Título de até 120 caracteres",
+    text: "A ferramenta mantém o título dentro do limite atual e prioriza informações úteis, sem encher o texto com termos irrelevantes.",
   },
   {
     title: "Descrição otimizada para a Shopee",
-    text: "Texto limpo, sem telefone, e-mail ou link externo — os itens que a Shopee proíbe na descrição.",
+    text: "Texto organizado para apresentar características, benefícios, medidas, compatibilidades e conteúdo da embalagem.",
   },
   {
     title: "Benefícios que vendem",
@@ -78,11 +78,11 @@ export const SHOPEE_FEATURES: { title: string; text: string }[] = [
   },
   {
     title: "Palavras-chave de busca",
-    text: "Termos que o comprador digita na busca da Shopee, prontos para distribuir entre título e ficha.",
+    text: "Termos relacionados ao produto, prontos para distribuir de forma natural entre título, descrição e atributos.",
   },
   {
     title: "Ficha técnica organizada",
-    text: "Suas anotações viram atributos limpos, prontos para preencher os campos de variação do anúncio.",
+    text: "Suas anotações viram atributos limpos, prontos para conferir ao preencher o anúncio.",
   },
   {
     title: "Tom de texto ajustável",
@@ -96,16 +96,16 @@ export const SHOPEE_MISTAKES: { wrong: string; right: string }[] = [
     right: "Carregador Portátil 20000mAh Carregamento Rápido Duas Portas USB",
   },
   {
-    wrong: "Descrição com WhatsApp, e-mail ou link para outro site",
-    right: "Descrição focada em uso, ficha técnica e garantia — a Shopee bloqueia contato externo",
+    wrong: "Descrição vaga, sem medidas, compatibilidade ou itens inclusos",
+    right: "Descrição focada em uso, características reais e informações que ajudam a decidir",
   },
   {
     wrong: "Foto e título dizendo uma coisa, ficha técnica dizendo outra",
-    right: "Título, descrição e ficha técnica coerentes, com o mesmo nome e especificações",
+    right: "Título, fotos, descrição e atributos coerentes, com a mesma versão e especificações",
   },
   {
     wrong: "Prometer frete grátis ou parcelamento que a loja não configura",
-    right: "Deixar frete, cupom e parcelamento para as configurações do anúncio",
+    right: "Deixar frete, cupom e parcelamento para as condições realmente configuradas no anúncio",
   },
 ];
 
@@ -118,32 +118,32 @@ export const SHOPEE_FAQ: FaqItem[] = [
   {
     question: "Como criar um anúncio para a Shopee com inteligência artificial?",
     answer:
-      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar anúncio”. Em segundos a IA devolve título, descrição, benefícios, ficha técnica e palavras-chave no formato da Shopee.",
+      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar anúncio”. Em segundos a IA devolve título, descrição, benefícios, ficha técnica e palavras-chave para você revisar.",
   },
   {
     question: "Qual o limite de caracteres do título na Shopee?",
     answer:
-      "A Shopee permite títulos de até 100 caracteres, com espaço para palavras-chave e emojis. A ferramenta gera o título dentro desse limite e mostra o contador para você conferir.",
+      "A documentação oficial atual da Shopee indica títulos de produto com até 120 caracteres. Use o espaço para identificar o item com clareza, incluindo marca, modelo e características relevantes quando fizer sentido.",
   },
   {
-    question: "O que não pode ter na descrição de um anúncio da Shopee?",
+    question: "O que colocar na descrição de um anúncio da Shopee?",
     answer:
-      "A Shopee proíbe contato externo na descrição, como telefone, WhatsApp, e-mail e links para outros sites, além de negociação fora da plataforma. A ferramenta entrega um texto limpo, focado em uso, ficha técnica e garantia.",
+      "Inclua as informações que ajudam o comprador a decidir: principais características, medidas, material, compatibilidade, modo de uso e conteúdo da embalagem, sempre de forma clara e fiel ao produto.",
   },
   {
-    question: "O que faz um produto aparecer na busca da Shopee?",
+    question: "O que ajuda um produto a aparecer na busca da Shopee?",
     answer:
-      "Principalmente o título, as palavras-chave e a ficha técnica preenchida. A ferramenta monta o título com os termos de busca e organiza a ficha para o produto aparecer nos filtros certos.",
+      "Título informativo e atributos precisos ajudam a Shopee e o comprador a entender o produto. Use termos relevantes sem repetição artificial e mantenha as características completas e corretas.",
   },
   {
     question: "O gerador de anúncios para Shopee é gratuito?",
     answer:
-      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e publicar quantos anúncios quiser durante o período de testes.",
+      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e revisar anúncios durante o período de testes.",
   },
   {
     question: "A ferramenta serve para outros marketplaces também?",
     answer:
-      "Sim. Esta página é otimizada para a Shopee, mas o AnunciaAI também gera anúncios para Mercado Livre, loja virtual e Instagram, cada um com o formato e o limite de caracteres da plataforma.",
+      "Sim. Esta página é otimizada para a Shopee, mas o AnunciaAI também gera anúncios para Mercado Livre, loja virtual e outros canais, adaptando a estrutura ao canal escolhido.",
   },
 ];
 

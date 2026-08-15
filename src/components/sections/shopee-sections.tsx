@@ -74,7 +74,7 @@ export function ShopeeAnatomy() {
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
-                66/100 caracteres
+                66/120 caracteres
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
                 Com palavras-chave
@@ -132,7 +132,7 @@ export function ShopeeMistakes() {
           Erros comuns em anúncios na Shopee
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          A ferramenta entrega o texto do lado direito da tabela. Você só precisa colar e revisar.
+          Use os exemplos abaixo como revisão antes de publicar o anúncio.
         </p>
       </div>
 

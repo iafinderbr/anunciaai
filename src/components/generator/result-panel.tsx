@@ -6,7 +6,7 @@ import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
 
 const TITLE_LIMIT: Record<Channel, number> = {
   "mercado-livre": 60,
-  shopee: 100,
+  shopee: 120,
   "loja-virtual": 70,
   instagram: 65,
   olx: 65,
