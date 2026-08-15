@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://anunciaai.vercel.app/como-criar-anuncio-na-olx", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: "https://anunciaai.vercel.app/como-criar-anuncio-no-facebook-marketplace", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: "https://anunciaai.vercel.app/como-criar-pagina-de-produto-para-loja-virtual", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://anunciaai.vercel.app/como-criar-legenda-para-instagram", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: "https://anunciaai.vercel.app/guias", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: "https://anunciaai.vercel.app/como-fazer-descricao-de-produto", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: "https://anunciaai.vercel.app/como-criar-titulo-de-produto", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },

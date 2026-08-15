@@ -96,6 +96,7 @@ export function SiteFooter() {
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">Como criar anúncio na OLX</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-facebook-marketplace">Como criar anúncio no Facebook Marketplace</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-pagina-de-produto-para-loja-virtual">Como criar página de produto para loja virtual</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-legenda-para-instagram">Como criar legenda para Instagram</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">Como fazer descrição de produto</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">Como criar título de produto</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">Como escolher palavras-chave</Link></li>
