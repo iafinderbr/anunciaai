@@ -55,6 +55,17 @@ const guides = [
     toolLabel: "Gerador para Mercado Livre",
   },
   {
+    href: "/como-criar-anuncio-na-shopee",
+    eyebrow: "Shopee",
+    title: "Como criar um anúncio na Shopee",
+    description:
+      "Passo a passo para organizar categoria, título, fotos, atributos, variações, descrição, preço e revisão antes de publicar.",
+    readingTime: "8 min de leitura",
+    topics: ["8 etapas", "Exemplo de título", "Modelo de descrição"],
+    toolHref: "/gerador-de-anuncios-shopee#ferramenta",
+    toolLabel: "Gerador para Shopee",
+  },
+  {
     href: "/como-fazer-descricao-de-produto",
     eyebrow: "Descrição de produto",
     title: "Como fazer uma descrição de produto",
