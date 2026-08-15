@@ -71,53 +71,21 @@ export function PricingSection() {
                   Mais popular
                 </span>
               ) : null}
-
-              <h3 className={`text-sm font-semibold uppercase tracking-[0.1em] ${plan.highlighted ? "text-brand-200" : "text-muted"}`}>
-                {plan.name}
-              </h3>
-
-              <p className="mt-4 flex items-baseline gap-1">
-                <span className="text-3xl font-semibold tracking-tight">{plan.price}</span>
-                <span className={`text-sm ${plan.highlighted ? "text-white/70" : "text-muted"}`}>{plan.period}</span>
-              </p>
-
+              <h3 className={`text-sm font-semibold uppercase tracking-[0.1em] ${plan.highlighted ? "text-brand-200" : "text-muted"}`}>{plan.name}</h3>
+              <p className="mt-4 flex items-baseline gap-1"><span className="text-3xl font-semibold tracking-tight">{plan.price}</span><span className={`text-sm ${plan.highlighted ? "text-white/70" : "text-muted"}`}>{plan.period}</span></p>
               <p className={`mt-2 text-sm ${plan.highlighted ? "text-white/75" : "text-muted"}`}>{plan.summary}</p>
-
               <ul className="mt-6 flex-1 space-y-2.5">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2.5 text-sm">
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 20 20"
-                      className={`mt-0.5 size-4 shrink-0 ${plan.highlighted ? "text-brand-200" : "text-brand-600"}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                    >
-                      <path d="M4 10.5 8 14.5 16 6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <svg aria-hidden="true" viewBox="0 0 20 20" className={`mt-0.5 size-4 shrink-0 ${plan.highlighted ? "text-brand-200" : "text-brand-600"}`} fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M4 10.5 8 14.5 16 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     <span className={plan.highlighted ? "text-white/90" : "text-ink-soft"}>{feature}</span>
                   </li>
                 ))}
               </ul>
-
               {plan.soon ? (
-                <button
-                  type="button"
-                  disabled
-                  className={`mt-7 w-full cursor-not-allowed rounded-xl px-4 py-3 text-sm font-semibold ${
-                    plan.highlighted ? "bg-white/15 text-white/80" : "bg-line text-muted"
-                  }`}
-                >
-                  {plan.cta}
-                </button>
+                <button type="button" disabled className={`mt-7 w-full cursor-not-allowed rounded-xl px-4 py-3 text-sm font-semibold ${plan.highlighted ? "bg-white/15 text-white/80" : "bg-line text-muted"}`}>{plan.cta}</button>
               ) : (
-                <a
-                  href={plan.href}
-                  className="mt-7 w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-                >
-                  {plan.cta}
-                </a>
+                <a href={plan.href} className="mt-7 w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">{plan.cta}</a>
               )}
             </article>
           ))}
@@ -128,57 +96,19 @@ export function PricingSection() {
 }
 
 const faqs = [
-  {
-    question: "Preciso pagar para usar?",
-    answer:
-      "Não. A geração de anúncios desta versão é gratuita e ilimitada durante o período de testes. Não pedimos cartão de crédito.",
-  },
-  {
-    question: "O conteúdo serve para Mercado Livre e Shopee?",
-    answer:
-      "Sim. Você escolhe o canal antes de gerar e o texto é adaptado à estrutura e aos limites indicados para cada plataforma.",
-  },
-  {
-    question: "Posso editar o texto depois?",
-    answer:
-      "Com certeza. Copie o bloco que quiser, ajuste detalhes específicos do seu estoque e publique. Você também pode clicar em “Gerar novamente” para receber outra versão.",
-  },
-  {
-    question: "Meus dados de produto ficam salvos?",
-    answer:
-      "Guardamos apenas um registro simples da geração (nome do produto, categoria e canal) para exibir o contador público. Nada é compartilhado com terceiros.",
-  },
+  { question: "Preciso pagar para usar?", answer: "Não. A geração de anúncios desta versão é gratuita e ilimitada durante o período de testes. Não pedimos cartão de crédito." },
+  { question: "O conteúdo serve para Mercado Livre e Shopee?", answer: "Sim. Você escolhe o canal antes de gerar e o texto é adaptado à estrutura e aos limites indicados para cada plataforma." },
+  { question: "Posso editar o texto depois?", answer: "Com certeza. Copie o bloco que quiser, ajuste detalhes específicos do seu estoque e publique. Você também pode clicar em “Gerar novamente” para receber outra versão." },
+  { question: "Meus dados de produto ficam salvos?", answer: "Guardamos apenas um registro simples da geração (nome do produto, categoria e canal) para exibir o contador público. Nada é compartilhado com terceiros." },
 ];
 
 export function FaqSection() {
   return (
     <section aria-labelledby="faq-titulo" className="container-page py-14 sm:py-20">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-16">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Dúvidas</p>
-          <h2 id="faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Perguntas frequentes
-          </h2>
-          <p className="mt-3 text-[15px] text-muted">
-            Ainda com dúvida? Teste a ferramenta — leva menos tempo do que ler esta página.
-          </p>
-        </div>
-
+        <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Dúvidas</p><h2 id="faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Perguntas frequentes</h2><p className="mt-3 text-[15px] text-muted">Ainda com dúvida? Teste a ferramenta — leva menos tempo do que ler esta página.</p></div>
         <div className="divide-y divide-line rounded-2xl border border-line bg-white shadow-card">
-          {faqs.map((faq) => (
-            <details key={faq.question} className="group p-5 sm:p-6">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">
-                {faq.question}
-                <span
-                  aria-hidden="true"
-                  className="grid size-6 shrink-0 place-items-center rounded-full border border-line-strong text-muted transition-transform group-open:rotate-45"
-                >
-                  +
-                </span>
-              </summary>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
-            </details>
-          ))}
+          {faqs.map((faq) => <details key={faq.question} className="group p-5 sm:p-6"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">{faq.question}<span aria-hidden="true" className="grid size-6 shrink-0 place-items-center rounded-full border border-line-strong text-muted transition-transform group-open:rotate-45">+</span></summary><p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p></details>)}
         </div>
       </div>
     </section>
@@ -190,83 +120,31 @@ export function SiteFooter() {
     <footer className="border-t border-line bg-white">
       <div className="container-page grid gap-10 py-12 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
         <div>
-          <p className="text-[17px] font-semibold tracking-tight">
-            Anuncia<span className="text-brand-600">AI</span>
-          </p>
-          <p className="mt-1 max-w-sm text-sm text-muted">
-            Ferramenta de inteligência artificial para lojistas criarem anúncios de produtos em segundos.
-          </p>
-          <Link
-            href="/#ferramenta"
-            className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-          >
-            Criar anúncio grátis
-          </Link>
+          <p className="text-[17px] font-semibold tracking-tight">Anuncia<span className="text-brand-600">AI</span></p>
+          <p className="mt-1 max-w-sm text-sm text-muted">Ferramenta de inteligência artificial para lojistas criarem anúncios de produtos em segundos.</p>
+          <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis</Link>
         </div>
 
         <nav aria-label="Ferramentas do AnunciaAI">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Ferramentas gratuitas</p>
           <ul className="mt-4 grid gap-x-8 gap-y-2.5 text-sm text-muted sm:grid-cols-2">
-            {toolLinks.map((tool) => (
-              <li key={tool.href}>
-                <Link className="transition-colors hover:text-brand-600" href={tool.href}>
-                  {tool.label}
-                </Link>
-              </li>
-            ))}
+            {toolLinks.map((tool) => <li key={tool.href}><Link className="transition-colors hover:text-brand-600" href={tool.href}>{tool.label}</Link></li>)}
           </ul>
           <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Guias práticos</p>
           <ul className="mt-4 grid gap-2.5 text-sm text-muted">
-            <li>
-              <Link className="font-medium text-ink-soft transition-colors hover:text-brand-600" href="/guias">
-                Ver todos os guias
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">
-                Como criar anúncio no Mercado Livre
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-shopee">
-                Como criar anúncio na Shopee
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">
-                Como criar anúncio na OLX
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">
-                Como fazer descrição de produto
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">
-                Como criar título de produto
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">
-                Como escolher palavras-chave
-              </Link>
-            </li>
-            <li>
-              <Link className="transition-colors hover:text-brand-600" href="/como-criar-nome-de-produto">
-                Como criar nome de produto
-              </Link>
-            </li>
+            <li><Link className="font-medium text-ink-soft transition-colors hover:text-brand-600" href="/guias">Ver todos os guias</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">Como criar anúncio no Mercado Livre</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-shopee">Como criar anúncio na Shopee</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">Como criar anúncio na OLX</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-facebook-marketplace">Como criar anúncio no Facebook Marketplace</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">Como fazer descrição de produto</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">Como criar título de produto</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">Como escolher palavras-chave</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-nome-de-produto">Como criar nome de produto</Link></li>
           </ul>
         </nav>
       </div>
-      <div className="border-t border-line">
-        <div className="container-page py-5">
-          <p className="text-xs text-muted">
-            © {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.
-          </p>
-        </div>
-      </div>
+      <div className="border-t border-line"><div className="container-page py-5"><p className="text-xs text-muted">© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p></div></div>
     </footer>
   );
 }
