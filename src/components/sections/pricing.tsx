@@ -14,34 +14,9 @@ interface Plan {
 }
 
 const plans: Plan[] = [
-  {
-    name: "Grátis",
-    price: "R$ 0",
-    period: "/mês",
-    summary: "Para testar e cadastrar os primeiros produtos.",
-    features: ["3 gerações por dia", "Títulos", "Descrições", "Benefícios"],
-    cta: "Começar grátis",
-    href: "#ferramenta",
-  },
-  {
-    name: "Pro",
-    price: "R$ 19,90",
-    period: "/mês",
-    summary: "Para quem cadastra produtos toda semana.",
-    features: ["Gerações ilimitadas", "Geração em lote", "Histórico", "SEO", "Anúncios para múltiplos canais"],
-    cta: "Em breve",
-    highlighted: true,
-    soon: true,
-  },
-  {
-    name: "Lojista",
-    price: "R$ 49,90",
-    period: "/mês",
-    summary: "Para catálogos grandes e operações em escala.",
-    features: ["Tudo do Pro", "Geração em massa", "Exportação", "Recursos para grandes catálogos"],
-    cta: "Em breve",
-    soon: true,
-  },
+  { name: "Grátis", price: "R$ 0", period: "/mês", summary: "Para testar e cadastrar os primeiros produtos.", features: ["3 gerações por dia", "Títulos", "Descrições", "Benefícios"], cta: "Começar grátis", href: "#ferramenta" },
+  { name: "Pro", price: "R$ 19,90", period: "/mês", summary: "Para quem cadastra produtos toda semana.", features: ["Gerações ilimitadas", "Geração em lote", "Histórico", "SEO", "Anúncios para múltiplos canais"], cta: "Em breve", highlighted: true, soon: true },
+  { name: "Lojista", price: "R$ 49,90", period: "/mês", summary: "Para catálogos grandes e operações em escala.", features: ["Tudo do Pro", "Geração em massa", "Exportação", "Recursos para grandes catálogos"], cta: "Em breve", soon: true },
 ];
 
 export function PricingSection() {
@@ -50,27 +25,14 @@ export function PricingSection() {
       <div className="container-page py-14 sm:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Preços</p>
-          <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Comece grátis. Evolua quando o catálogo crescer.
-          </h2>
-          <p className="mt-3 text-[15px] text-muted">
-            Sem fidelidade e sem cartão para começar. Os planos pagos entram no ar em breve.
-          </p>
+          <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Comece grátis. Evolua quando o catálogo crescer.</h2>
+          <p className="mt-3 text-[15px] text-muted">Sem fidelidade e sem cartão para começar. Os planos pagos entram no ar em breve.</p>
         </div>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {plans.map((plan) => (
-            <article
-              key={plan.name}
-              className={`relative flex flex-col rounded-2xl border p-6 sm:p-7 ${
-                plan.highlighted ? "border-ink bg-ink text-white shadow-lift" : "border-line bg-canvas shadow-card"
-              }`}
-            >
-              {plan.highlighted ? (
-                <span className="absolute right-6 top-6 rounded-full bg-brand-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
-                  Mais popular
-                </span>
-              ) : null}
+            <article key={plan.name} className={`relative flex flex-col rounded-2xl border p-6 sm:p-7 ${plan.highlighted ? "border-ink bg-ink text-white shadow-lift" : "border-line bg-canvas shadow-card"}`}>
+              {plan.highlighted ? <span className="absolute right-6 top-6 rounded-full bg-brand-500 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">Mais popular</span> : null}
               <h3 className={`text-sm font-semibold uppercase tracking-[0.1em] ${plan.highlighted ? "text-brand-200" : "text-muted"}`}>{plan.name}</h3>
               <p className="mt-4 flex items-baseline gap-1"><span className="text-3xl font-semibold tracking-tight">{plan.price}</span><span className={`text-sm ${plan.highlighted ? "text-white/70" : "text-muted"}`}>{plan.period}</span></p>
               <p className={`mt-2 text-sm ${plan.highlighted ? "text-white/75" : "text-muted"}`}>{plan.summary}</p>
@@ -82,11 +44,7 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              {plan.soon ? (
-                <button type="button" disabled className={`mt-7 w-full cursor-not-allowed rounded-xl px-4 py-3 text-sm font-semibold ${plan.highlighted ? "bg-white/15 text-white/80" : "bg-line text-muted"}`}>{plan.cta}</button>
-              ) : (
-                <a href={plan.href} className="mt-7 w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">{plan.cta}</a>
-              )}
+              {plan.soon ? <button type="button" disabled className={`mt-7 w-full cursor-not-allowed rounded-xl px-4 py-3 text-sm font-semibold ${plan.highlighted ? "bg-white/15 text-white/80" : "bg-line text-muted"}`}>{plan.cta}</button> : <a href={plan.href} className="mt-7 w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">{plan.cta}</a>}
             </article>
           ))}
         </div>
@@ -137,6 +95,7 @@ export function SiteFooter() {
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-shopee">Como criar anúncio na Shopee</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">Como criar anúncio na OLX</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-facebook-marketplace">Como criar anúncio no Facebook Marketplace</Link></li>
+            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-pagina-de-produto-para-loja-virtual">Como criar página de produto para loja virtual</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">Como fazer descrição de produto</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">Como criar título de produto</Link></li>
             <li><Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">Como escolher palavras-chave</Link></li>
