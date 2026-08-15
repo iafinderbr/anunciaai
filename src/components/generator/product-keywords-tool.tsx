@@ -118,7 +118,6 @@ function shortFeature(value: string) {
 
 function shortAudience(value: string) {
   return lower(value)
-    .replace(/^(pessoas|homens|mulheres|adultos|jovens)\s+que\s+/, "")
     .split(/,|\bou\b/)[0]
     .split(" ")
     .slice(0, 6)
@@ -130,9 +129,9 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
   const category = lower(input.category);
   const features = parseList(input.features).map(shortFeature);
   const audience = shortAudience(input.audience);
-  const f1 = features[variation % Math.max(features.length, 1)] || "alta qualidade";
+  const f1 = features[variation % Math.max(features.length, 1)] || "características informadas";
   const f2 = features[(variation + 1) % Math.max(features.length, 1)] || "uso diário";
-  const f3 = features[(variation + 2) % Math.max(features.length, 1)] || "bom custo benefício";
+  const f3 = features[(variation + 2) % Math.max(features.length, 1)] || "diferenciais do produto";
 
   const primary = unique([
     { term: product, intent: "Produto" },
@@ -145,7 +144,7 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
   const channelSecondary: Record<Target, KeywordItem[]> = {
     todos: [
       { term: `${product} online`, intent: "Compra" },
-      { term: `${product} promoção`, intent: "Compra" },
+      { term: `${product} para uso diário`, intent: "Produto" },
     ],
     google: [
       { term: `melhor ${product}`, intent: "Compra" },
@@ -154,18 +153,18 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
     ],
     loja: [
       { term: `${category} comprar online`, intent: "Compra" },
-      { term: `${product} entrega rápida`, intent: "Compra" },
-      { term: `${product} original`, intent: "Produto" },
+      { term: `${product} ${f1}`, intent: "Característica" },
+      { term: `${product} ficha técnica`, intent: "Produto" },
     ],
     "mercado-livre": [
       { term: `${product} mercado livre`, intent: "Compra" },
-      { term: `${product} frete grátis`, intent: "Compra" },
-      { term: `${product} pronta entrega`, intent: "Compra" },
+      { term: `${product} ${f1}`, intent: "Característica" },
+      { term: `${product} ${category}`, intent: "Produto" },
     ],
     shopee: [
       { term: `${product} shopee`, intent: "Compra" },
-      { term: `${product} promoção`, intent: "Compra" },
-      { term: `${product} barato`, intent: "Compra" },
+      { term: `${product} ${f1}`, intent: "Característica" },
+      { term: `${product} ${category}`, intent: "Produto" },
     ],
   };
 
@@ -189,16 +188,16 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
       { term: `${product} vale a pena para uso diário`, intent: "Problema" },
     ],
     loja: [
-      { term: `comprar ${product} online com entrega rápida`, intent: "Compra" },
-      { term: `${product} original com garantia`, intent: "Compra" },
+      { term: `comprar ${product} online`, intent: "Compra" },
+      { term: `${product} com ${f1} e ${f2}`, intent: "Característica" },
     ],
     "mercado-livre": [
-      { term: `${product} pronta entrega no mercado livre`, intent: "Compra" },
-      { term: `comprar ${product} com frete grátis`, intent: "Compra" },
+      { term: `comprar ${product} no mercado livre`, intent: "Compra" },
+      { term: `${product} ${f1} mercado livre`, intent: "Característica" },
     ],
     shopee: [
-      { term: `${product} barato com cupom shopee`, intent: "Compra" },
-      { term: `${product} promoção pronta entrega`, intent: "Compra" },
+      { term: `comprar ${product} na shopee`, intent: "Compra" },
+      { term: `${product} ${f1} shopee`, intent: "Característica" },
     ],
   };
 

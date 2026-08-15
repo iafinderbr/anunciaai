@@ -7,14 +7,16 @@ import { FaqSection, PricingSection, SiteFooter } from "@/components/sections/pr
 import { RecentStrip } from "@/components/sections/recent-strip";
 import { ToolsSection } from "@/components/sections/tools";
 import { db } from "@/db";
+import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 const channels = ["Mercado Livre", "Shopee", "Loja virtual", "Instagram", "Amazon", "Magalu"];
 
 async function getTotal(): Promise<number> {
   try {
+    await ensureDatabaseSchema();
     const [row] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
     return row?.total ?? 0;
   } catch {

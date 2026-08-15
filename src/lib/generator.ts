@@ -2,9 +2,7 @@ import {
   BENEFIT_RULES,
   CHANNEL_LABEL,
   CONDITION_RULES,
-  GENERIC_BENEFITS,
   MARKETPLACE_CTAS,
-  OBJECTIONS,
   OLX_CTAS,
   TONE_CTA,
   TONE_LABEL,
@@ -112,14 +110,9 @@ export function parsePrice(raw: string): PriceInfo {
   }
 
   const formatted = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
-  let installments: string | null = null;
-  if (value >= 120) {
-    installments = `12x de ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value / 12)} sem juros`;
-  } else if (value >= 30) {
-    installments = `3x de ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value / 3)} sem juros`;
-  }
-
-  return { formatted, value, installments };
+  // O formulário recebe apenas o preço. Parcelamento, juros e condições de
+  // pagamento não podem ser inferidos sem que o vendedor os informe.
+  return { formatted, value, installments: null };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -139,24 +132,20 @@ function buildBenefits(features: string[], input: GeneratorInput, variant: numbe
   }
 
   const audience = clean(input.audience);
-  const product = clean(input.productName);
   const contextual: string[] = [];
 
   if (audience) {
-    contextual.push(`Feito sob medida para ${lowerFirst(audience)}`);
+    contextual.push(`Indicado para ${lowerFirst(audience)}, conforme informado`);
   }
   if (features.length > 0) {
     contextual.push(`${upperFirst(features[0])} — o detalhe que mais pesa na hora da escolha`);
   }
   if (input.category) {
-    contextual.push(`Um dos destaques da categoria ${lowerFirst(input.category)}`);
+    contextual.push(`Informações organizadas para a categoria ${lowerFirst(input.category)}`);
   }
-  contextual.push(`${product} pronto para usar assim que chegar`);
+  const explicit = features.map((feature) => upperFirst(feature));
 
-  const generic = GENERIC_BENEFITS[input.tone];
-  const rotatedGeneric = [...generic.slice(variant % generic.length), ...generic.slice(0, variant % generic.length)];
-
-  return unique([...matched, ...contextual, ...rotatedGeneric]).slice(0, 5);
+  return unique([...matched, ...explicit, ...contextual]).slice(0, 5);
 }
 
 function buildSpecs(features: string[], input: GeneratorInput): SpecItem[] {
@@ -222,7 +211,10 @@ function inferCondition(features: string[]): string | null {
 function buildTitles(features: string[], input: GeneratorInput, variant: number): { title: string; alternatives: string[] } {
   const product = clean(input.productName);
   const category = clean(input.category);
-  const shorts = shortFeatures(features);
+  const productText = product.toLocaleLowerCase("pt-BR");
+  const shorts = shortFeatures(features).filter(
+    (feature) => !productText.includes(feature.toLocaleLowerCase("pt-BR")),
+  );
   const f1 = shorts[0] ?? "";
   const f2 = shorts[1] ?? "";
   const f3 = shorts[2] ?? "";
@@ -238,21 +230,21 @@ function buildTitles(features: string[], input: GeneratorInput, variant: number)
         ];
       case "shopee":
         return [
-          truncate(`${titleCase(product)} ${f1 ? upperFirst(f1) + " " : ""}${category ? titleCase(category) + " " : ""}Pronta Entrega 🔥`, 100),
-          truncate(`🔥 ${titleCase(product)} ${f1 ? "| " + upperFirst(f1) + " " : ""}${f2 ? "| " + upperFirst(f2) + " " : ""}| Envio Rápido`, 100),
-          truncate(`${titleCase(product)} ${category ? titleCase(category) + " " : ""}Promoção ⭐ ${f1 ? upperFirst(f1) : "Qualidade Garantida"}`, 100),
+          truncate(`${titleCase(product)} ${[f1, f2, category].filter(Boolean).map(upperFirst).join(" ")} ✨`, 100),
+          truncate(`✨ ${titleCase(product)}${f1 ? ` | ${upperFirst(f1)}` : ""}${f2 ? ` | ${upperFirst(f2)}` : ""}`, 100),
+          truncate(`${titleCase(product)} ${[category, f1 || f2].filter(Boolean).map(titleCase).join(" ")}`, 100),
         ];
       case "loja-virtual":
         return [
-          truncate(`${titleCase(product)} — ${f1 ? upperFirst(f1) : "qualidade garantida"}${category ? ` | ${titleCase(category)}` : ""}`, 70),
+          truncate(`${titleCase(product)}${f1 ? ` — ${upperFirst(f1)}` : ""}${category ? ` | ${titleCase(category)}` : ""}`, 70),
           truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""} | Comprar Online${price.formatted ? ` por ${price.formatted}` : ""}`, 70),
-          truncate(`${titleCase(product)}: ${f1 ? lowerFirst(f1) : "o modelo que faltava"}${f2 ? ` e ${lowerFirst(f2)}` : ""}`, 70),
+          truncate(`${titleCase(product)}${f1 ? `: ${lowerFirst(f1)}` : ""}${f2 ? ` e ${lowerFirst(f2)}` : ""}`, 70),
         ];
       case "instagram":
         return [
-          truncate(`${titleCase(product)} chegou ✨ ${f1 ? upperFirst(f1) : "Você precisa conhecer"}`, 65),
-          truncate(`Novidade: ${titleCase(product)}${f1 ? ` ${lowerFirst(f1)}` : ""} 🚀`, 65),
-          truncate(`${titleCase(product)}${price.formatted ? ` por ${price.formatted}` : ""} — corre que voa! 🔥`, 65),
+          truncate(`${titleCase(product)} ✨${f1 ? ` ${upperFirst(f1)}` : category ? ` ${titleCase(category)}` : ""}`, 65),
+          truncate(`${titleCase(product)}${f1 ? `: ${lowerFirst(f1)}` : ""}${f2 ? ` e ${lowerFirst(f2)}` : ""} 🚀`, 65),
+          truncate(`${titleCase(product)}${price.formatted ? ` por ${price.formatted}` : ""}${f1 ? ` — ${lowerFirst(f1)}` : ""}`, 65),
         ];
       case "olx": {
         const state = inferCondition(features);
@@ -299,13 +291,11 @@ function buildDescription(features: string[], benefits: string[], input: Generat
   const opener = pick(TONE_OPENERS[input.tone], variant);
   const modifier = pick(TONE_MODIFIERS[input.tone], variant, 1);
   const cta = pick(TONE_CTA[input.tone], variant);
-  const objections = OBJECTIONS[input.tone];
-
   const blocks: string[] = [];
 
   if (input.channel === "instagram") {
-    blocks.push(`${titleCase(product)} ${modifier} chegou. ${opener}.`);
-    if (audience) blocks.push(`Perfeito para ${audience} que querem praticidade sem abrir mão da qualidade.`);
+    blocks.push(`${titleCase(product)}, ${modifier}. ${opener}.`);
+    if (audience) blocks.push(`Indicado para ${audience}, conforme o público informado pelo vendedor.`);
     if (features.length) blocks.push(features.slice(0, 5).map((feature) => `✅ ${upperFirst(feature)}`).join("\n"));
     if (price.formatted) blocks.push(`💰 ${price.formatted}${price.installments ? ` ou ${price.installments}` : ""}`);
     blocks.push(`${cta} Link na bio 👆`);
@@ -358,7 +348,7 @@ function buildDescription(features: string[], benefits: string[], input: Generat
 
   blocks.push(
     `${opener}. Conheça ${product}, ${modifier}${category ? `, na categoria ${category}` : ""}. ` +
-      `${audience ? `Criado pensando em ${audience}, ele une` : "Une"} praticidade e qualidade para resolver o que você precisa no dia a dia.`,
+      `${audience ? `Indicado para ${audience}, ele reúne` : "Reúne"} as características informadas pelo vendedor em uma apresentação organizada.`,
   );
 
   if (features.length) {
@@ -378,13 +368,9 @@ function buildDescription(features: string[], benefits: string[], input: Generat
   }
 
   if (price.formatted) {
-    blocks.push(
-      `INVESTIMENTO\nPor apenas ${price.formatted}${price.installments ? ` ou ${price.installments}` : ""}. ` +
-        `${input.tone === "premium" ? "Um valor justo para um produto que entrega muito acima da média." : "Um preço competitivo para o que você recebe."}`,
-    );
+    blocks.push(`VALOR INFORMADO\n${price.formatted}. Confira as condições de pagamento definidas pelo vendedor.`);
   }
 
-  blocks.push(`COMPRE COM CONFIANÇA\n${objections.map((item) => `• ${item}`).join("\n")}`);
   blocks.push(cta);
 
   return blocks.join("\n\n");
@@ -404,7 +390,7 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
       `${titleCase(product).toLocaleUpperCase("pt-BR")}${condition ? ` — ${condition.toLocaleUpperCase("pt-BR")}` : ""}`,
     );
     olxLines.push("");
-    olxLines.push(`Está procurando ${lowerFirst(input.category || product)} em bom estado e com preço justo?`);
+    olxLines.push(`Está procurando ${lowerFirst(input.category || product)}? Confira os detalhes deste anúncio.`);
     olxLines.push("");
     olxLines.push(benefits.slice(0, 4).map((benefit) => `› ${benefit}`).join("\n"));
     const highlights = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
@@ -428,7 +414,7 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
       `${titleCase(product).toLocaleUpperCase("pt-BR")}${condition ? ` — ${condition.toLocaleUpperCase("pt-BR")}` : ""}`,
     );
     mpLines.push("");
-    mpLines.push(`Está procurando ${lowerFirst(input.category || product)} e quer um bom negócio?`);
+    mpLines.push(`Está procurando ${lowerFirst(input.category || product)}? Confira os detalhes informados pelo vendedor.`);
     mpLines.push("");
     mpLines.push(benefits.slice(0, 4).map((benefit) => `› ${benefit}`).join("\n"));
     const details = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
@@ -446,9 +432,9 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
   }
 
   const hooks = [
-    `Procurando ${lowerFirst(input.category || product)} e não acha nada que entregue o que promete?`,
-    `E se o seu próximo ${lowerFirst(product)} fosse aquele que você não troca por nada?`,
-    `A escolha certa em ${lowerFirst(input.category || product)} existe — e ela cabe no seu orçamento.`,
+    `Conheça uma opção de ${lowerFirst(input.category || product)} com informações claras para comparar.`,
+    `Veja os detalhes de ${lowerFirst(product)} antes de escolher.`,
+    `Quem procura ${lowerFirst(input.category || product)} pode conferir aqui as principais características.`,
   ];
 
   const lines: string[] = [];
@@ -457,7 +443,7 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
   lines.push(pick(hooks, variant));
   lines.push("");
   lines.push(
-    `Pensado para ${audience || "quem valoriza qualidade de verdade"}, ${product} entrega exatamente o que você espera. ` +
+    `Indicado para ${audience || "quem procura esse tipo de produto"}, ${product} reúne as características informadas pelo vendedor. ` +
       `${pick(TONE_OPENERS[input.tone], variant, 2)}.`,
   );
   lines.push("");
@@ -470,13 +456,8 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
 
   lines.push("");
   if (price.formatted) {
-    lines.push(`${useEmoji ? "💰 " : ""}De olho no preço: ${price.formatted}${price.installments ? ` (${price.installments})` : ""}.`);
+    lines.push(`${useEmoji ? "💰 " : ""}Preço informado: ${price.formatted}.`);
   }
-  lines.push(
-    input.tone === "premium"
-      ? "Poucas unidades por lote — produzimos em pequena escala para manter o padrão."
-      : "Estoque limitado: os últimos lotes costumam sair em poucos dias.",
-  );
   lines.push("");
   lines.push(`${useEmoji ? "👉 " : ""}${cta}`);
 
@@ -499,7 +480,7 @@ function buildHashtags(input: GeneratorInput): string[] {
     .filter((word) => word.length > 2 && !SMALL_WORDS.has(word));
 
   const tags = unique(words.map((word) => `#${word}`));
-  return [...tags.slice(0, 5), "#lojaonline", "#promocao", "#compreonline"].slice(0, 8);
+  return [...tags.slice(0, 5), "#lojaonline", "#produtos", "#compreonline"].slice(0, 8);
 }
 
 function buildKeywords(features: string[], input: GeneratorInput): string[] {
@@ -513,8 +494,6 @@ function buildKeywords(features: string[], input: GeneratorInput): string[] {
       category && `${product} ${category}`,
       `comprar ${product}`,
       `${product} preço`,
-      `${product} barato`,
-      `melhor ${product}`,
       category && `${category} online`,
       ...featureWords,
     ].filter((item): item is string => Boolean(item)),
@@ -528,12 +507,12 @@ function buildSeo(features: string[], input: GeneratorInput, variant: number): {
   const category = clean(input.category);
   const price = parsePrice(input.price);
   const shorts = shortFeatures(features);
-  const highlight = shorts[0] ? upperFirst(shorts[0]) : category ? titleCase(category) : "Qualidade Garantida";
+  const highlight = shorts[0] ? upperFirst(shorts[0]) : category ? titleCase(category) : "Detalhes do Produto";
 
   const titleOptions = [
-    `${product} ${highlight} | Comprar Online`,
-    `${product}${category ? ` ${titleCase(category)}` : ""}${price.formatted ? ` por ${price.formatted}` : ""} | Envio Rápido`,
-    `Comprar ${product}${category ? ` de ${lowerFirst(category)}` : ""} | Melhor Preço`,
+    `${product} ${highlight} | Veja os Detalhes`,
+    `${product}${category ? ` ${titleCase(category)}` : ""}${price.formatted ? ` por ${price.formatted}` : ""} | Comprar Online`,
+    `${product}${shorts[0] ? ` ${upperFirst(shorts[0])}` : ""} | Informações do Produto`,
   ].map((option) => truncate(option, 60));
 
   // Monta a meta description por frases completas, sem cortar no meio.
@@ -551,20 +530,20 @@ function buildSeo(features: string[], input: GeneratorInput, variant: number): {
       `${product}${category ? ` de ${lowerFirst(category)}` : ""}${shorts[0] ? ` com ${lowerFirst(shorts[0])}` : ""}${
         shorts[1] ? ` e ${lowerFirst(shorts[1])}` : ""
       }.`,
-      price.formatted ? `A partir de ${price.formatted}.` : "",
-      "Compre agora com envio rápido e compra segura.",
+      price.formatted ? `Preço informado: ${price.formatted}.` : "",
+      "Confira as características antes de comprar.",
     ]),
     fit([
       `Procurando ${lowerFirst(product)}?`,
-      shorts[0] ? `${upperFirst(shorts[0])}, qualidade comprovada e entrega para todo o Brasil.` : "Qualidade comprovada e entrega para todo o Brasil.",
-      price.formatted ? `Por ${price.formatted}.` : "",
-      "Confira!",
+      shorts[0] ? `${upperFirst(shorts[0])}.` : "Veja os detalhes e diferenciais informados pelo vendedor.",
+      price.formatted ? `Preço informado: ${price.formatted}.` : "",
+      "Compare as informações.",
     ]),
     fit([
       `${product}:`,
       input.audience ? `ideal para ${lowerFirst(input.audience)}.` : "",
       shorts[0] ? `${upperFirst(shorts[0])}.` : "",
-      "Compre online com segurança e receba em casa.",
+      "Veja características, benefícios e informações do produto.",
     ]),
   ];
 

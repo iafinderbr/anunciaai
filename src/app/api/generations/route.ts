@@ -1,5 +1,6 @@
 import { desc, gte, sql } from "drizzle-orm";
 import { db } from "@/db";
+import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ function str(value: unknown, max: number): string {
 
 export async function GET() {
   try {
+    await ensureDatabaseSchema();
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
 
@@ -54,6 +56,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabaseSchema();
     const body: unknown = await request.json();
     const payload = (body ?? {}) as Record<string, unknown>;
 
@@ -85,7 +88,8 @@ export async function POST(request: Request) {
     const [totals] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
 
     return Response.json({ ok: true, id: row?.id ?? null, total: totals?.total ?? 0 });
-  } catch {
-    return Response.json({ ok: false }, { status: 200 });
+  } catch (error) {
+    console.error("[generations:post] Falha ao salvar geração", error);
+    return Response.json({ ok: false }, { status: 500 });
   }
 }
