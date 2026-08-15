@@ -18,7 +18,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Facebook Marketplace com IA | Grátis";
 const DESCRIPTION =
-  "Crie anúncios claros e naturais para o Facebook Marketplace com IA: título, descrição, benefícios e estado de conservação prontos em segundos. Grátis.";
+  "Crie uma primeira versão de anúncio para o Facebook Marketplace com IA: título, descrição, benefícios e estado de conservação para revisar. Grátis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -65,10 +65,10 @@ const structuredData = {
 };
 
 const highlights = [
-  "Título natural e direto",
+  "Título curto e identificável",
   "Estado de conservação destacado",
-  "Descrição pessoa para pessoa",
-  "CTA pelo Messenger",
+  "Descrição para classificado",
+  "Texto pronto para revisar",
   "100% grátis",
 ];
 
@@ -78,7 +78,6 @@ export default function FacebookMarketplacePage() {
       <SiteHeader />
 
       <main id="topo">
-        {/* HERO + FERRAMENTA */}
         <section aria-labelledby="marketplace-hero-titulo" className="relative overflow-hidden">
           <div
             aria-hidden="true"
@@ -89,61 +88,40 @@ export default function FacebookMarketplacePage() {
             <nav aria-label="Trilha de navegação" className="mx-auto max-w-3xl">
               <ol className="flex flex-wrap items-center gap-2 text-xs text-muted">
                 <li>
-                  <Link href="/" className="transition-colors hover:text-ink">
-                    Início
-                  </Link>
+                  <Link href="/" className="transition-colors hover:text-ink">Início</Link>
                 </li>
                 <li aria-hidden="true">/</li>
-                <li aria-current="page" className="font-medium text-ink-soft">
-                  Gerador para Facebook Marketplace
-                </li>
+                <li aria-current="page" className="font-medium text-ink-soft">Gerador para Facebook Marketplace</li>
               </ol>
             </nav>
 
             <div className="mx-auto mt-8 max-w-3xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-3 py-1.5 text-xs font-medium text-ink-soft shadow-card">
                 <span className="size-1.5 rounded-full bg-brand-500" />
-                Ferramenta gratuita para quem vende no Facebook Marketplace
+                Ferramenta gratuita para quem anuncia no Facebook Marketplace
               </p>
 
-              <h1
-                id="marketplace-hero-titulo"
-                className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]"
-              >
+              <h1 id="marketplace-hero-titulo" className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]">
                 Gerador de anúncios para Facebook Marketplace com IA
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Transforme as informações do seu produto em um anúncio claro e natural para o Marketplace — com título,
-                descrição, benefícios e estado de conservação, em segundos.
+                Transforme as informações do produto em uma primeira versão de classificado com título, descrição,
+                benefícios e condição para revisar antes de publicar.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <a
-                  href="#ferramenta"
-                  className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto"
-                >
+                <a href="#ferramenta" className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto">
                   Gerar meu anúncio grátis
                 </a>
-                <a
-                  href="#como-funciona"
-                  className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto"
-                >
+                <a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">
                   Ver como funciona
                 </a>
               </div>
 
               <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
-
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-2">
-                {highlights.map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft"
-                  >
-                    {item}
-                  </li>
-                ))}
+                {highlights.map((item) => <li key={item} className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft">{item}</li>)}
               </ul>
             </div>
           </div>
@@ -154,7 +132,7 @@ export default function FacebookMarketplacePage() {
                 lockedChannel="facebook-marketplace"
                 exampleInput={MARKETPLACE_EXAMPLE_INPUT}
                 title="Crie seu anúncio para o Facebook Marketplace"
-                subtitle="Preencha os campos abaixo. O texto sai no tom direto e natural de compra e venda entre pessoas."
+                subtitle="Preencha os campos abaixo e revise a primeira versão antes de publicar."
               />
             </div>
           </div>
@@ -167,62 +145,48 @@ export default function FacebookMarketplacePage() {
         <PricingSection />
         <MarketplaceFaq />
 
-        {/* CTA FINAL + LINKS INTERNOS */}
+        <section aria-labelledby="marketplace-guia" className="border-t border-line bg-white">
+          <div className="container-page py-12 sm:py-16">
+            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
+              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div className="max-w-2xl">
+                  <h2 id="marketplace-guia" className="text-xl font-semibold sm:text-2xl">Aprenda como criar um classificado no Facebook Marketplace</h2>
+                  <p className="mt-2 text-sm leading-7 text-ink-soft">Veja fotos, título, preço, categoria, condição, descrição, políticas e revisão com base na Central de Ajuda da Meta.</p>
+                </div>
+                <Link href="/como-criar-anuncio-no-facebook-marketplace" className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+                  Ler o guia do Marketplace
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section aria-labelledby="marketplace-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
-              <h2 id="marketplace-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Seu próximo anúncio no Marketplace pode estar pronto em 30 segundos
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Cole as informações do produto e receba um anúncio claro, com estado de conservação e pronto para
-                receber mensagens.
-              </p>
-              <a
-                href="#ferramenta"
-                className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
-              >
-                Gerar meu anúncio grátis
-              </a>
+              <h2 id="marketplace-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Gere uma primeira versão do seu próximo classificado</h2>
+              <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Cole as informações do produto, gere o texto e confira cada detalhe antes de publicar.</p>
+              <a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar meu anúncio grátis</a>
               <p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p>
             </div>
 
             <p className="mt-8 text-center text-sm text-muted">
               Vende em outros canais também?{" "}
-              <a
-                href="/gerador-de-anuncios-olx"
-                className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
-              >
-                Use o gerador para OLX
-              </a>
+              <Link href="/gerador-de-anuncios-olx" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Use o gerador para OLX</Link>
               {" · "}
-              <a
-                href="/gerador-de-anuncios-mercado-livre"
-                className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
-              >
-                Use o gerador para Mercado Livre
-              </a>
+              <Link href="/gerador-de-anuncios-mercado-livre" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Use o gerador para Mercado Livre</Link>
               {" · "}
-              <a
-                href="/gerador-de-descricao-de-produto"
-                className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
-              >
-                Crie a descrição do seu produto
-              </a>
+              <Link href="/gerador-de-descricao-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Crie a descrição do seu produto</Link>
               {" · "}
-              <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
-                Veja todos os geradores
-              </Link>
-              .
+              <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Veja todos os geradores</Link>.
             </p>
           </div>
         </section>
       </main>
 
       <SiteFooter />
-
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>
   );
 }
-
