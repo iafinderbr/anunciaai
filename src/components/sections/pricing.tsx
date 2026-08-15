@@ -232,6 +232,11 @@ export function SiteFooter() {
                 Como fazer descrição de produto
               </Link>
             </li>
+            <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">
+                Como criar título de produto
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

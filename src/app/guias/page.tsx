@@ -7,9 +7,9 @@ import { SITE_URL } from "@/lib/site";
 const PATH = "/guias";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
-const TITLE = "Guias para Criar Anúncios e Descrições de Produtos";
+const TITLE = "Guias para Criar Anúncios, Títulos e Descrições";
 const DESCRIPTION =
-  "Aprenda a criar anúncios e descrições de produtos com guias práticos, exemplos e modelos para lojas virtuais e marketplaces.";
+  "Aprenda a criar anúncios, títulos e descrições de produtos com guias práticos, exemplos e modelos para lojas e marketplaces.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   keywords: [
     "guias para vender online",
     "como criar anúncio de produto",
+    "como criar título de produto",
     "como fazer descrição de produto",
     "anúncio para marketplace",
     "conteúdo para e-commerce",
@@ -61,6 +62,17 @@ const guides = [
     topics: ["Modelo pronto", "4 exemplos", "Erros comuns"],
     toolHref: "/gerador-de-descricao-de-produto#ferramenta",
     toolLabel: "Gerador de descrição",
+  },
+  {
+    href: "/como-criar-titulo-de-produto",
+    eyebrow: "Título de produto",
+    title: "Como criar título de produto",
+    description:
+      "Fórmula em quatro partes, modelos por categoria, regras por canal e exemplos para deixar cada versão fácil de identificar.",
+    readingTime: "8 min de leitura",
+    topics: ["Fórmula pronta", "8 exemplos", "Checklist"],
+    toolHref: "/gerador-de-titulos-para-produtos#ferramenta",
+    toolLabel: "Gerador de títulos",
   },
 ];
 
@@ -147,7 +159,7 @@ export default function GuiasPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {guides.map((guide, index) => (
               <article key={guide.href} className="flex flex-col rounded-3xl border border-line bg-white p-6 shadow-card sm:p-8">
                 <div className="flex items-center justify-between gap-4">

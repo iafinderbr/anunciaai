@@ -165,6 +165,28 @@ export default function TitulosParaProdutosPage() {
         <TitlesFeatures />
         <TitlesMistakes />
         <TitlesChannels />
+        <section aria-labelledby="guia-titulos-titulo" className="border-y border-line bg-white">
+          <div className="container-page py-14 sm:py-20">
+            <div className="grid items-center gap-8 rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9 lg:grid-cols-[1fr_auto]">
+              <div className="max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guia completo</p>
+                <h2 id="guia-titulos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  Entenda a fórmula antes de publicar
+                </h2>
+                <p className="mt-3 text-[15px] leading-7 text-muted">
+                  Veja modelos por categoria, oito exemplos, regras por canal e um checklist para confirmar se o título
+                  identifica exatamente o produto anunciado.
+                </p>
+              </div>
+              <Link
+                href="/como-criar-titulo-de-produto"
+                className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              >
+                Ler o guia gratuito
+              </Link>
+            </div>
+          </div>
+        </section>
         <PricingSection />
         <TitlesFaq />
 
