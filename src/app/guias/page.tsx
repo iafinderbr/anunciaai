@@ -7,9 +7,9 @@ import { SITE_URL } from "@/lib/site";
 const PATH = "/guias";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
-const TITLE = "Guias para Criar Anúncios, Títulos e Descrições";
+const TITLE = "Guias para Anúncios, Títulos, Descrições e SEO";
 const DESCRIPTION =
-  "Aprenda a criar anúncios, títulos e descrições de produtos com guias práticos, exemplos e modelos para lojas e marketplaces.";
+  "Aprenda a criar anúncios, títulos, descrições e palavras-chave de produtos com guias, exemplos e modelos para lojas e marketplaces.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "como criar anúncio de produto",
     "como criar título de produto",
     "como fazer descrição de produto",
+    "como escolher palavras-chave para produtos",
     "anúncio para marketplace",
     "conteúdo para e-commerce",
   ],
@@ -73,6 +74,17 @@ const guides = [
     topics: ["Fórmula pronta", "8 exemplos", "Checklist"],
     toolHref: "/gerador-de-titulos-para-produtos#ferramenta",
     toolLabel: "Gerador de títulos",
+  },
+  {
+    href: "/como-escolher-palavras-chave-para-produtos",
+    eyebrow: "Palavras-chave",
+    title: "Como escolher palavras-chave para produtos",
+    description:
+      "Método em seis etapas para encontrar termos principais, atributos e cauda longa sem repetição artificial.",
+    readingTime: "9 min de leitura",
+    topics: ["Método prático", "5 categorias", "Checklist"],
+    toolHref: "/gerador-de-palavras-chave-para-produtos#ferramenta",
+    toolLabel: "Gerador de palavras-chave",
   },
 ];
 
@@ -159,7 +171,7 @@ export default function GuiasPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
             {guides.map((guide, index) => (
               <article key={guide.href} className="flex flex-col rounded-3xl border border-line bg-white p-6 shadow-card sm:p-8">
                 <div className="flex items-center justify-between gap-4">

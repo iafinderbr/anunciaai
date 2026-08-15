@@ -439,8 +439,9 @@ export default function ComoCriarTituloDeProdutoPage() {
             <div className="container-page py-14 sm:py-20">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Próximos passos</p>
               <h2 id="continue-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">Complete a página do produto</h2>
-              <div className="mt-8 grid gap-4 md:grid-cols-3">
+              <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
+                  { href: "/como-escolher-palavras-chave-para-produtos", eyebrow: "Palavras-chave", title: "Escolha os termos certos", text: "Separe a palavra principal, atributos e buscas de cauda longa." },
                   { href: "/como-fazer-descricao-de-produto", eyebrow: "Descrição", title: "Escreva o texto completo", text: "Use uma estrutura em seis partes, modelo editável e exemplos." },
                   { href: "/como-criar-anuncio-no-mercado-livre", eyebrow: "Marketplace", title: "Monte o anúncio inteiro", text: "Organize categoria, fotos, ficha técnica, descrição e revisão." },
                   { href: "/guias", eyebrow: "Biblioteca", title: "Ver todos os guias", text: "Continue aprendendo com os conteúdos gratuitos do AnunciaAI." },

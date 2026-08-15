@@ -158,6 +158,28 @@ export default function PalavrasChaveParaProdutosPage() {
         <KeywordsFeatures />
         <KeywordsPlacement />
         <KeywordsMistakes />
+        <section aria-labelledby="guia-palavras-chave-titulo" className="border-y border-line bg-white">
+          <div className="container-page py-14 sm:py-20">
+            <div className="grid items-center gap-8 rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9 lg:grid-cols-[1fr_auto]">
+              <div className="max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guia completo</p>
+                <h2 id="guia-palavras-chave-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  Aprenda a filtrar as sugestões antes de usar
+                </h2>
+                <p className="mt-3 text-[15px] leading-7 text-muted">
+                  Veja como escolher uma palavra principal, separar atributos e cauda longa, entender intenção de busca
+                  e distribuir os termos sem repetição artificial.
+                </p>
+              </div>
+              <Link
+                href="/como-escolher-palavras-chave-para-produtos"
+                className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              >
+                Ler o guia gratuito
+              </Link>
+            </div>
+          </div>
+        </section>
         <PricingSection />
         <KeywordsFaq />
 
