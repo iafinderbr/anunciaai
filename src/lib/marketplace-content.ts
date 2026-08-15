@@ -28,54 +28,54 @@ export const MARKETPLACE_STEPS: { title: string; text: string }[] = [
     text: "Em segundos você recebe título natural, descrição direta, benefícios e estado de conservação.",
   },
   {
-    title: "Copie e publique",
-    text: "Copie cada bloco com um clique e cole no anúncio do Marketplace, junto com as fotos.",
+    title: "Copie, revise e publique",
+    text: "Confira as informações, copie os blocos e cole no classificado do Marketplace junto com as fotos do item.",
   },
 ];
 
 export const MARKETPLACE_STRUCTURE: { title: string; text: string }[] = [
   {
     title: "Título natural",
-    text: "O que é e o estado de conservação, sem CAPS LOCK, sem emoji e sem promessa vazia.",
+    text: "Identifique o produto e acrescente marca, modelo ou condição quando isso ajudar a diferenciar o item.",
   },
   {
     title: "Descrição direta",
-    text: "Texto em primeira pessoa, fácil de ler no celular e honesto sobre o que está vendendo.",
+    text: "Explique o que está vendendo, a condição, os detalhes importantes e tudo o que realmente acompanha o item.",
   },
   {
     title: "Estado de conservação",
-    text: "Novo, seminovo ou usado: dizer logo de cara filtra os interessados certos e evita desistência.",
+    text: "Quando o campo estiver disponível, escolha a condição que representa de verdade o produto e mantenha fotos e descrição coerentes.",
   },
   {
     title: "Detalhes que ajudam a decidir",
-    text: "Marca, medidas, acessórios e o que mais o comprador pergunta antes de fechar.",
+    text: "Marca, medidas, acessórios, compatibilidade e defeitos relevantes ajudam o comprador a avaliar o produto.",
   },
   {
-    title: "Preço honesto",
-    text: "Um valor coerente com o estado, que convida à negociação pelo Messenger.",
+    title: "Preço correto",
+    text: "Informe o valor real do item e não invente desconto, entrega ou condição de pagamento.",
   },
 ];
 
 export const MARKETPLACE_FEATURES: { title: string; text: string }[] = [
   {
-    title: "Título natural e sem enrolação",
-    text: "Produto + estado de conservação, sem letras maiúsculas em excesso e sem emojis.",
+    title: "Título curto e identificável",
+    text: "O AnunciaAI usa um tamanho conservador para facilitar a leitura. Isso é uma escolha da ferramenta, não um limite oficial publicado pela Meta.",
   },
   {
-    title: "Descrição pessoa para pessoa",
-    text: "Texto em primeira pessoa, direto e fácil de ler, como quem realmente está vendendo.",
+    title: "Descrição para classificado",
+    text: "Texto direto com características, condição e informações que o comprador precisa conferir antes do contato.",
   },
   {
     title: "Estado de conservação detectado",
-    text: "A IA identifica sinais de novo, seminovo ou usado nas características e destaca no anúncio.",
+    text: "A IA identifica sinais de novo, seminovo ou usado apenas quando essas informações aparecem nos dados fornecidos.",
   },
   {
-    title: "Benefícios em vez de só especificações",
-    text: "As características viram vantagens que o comprador entende na hora.",
+    title: "Benefícios a partir de dados reais",
+    text: "A ferramenta transforma características informadas em vantagens claras, sem acrescentar especificações que você não forneceu.",
   },
   {
-    title: "CTA pelo Messenger",
-    text: "Fechamento que convida à conversa pelo chat do Marketplace — sem “link na bio”.",
+    title: "Texto pronto para revisar",
+    text: "Receba uma primeira versão para ajustar antes de preencher os campos do Marketplace e publicar.",
   },
   {
     title: "Tom de texto ajustável",
@@ -85,20 +85,20 @@ export const MARKETPLACE_FEATURES: { title: string; text: string }[] = [
 
 export const MARKETPLACE_MISTAKES: { wrong: string; right: string }[] = [
   {
-    wrong: "Título com CAPS LOCK e emoji: “BICICLETA TOP!! 🔥”",
-    right: "Bicicleta Aro 29 21 Marchas (Seminovo) Quadro de Alumínio",
+    wrong: "Título genérico: “BICICLETA TOP!! 🔥”",
+    right: "Bicicleta Aro 29 21 Marchas Quadro de Alumínio Seminova",
   },
   {
     wrong: "Descrição de uma frase: “Boa, interessados chamar”",
-    right: "Estado, detalhes, benefícios e preço explicados com clareza",
+    right: "Condição, detalhes, itens incluídos e observações explicados com clareza",
   },
   {
     wrong: "Ocultar defeitos ou o estado real do produto",
-    right: "Transparência: o comprador confirma o que viu e fecha mais rápido",
+    right: "Descrever sinais de uso e problemas relevantes e mostrar o item nas fotos",
   },
   {
-    wrong: "Preço acima do mercado, sem margem para negociar",
-    right: "Valor coerente com o estado, aberto a conversa no Messenger",
+    wrong: "Inventar desconto, entrega ou garantia",
+    right: "Usar somente preço, condições e características que possam ser confirmadas",
   },
 ];
 
@@ -110,13 +110,13 @@ export interface MarketplaceExample {
 export const MARKETPLACE_EXAMPLE: MarketplaceExample = {
   bad: "Bicicleta aro 29. Muito boa. Interessados chamar.",
   good:
-    "Estou vendendo minha bicicleta aro 29, seminova, com poucos riscos e revisada recentemente.\n\n" +
-    "• Quadro de alumínio, leve para subir e descer\n" +
-    "• Freios a disco, mais segurança na descida\n" +
-    "• Suspensão dianteira, conforto em trilhas leves\n\n" +
-    "Estado de conservação: seminovo.\n" +
-    "Valor: R$ 850 (negociável).\n\n" +
-    "Se interessar, chame no Messenger — respondo rápido.",
+    "Estou vendendo uma bicicleta aro 29, seminova, com poucos riscos e revisada recentemente.\n\n" +
+    "• Quadro de alumínio\n" +
+    "• Freios a disco\n" +
+    "• Suspensão dianteira\n\n" +
+    "Estado de conservação: seminova, com poucos riscos.\n" +
+    "Valor informado: R$ 850.\n\n" +
+    "Confira as fotos e use os recursos de contato do Marketplace para tirar dúvidas.",
 };
 
 export interface FaqItem {
@@ -128,32 +128,32 @@ export const MARKETPLACE_FAQ: FaqItem[] = [
   {
     question: "Como criar um anúncio para o Facebook Marketplace com IA?",
     answer:
-      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar anúncio”. Em segundos a IA devolve título, descrição, benefícios e estado de conservação prontos para colar no anúncio.",
+      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página. A IA devolve uma primeira versão com título, descrição, benefícios e características para você revisar antes de publicar.",
   },
   {
-    question: "Qual o tamanho ideal do título de um anúncio no Marketplace?",
+    question: "Qual o limite do título de um anúncio no Marketplace?",
     answer:
-      "Curto e natural, em torno de 65 caracteres. Diga o que é, o estado de conservação e o principal diferencial. Evite CAPS LOCK, emojis e palavras de vitrine, que não combinam com compra e venda entre pessoas.",
+      "Nas instruções oficiais atuais da Meta consultadas para criação de classificados, não há um limite fixo de caracteres publicado. O AnunciaAI usa um tamanho conservador para manter o título fácil de ler, mas esse número não deve ser entendido como regra oficial da Meta.",
   },
   {
     question: "O que devo colocar na descrição?",
     answer:
-      "Estado de conservação, características e diferenciais, marca, medidas e itens inclusos — o que o comprador pergunta primeiro. A ferramenta organiza esses blocos em um texto direto, em primeira pessoa.",
+      "Informe condição, características, marca, medidas, itens incluídos e defeitos relevantes. O objetivo é complementar as fotos e os campos do classificado com informações que você consegue confirmar.",
   },
   {
     question: "Preciso informar o estado de conservação do produto?",
     answer:
-      "Recomendamos, sim, mas não é obrigatório. Se você mencionar termos como “novo”, “seminovo” ou “pouco uso” nas características, a ferramenta identifica e destaca o estado no título e na descrição. Anúncios com estado claro recebem mais mensagens.",
+      "Quando o campo de condição estiver disponível, escolha a opção que melhor descreve o item. A Meta diferencia estados como novo, usado em diferentes condições e recondicionado, e recomenda clareza sobre problemas e defeitos, especialmente em eletrônicos.",
   },
   {
     question: "O gerador para Facebook Marketplace é gratuito?",
     answer:
-      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e publicar quantos anúncios quiser durante o período de testes.",
+      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito durante o período de testes.",
   },
   {
     question: "A ferramenta serve para outros canais também?",
     answer:
-      "Sim. Esta página é otimizada para o Facebook Marketplace, mas o AnunciaAI também gera anúncios para OLX, Mercado Livre, Shopee, loja virtual e legendas para Instagram, cada um com o formato da plataforma.",
+      "Sim. Esta página é adaptada ao Facebook Marketplace, mas o AnunciaAI também gera anúncios para OLX, Mercado Livre, Shopee, loja virtual e outros canais.",
   },
 ];
 
