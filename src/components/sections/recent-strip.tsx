@@ -1,5 +1,6 @@
 import { desc } from "drizzle-orm";
 import { db } from "@/db";
+import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
 import { CHANNEL_LABEL } from "@/lib/generator-data";
 import type { Channel } from "@/lib/types";
@@ -19,6 +20,7 @@ export async function RecentStrip() {
   let rows: { id: number; productName: string; channel: string; createdAt: Date }[] = [];
 
   try {
+    await ensureDatabaseSchema();
     rows = await db
       .select({
         id: generations.id,

@@ -37,55 +37,55 @@ export const TONE_LABEL: Record<Tone, string> = {
 /** Adjetivos de abertura por tom, com variações para o botão "Gerar novamente". */
 export const TONE_OPENERS: Record<Tone, string[]> = {
   profissional: [
-    "Desenvolvido para entregar desempenho consistente no dia a dia",
-    "Projetado com atenção aos detalhes que realmente importam",
-    "Uma escolha segura para quem busca qualidade comprovada",
+    "Informações objetivas para ajudar na sua escolha",
+    "Uma apresentação clara dos detalhes que realmente importam",
+    "Características organizadas para facilitar a comparação",
   ],
   persuasivo: [
-    "Você procurava algo que resolvesse de vez esse problema",
-    "Chega de perder tempo com opções que não entregam o que prometem",
-    "Se você quer resultado de verdade, esse é o produto certo",
+    "Conheça os diferenciais informados para este produto",
+    "Veja os pontos que podem fazer diferença na sua escolha",
+    "Confira as características e encontre a opção certa para você",
   ],
   simples: [
-    "Prático, direto e feito para o uso do dia a dia",
-    "Fácil de usar e pronto para o que você precisa",
-    "Tudo o que você precisa, sem complicação",
+    "Informações diretas e fáceis de entender",
+    "Os principais detalhes apresentados sem complicação",
+    "Uma forma simples de conhecer melhor o produto",
   ],
   premium: [
-    "Um produto pensado para quem não abre mão de acabamento e sofisticação",
-    "Design refinado e materiais selecionados em cada detalhe",
-    "Exclusividade e cuidado artesanal em um só produto",
+    "Uma apresentação refinada das características informadas",
+    "Detalhes organizados com uma linguagem mais sofisticada",
+    "Uma proposta de comunicação cuidadosa e elegante",
   ],
 };
 
 export const TONE_CTA: Record<Tone, string[]> = {
   profissional: [
-    "Adicione ao carrinho e receba com segurança.",
-    "Finalize a compra e conte com nosso suporte pós-venda.",
-    "Garanta o seu com envio rápido e nota fiscal.",
+    "Confira todos os detalhes antes de finalizar a compra.",
+    "Veja as opções disponíveis e escolha a mais adequada para você.",
+    "Consulte as condições do vendedor e finalize quando estiver pronto.",
   ],
   persuasivo: [
-    "Clique em COMPRAR agora e garanta o seu antes que acabe!",
-    "Últimas unidades disponíveis — peça já o seu!",
-    "Aproveite: adicione ao carrinho e receba em casa rapidinho!",
+    "Gostou das características? Veja os detalhes e escolha a sua opção.",
+    "Compare as informações e decida se este produto combina com você.",
+    "Confira as opções disponíveis e avance para a compra quando quiser.",
   ],
   simples: [
-    "Peça o seu agora.",
-    "Compre agora e receba em casa.",
-    "É só clicar em comprar.",
+    "Confira os detalhes.",
+    "Veja as opções disponíveis.",
+    "Escolha a opção que combina com você.",
   ],
   premium: [
-    "Reserve o seu exemplar e viva essa experiência.",
-    "Garanta o seu e sinta a diferença de um produto superior.",
-    "Adicione ao carrinho e eleve o seu padrão.",
+    "Conheça todos os detalhes antes de fazer sua escolha.",
+    "Compare as características e escolha com tranquilidade.",
+    "Veja as opções apresentadas pelo vendedor.",
   ],
 };
 
 export const TONE_MODIFIERS: Record<Tone, string[]> = {
-  profissional: ["de alta qualidade", "com excelente custo-benefício", "de performance confiável"],
-  persuasivo: ["que você vai amar", "com tudo o que você precisa", "que faz a diferença"],
-  simples: ["prático", "fácil de usar", "do dia a dia"],
-  premium: ["exclusivo", "de acabamento superior", "de linha premium"],
+  profissional: ["com características objetivas", "com proposta bem definida", "apresentado de forma clara"],
+  persuasivo: ["com diferenciais fáceis de entender", "com detalhes que ajudam na escolha", "apresentado para facilitar a comparação"],
+  simples: ["com informações diretas", "apresentado sem complicação", "com os principais detalhes"],
+  premium: ["apresentado com linguagem sofisticada", "com uma comunicação mais refinada", "descrito com atenção aos detalhes"],
 };
 
 /**
@@ -105,61 +105,24 @@ export const BENEFIT_RULES: { match: RegExp; benefit: string; specLabel?: string
   { match: /algodão|couro|silicone|inox|alumínio|madeira|poliést|tecido|material/i, benefit: "Material selecionado, com toque agradável e acabamento caprichado", specLabel: "Material" },
   { match: /ajustáv|regul|elástic/i, benefit: "Ajuste personalizado para encaixar perfeitamente em você", specLabel: "Ajuste" },
   { match: /laváv|máquina de lavar|fácil de limpar|limpeza/i, benefit: "Limpeza simples: cuidar dele leva menos de um minuto" },
-  { match: /garantia/i, benefit: "Compra protegida por garantia — risco zero para você", specLabel: "Garantia" },
+  { match: /garantia/i, benefit: "Garantia informada pelo vendedor", specLabel: "Garantia" },
   { match: /cor(es)?\b|preto|branco|azul|vermelh|rosa|verde|bege/i, benefit: "Opções de cor para combinar com o seu estilo", specLabel: "Cores disponíveis" },
-  { match: /tamanho|numeraç|\d{2}\s?ao\s?\d{2}|\b(PP|GG|XG)\b/i, benefit: "Grade de tamanhos completa para encontrar o seu", specLabel: "Tamanhos" },
-  { match: /\d+\s?(ml|mililitros)\b/i, benefit: "Rende bastante: o conteúdo dura semanas de uso", specLabel: "Volume" },
+  { match: /tamanho|numeraç|\d{2}\s?ao\s?\d{2}|\b(PP|GG|XG)\b/i, benefit: "Tamanhos informados para facilitar a escolha", specLabel: "Tamanhos" },
+  { match: /\d+\s?(ml|mililitros)\b/i, benefit: "Volume informado com clareza", specLabel: "Volume" },
   { match: /\d+\s?(cm|mm|metros?|polegadas)\b/i, benefit: "Dimensões pensadas para caber direitinho no seu espaço", specLabel: "Dimensões" },
-  { match: /\d+\s?(kg|gramas)\b/i, benefit: "Peso equilibrado, fácil de transportar e guardar", specLabel: "Peso" },
-  { match: /110v|220v|bivolt|volts?|watts?|\d+\s?w\b/i, benefit: "Compatível com a sua tomada, sem precisar de adaptador", specLabel: "Voltagem" },
+  { match: /\d+\s?(kg|gramas)\b/i, benefit: "Peso informado para ajudar no planejamento do uso", specLabel: "Peso" },
+  { match: /110v|220v|bivolt|volts?|watts?|\d+\s?w\b/i, benefit: "Voltagem informada para conferir a compatibilidade", specLabel: "Voltagem" },
   { match: /portát|dobráv|compact|cabe na bolsa/i, benefit: "Formato compacto que vai com você para qualquer lugar" },
   { match: /antialérg|hipoalerg|respiráv|ventilaç/i, benefit: "Respirabilidade que evita abafamento e irritações" },
   { match: /rápid|velocidade|potente|potência/i, benefit: "Desempenho rápido: faz mais em menos tempo" },
-  { match: /kit|conjunto|unidades|peças/i, benefit: "Kit completo: você já recebe tudo pronto para usar", specLabel: "Itens inclusos" },
-  { match: /original|autêntic|licenciad|nota fiscal/i, benefit: "Produto original com nota fiscal e procedência garantida" },
-  { match: /marca|fabricante|modelo/i, benefit: "Modelo reconhecido por quem entende do assunto", specLabel: "Modelo" },
-  { match: /envio|frete|entrega/i, benefit: "Envio rápido e embalagem reforçada para chegar perfeito", specLabel: "Envio" },
+  { match: /kit|conjunto|unidades|peças/i, benefit: "Itens do conjunto destacados pelo vendedor", specLabel: "Itens inclusos" },
+  { match: /original|autêntic|licenciad/i, benefit: "Procedência destacada nas informações do produto" },
+  { match: /nota fiscal/i, benefit: "Nota fiscal informada pelo vendedor" },
+  { match: /marca|fabricante|modelo/i, benefit: "Marca ou modelo informado para facilitar a identificação", specLabel: "Modelo" },
+  { match: /envio|frete|entrega/i, benefit: "Condição de envio informada pelo vendedor", specLabel: "Envio" },
   { match: /segur|proteç|trava/i, benefit: "Mais segurança no uso diário, para você e para a família" },
   { match: /moderno|design|elegan|estilo|minimalist/i, benefit: "Design moderno que valoriza qualquer ambiente ou look" },
 ];
-
-export const GENERIC_BENEFITS: Record<Tone, string[]> = {
-  profissional: [
-    "Qualidade verificada item a item antes do envio",
-    "Excelente custo-benefício comparado a modelos similares",
-    "Acabamento uniforme e materiais testados",
-    "Fácil de usar, sem curva de aprendizado",
-    "Suporte pós-venda com atendimento humano",
-  ],
-  persuasivo: [
-    "Resolve na prática o problema que te incomoda todo dia",
-    "Aprovado por quem já comprou e voltou para comprar de novo",
-    "Você economiza tempo e dinheiro em uma única compra",
-    "Chega rápido e já vem pronto para usar",
-    "Se não gostar, você tem prazo para trocar sem dor de cabeça",
-  ],
-  simples: [
-    "Simples de usar no dia a dia",
-    "Chega pronto para uso, sem montagem complicada",
-    "Fácil de guardar e transportar",
-    "Boa durabilidade para o preço",
-    "Ideal para uso diário",
-  ],
-  premium: [
-    "Acabamento premium em cada detalhe",
-    "Materiais selecionados que envelhecem bem",
-    "Peça atemporal, longe do descartável",
-    "Experiência de uso superior desde a embalagem",
-    "Curadoria exclusiva, poucas unidades por lote",
-  ],
-};
-
-export const OBJECTIONS: Record<Tone, string[]> = {
-  profissional: ["Nota fiscal em todas as compras", "Garantia contra defeitos de fabricação", "Envio com código de rastreio"],
-  persuasivo: ["Compra 100% segura", "Troca facilitada em até 7 dias", "Estoque limitado"],
-  simples: ["Envio rápido", "Compra segura", "Suporte por mensagem"],
-  premium: ["Embalagem premium para presente", "Atendimento consultivo", "Garantia estendida disponível"],
-};
 
 /**
  * Chamadas para ação no estilo classificado, usadas apenas no canal OLX.
@@ -169,7 +132,7 @@ export const OBJECTIONS: Record<Tone, string[]> = {
 export const OLX_CTAS = [
   "Interessado? Chame no chat da OLX e combine retirada ou entrega.",
   "Quer ver de perto? Chama no chat e combina um horário.",
-  "Valor à vista tem desconto. Chame no chat para negociar.",
+  "Chame no chat para negociar e combinar os próximos passos.",
 ];
 
 /**
@@ -178,7 +141,7 @@ export const OLX_CTAS = [
  * o fechamento é conversa pelo Messenger.
  */
 export const MARKETPLACE_CTAS = [
-  "Se interessar, chame no Messenger — respondo rápido.",
+  "Se interessar, chame no Messenger para conversar.",
   "Tem alguma dúvida? Mande mensagem aqui pelo Marketplace.",
   "Gostou? Chama no chat para mais detalhes.",
 ];

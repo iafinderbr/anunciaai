@@ -19,7 +19,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Legendas para Instagram com IA | Grátis";
 const DESCRIPTION =
-  "Crie legendas para Instagram prontas para divulgar e vender seus produtos. Informe as características e receba gancho, benefícios, chamada para ação e hashtags. Grátis.";
+  "Crie legendas para Instagram com gancho, benefícios, chamada para ação e hashtags. Informe seu produto e receba o texto pronto para publicar. Grátis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -227,4 +227,3 @@ export default function LegendasParaInstagramPage() {
     </>
   );
 }
-

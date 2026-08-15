@@ -66,7 +66,7 @@ export function GeneratorTool({
 
   const persist = useCallback(async (data: GeneratorInput, generated: GeneratedAd) => {
     try {
-      await fetch("/api/generations", {
+      const response = await fetch("/api/generations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -80,7 +80,10 @@ export function GeneratorTool({
           featureCount: parseFeatures(data.features).length,
         }),
       });
-      window.dispatchEvent(new Event(GENERATION_EVENT));
+      const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+      if (response.ok && payload?.ok) {
+        window.dispatchEvent(new Event(GENERATION_EVENT));
+      }
     } catch {
       // o resultado já está na tela: falha de rede não quebra a experiência
     }

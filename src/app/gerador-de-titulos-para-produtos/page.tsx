@@ -19,7 +19,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Títulos para Produtos com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos de produtos que vendem, no limite de cada canal e com as palavras que o comprador busca. Informe as características e receba o título pronto em segundos. Grátis.";
+  "Crie títulos de produtos com palavras-chave e o limite certo de cada canal. Informe as características e receba opções prontas em segundos. Grátis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -218,4 +218,3 @@ export default function TitulosParaProdutosPage() {
     </>
   );
 }
-

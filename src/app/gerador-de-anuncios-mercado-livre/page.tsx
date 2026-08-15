@@ -12,7 +12,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Mercado Livre com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos de até 60 caracteres, descrições, ficha técnica e palavras-chave para seus anúncios do Mercado Livre com inteligência artificial. Grátis e sem cadastro.";
+  "Crie títulos, descrições, ficha técnica e palavras-chave para anúncios do Mercado Livre com IA. Grátis, sem cadastro e com limite de 60 caracteres.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

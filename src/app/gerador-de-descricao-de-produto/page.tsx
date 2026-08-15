@@ -19,7 +19,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Descrição de Produto com IA | Grátis";
 const DESCRIPTION =
-  "Crie descrições de produto persuasivas e otimizadas para SEO em segundos. Informe as características e receba o texto pronto para loja virtual e marketplace. Grátis.";
+  "Crie descrições de produtos persuasivas e otimizadas para SEO. Informe as características e receba textos prontos para lojas e marketplaces. Grátis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -213,4 +213,3 @@ export default function DescricaoDeProdutoPage() {
     </>
   );
 }
-
