@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { toolLinks } from "@/components/sections/tools";
+
 interface Plan {
   name: string;
   price: string;
@@ -185,7 +188,7 @@ export function FaqSection() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-white">
-      <div className="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+      <div className="container-page grid gap-10 py-12 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
         <div>
           <p className="text-[17px] font-semibold tracking-tight">
             Anuncia<span className="text-brand-600">AI</span>
@@ -193,21 +196,25 @@ export function SiteFooter() {
           <p className="mt-1 max-w-sm text-sm text-muted">
             Ferramenta de inteligência artificial para lojistas criarem anúncios de produtos em segundos.
           </p>
+          <Link
+            href="/#ferramenta"
+            className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+          >
+            Criar anúncio grátis
+          </Link>
         </div>
 
-        <nav aria-label="Rodapé" className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <a className="hover:text-ink" href="#ferramenta">
-            Ferramenta
-          </a>
-          <a className="hover:text-ink" href="#como-funciona">
-            Como funciona
-          </a>
-          <a className="hover:text-ink" href="#recursos">
-            Recursos
-          </a>
-          <a className="hover:text-ink" href="#precos">
-            Preços
-          </a>
+        <nav aria-label="Ferramentas do AnunciaAI">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Ferramentas gratuitas</p>
+          <ul className="mt-4 grid gap-x-8 gap-y-2.5 text-sm text-muted sm:grid-cols-2">
+            {toolLinks.map((tool) => (
+              <li key={tool.href}>
+                <Link className="transition-colors hover:text-brand-600" href={tool.href}>
+                  {tool.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
       </div>
       <div className="border-t border-line">
