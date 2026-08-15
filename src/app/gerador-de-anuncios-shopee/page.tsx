@@ -18,7 +18,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Shopee com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos de até 100 caracteres, descrições, benefícios e palavras-chave para seus anúncios da Shopee com inteligência artificial. Grátis e sem cadastro.";
+  "Crie títulos de até 120 caracteres, descrições, benefícios e palavras-chave para seus anúncios da Shopee com inteligência artificial. Grátis e sem cadastro.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -65,7 +65,7 @@ const structuredData = {
 };
 
 const highlights = [
-  "Título com até 100 caracteres",
+  "Título com até 120 caracteres",
   "Descrição dentro das regras da Shopee",
   "Palavras-chave de busca",
   "Ficha técnica pronta",
