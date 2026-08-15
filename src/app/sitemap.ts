@@ -81,6 +81,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: "https://anunciaai.vercel.app/como-criar-anuncio-na-olx",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: "https://anunciaai.vercel.app/guias",
       lastModified: new Date(),
       changeFrequency: "monthly",
