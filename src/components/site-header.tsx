@@ -1,21 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const links = [
   { href: "/#ferramentas", label: "Ferramentas" },
-  { href: "#como-funciona", label: "Como funciona" },
-  { href: "#recursos", label: "Recursos" },
-  { href: "#precos", label: "Preços" },
+  { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#recursos", label: "Recursos" },
+  { href: "/como-criar-anuncio-no-mercado-livre", label: "Guias" },
+  { href: "/#precos", label: "Preços" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-canvas/85 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <a href="#topo" className="flex items-center gap-2" aria-label="AnunciaAI, página inicial">
+        <Link href="/" className="flex items-center gap-2" aria-label="AnunciaAI, página inicial">
           <span className="grid size-8 place-items-center rounded-lg bg-ink text-sm font-bold text-white">
             A
             <span className="sr-only">AnunciaAI</span>
@@ -23,7 +25,7 @@ export function SiteHeader() {
           <span className="text-[17px] font-semibold tracking-tight">
             Anuncia<span className="text-brand-600">AI</span>
           </span>
-        </a>
+        </Link>
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
           {links.map((link) => (
@@ -39,7 +41,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <a
-            href="#ferramenta"
+            href={ctaHref}
             className="hidden rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 sm:inline-flex"
           >
             Começar grátis
@@ -77,7 +79,7 @@ export function SiteHeader() {
               </a>
             ))}
             <a
-              href="#ferramenta"
+              href={ctaHref}
               onClick={() => setOpen(false)}
               className="my-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
             >

@@ -215,6 +215,14 @@ export function SiteFooter() {
               </li>
             ))}
           </ul>
+          <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Guias práticos</p>
+          <ul className="mt-4 text-sm text-muted">
+            <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">
+                Como criar anúncio no Mercado Livre
+              </Link>
+            </li>
+          </ul>
         </nav>
       </div>
       <div className="border-t border-line">
