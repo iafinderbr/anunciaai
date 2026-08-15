@@ -233,6 +233,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">
+                Como criar anúncio na OLX
+              </Link>
+            </li>
+            <li>
               <Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">
                 Como fazer descrição de produto
               </Link>
