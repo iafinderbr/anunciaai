@@ -14,7 +14,7 @@ interface Plan {
 }
 
 const plans: Plan[] = [
-  { name: "Grátis", price: "R$ 0", period: "/mês", summary: "Para testar e cadastrar os primeiros produtos.", features: ["3 gerações por dia", "Títulos", "Descrições", "Benefícios"], cta: "Começar grátis", href: "#ferramenta" },
+  { name: "Grátis", price: "R$ 0", period: "/mês", summary: "Para testar e cadastrar os primeiros produtos.", features: ["Gerações ilimitadas durante os testes", "Títulos", "Descrições", "Benefícios"], cta: "Começar grátis", href: "#ferramenta" },
   { name: "Pro", price: "R$ 19,90", period: "/mês", summary: "Para quem cadastra produtos toda semana.", features: ["Gerações ilimitadas", "Geração em lote", "Histórico", "SEO", "Anúncios para múltiplos canais"], cta: "Em breve", highlighted: true, soon: true },
   { name: "Lojista", price: "R$ 49,90", period: "/mês", summary: "Para catálogos grandes e operações em escala.", features: ["Tudo do Pro", "Geração em massa", "Exportação", "Recursos para grandes catálogos"], cta: "Em breve", soon: true },
 ];
