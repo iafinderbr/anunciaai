@@ -57,7 +57,7 @@ const faqs = [
   { question: "Preciso pagar para usar?", answer: "Não. A geração de anúncios desta versão é gratuita e ilimitada durante o período de testes. Não pedimos cartão de crédito." },
   { question: "O conteúdo serve para Mercado Livre e Shopee?", answer: "Sim. Você escolhe o canal antes de gerar e o texto é adaptado à estrutura e aos limites indicados para cada plataforma." },
   { question: "Posso editar o texto depois?", answer: "Com certeza. Copie o bloco que quiser, ajuste detalhes específicos do seu estoque e publique. Você também pode clicar em “Gerar novamente” para receber outra versão." },
-  { question: "Meus dados de produto ficam salvos?", answer: "Guardamos apenas um registro simples da geração (nome do produto, categoria e canal) para exibir o contador público. Nada é compartilhado com terceiros." },
+  { question: "Meus dados de produto ficam salvos?", answer: "O conteúdo digitado no formulário não é necessário para o contador público. Mantemos apenas um registro técnico mínimo da geração, como o canal utilizado e o horário. Métricas de navegação do site também podem ser coletadas pelo Web Analytics da Vercel." },
 ];
 
 export function FaqSection() {

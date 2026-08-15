@@ -17,14 +17,13 @@ function timeAgo(date: Date): string {
 }
 
 export async function RecentStrip() {
-  let rows: { id: number; productName: string; channel: string; createdAt: Date }[] = [];
+  let rows: { id: number; channel: string; createdAt: Date }[] = [];
 
   try {
     await ensureDatabaseSchema();
     rows = await db
       .select({
         id: generations.id,
-        productName: generations.productName,
         channel: generations.channel,
         createdAt: generations.createdAt,
       })
@@ -50,7 +49,7 @@ export async function RecentStrip() {
               className="flex items-center gap-2 rounded-full border border-line bg-canvas px-3 py-1.5 text-xs text-ink-soft"
             >
               <span className="size-1.5 shrink-0 rounded-full bg-brand-500" />
-              <span className="font-medium text-ink">{row.productName}</span>
+              <span className="font-medium text-ink">Anúncio gerado</span>
               <span className="text-muted">
                 {CHANNEL_LABEL[row.channel as Channel] ?? "Outros canais"} · {timeAgo(new Date(row.createdAt))}
               </span>
