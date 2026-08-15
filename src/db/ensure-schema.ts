@@ -23,12 +23,32 @@ async function createSchema() {
     create index if not exists generations_created_at_idx
       on generations (created_at)
   `);
+
+  await db.execute(sql`
+    update generations
+    set
+      product_name = 'Produto',
+      category = 'Não armazenada',
+      audience = null,
+      price = null,
+      tone = 'profissional',
+      title_preview = null,
+      feature_count = 0
+    where
+      product_name <> 'Produto'
+      or category <> 'Não armazenada'
+      or audience is not null
+      or price is not null
+      or tone <> 'profissional'
+      or title_preview is not null
+      or feature_count <> 0
+  `);
 }
 
 /**
  * Garante a estrutura mínima usada pelo contador público. O banco conectado
- * pode começar vazio em uma nova implantação; a criação é idempotente e roda
- * uma única vez por instância do servidor.
+ * pode começar vazio em uma nova implantação; a criação e a anonimização são
+ * idempotentes e rodam uma única vez por instância do servidor.
  */
 export function ensureDatabaseSchema(): Promise<void> {
   if (!schemaPromise) {
