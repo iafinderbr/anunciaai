@@ -12,7 +12,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para OLX com IA | Grátis";
 const DESCRIPTION =
-  "Crie anúncios claros e honestos para a OLX com inteligência artificial: título, descrição, estado de conservação e benefícios prontos em segundos. Grátis.";
+  "Crie anúncios claros para a OLX com inteligência artificial: título, descrição, estado de conservação e benefícios prontos para revisar em segundos. Grátis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -59,10 +59,10 @@ const structuredData = {
 };
 
 const highlights = [
-  "Título curto e claro",
+  "Título de até 90 caracteres",
   "Estado de conservação destacado",
   "Descrição estilo classificado",
-  "CTA de negociação",
+  "Texto pronto para revisar",
   "100% grátis",
 ];
 
@@ -72,7 +72,6 @@ export default function OlxPage() {
       <SiteHeader />
 
       <main id="topo">
-        {/* HERO + FERRAMENTA */}
         <section aria-labelledby="olx-hero-titulo" className="relative overflow-hidden">
           <div
             aria-hidden="true"
@@ -108,8 +107,8 @@ export default function OlxPage() {
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Transforme as informações do seu produto em um anúncio claro e honesto para a OLX — com título,
-                descrição, benefícios e estado de conservação, em segundos.
+                Transforme as informações do seu produto em uma primeira versão de anúncio para a OLX — com título,
+                descrição, benefícios e estado de conservação para revisar antes de publicar.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -148,7 +147,7 @@ export default function OlxPage() {
                 lockedChannel="olx"
                 exampleInput={OLX_EXAMPLE_INPUT}
                 title="Crie seu anúncio para a OLX"
-                subtitle="Preencha os campos abaixo. O texto sai no estilo direto e honesto de um classificado."
+                subtitle="Preencha os campos abaixo. O texto sai no estilo direto de um classificado para você revisar."
               />
             </div>
           </div>
@@ -161,16 +160,38 @@ export default function OlxPage() {
         <PricingSection />
         <OlxFaq />
 
-        {/* CTA FINAL + LINKS INTERNOS */}
+        <section aria-labelledby="olx-guia" className="border-t border-line bg-white">
+          <div className="container-page py-12 sm:py-16">
+            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
+              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div className="max-w-2xl">
+                  <h2 id="olx-guia" className="text-xl font-semibold sm:text-2xl">
+                    Aprenda como criar um anúncio na OLX do início ao fim
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-ink-soft">
+                    Veja as orientações atuais para título, fotos, categoria, descrição, preço, localização e revisão.
+                  </p>
+                </div>
+                <Link
+                  href="/como-criar-anuncio-na-olx"
+                  className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                >
+                  Ler o guia da OLX
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section aria-labelledby="olx-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
               <h2 id="olx-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Seu próximo anúncio na OLX pode estar pronto em 30 segundos
+                Crie uma primeira versão do seu próximo anúncio na OLX
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Cole as informações do produto e receba um anúncio claro, com estado de conservação e pronto para
-                negociar.
+                Cole as informações do produto, gere o texto e confira cada detalhe antes de publicar.
               </p>
               <a
                 href="#ferramenta"
@@ -183,26 +204,26 @@ export default function OlxPage() {
 
             <p className="mt-8 text-center text-sm text-muted">
               Vende em marketplaces também?{" "}
-              <a
+              <Link
                 href="/gerador-de-anuncios-mercado-livre"
                 className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
               >
                 Use o gerador para Mercado Livre
-              </a>
+              </Link>
               {" · "}
-              <a
+              <Link
                 href="/gerador-de-anuncios-shopee"
                 className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
               >
                 Use o gerador para Shopee
-              </a>
+              </Link>
               {" · "}
-              <a
+              <Link
                 href="/gerador-de-descricao-de-produto"
                 className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
               >
                 Crie a descrição do seu produto
-              </a>
+              </Link>
               {" · "}
               <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
                 Veja todos os geradores
@@ -219,4 +240,3 @@ export default function OlxPage() {
     </>
   );
 }
-
