@@ -484,6 +484,11 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
               ))}
             </div>
             <p className="mt-7 text-center text-sm text-muted">
+              Precisa melhorar o título?{" "}
+              <Link href="/como-criar-titulo-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
+                Veja a fórmula e os exemplos
+              </Link>
+              {" · "}
               Quer ver todos os conteúdos?{" "}
               <Link href="/guias" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">
                 Acesse a central de guias

@@ -484,9 +484,10 @@ export default function ComoFazerDescricaoDeProdutoPage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Próximos passos</p>
                 <h2 id="continue-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">Continue aprendendo e coloque em prática</h2>
               </div>
-              <div className="mt-8 grid gap-4 md:grid-cols-3">
+              <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
                   { href: "/guias", eyebrow: "Biblioteca", title: "Ver todos os guias", text: "Encontre conteúdos práticos para melhorar anúncios e páginas de produto." },
+                  { href: "/como-criar-titulo-de-produto", eyebrow: "Título", title: "Crie um título claro", text: "Use a fórmula em quatro partes e adapte a ordem à categoria." },
                   { href: "/como-criar-anuncio-no-mercado-livre", eyebrow: "Mercado Livre", title: "Criar um anúncio completo", text: "Organize título, fotos, ficha técnica, descrição, preço e revisão." },
                   { href: "/gerador-de-descricao-de-produto#ferramenta", eyebrow: "Ferramenta gratuita", title: "Gerar sua descrição", text: "Transforme os dados reais do produto em uma primeira versão para revisar." },
                 ].map((item) => (
