@@ -1,22 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { invalidateStatsCache, loadStats } from "@/lib/stats-client";
 
 export const GENERATION_EVENT = "anunciaai:generated";
-
-interface StatsResponse {
-  total: number;
-}
 
 export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
   const [total, setTotal] = useState(initialTotal);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (force = false) => {
     try {
-      const response = await fetch("/api/generations", { cache: "no-store" });
-      if (!response.ok) return;
-      const data = (await response.json()) as StatsResponse;
-      if (typeof data.total === "number") setTotal(data.total);
+      const data = await loadStats(force);
+      setTotal(data.total);
     } catch {
       // silencioso: o contador é apenas informativo
     }
@@ -24,7 +19,10 @@ export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
 
   useEffect(() => {
     const timer = window.setTimeout(() => void load(), 0);
-    const handler = () => void load();
+    const handler = () => {
+      invalidateStatsCache();
+      void load(true);
+    };
     window.addEventListener(GENERATION_EVENT, handler);
     return () => {
       window.clearTimeout(timer);

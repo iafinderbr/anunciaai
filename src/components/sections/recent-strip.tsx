@@ -3,17 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { GENERATION_EVENT } from "@/components/live-stats";
 import { CHANNEL_LABEL } from "@/lib/generator-data";
+import { invalidateStatsCache, loadStats, type RecentGeneration } from "@/lib/stats-client";
 import type { Channel } from "@/lib/types";
-
-interface RecentGeneration {
-  id: number;
-  channel: string;
-  createdAt: string;
-}
-
-interface StatsResponse {
-  recent?: RecentGeneration[];
-}
 
 function timeAgo(date: Date): string {
   const diff = Date.now() - date.getTime();
@@ -29,12 +20,10 @@ function timeAgo(date: Date): string {
 export function RecentStrip() {
   const [rows, setRows] = useState<RecentGeneration[]>([]);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (force = false) => {
     try {
-      const response = await fetch("/api/generations", { cache: "no-store" });
-      if (!response.ok) return;
-      const data = (await response.json()) as StatsResponse;
-      if (Array.isArray(data.recent)) setRows(data.recent);
+      const data = await loadStats(force);
+      setRows(data.recent);
     } catch {
       // silencioso: esta faixa é apenas informativa
     }
@@ -42,7 +31,10 @@ export function RecentStrip() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => void load(), 0);
-    const handler = () => void load();
+    const handler = () => {
+      invalidateStatsCache();
+      void load(true);
+    };
     window.addEventListener(GENERATION_EVENT, handler);
     return () => {
       window.clearTimeout(timer);
