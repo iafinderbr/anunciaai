@@ -1,0 +1,38 @@
+name: Segurança do backend generativo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/app/api/generate/**"
+      - "src/lib/gemini-provider.ts"
+      - "scripts/generative-security-check.mjs"
+      - ".github/workflows/generative-security.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/app/api/generate/**"
+      - "src/lib/gemini-provider.ts"
+      - "scripts/generative-security-check.mjs"
+      - ".github/workflows/generative-security.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Validar proteções do provedor
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Auditar integração
+        run: node scripts/generative-security-check.mjs
