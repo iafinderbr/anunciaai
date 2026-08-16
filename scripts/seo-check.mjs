@@ -8,6 +8,7 @@ const ROBOTS_FILE = path.join(APP_DIR, "robots.ts");
 const SITE_FILE = path.join(ROOT, "src", "lib", "site.ts");
 const ADS_FILE = path.join(ROOT, "public", "ads.txt");
 const HOME_GUIDES_FILE = path.join(ROOT, "src", "components", "sections", "guides-home.tsx");
+const GUIDES_HUB_FILE = path.join(APP_DIR, "guias", "page.tsx");
 const TOOLS_FILE = path.join(ROOT, "src", "components", "sections", "tools.tsx");
 const FOOTER_FILE = path.join(ROOT, "src", "components", "sections", "pricing.tsx");
 
@@ -126,6 +127,7 @@ for (const [route, file] of routeToFile) {
 }
 
 const homeGuidesSource = read(HOME_GUIDES_FILE);
+const guidesHubSource = read(GUIDES_HUB_FILE);
 const toolsSource = read(TOOLS_FILE);
 const footerSource = read(FOOTER_FILE);
 
@@ -135,6 +137,16 @@ const guideRoutes = [...publicRoutes].filter(
 for (const route of guideRoutes) {
   if (!sourceReferencesRoute(homeGuidesSource, route)) {
     fail(`Guia sem link direto na seção de guias da home: ${route}`);
+  }
+
+  if (!sourceReferencesRoute(guidesHubSource, route)) {
+    fail(`Guia ausente da central /guias: ${route}`);
+  }
+
+  const guideFile = routeToFile.get(route);
+  const guideSource = guideFile ? read(guideFile) : "";
+  if (!guideSource.includes("/gerador-")) {
+    fail(`Guia sem caminho direto para uma ferramenta: ${route}`);
   }
 }
 
@@ -214,5 +226,5 @@ if (failures.length) {
 }
 
 console.log(
-  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta interna validada.`,
+  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta e conversão interna validadas.`,
 );
