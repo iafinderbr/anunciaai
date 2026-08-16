@@ -7,6 +7,9 @@ const SITEMAP_FILE = path.join(APP_DIR, "sitemap.ts");
 const ROBOTS_FILE = path.join(APP_DIR, "robots.ts");
 const SITE_FILE = path.join(ROOT, "src", "lib", "site.ts");
 const ADS_FILE = path.join(ROOT, "public", "ads.txt");
+const HOME_GUIDES_FILE = path.join(ROOT, "src", "components", "sections", "guides-home.tsx");
+const TOOLS_FILE = path.join(ROOT, "src", "components", "sections", "tools.tsx");
+const FOOTER_FILE = path.join(ROOT, "src", "components", "sections", "pricing.tsx");
 
 const failures = [];
 const warnings = [];
@@ -40,6 +43,10 @@ function normalizeInternalHref(href) {
   const withoutQuery = href.split("?")[0];
   const withoutHash = withoutQuery.split("#")[0];
   return withoutHash || "/";
+}
+
+function sourceReferencesRoute(source, route) {
+  return source.includes(`"${route}"`) || source.includes(`'${route}'`);
 }
 
 const allFiles = walk(APP_DIR);
@@ -118,6 +125,32 @@ for (const [route, file] of routeToFile) {
   }
 }
 
+const homeGuidesSource = read(HOME_GUIDES_FILE);
+const toolsSource = read(TOOLS_FILE);
+const footerSource = read(FOOTER_FILE);
+
+const guideRoutes = [...publicRoutes].filter(
+  (route) => route.startsWith("/como-") || route === "/seo-para-pagina-de-produto",
+);
+for (const route of guideRoutes) {
+  if (!sourceReferencesRoute(homeGuidesSource, route)) {
+    fail(`Guia sem link direto na seção de guias da home: ${route}`);
+  }
+}
+
+const generatorRoutes = [...publicRoutes].filter((route) => route.startsWith("/gerador-"));
+for (const route of generatorRoutes) {
+  if (!sourceReferencesRoute(toolsSource, route)) {
+    fail(`Gerador sem link na seção principal de ferramentas: ${route}`);
+  }
+}
+
+for (const route of ["/sobre", "/privacidade", "/termos"]) {
+  if (!sourceReferencesRoute(footerSource, route)) {
+    fail(`Página institucional sem link no rodapé: ${route}`);
+  }
+}
+
 const siteSource = read(SITE_FILE);
 if (!siteSource.includes("https://anunciaai.vercel.app")) {
   fail("SITE_URL não aponta para https://anunciaai.vercel.app.");
@@ -180,4 +213,6 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`SEO OK: ${publicRoutes.size} páginas públicas, sitemap, metadata e links internos consistentes.`);
+console.log(
+  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta interna validada.`,
+);
