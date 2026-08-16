@@ -1,20 +1,20 @@
 import type { Channel, Tone } from "./types";
 
 export const CHANNELS: { value: Channel; label: string; hint: string }[] = [
-  { value: "mercado-livre", label: "Mercado Livre", hint: "Título de até 60 caracteres, sem emojis" },
-  { value: "shopee", label: "Shopee", hint: "Título com palavras-chave e emojis" },
-  { value: "loja-virtual", label: "Loja virtual", hint: "Descrição longa e otimizada para SEO" },
-  { value: "instagram", label: "Instagram", hint: "Legenda curta com hashtags" },
+  { value: "mercado-livre", label: "Mercado Livre", hint: "Título objetivo e fácil de identificar" },
+  { value: "shopee", label: "Shopee", hint: "Título descritivo com termos do produto" },
+  { value: "loja-virtual", label: "Loja virtual", hint: "Descrição detalhada e termos de SEO" },
+  { value: "instagram", label: "Instagram", hint: "Legenda com CTA e sugestões de hashtags" },
   { value: "olx", label: "OLX", hint: "Título curto e claro, estilo classificado" },
-  { value: "facebook-marketplace", label: "Facebook Marketplace", hint: "Título natural e descrição direta, pessoa para pessoa" },
-  { value: "outro", label: "Outro", hint: "Formato neutro, serve para qualquer canal" },
+  { value: "facebook-marketplace", label: "Facebook Marketplace", hint: "Título natural e descrição direta" },
+  { value: "outro", label: "Outro", hint: "Formato neutro para revisar e adaptar" },
 ];
 
 export const TONES: { value: Tone; label: string; hint: string }[] = [
   { value: "profissional", label: "Profissional", hint: "Direto, técnico e confiável" },
-  { value: "persuasivo", label: "Persuasivo", hint: "Focado em conversão e gatilhos" },
+  { value: "persuasivo", label: "Persuasivo", hint: "Focado em benefícios e próximo passo" },
   { value: "simples", label: "Simples", hint: "Curto, claro e fácil de ler" },
-  { value: "premium", label: "Premium", hint: "Sofisticado, para ticket alto" },
+  { value: "premium", label: "Premium", hint: "Linguagem mais sofisticada e cuidadosa" },
 ];
 
 export const CHANNEL_LABEL: Record<Channel, string> = {
@@ -34,7 +34,7 @@ export const TONE_LABEL: Record<Tone, string> = {
   premium: "Premium",
 };
 
-/** Adjetivos de abertura por tom, com variações para o botão "Gerar novamente". */
+/** Aberturas neutras por tom, sem criar atributos que o vendedor não informou. */
 export const TONE_OPENERS: Record<Tone, string[]> = {
   profissional: [
     "Informações objetivas para ajudar na sua escolha",
@@ -89,73 +89,66 @@ export const TONE_MODIFIERS: Record<Tone, string[]> = {
 };
 
 /**
- * Dicionário de palavra-chave → benefício.
- * É o que faz o texto gerado parecer realmente escrito para o produto.
+ * Dicionário de característica → benefício conservador.
+ * O texto apenas traduz a informação fornecida; não promete desempenho,
+ * durabilidade, segurança, conforto ou resultado que não tenha sido informado.
  */
 export const BENEFIT_RULES: { match: RegExp; benefit: string; specLabel?: string }[] = [
-  { match: /leve|leveza/i, benefit: "Leve de verdade: você usa o dia inteiro sem sentir peso", specLabel: "Peso" },
-  { match: /confort|macio|acolchoad/i, benefit: "Conforto desde o primeiro uso, sem período de adaptação" },
-  { match: /antiaderent/i, benefit: "Superfície antiaderente: nada gruda e a limpeza fica muito mais rápida" },
-  { match: /antiderrapan/i, benefit: "Base antiderrapante que garante firmeza e segurança no uso" },
-  { match: /resisten|durá|dura[bv]|reforçad/i, benefit: "Alta resistência: acompanha a sua rotina por muito mais tempo" },
-  { match: /litros?\b|capacidade/i, benefit: "Capacidade generosa para dar conta do uso diário sem apertos", specLabel: "Capacidade" },
-  { match: /impermeáv|à prova d|prova d'á|water/i, benefit: "Proteção contra água e respingos para usar sem preocupação", specLabel: "Proteção" },
-  { match: /bateria|mah|autonomia|horas de uso/i, benefit: "Bateria de longa duração para você não ficar na mão", specLabel: "Bateria" },
-  { match: /bluetooth|sem fio|wireless|wi-?fi|usb|type-?c/i, benefit: "Conexão rápida e estável, sem fios atrapalhando", specLabel: "Conectividade" },
-  { match: /algodão|couro|silicone|inox|alumínio|madeira|poliést|tecido|material/i, benefit: "Material selecionado, com toque agradável e acabamento caprichado", specLabel: "Material" },
-  { match: /ajustáv|regul|elástic/i, benefit: "Ajuste personalizado para encaixar perfeitamente em você", specLabel: "Ajuste" },
-  { match: /laváv|máquina de lavar|fácil de limpar|limpeza/i, benefit: "Limpeza simples: cuidar dele leva menos de um minuto" },
+  { match: /leve|leveza/i, benefit: "Peso ou leveza destacados para facilitar a comparação", specLabel: "Peso" },
+  { match: /confort|macio|acolchoad/i, benefit: "Conforto ou acabamento macio destacado nas informações do produto" },
+  { match: /antiaderent/i, benefit: "Superfície antiaderente informada pelo vendedor" },
+  { match: /antiderrapan/i, benefit: "Recurso antiderrapante informado; confira as condições de uso" },
+  { match: /resisten|durá|dura[bv]|reforçad/i, benefit: "Resistência ou construção reforçada destacada nas especificações" },
+  { match: /litros?\b|capacidade/i, benefit: "Capacidade informada para ajudar a comparar o tamanho útil", specLabel: "Capacidade" },
+  { match: /impermeáv|à prova d|prova d'á|water/i, benefit: "Proteção contra água informada; confirme o nível de proteção e as condições de uso", specLabel: "Proteção" },
+  { match: /bateria|mah|autonomia|horas de uso/i, benefit: "Bateria ou autonomia informada para ajudar na comparação", specLabel: "Bateria" },
+  { match: /bluetooth|sem fio|wireless|wi-?fi|usb|type-?c/i, benefit: "Tipo de conectividade informado; confirme compatibilidade com seus dispositivos", specLabel: "Conectividade" },
+  { match: /algodão|couro|silicone|inox|alumínio|madeira|poliést|tecido|material/i, benefit: "Material informado para ajudar a avaliar acabamento e uso", specLabel: "Material" },
+  { match: /ajustáv|regul|elástic/i, benefit: "Ajuste ou regulagem informado como característica do produto", specLabel: "Ajuste" },
+  { match: /laváv|máquina de lavar|fácil de limpar|limpeza/i, benefit: "Informação de lavagem ou limpeza destacada; siga as instruções do fabricante" },
   { match: /garantia/i, benefit: "Garantia informada pelo vendedor", specLabel: "Garantia" },
-  { match: /cor(es)?\b|preto|branco|azul|vermelh|rosa|verde|bege/i, benefit: "Opções de cor para combinar com o seu estilo", specLabel: "Cores disponíveis" },
+  { match: /cor(es)?\b|preto|branco|azul|vermelh|rosa|verde|bege/i, benefit: "Cor ou opções de cor informadas para facilitar a escolha", specLabel: "Cores disponíveis" },
   { match: /tamanho|numeraç|\d{2}\s?ao\s?\d{2}|\b(PP|GG|XG)\b/i, benefit: "Tamanhos informados para facilitar a escolha", specLabel: "Tamanhos" },
   { match: /\d+\s?(ml|mililitros)\b/i, benefit: "Volume informado com clareza", specLabel: "Volume" },
-  { match: /\d+\s?(cm|mm|metros?|polegadas)\b/i, benefit: "Dimensões pensadas para caber direitinho no seu espaço", specLabel: "Dimensões" },
+  { match: /\d+\s?(cm|mm|metros?|polegadas)\b/i, benefit: "Dimensões informadas para conferir compatibilidade com o espaço disponível", specLabel: "Dimensões" },
   { match: /\d+\s?(kg|gramas)\b/i, benefit: "Peso informado para ajudar no planejamento do uso", specLabel: "Peso" },
-  { match: /110v|220v|bivolt|volts?|watts?|\d+\s?w\b/i, benefit: "Voltagem informada para conferir a compatibilidade", specLabel: "Voltagem" },
-  { match: /portát|dobráv|compact|cabe na bolsa/i, benefit: "Formato compacto que vai com você para qualquer lugar" },
-  { match: /antialérg|hipoalerg|respiráv|ventilaç/i, benefit: "Respirabilidade que evita abafamento e irritações" },
-  { match: /rápid|velocidade|potente|potência/i, benefit: "Desempenho rápido: faz mais em menos tempo" },
+  { match: /110v|220v|bivolt|volts?|watts?|\d+\s?w\b/i, benefit: "Voltagem ou potência informada para conferir compatibilidade", specLabel: "Voltagem" },
+  { match: /portát|dobráv|compact|cabe na bolsa/i, benefit: "Formato portátil ou compacto destacado nas informações do produto" },
+  { match: /antialérg|hipoalerg|respiráv|ventilaç/i, benefit: "Característica de composição ou respirabilidade informada; confira materiais e orientações do fabricante" },
+  { match: /rápid|velocidade|potente|potência/i, benefit: "Velocidade ou potência informada para comparar as especificações" },
   { match: /kit|conjunto|unidades|peças/i, benefit: "Itens do conjunto destacados pelo vendedor", specLabel: "Itens inclusos" },
   { match: /original|autêntic|licenciad/i, benefit: "Procedência destacada nas informações do produto" },
   { match: /nota fiscal/i, benefit: "Nota fiscal informada pelo vendedor" },
   { match: /marca|fabricante|modelo/i, benefit: "Marca ou modelo informado para facilitar a identificação", specLabel: "Modelo" },
   { match: /envio|frete|entrega/i, benefit: "Condição de envio informada pelo vendedor", specLabel: "Envio" },
-  { match: /segur|proteç|trava/i, benefit: "Mais segurança no uso diário, para você e para a família" },
-  { match: /moderno|design|elegan|estilo|minimalist/i, benefit: "Design moderno que valoriza qualquer ambiente ou look" },
+  { match: /segur|proteç|trava/i, benefit: "Recurso de segurança ou proteção informado; confira instruções e limitações de uso" },
+  { match: /moderno|design|elegan|estilo|minimalist/i, benefit: "Design ou estilo destacado nas informações do produto" },
 ];
 
-/**
- * Chamadas para ação no estilo classificado, usadas apenas no canal OLX.
- * Sem "link na bio" e sem pressão de e-commerce: o fechamento é negociação
- * e retirada/entrega.
- */
+/** Chamadas neutras para classificado, sem pressupor retirada, entrega ou desconto. */
 export const OLX_CTAS = [
-  "Interessado? Chame no chat da OLX e combine retirada ou entrega.",
-  "Quer ver de perto? Chama no chat e combina um horário.",
-  "Chame no chat para negociar e combinar os próximos passos.",
+  "Se tiver interesse, use o chat da OLX para tirar dúvidas e combinar os próximos passos.",
+  "Quer saber mais? Envie uma mensagem pelo chat da OLX.",
+  "Use o chat para confirmar os detalhes da negociação com o vendedor.",
 ];
 
-/**
- * Chamadas para ação pessoa a pessoa, usadas apenas no canal Facebook
- * Marketplace. Sem "link na bio", sem hashtags e sem pressão de e-commerce:
- * o fechamento é conversa pelo Messenger.
- */
+/** Chamadas pessoa a pessoa para Facebook Marketplace sem pressupor condições não informadas. */
 export const MARKETPLACE_CTAS = [
-  "Se interessar, chame no Messenger para conversar.",
-  "Tem alguma dúvida? Mande mensagem aqui pelo Marketplace.",
-  "Gostou? Chama no chat para mais detalhes.",
+  "Se tiver interesse, envie uma mensagem pelo Marketplace para conversar.",
+  "Tem alguma dúvida? Envie uma mensagem para confirmar os detalhes.",
+  "Gostou? Use o chat do Marketplace para saber mais.",
 ];
 
 /**
- * Infere o estado de conservação a partir das características informadas.
- * A ordem importa: a primeira regra que casar vence. Usado nos canais de
- * classificado (OLX e Facebook Marketplace), que não têm campo próprio
- * para estado/conservação.
+ * Infere apenas estados explicitamente reconhecíveis nas características.
+ * Termos genéricos como "usado" não recebem uma avaliação de qualidade extra.
  */
 export const CONDITION_RULES: { match: RegExp; state: string }[] = [
   { match: /seminov|semi-nov/i, state: "Seminovo" },
-  { match: /lacrado|novo na caixa|na caixa|nunca usado|zero uso/i, state: "Novo" },
-  { match: /pouco uso|quase novo|como novo|impec|excelente estado|perfeito estado|estado de novo|conservad|revisad/i, state: "Pouco uso, em ótimo estado" },
-  { match: /usado|segunda mão|segunda mao/i, state: "Usado, em bom estado" },
+  { match: /lacrado|novo na caixa|nunca usado|zero uso/i, state: "Novo" },
+  { match: /pouco uso|quase novo|como novo/i, state: "Pouco uso" },
+  { match: /impec|excelente estado|perfeito estado|estado de novo/i, state: "Em excelente estado" },
+  { match: /bem conservad|conservad/i, state: "Bem conservado" },
+  { match: /usado|segunda mão|segunda mao/i, state: "Usado" },
   { match: /nov[oa]\b/i, state: "Novo" },
 ];
