@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Segurança, SEO, Lint, TypeScript e Build
+    name: Segurança, Produto, SEO, Lint, TypeScript e Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -37,6 +37,9 @@ jobs:
 
       - name: Verificar vulnerabilidades altas
         run: npm audit --audit-level=high
+
+      - name: Auditar motor de geração
+        run: npm run generator:check
 
       - name: Auditar SEO e links internos
         run: npm run seo:check
