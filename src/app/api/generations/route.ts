@@ -181,24 +181,18 @@ export async function POST(request: Request) {
 
     await ensureDatabaseSchema();
 
-    const [row] = await db
-      .insert(generations)
-      .values({
-        productName: "Produto",
-        category: "Não armazenada",
-        audience: null,
-        price: null,
-        channel: CHANNELS.has(channel) ? channel : "outro",
-        tone: "profissional",
-        titlePreview: null,
-        featureCount: 0,
-      })
-      .returning({ id: generations.id });
+    await db.insert(generations).values({
+      productName: "Produto",
+      category: "Não armazenada",
+      audience: null,
+      price: null,
+      channel: CHANNELS.has(channel) ? channel : "outro",
+      tone: "profissional",
+      titlePreview: null,
+      featureCount: 0,
+    });
 
-    return Response.json(
-      { ok: true, id: row?.id ?? null },
-      { headers: NO_STORE_HEADERS },
-    );
+    return Response.json({ ok: true }, { headers: NO_STORE_HEADERS });
   } catch (error) {
     console.error("[generations:post] Falha ao salvar geração", error);
     return Response.json(
