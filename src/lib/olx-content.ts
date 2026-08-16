@@ -1,12 +1,6 @@
 import type { GeneratorInput } from "./types";
 
-/**
- * Conteúdo da landing page /gerador-de-anuncios-olx.
- * Fonte única para as seções de conteúdo (como funciona, estrutura do
- * anúncio, recursos, erros comuns e FAQ).
- * O FAQ e o passo a passo são renderizados apenas como conteúdo HTML.
- */
-
+/** Conteúdo da landing page /gerador-de-anuncios-olx. */
 export const OLX_EXAMPLE_INPUT: GeneratorInput = {
   productName: "Sofá retrátil 3 lugares",
   category: "Móveis",
@@ -19,87 +13,33 @@ export const OLX_EXAMPLE_INPUT: GeneratorInput = {
 };
 
 export const OLX_STEPS: { title: string; text: string }[] = [
-  {
-    title: "Informe seu produto",
-    text: "Cole nome, categoria, preço e características — incluindo estado de conservação, se souber.",
-  },
-  {
-    title: "Deixe a IA criar",
-    text: "Em segundos você recebe título claro, descrição honesta, benefícios e estado de conservação.",
-  },
-  {
-    title: "Copie e publique",
-    text: "Copie cada bloco com um clique, revise as informações e cole no anúncio da OLX junto com as fotos do produto.",
-  },
+  { title: "Informe seu produto", text: "Cole nome, categoria, preço e características — incluindo estado de conservação quando você souber." },
+  { title: "Gere uma primeira versão", text: "A ferramenta organiza título, descrição, características e a condição do item somente quando ela aparece nos dados fornecidos." },
+  { title: "Revise e adapte", text: "Confira preço, condição, medidas, retirada ou entrega e demais detalhes antes de usar o texto na OLX." },
 ];
 
 export const OLX_STRUCTURE: { title: string; text: string }[] = [
-  {
-    title: "Título claro e direto",
-    text: "Comece pelo que é o produto e use o restante para estado, marca, modelo ou outro diferencial útil.",
-  },
-  {
-    title: "Descrição honesta",
-    text: "O comprador precisa entender exatamente o que está levando. Informe características, estado e observações relevantes.",
-  },
-  {
-    title: "Estado de conservação",
-    text: "Novo, pouco uso ou usado: deixar a condição clara ajuda o interessado a avaliar o item antes do contato.",
-  },
-  {
-    title: "Detalhes que ajudam a decidir",
-    text: "Medidas, acessórios incluídos e defeitos relevantes reduzem dúvidas e deixam o anúncio mais completo.",
-  },
-  {
-    title: "Preço e localização corretos",
-    text: "Informe o valor total do item e a região correta para alinhar as expectativas antes da negociação.",
-  },
+  { title: "Título claro e direto", text: "Comece pelo produto e acrescente estado, marca, modelo ou outro diferencial útil quando a informação estiver confirmada." },
+  { title: "Descrição honesta", text: "Explique o que está sendo vendido, as características e observações relevantes sem esconder defeitos conhecidos." },
+  { title: "Estado de conservação", text: "Novo, pouco uso ou usado só deve aparecer quando essa condição foi realmente informada pelo vendedor." },
+  { title: "Detalhes que ajudam a avaliar", text: "Medidas, acessórios incluídos, marcas de uso e outras informações objetivas reduzem dúvidas antes do contato." },
+  { title: "Preço e negociação", text: "Informe o valor real e deixe entrega, retirada e outras condições apenas quando elas estiverem definidas." },
 ];
 
 export const OLX_FEATURES: { title: string; text: string }[] = [
-  {
-    title: "Título de até 90 caracteres",
-    text: "A OLX informa limite de 90 caracteres. Priorize o nome do produto nas primeiras palavras e use o restante para detalhes relevantes.",
-  },
-  {
-    title: "Descrição estilo classificado",
-    text: "Texto direto, com características, estado de conservação e informações úteis para quem está avaliando o item.",
-  },
-  {
-    title: "Estado de conservação detectado",
-    text: "A IA identifica sinais de novo, seminovo ou usado nas características que você fornece e pode destacar essa informação no anúncio.",
-  },
-  {
-    title: "Ficha de características",
-    text: "Suas anotações viram uma lista organizada de medidas, material e itens inclusos para você conferir.",
-  },
-  {
-    title: "CTA de classificado",
-    text: "Fechamento adaptado a uma negociação entre comprador e vendedor, sem inventar condições comerciais.",
-  },
-  {
-    title: "Tom de texto ajustável",
-    text: "Escolha entre profissional, persuasivo, simples ou premium e mantenha a sua forma de vender.",
-  },
+  { title: "Título para revisar", text: "A ferramenta usa um preview curto e legível. Confira o contador e as regras atuais mostradas pela OLX no momento da publicação." },
+  { title: "Descrição estilo classificado", text: "Texto direto com características, condição e informações fornecidas pelo vendedor." },
+  { title: "Condição somente quando informada", text: "Termos como novo, seminovo, pouco uso ou usado são destacados apenas se estiverem presentes nas características." },
+  { title: "Ficha de características", text: "Suas anotações são organizadas em uma lista para facilitar a conferência de material, medidas e itens incluídos." },
+  { title: "CTA neutro", text: "O fechamento convida o interessado a usar o chat sem inventar entrega, desconto ou condição de pagamento." },
+  { title: "Tom ajustável", text: "Escolha entre profissional, persuasivo, simples ou premium sem alterar os fatos informados." },
 ];
 
 export const OLX_MISTAKES: { wrong: string; right: string }[] = [
-  {
-    wrong: "Título genérico: “SOFÁ TOP!! NÃO PERCA”",
-    right: "Sofá Retrátil 3 Lugares — Pouco Uso · Tecido Suede Bege",
-  },
-  {
-    wrong: "Descrição sem estado de conservação e sem medidas",
-    right: "Estado, material, dimensões e observações importantes explicados com clareza",
-  },
-  {
-    wrong: "Esconder defeitos para valorizar o anúncio",
-    right: "Mostrar marcas de uso e defeitos relevantes para o comprador saber o que está avaliando",
-  },
-  {
-    wrong: "Preencher informações por aproximação",
-    right: "Usar somente preço, medidas, características e condições que possam ser confirmadas",
-  },
+  { wrong: "Título genérico: “SOFÁ TOP!! NÃO PERCA”", right: "Sofá Retrátil 3 Lugares — Pouco Uso · Tecido Suede Bege" },
+  { wrong: "Descrição sem condição ou medidas disponíveis", right: "Estado, material, dimensões e observações importantes explicados com clareza" },
+  { wrong: "Esconder defeitos para valorizar o anúncio", right: "Mostrar marcas de uso e defeitos relevantes para a pessoa saber o que está avaliando" },
+  { wrong: "Preencher informações por aproximação", right: "Usar somente preço, medidas, características e condições que possam ser confirmadas" },
 ];
 
 export interface OlxAnnouncementExample {
@@ -110,13 +50,13 @@ export interface OlxAnnouncementExample {
 export const OLX_ANNOUNCEMENT_EXAMPLE: OlxAnnouncementExample = {
   bad: "Sofá retrátil. Ótimo estado. Só pegar. Interessados chamar.",
   good:
-    "Vendo sofá retrátil de 3 lugares, pouco uso, sem rasgos e em bom estado. Estou me mudando de cidade.\n\n" +
+    "Vendo sofá retrátil de 3 lugares, com pouco uso e sem rasgos.\n\n" +
     "• Tecido suede bege\n" +
     "• Estrutura de madeira reforçada\n" +
     "• Retrátil\n\n" +
-    "Estado de conservação: pouco uso, sem rasgos.\n" +
-    "Valor: R$ 1.200.\n\n" +
-    "Interessado? Use o chat da OLX para tirar dúvidas e combinar os detalhes.",
+    "Estado informado: pouco uso, sem rasgos.\n" +
+    "Valor informado: R$ 1.200.\n\n" +
+    "Use o chat da OLX para tirar dúvidas e confirmar os detalhes da negociação.",
 };
 
 export interface FaqItem {
@@ -125,35 +65,10 @@ export interface FaqItem {
 }
 
 export const OLX_FAQ: FaqItem[] = [
-  {
-    question: "Como criar um anúncio para a OLX com inteligência artificial?",
-    answer:
-      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar anúncio”. A IA devolve título, descrição, benefícios e características para você revisar antes de publicar.",
-  },
-  {
-    question: "Preciso informar o estado de conservação do produto?",
-    answer:
-      "É recomendável informar. Se você mencionar termos como “seminovo”, “pouco uso” ou “usado” nas características, a ferramenta consegue destacar essa condição no texto sem precisar adivinhar.",
-  },
-  {
-    question: "Qual o limite do título de um anúncio na OLX?",
-    answer:
-      "A Central de Ajuda da OLX informa limite de 90 caracteres. A própria plataforma recomenda começar pelas palavras mais importantes, porque elas têm prioridade nas buscas. Use um título direto e relacionado ao item.",
-  },
-  {
-    question: "O que devo colocar na descrição de um anúncio OLX?",
-    answer:
-      "Inclua estado de conservação, características, medidas, itens incluídos e defeitos relevantes. A OLX informa limite de até 6.000 caracteres e orienta evitar links, e-mails e palavras de busca sem relação com o produto.",
-  },
-  {
-    question: "O gerador de anúncios para OLX é gratuito?",
-    answer:
-      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito durante o período de testes.",
-  },
-  {
-    question: "A ferramenta serve para outros marketplaces também?",
-    answer:
-      "Sim. Esta página é otimizada para a OLX, mas o AnunciaAI também gera anúncios para Mercado Livre, Shopee, loja virtual e outros canais, adaptando a estrutura ao canal escolhido.",
-  },
+  { question: "Como usar o gerador de anúncios para OLX?", answer: "Preencha nome, categoria, preço e características e clique em “Gerar anúncio”. A ferramenta monta uma primeira versão para você revisar antes de usar." },
+  { question: "Preciso informar o estado de conservação?", answer: "É recomendável. A ferramenta só destaca a condição quando encontra termos como novo, seminovo, pouco uso ou usado nos dados fornecidos." },
+  { question: "Como conferir o tamanho permitido do título?", answer: "Use o contador e as orientações exibidas pela OLX no momento da publicação. Regras de plataforma podem mudar, então o preview do AnunciaAI é apenas uma referência editorial." },
+  { question: "O que colocar na descrição?", answer: "Inclua estado de conservação, características, medidas, itens incluídos e defeitos relevantes quando essas informações existirem." },
+  { question: "O gerador para OLX é gratuito?", answer: "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito." },
+  { question: "A ferramenta serve para outros canais?", answer: "Sim. Existem geradores dedicados a Mercado Livre, Shopee, Facebook Marketplace, loja virtual e Instagram, cada um com uma estrutura diferente para revisar." },
 ];
-
