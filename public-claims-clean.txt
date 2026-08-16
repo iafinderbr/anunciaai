@@ -1,0 +1,2 @@
+public-claims=clean
+verified-by=github-actions
