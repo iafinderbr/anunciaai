@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 
 type Target = "todos" | "google" | "loja" | "mercado-livre" | "shopee";
-type KeywordIntent = "Produto" | "Característica" | "Compra" | "Problema" | "Público";
+type KeywordSource = "Produto" | "Categoria" | "Característica" | "Público" | "Canal";
 
 interface KeywordInput {
   product: string;
@@ -16,14 +16,13 @@ interface KeywordInput {
 
 interface KeywordItem {
   term: string;
-  intent: KeywordIntent;
+  source: KeywordSource;
 }
 
 interface KeywordResult {
   primary: KeywordItem[];
   secondary: KeywordItem[];
   longTail: KeywordItem[];
-  negatives: string[];
 }
 
 const EXAMPLE_INPUT: KeywordInput = {
@@ -43,19 +42,19 @@ const EMPTY_INPUT: KeywordInput = {
 };
 
 const TARGETS: { value: Target; label: string; hint: string }[] = [
-  { value: "todos", label: "Todos", hint: "Lista versátil para mais de um canal" },
-  { value: "google", label: "Google", hint: "Buscas informativas e comerciais" },
-  { value: "loja", label: "Loja virtual", hint: "SEO de categoria e página de produto" },
-  { value: "mercado-livre", label: "Mercado Livre", hint: "Termos objetivos usados no marketplace" },
-  { value: "shopee", label: "Shopee", hint: "Variações comerciais e de oferta" },
+  { value: "todos", label: "Geral", hint: "Combinações neutras para revisar e adaptar" },
+  { value: "google", label: "Google", hint: "Sugestões para conteúdo e página de produto" },
+  { value: "loja", label: "Loja virtual", hint: "Combinações para categoria e página de produto" },
+  { value: "mercado-livre", label: "Mercado Livre", hint: "Termos com produto, categoria e características" },
+  { value: "shopee", label: "Shopee", hint: "Termos com produto, categoria e características" },
 ];
 
-const INTENT_STYLES: Record<KeywordIntent, string> = {
+const SOURCE_STYLES: Record<KeywordSource, string> = {
   Produto: "bg-sky-50 text-sky-700",
+  Categoria: "bg-cyan-50 text-cyan-700",
   Característica: "bg-violet-50 text-violet-700",
-  Compra: "bg-emerald-50 text-emerald-700",
-  Problema: "bg-amber-50 text-amber-700",
   Público: "bg-rose-50 text-rose-700",
+  Canal: "bg-amber-50 text-amber-700",
 };
 
 const STOP_WORDS = new Set([
@@ -109,19 +108,29 @@ function compactProduct(value: string) {
   const words = lower(value)
     .split(" ")
     .filter((word) => word && !STOP_WORDS.has(word));
-  return words.slice(0, 5).join(" ") || lower(value);
+  return words.slice(0, 6).join(" ") || lower(value);
 }
 
 function shortFeature(value: string) {
-  return value.split(" ").slice(0, 5).join(" ");
+  return value.split(" ").slice(0, 6).join(" ");
 }
 
 function shortAudience(value: string) {
   return lower(value)
     .split(/,|\bou\b/)[0]
     .split(" ")
-    .slice(0, 6)
+    .slice(0, 7)
     .join(" ");
+}
+
+function channelTerms(target: Target, product: string): KeywordItem[] {
+  if (target === "mercado-livre") {
+    return [{ term: `${product} mercado livre`, source: "Canal" }];
+  }
+  if (target === "shopee") {
+    return [{ term: `${product} shopee`, source: "Canal" }];
+  }
+  return [];
 }
 
 function createKeywordResult(input: KeywordInput, variation: number): KeywordResult {
@@ -129,96 +138,52 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
   const category = lower(input.category);
   const features = parseList(input.features).map(shortFeature);
   const audience = shortAudience(input.audience);
-  const f1 = features[variation % Math.max(features.length, 1)] || "características informadas";
-  const f2 = features[(variation + 1) % Math.max(features.length, 1)] || "uso diário";
-  const f3 = features[(variation + 2) % Math.max(features.length, 1)] || "diferenciais do produto";
+  const safeFeature = (offset: number) =>
+    features.length > 0 ? features[(variation + offset) % features.length] : "";
+  const f1 = safeFeature(0);
+  const f2 = safeFeature(1);
+  const f3 = safeFeature(2);
 
   const primary = unique([
-    { term: product, intent: "Produto" },
-    { term: category, intent: "Produto" },
-    { term: `${product} ${f1}`, intent: "Característica" },
-    { term: `comprar ${product}`, intent: "Compra" },
-    { term: `${product} preço`, intent: "Compra" },
-  ]).slice(0, 5);
-
-  const channelSecondary: Record<Target, KeywordItem[]> = {
-    todos: [
-      { term: `${product} online`, intent: "Compra" },
-      { term: `${product} para uso diário`, intent: "Produto" },
-    ],
-    google: [
-      { term: `melhor ${product}`, intent: "Compra" },
-      { term: `${product} vale a pena`, intent: "Compra" },
-      { term: `como escolher ${product}`, intent: "Problema" },
-    ],
-    loja: [
-      { term: `${category} comprar online`, intent: "Compra" },
-      { term: `${product} ${f1}`, intent: "Característica" },
-      { term: `${product} ficha técnica`, intent: "Produto" },
-    ],
-    "mercado-livre": [
-      { term: `${product} mercado livre`, intent: "Compra" },
-      { term: `${product} ${f1}`, intent: "Característica" },
-      { term: `${product} ${category}`, intent: "Produto" },
-    ],
-    shopee: [
-      { term: `${product} shopee`, intent: "Compra" },
-      { term: `${product} ${f1}`, intent: "Característica" },
-      { term: `${product} ${category}`, intent: "Produto" },
-    ],
-  };
+    { term: product, source: "Produto" },
+    { term: category, source: "Categoria" },
+    { term: `${product} ${category}`, source: "Categoria" },
+    ...(f1 ? [{ term: `${product} ${f1}`, source: "Característica" as const }] : []),
+    ...channelTerms(input.target, product),
+  ]).slice(0, 6);
 
   const secondary = unique([
-    { term: `${product} ${f1}`, intent: "Característica" },
-    { term: `${product} ${f2}`, intent: "Característica" },
-    { term: `${product} ${f3}`, intent: "Característica" },
-    { term: `${category} ${f1}`, intent: "Característica" },
-    ...(audience ? [{ term: `${product} para ${audience}`, intent: "Público" as const }] : []),
-    ...channelSecondary[input.target],
+    ...(f1 ? [{ term: `${product} ${f1}`, source: "Característica" as const }] : []),
+    ...(f2 ? [{ term: `${product} ${f2}`, source: "Característica" as const }] : []),
+    ...(f3 ? [{ term: `${product} ${f3}`, source: "Característica" as const }] : []),
+    ...(f1 ? [{ term: `${category} ${f1}`, source: "Característica" as const }] : []),
+    ...(audience ? [{ term: `${product} para ${audience}`, source: "Público" as const }] : []),
+    ...channelTerms(input.target, product),
   ]).slice(0, 8);
-
-  const channelLongTail: Record<Target, KeywordItem[]> = {
-    todos: [
-      { term: `onde comprar ${product} com bom preço`, intent: "Compra" },
-      { term: `${product} de qualidade para uso diário`, intent: "Compra" },
-    ],
-    google: [
-      { term: `qual o melhor ${product} para comprar`, intent: "Compra" },
-      { term: `como escolher ${product} de qualidade`, intent: "Problema" },
-      { term: `${product} vale a pena para uso diário`, intent: "Problema" },
-    ],
-    loja: [
-      { term: `comprar ${product} online`, intent: "Compra" },
-      { term: `${product} com ${f1} e ${f2}`, intent: "Característica" },
-    ],
-    "mercado-livre": [
-      { term: `comprar ${product} no mercado livre`, intent: "Compra" },
-      { term: `${product} ${f1} mercado livre`, intent: "Característica" },
-    ],
-    shopee: [
-      { term: `comprar ${product} na shopee`, intent: "Compra" },
-      { term: `${product} ${f1} shopee`, intent: "Característica" },
-    ],
-  };
 
   const longTail = unique([
-    { term: `${product} com ${f1} e ${f2}`, intent: "Característica" },
-    { term: `${product} ${f1} para uso diário`, intent: "Característica" },
-    ...(audience
-      ? [
-          { term: `melhor ${product} para ${audience}`, intent: "Público" as const },
-          { term: `${product} com ${f1} para ${audience}`, intent: "Público" as const },
-        ]
+    ...(f1 && f2
+      ? [{ term: `${product} ${f1} ${f2}`, source: "Característica" as const }]
       : []),
-    ...channelLongTail[input.target],
+    ...(f1
+      ? [{ term: `${product} ${category} ${f1}`, source: "Característica" as const }]
+      : []),
+    ...(f2
+      ? [{ term: `${product} ${category} ${f2}`, source: "Característica" as const }]
+      : []),
+    ...(audience && f1
+      ? [{ term: `${product} ${f1} para ${audience}`, source: "Público" as const }]
+      : []),
+    ...(audience
+      ? [{ term: `${product} para ${audience}`, source: "Público" as const }]
+      : []),
+    ...channelTerms(input.target, product).map((item) => ({
+      ...item,
+      term: f1 ? `${item.term} ${f1}` : item.term,
+    })),
   ]).slice(0, 8);
 
-  const negatives = ["grátis", "download", "usado", "conserto", "manual pdf"].filter((term) => {
-    const text = `${input.product} ${input.features}`.toLocaleLowerCase("pt-BR");
-    return !text.includes(term);
-  });
-
-  return { primary, secondary, longTail, negatives };
+  return { primary, secondary, longTail };
 }
 
 function KeywordCard({
@@ -257,9 +222,9 @@ function KeywordCard({
             <div className="min-w-0">
               <p className="text-sm font-medium text-ink-soft">{item.term}</p>
               <span
-                className={`mt-1.5 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${INTENT_STYLES[item.intent]}`}
+                className={`mt-1.5 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${SOURCE_STYLES[item.source]}`}
               >
-                {item.intent}
+                {item.source}
               </span>
             </div>
             <CopyButton value={item.term} />
@@ -303,12 +268,11 @@ export function ProductKeywordsTool() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <span className="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                ✓ Estratégia pronta
+                ✓ Sugestões organizadas
               </span>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight">Suas palavras-chave estão organizadas</h3>
-              <p className="mt-1.5 text-sm text-muted">
-                Lista criada para <strong className="font-medium text-ink-soft">{input.product}</strong>. Use apenas os
-                termos que descrevem o produto com verdade.
+              <h3 className="mt-3 text-2xl font-semibold tracking-tight">Combinações para revisar</h3>
+              <p className="mt-1.5 max-w-2xl text-sm leading-6 text-muted">
+                Os termos abaixo são montados somente a partir do produto, categoria, público, canal e características que você informou. O AnunciaAI não consulta volume de busca, tendências, concorrência nem dados internos do Google ou dos marketplaces.
               </p>
             </div>
             <CopyButton value={allKeywords} label="Copiar tudo" size="md" variant="solid" />
@@ -320,7 +284,7 @@ export function ProductKeywordsTool() {
               onClick={() => setVariation((current) => current + 1)}
               className="rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600"
             >
-              Gerar novas variações
+              Gerar outras combinações
             </button>
             <button
               type="button"
@@ -334,125 +298,99 @@ export function ProductKeywordsTool() {
 
         <KeywordCard
           index={1}
-          title="Palavras-chave principais"
-          hint="Termos centrais para título, categoria e início da descrição"
+          title="Termos principais"
+          hint="Produto, categoria e combinação central para você avaliar"
           items={result.primary}
         />
         <KeywordCard
           index={2}
-          title="Palavras-chave secundárias"
-          hint="Variações com características, público e intenção comercial"
+          title="Combinações com características"
+          hint="Variações montadas a partir dos diferenciais que você informou"
           items={result.secondary}
         />
         <KeywordCard
           index={3}
-          title="Palavras-chave de cauda longa"
-          hint="Buscas específicas que revelam melhor o que a pessoa procura"
+          title="Combinações específicas"
+          hint="Termos mais longos que juntam produto, características, público ou canal"
           items={result.longTail}
         />
-
-        <section className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h4 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-ink">
-                Termos negativos para campanhas
-              </h4>
-              <p className="mt-1.5 text-xs text-muted">
-                Sugestões para evitar cliques sem intenção de compra. Revise antes de usar em anúncios pagos.
-              </p>
-            </div>
-            <CopyButton value={result.negatives.join("\n")} label="Copiar termos" />
-          </div>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {result.negatives.map((term) => (
-              <li key={term} className="rounded-full border border-line-strong bg-canvas px-3 py-1.5 text-xs text-muted">
-                − {term}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-800">
-          Esta ferramenta gera ideias com base no seu briefing. Ela não informa volume de busca, concorrência ou
-          tendência em tempo real.
-        </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <form onSubmit={handleSubmit} className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Encontre palavras-chave para o produto</h3>
-          <p className="mt-1 text-sm text-muted">Preencha o briefing e receba os termos separados por importância.</p>
+          <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Crie sugestões de palavras-chave</h3>
+          <p className="mt-1.5 text-sm text-muted">
+            Informe o produto e receba combinações derivadas dos dados fornecidos para revisar.
+          </p>
         </div>
         <button
           type="button"
           onClick={() => {
             setInput(EXAMPLE_INPUT);
+            setGenerated(false);
             setError("");
           }}
-          className="rounded-lg border border-line-strong bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition-colors hover:border-brand-500 hover:text-brand-600"
+          className="rounded-xl border border-line-strong bg-white px-3 py-2 text-xs font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600"
         >
-          Preencher com exemplo
+          Preencher exemplo
         </button>
       </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <label className="sm:col-span-2 text-sm font-medium text-ink">
-          Nome ou tipo de produto <span className="text-brand-600">*</span>
+      <div className="mt-7 grid gap-5 sm:grid-cols-2">
+        <label className="text-sm font-medium text-ink">
+          Nome do produto <span className="text-brand-600">*</span>
           <input
-            className="field mt-1.5"
             value={input.product}
             onChange={(event) => update("product", event.target.value)}
+            className="field mt-1.5"
             placeholder="Ex: Garrafa térmica de inox 1 litro"
-            maxLength={120}
           />
         </label>
+
         <label className="text-sm font-medium text-ink">
           Categoria <span className="text-brand-600">*</span>
           <input
-            className="field mt-1.5"
             value={input.category}
             onChange={(event) => update("category", event.target.value)}
+            className="field mt-1.5"
             placeholder="Ex: Garrafas e acessórios"
-            maxLength={80}
           />
         </label>
-        <label className="text-sm font-medium text-ink">
-          Público-alvo <span className="text-muted">(opcional)</span>
+
+        <label className="text-sm font-medium text-ink sm:col-span-2">
+          Público <span className="text-xs font-normal text-muted">(opcional)</span>
           <input
-            className="field mt-1.5"
             value={input.audience}
             onChange={(event) => update("audience", event.target.value)}
-            placeholder="Ex: Pessoas que treinam ou viajam"
-            maxLength={140}
+            className="field mt-1.5"
+            placeholder="Ex: Pessoas que trabalham fora, treinam ou viajam"
           />
         </label>
-        <label className="sm:col-span-2 text-sm font-medium text-ink">
+
+        <label className="text-sm font-medium text-ink sm:col-span-2">
           Características e diferenciais <span className="text-brand-600">*</span>
           <textarea
-            rows={4}
-            className="field mt-1.5 resize-y"
             value={input.features}
             onChange={(event) => update("features", event.target.value)}
-            placeholder="Ex: tampa antivazamento, aço inox, mantém gelada por 24 horas..."
-            maxLength={1000}
+            className="field mt-1.5 min-h-28 resize-y"
+            placeholder="Ex: mantém 12h quente, tampa antivazamento, sem BPA..."
           />
-          <span className="mt-1.5 block text-xs font-normal text-muted">Separe as características por vírgulas.</span>
         </label>
       </div>
 
-      <fieldset className="mt-6">
-        <legend className="mb-2.5 text-sm font-medium text-ink">Onde as palavras serão usadas?</legend>
-        <div className="grid gap-2 sm:grid-cols-5">
+      <fieldset className="mt-7">
+        <legend className="text-sm font-medium text-ink">Onde você pretende usar as sugestões?</legend>
+        <div className="mt-3 grid gap-2 sm:grid-cols-5">
           {TARGETS.map((target) => {
             const active = input.target === target.value;
             return (
               <label
                 key={target.value}
-                className={`cursor-pointer rounded-xl border px-3 py-3 transition-colors ${
+                className={`cursor-pointer rounded-xl border px-3 py-3 text-center transition-colors ${
                   active ? "border-brand-500 bg-brand-50" : "border-line-strong bg-white hover:border-brand-300"
                 }`}
               >
@@ -464,15 +402,17 @@ export function ProductKeywordsTool() {
                   onChange={() => update("target", target.value)}
                   className="sr-only"
                 />
-                <span className={`block text-sm font-semibold ${active ? "text-brand-700" : "text-ink"}`}>
-                  {target.label}
-                </span>
-                <span className="mt-0.5 block text-[11px] leading-snug text-muted">{target.hint}</span>
+                <span className="block text-xs font-semibold text-ink">{target.label}</span>
+                <span className="mt-1 block text-[10px] leading-4 text-muted">{target.hint}</span>
               </label>
             );
           })}
         </div>
       </fieldset>
+
+      <div className="mt-6 rounded-xl border border-line bg-canvas p-4 text-xs leading-5 text-muted">
+        Esta ferramenta não mede volume de pesquisa, posição, dificuldade, CPC ou tendências. As sugestões são combinações dos dados fornecidos e devem ser validadas antes do uso.
+      </div>
 
       {error ? <p className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
 
@@ -480,7 +420,7 @@ export function ProductKeywordsTool() {
         type="submit"
         className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-600"
       >
-        ✨ Gerar palavras-chave grátis
+        Gerar sugestões grátis
       </button>
       <p className="mt-3 text-center text-xs text-muted">Sem cadastro e sem cartão de crédito.</p>
     </form>
