@@ -21,6 +21,13 @@ const MAX_BODY_BYTES = 2_048;
 const RATE_LIMIT_PRUNE_AT = 5_000;
 const RATE_LIMIT_HARD_CAP = 10_000;
 
+const PUBLIC_STATS_HEADERS = {
+  // O navegador não persiste os dados. A borda da Vercel pode reutilizar a
+  // mesma resposta pública por poucos segundos, reduzindo consultas ao banco.
+  "Cache-Control": "no-store",
+  "Vercel-CDN-Cache-Control": "public, s-maxage=5, stale-while-revalidate=30, stale-if-error=60",
+};
+
 type RateEntry = { count: number; resetAt: number };
 
 const globalForRateLimit = globalThis as typeof globalThis & {
@@ -99,7 +106,7 @@ export async function GET() {
 
     return Response.json(
       { total: totals?.total ?? 0, recent },
-      { headers: { "Cache-Control": "no-store" } },
+      { headers: PUBLIC_STATS_HEADERS },
     );
   } catch {
     return Response.json(
