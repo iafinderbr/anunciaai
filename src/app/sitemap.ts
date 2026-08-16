@@ -18,6 +18,8 @@ const paths = [
   "/como-criar-titulo-para-mercado-livre",
   "/como-preencher-ficha-tecnica-mercado-livre",
   "/como-criar-anuncio-na-shopee",
+  "/como-criar-titulo-para-shopee",
+  "/como-fazer-descricao-para-shopee",
   "/como-criar-anuncio-na-olx",
   "/como-criar-anuncio-no-facebook-marketplace",
   "/como-criar-pagina-de-produto-para-loja-virtual",
