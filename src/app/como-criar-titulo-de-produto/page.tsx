@@ -149,7 +149,7 @@ const questions = [
   {
     question: "A automação de conteúdo pode gerar o título?",
     answer:
-      "Pode criar opções a partir dos dados fornecidos, mas você precisa conferir cada especificação. Se enviar um título gerado por IA ao Google Merchant Center, siga também as regras atuais do atributo structured_title.",
+      "Pode criar opções a partir dos dados fornecidos, mas você precisa conferir cada especificação. Se enviar um título gerados pela ferramenta ao Google Merchant Center, siga também as regras atuais do atributo structured_title.",
   },
 ];
 

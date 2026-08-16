@@ -225,7 +225,7 @@ export function InstagramFaq() {
               Perguntas sobre legendas para Instagram
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar a primeira legenda gerada por IA.
+              O que os vendedores mais perguntam antes de publicar a primeira legenda gerados pela ferramenta.
             </p>
           </div>
 

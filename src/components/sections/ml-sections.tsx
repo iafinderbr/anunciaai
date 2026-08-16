@@ -170,7 +170,7 @@ export function MlFaq() {
               Perguntas sobre anúncios no Mercado Livre
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerado por IA.
+              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerados pela ferramenta.
             </p>
           </div>
 
