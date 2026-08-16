@@ -29,23 +29,23 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-white hover:text-ink"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
+          <Link
             href={ctaHref}
             className="hidden rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 sm:inline-flex"
           >
             Começar grátis
-          </a>
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
@@ -53,7 +53,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
             aria-controls="menu-mobile"
             className="grid size-10 place-items-center rounded-xl border border-line-strong bg-white text-ink md:hidden"
           >
-            <span className="sr-only">Abrir menu</span>
+            <span className="sr-only">{open ? "Fechar menu" : "Abrir menu"}</span>
             <svg aria-hidden="true" viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8">
               {open ? (
                 <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
@@ -69,22 +69,22 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
         <div id="menu-mobile" className="border-t border-line bg-white md:hidden">
           <nav aria-label="Navegação mobile" className="container-page flex flex-col py-2">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-1 py-3 text-sm font-medium text-ink-soft"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a
+            <Link
               href={ctaHref}
               onClick={() => setOpen(false)}
               className="my-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
             >
               Começar grátis
-            </a>
+            </Link>
           </nav>
         </div>
       ) : null}
