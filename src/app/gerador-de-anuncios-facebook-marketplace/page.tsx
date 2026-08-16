@@ -87,9 +87,7 @@ export default function FacebookMarketplacePage() {
           <div className="container-page relative pb-4 pt-8 sm:pt-12">
             <nav aria-label="Trilha de navegação" className="mx-auto max-w-3xl">
               <ol className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                <li>
-                  <Link href="/" className="transition-colors hover:text-ink">Início</Link>
-                </li>
+                <li><Link href="/" className="transition-colors hover:text-ink">Início</Link></li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="font-medium text-ink-soft">Gerador para Facebook Marketplace</li>
               </ol>
@@ -111,12 +109,8 @@ export default function FacebookMarketplacePage() {
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <a href="#ferramenta" className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto">
-                  Gerar meu anúncio grátis
-                </a>
-                <a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">
-                  Ver como funciona
-                </a>
+                <a href="#ferramenta" className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto">Gerar meu anúncio grátis</a>
+                <a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">Ver como funciona</a>
               </div>
 
               <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
@@ -142,25 +136,37 @@ export default function FacebookMarketplacePage() {
         <MarketplaceStructure />
         <MarketplaceFeatures />
         <MarketplaceMistakes />
-        <PricingSection />
-        <MarketplaceFaq />
 
-        <section aria-labelledby="marketplace-guia" className="border-t border-line bg-white">
+        <section aria-labelledby="marketplace-guias-titulo" className="border-y border-line bg-white">
           <div className="container-page py-12 sm:py-16">
-            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
-              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div className="max-w-2xl">
-                  <h2 id="marketplace-guia" className="text-xl font-semibold sm:text-2xl">Aprenda como criar um classificado no Facebook Marketplace</h2>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">Veja fotos, título, preço, categoria, condição, descrição, políticas e revisão com base na Central de Ajuda da Meta.</p>
+            <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
+              <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias do Facebook Marketplace</p>
+                  <h2 id="marketplace-guias-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">Aprenda cada parte do classificado</h2>
+                  <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">Veja o passo a passo completo ou aprofunde título e descrição antes de usar a ferramenta.</p>
                 </div>
-                <Link href="/como-criar-anuncio-no-facebook-marketplace" className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                  Ler o guia do Marketplace
+                <Link href="/como-criar-anuncio-no-facebook-marketplace" className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Guia completo do anúncio</Link>
+              </div>
+
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link href="/como-criar-titulo-para-facebook-marketplace" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400">
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Título</span>
+                  <span className="mt-2 block font-semibold text-ink">Como criar título para Marketplace</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Fórmula, exemplos, condição do item e checklist.</span>
+                </Link>
+                <Link href="/como-fazer-descricao-para-facebook-marketplace" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400">
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span>
+                  <span className="mt-2 block font-semibold text-ink">Como fazer descrição para Marketplace</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Modelo editável, condição, defeitos, itens incluídos e políticas.</span>
                 </Link>
               </div>
             </div>
           </div>
         </section>
+
+        <PricingSection />
+        <MarketplaceFaq />
 
         <section aria-labelledby="marketplace-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
