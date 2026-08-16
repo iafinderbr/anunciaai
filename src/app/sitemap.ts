@@ -24,6 +24,8 @@ const paths = [
   "/como-criar-titulo-de-produto",
   "/como-escolher-palavras-chave-para-produtos",
   "/como-criar-nome-de-produto",
+  "/privacidade",
+  "/termos",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
