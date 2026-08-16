@@ -135,16 +135,18 @@ function buildBenefits(features: string[], input: GeneratorInput, variant: numbe
   const contextual: string[] = [];
 
   if (audience) {
-    contextual.push(`Indicado para ${lowerFirst(audience)}, conforme informado`);
+    contextual.push(`Público informado: ${lowerFirst(audience)}`);
   }
   if (features.length > 0) {
-    contextual.push(`${upperFirst(features[0])} — o detalhe que mais pesa na hora da escolha`);
+    contextual.push(`${upperFirst(features[0])} — característica destacada pelo vendedor`);
   }
   if (input.category) {
     contextual.push(`Informações organizadas para a categoria ${lowerFirst(input.category)}`);
   }
   const explicit = features.map((feature) => upperFirst(feature));
 
+  // Mantemos a ordem estável; variant altera títulos e textos, não os fatos-base.
+  void variant;
   return unique([...matched, ...explicit, ...contextual]).slice(0, 5);
 }
 
@@ -182,7 +184,7 @@ function buildSpecs(features: string[], input: GeneratorInput): SpecItem[] {
   const price = parsePrice(input.price);
   if (price.formatted) pushSpec("Preço", price.formatted);
   if (price.installments) pushSpec("Parcelamento", price.installments);
-  if (input.audience) pushSpec("Indicado para", input.audience);
+  if (input.audience) pushSpec("Público informado", input.audience);
   pushSpec("Canal de venda", CHANNEL_LABEL[input.channel]);
 
   return specs;
@@ -198,7 +200,7 @@ function shortFeatures(features: string[]): string[] {
     .map((feature) => clean(feature.replace(/\.$/, "")));
 }
 
-/** Infere o estado de conservação para anúncios de classificado (OLX e Facebook Marketplace). */
+/** Infere o estado de conservação somente quando ele foi informado nas características. */
 function inferCondition(features: string[]): string | null {
   for (const feature of features) {
     for (const rule of CONDITION_RULES) {
@@ -222,12 +224,16 @@ function buildTitles(features: string[], input: GeneratorInput, variant: number)
 
   const build = (channel: Channel): string[] => {
     switch (channel) {
-      case "mercado-livre":
+      case "mercado-livre": {
+        // 80 é apenas um limite editorial do nosso preview para manter o título
+        // legível. Não é apresentado como uma regra universal do Mercado Livre.
+        const previewMax = 80;
         return [
-          truncate(titleCase([product, f1, f2].filter(Boolean).join(" ")), 60),
-          truncate(titleCase([product, category, f1].filter(Boolean).join(" ")), 60),
-          truncate(titleCase([product, f2 || f1, f3 || category].filter(Boolean).join(" ")), 60),
+          truncate(titleCase([product, f1, f2].filter(Boolean).join(" ")), previewMax),
+          truncate(titleCase([product, category, f1].filter(Boolean).join(" ")), previewMax),
+          truncate(titleCase([product, f2 || f1, f3 || category].filter(Boolean).join(" ")), previewMax),
         ];
+      }
       case "shopee":
         return [
           truncate(`${titleCase(product)} ${[f1, f2, category].filter(Boolean).map(upperFirst).join(" ")} ✨`, 100),
@@ -237,7 +243,7 @@ function buildTitles(features: string[], input: GeneratorInput, variant: number)
       case "loja-virtual":
         return [
           truncate(`${titleCase(product)}${f1 ? ` — ${upperFirst(f1)}` : ""}${category ? ` | ${titleCase(category)}` : ""}`, 70),
-          truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""} | Comprar Online${price.formatted ? ` por ${price.formatted}` : ""}`, 70),
+          truncate(`${titleCase(product)}${category ? ` ${titleCase(category)}` : ""}${price.formatted ? ` | ${price.formatted}` : ""}`, 70),
           truncate(`${titleCase(product)}${f1 ? `: ${lowerFirst(f1)}` : ""}${f2 ? ` e ${lowerFirst(f2)}` : ""}`, 70),
         ];
       case "instagram":
@@ -295,10 +301,10 @@ function buildDescription(features: string[], benefits: string[], input: Generat
 
   if (input.channel === "instagram") {
     blocks.push(`${titleCase(product)}, ${modifier}. ${opener}.`);
-    if (audience) blocks.push(`Indicado para ${audience}, conforme o público informado pelo vendedor.`);
+    if (audience) blocks.push(`Público informado: ${audience}.`);
     if (features.length) blocks.push(features.slice(0, 5).map((feature) => `✅ ${upperFirst(feature)}`).join("\n"));
-    if (price.formatted) blocks.push(`💰 ${price.formatted}${price.installments ? ` ou ${price.installments}` : ""}`);
-    blocks.push(`${cta} Link na bio 👆`);
+    if (price.formatted) blocks.push(`💰 Preço informado: ${price.formatted}.`);
+    blocks.push(cta);
     return blocks.join("\n\n");
   }
 
@@ -306,19 +312,19 @@ function buildDescription(features: string[], benefits: string[], input: Generat
     const condition = inferCondition(features);
     const detailFeatures = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
     blocks.push(
-      `${opener}. Estou anunciando ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? ` — ideal para ${audience}` : ""}.`,
+      `${opener}. Estou anunciando ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? `. Público informado: ${audience}` : ""}.`,
     );
     if (detailFeatures.length) {
       blocks.push(
         `CARACTERÍSTICAS E DIFERENCIAIS\n${detailFeatures.map((feature) => `• ${upperFirst(feature)}`).join("\n")}`,
       );
     }
-    blocks.push(`BENEFÍCIOS\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
+    blocks.push(`BENEFÍCIOS E INFORMAÇÕES\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
     if (condition) {
-      blocks.push(`ESTADO DE CONSERVAÇÃO\n${condition}.`);
+      blocks.push(`ESTADO DE CONSERVAÇÃO INFORMADO\n${condition}.`);
     }
     if (price.formatted) {
-      blocks.push(`VALOR\n${price.formatted}.`);
+      blocks.push(`VALOR INFORMADO\n${price.formatted}.`);
     }
     blocks.push(pick(OLX_CTAS, variant));
     return blocks.join("\n\n");
@@ -328,19 +334,19 @@ function buildDescription(features: string[], benefits: string[], input: Generat
     const condition = inferCondition(features);
     const detailFeatures = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
     blocks.push(
-      `${opener}. Estou vendendo ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? ` — ideal para ${audience}` : ""}.`,
+      `${opener}. Estou vendendo ${product}${condition ? `, ${condition.toLocaleLowerCase("pt-BR")}` : ""}${audience ? `. Público informado: ${audience}` : ""}.`,
     );
     if (detailFeatures.length) {
       blocks.push(
         `SOBRE O PRODUTO\n${detailFeatures.map((feature) => `• ${upperFirst(feature)}`).join("\n")}`,
       );
     }
-    blocks.push(`POR QUE VALE A PENA\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
+    blocks.push(`BENEFÍCIOS E INFORMAÇÕES\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
     if (condition) {
-      blocks.push(`ESTADO DE CONSERVAÇÃO\n${condition}.`);
+      blocks.push(`ESTADO DE CONSERVAÇÃO INFORMADO\n${condition}.`);
     }
     if (price.formatted) {
-      blocks.push(`VALOR\n${price.formatted}.`);
+      blocks.push(`VALOR INFORMADO\n${price.formatted}.`);
     }
     blocks.push(pick(MARKETPLACE_CTAS, variant));
     return blocks.join("\n\n");
@@ -348,22 +354,21 @@ function buildDescription(features: string[], benefits: string[], input: Generat
 
   blocks.push(
     `${opener}. Conheça ${product}, ${modifier}${category ? `, na categoria ${category}` : ""}. ` +
-      `${audience ? `Indicado para ${audience}, ele reúne` : "Reúne"} as características informadas pelo vendedor em uma apresentação organizada.`,
+      `${audience ? `Público informado: ${audience}. O produto reúne` : "Reúne"} as características fornecidas pelo vendedor em uma apresentação organizada.`,
   );
 
   if (features.length) {
     blocks.push(
-      `POR QUE ESCOLHER ${product.toLocaleUpperCase("pt-BR")}\n` +
+      `CARACTERÍSTICAS DE ${product.toLocaleUpperCase("pt-BR")}\n` +
         features.map((feature) => `✔ ${upperFirst(feature)}`).join("\n"),
     );
   }
 
-  blocks.push(`PRINCIPAIS BENEFÍCIOS\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
+  blocks.push(`BENEFÍCIOS E INFORMAÇÕES\n${benefits.map((benefit) => `• ${benefit}`).join("\n")}`);
 
   if (audience) {
     blocks.push(
-      `PARA QUEM É INDICADO\nSe você se encaixa no perfil de ${audience}, esse é o tipo de produto que entra na rotina e não sai mais. ` +
-        `Uso simples, resultado consistente e aquela sensação de compra bem feita.`,
+      `PÚBLICO INFORMADO\n${upperFirst(audience)}. Confira as características e avalie se elas atendem ao uso pretendido.`,
     );
   }
 
@@ -396,11 +401,11 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
     const highlights = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
     if (highlights.length) {
       olxLines.push("");
-      olxLines.push(`Destaques: ${highlights.slice(0, 5).map(lowerFirst).join(", ")}.`);
+      olxLines.push(`Destaques informados: ${highlights.slice(0, 5).map(lowerFirst).join(", ")}.`);
     }
     if (price.formatted) {
       olxLines.push("");
-      olxLines.push(`Valor: ${price.formatted}.`);
+      olxLines.push(`Valor informado: ${price.formatted}.`);
     }
     olxLines.push("");
     olxLines.push(pick(OLX_CTAS, variant, 1));
@@ -420,11 +425,11 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
     const details = features.filter((feature) => !CONDITION_RULES.some((rule) => rule.match.test(feature)));
     if (details.length) {
       mpLines.push("");
-      mpLines.push(`Detalhes do produto: ${details.slice(0, 5).map(lowerFirst).join(", ")}.`);
+      mpLines.push(`Detalhes informados: ${details.slice(0, 5).map(lowerFirst).join(", ")}.`);
     }
     if (price.formatted) {
       mpLines.push("");
-      mpLines.push(`Valor: ${price.formatted}.`);
+      mpLines.push(`Valor informado: ${price.formatted}.`);
     }
     mpLines.push("");
     mpLines.push(pick(MARKETPLACE_CTAS, variant, 1));
@@ -443,7 +448,7 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
   lines.push(pick(hooks, variant));
   lines.push("");
   lines.push(
-    `Indicado para ${audience || "quem procura esse tipo de produto"}, ${product} reúne as características informadas pelo vendedor. ` +
+    `${audience ? `Público informado: ${audience}. ` : ""}${product} reúne as características informadas pelo vendedor. ` +
       `${pick(TONE_OPENERS[input.tone], variant, 2)}.`,
   );
   lines.push("");
@@ -451,36 +456,51 @@ function buildAdCopy(features: string[], benefits: string[], input: GeneratorInp
 
   if (features.length > 3) {
     lines.push("");
-    lines.push(`E ainda: ${features.slice(3, 6).map(lowerFirst).join(", ")}.`);
+    lines.push(`Outras características informadas: ${features.slice(3, 6).map(lowerFirst).join(", ")}.`);
   }
 
-  lines.push("");
   if (price.formatted) {
+    lines.push("");
     lines.push(`${useEmoji ? "💰 " : ""}Preço informado: ${price.formatted}.`);
   }
   lines.push("");
   lines.push(`${useEmoji ? "👉 " : ""}${cta}`);
 
   if (input.channel === "instagram") {
-    lines.push("");
-    lines.push(buildHashtags(input).join(" "));
+    const hashtags = buildHashtags(input);
+    if (hashtags.length) {
+      lines.push("");
+      lines.push(hashtags.join(" "));
+    }
   }
 
   return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
 }
 
-function buildHashtags(input: GeneratorInput): string[] {
-  const source = [input.productName, input.category].join(" ");
-  const words = source
+function normalizeHashtagWords(value: string): string[] {
+  return clean(value)
     .toLocaleLowerCase("pt-BR")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter((word) => word.length > 2 && !SMALL_WORDS.has(word));
+}
 
-  const tags = unique(words.map((word) => `#${word}`));
-  return [...tags.slice(0, 5), "#lojaonline", "#produtos", "#compreonline"].slice(0, 8);
+function phraseHashtag(value: string): string {
+  const compact = normalizeHashtagWords(value).join("");
+  return compact ? `#${compact}` : "";
+}
+
+function buildHashtags(input: GeneratorInput): string[] {
+  const productWords = normalizeHashtagWords(input.productName);
+  const categoryWords = normalizeHashtagWords(input.category);
+  const phraseTags = [phraseHashtag(input.productName), phraseHashtag(input.category)].filter(Boolean);
+  const wordTags = unique([...productWords, ...categoryWords].map((word) => `#${word}`));
+
+  // Só usamos termos derivados do produto e da categoria fornecidos pelo usuário.
+  // Não adicionamos hashtags genéricas como #viral ou #compreonline por padrão.
+  return unique([...phraseTags, ...wordTags]).slice(0, 8);
 }
 
 function buildKeywords(features: string[], input: GeneratorInput): string[] {
@@ -511,7 +531,7 @@ function buildSeo(features: string[], input: GeneratorInput, variant: number): {
 
   const titleOptions = [
     `${product} ${highlight} | Veja os Detalhes`,
-    `${product}${category ? ` ${titleCase(category)}` : ""}${price.formatted ? ` por ${price.formatted}` : ""} | Comprar Online`,
+    `${product}${category ? ` ${titleCase(category)}` : ""}${price.formatted ? ` | ${price.formatted}` : ""} | Informações`,
     `${product}${shorts[0] ? ` ${upperFirst(shorts[0])}` : ""} | Informações do Produto`,
   ].map((option) => truncate(option, 60));
 
@@ -535,15 +555,15 @@ function buildSeo(features: string[], input: GeneratorInput, variant: number): {
     ]),
     fit([
       `Procurando ${lowerFirst(product)}?`,
-      shorts[0] ? `${upperFirst(shorts[0])}.` : "Veja os detalhes e diferenciais informados pelo vendedor.",
+      shorts[0] ? `${upperFirst(shorts[0])}.` : "Veja os detalhes e características informados pelo vendedor.",
       price.formatted ? `Preço informado: ${price.formatted}.` : "",
       "Compare as informações.",
     ]),
     fit([
-      `${product}:`,
-      input.audience ? `ideal para ${lowerFirst(input.audience)}.` : "",
+      `${product}.`,
+      input.audience ? `Público informado: ${lowerFirst(input.audience)}.` : "",
       shorts[0] ? `${upperFirst(shorts[0])}.` : "",
-      "Veja características, benefícios e informações do produto.",
+      "Veja características e informações do produto.",
     ]),
   ];
 
