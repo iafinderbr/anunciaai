@@ -14,6 +14,7 @@ const paths = [
   "/gerador-de-anuncios-para-loja-virtual",
   "/gerador-de-anuncios-facebook-marketplace",
   "/como-criar-anuncio-no-mercado-livre",
+  "/como-fazer-descricao-para-mercado-livre",
   "/como-criar-anuncio-na-shopee",
   "/como-criar-anuncio-na-olx",
   "/como-criar-anuncio-no-facebook-marketplace",
