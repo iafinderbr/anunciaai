@@ -1,9 +1,19 @@
-import { desc } from "drizzle-orm";
-import { db } from "@/db";
-import { ensureDatabaseSchema } from "@/db/ensure-schema";
-import { generations } from "@/db/schema";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import { GENERATION_EVENT } from "@/components/live-stats";
 import { CHANNEL_LABEL } from "@/lib/generator-data";
 import type { Channel } from "@/lib/types";
+
+interface RecentGeneration {
+  id: number;
+  channel: string;
+  createdAt: string;
+}
+
+interface StatsResponse {
+  recent?: RecentGeneration[];
+}
 
 function timeAgo(date: Date): string {
   const diff = Date.now() - date.getTime();
@@ -16,23 +26,29 @@ function timeAgo(date: Date): string {
   return days === 1 ? "ontem" : `há ${days} dias`;
 }
 
-export async function RecentStrip() {
-  let rows: { id: number; channel: string; createdAt: Date }[] = [];
+export function RecentStrip() {
+  const [rows, setRows] = useState<RecentGeneration[]>([]);
 
-  try {
-    await ensureDatabaseSchema();
-    rows = await db
-      .select({
-        id: generations.id,
-        channel: generations.channel,
-        createdAt: generations.createdAt,
-      })
-      .from(generations)
-      .orderBy(desc(generations.createdAt))
-      .limit(6);
-  } catch {
-    rows = [];
-  }
+  const load = useCallback(async () => {
+    try {
+      const response = await fetch("/api/generations", { cache: "no-store" });
+      if (!response.ok) return;
+      const data = (await response.json()) as StatsResponse;
+      if (Array.isArray(data.recent)) setRows(data.recent);
+    } catch {
+      // silencioso: esta faixa é apenas informativa
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(), 0);
+    const handler = () => void load();
+    window.addEventListener(GENERATION_EVENT, handler);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener(GENERATION_EVENT, handler);
+    };
+  }, [load]);
 
   if (rows.length === 0) return null;
 
