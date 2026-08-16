@@ -28,6 +28,8 @@ const PUBLIC_STATS_HEADERS = {
   "Vercel-CDN-Cache-Control": "public, s-maxage=5, stale-while-revalidate=30, stale-if-error=60",
 };
 
+const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
+
 type RateEntry = { count: number; resetAt: number };
 
 const globalForRateLimit = globalThis as typeof globalThis & {
@@ -89,7 +91,24 @@ function isAllowedOrigin(request: Request): boolean {
   }
 }
 
-export async function GET() {
+function hasUnexpectedQuery(request: Request): boolean {
+  try {
+    return new URL(request.url).search.length > 0;
+  } catch {
+    return true;
+  }
+}
+
+export async function GET(request: Request) {
+  // O endpoint não aceita filtros. Rejeitar query strings impede que parâmetros
+  // aleatórios criem chaves diferentes no cache da CDN e forcem consultas extras.
+  if (hasUnexpectedQuery(request)) {
+    return Response.json(
+      { ok: false, error: "unexpected_query" },
+      { status: 400, headers: NO_STORE_HEADERS },
+    );
+  }
+
   try {
     await ensureDatabaseSchema();
 
@@ -111,7 +130,7 @@ export async function GET() {
   } catch {
     return Response.json(
       { total: 0, recent: [] },
-      { status: 200, headers: { "Cache-Control": "no-store" } },
+      { status: 200, headers: NO_STORE_HEADERS },
     );
   }
 }
@@ -121,14 +140,14 @@ export async function POST(request: Request) {
     if (!isAllowedOrigin(request)) {
       return Response.json(
         { ok: false, error: "forbidden_origin" },
-        { status: 403, headers: { "Cache-Control": "no-store" } },
+        { status: 403, headers: NO_STORE_HEADERS },
       );
     }
 
     if (isRateLimited(request)) {
       return Response.json(
         { ok: false, error: "rate_limited" },
-        { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
+        { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
       );
     }
 
@@ -136,7 +155,7 @@ export async function POST(request: Request) {
     if (!contentType.toLowerCase().startsWith("application/json")) {
       return Response.json(
         { ok: false, error: "unsupported_media_type" },
-        { status: 415, headers: { "Cache-Control": "no-store" } },
+        { status: 415, headers: NO_STORE_HEADERS },
       );
     }
 
@@ -144,7 +163,7 @@ export async function POST(request: Request) {
     if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
       return Response.json(
         { ok: false, error: "payload_too_large" },
-        { status: 413, headers: { "Cache-Control": "no-store" } },
+        { status: 413, headers: NO_STORE_HEADERS },
       );
     }
 
@@ -152,7 +171,7 @@ export async function POST(request: Request) {
     if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
       return Response.json(
         { ok: false, error: "payload_too_large" },
-        { status: 413, headers: { "Cache-Control": "no-store" } },
+        { status: 413, headers: NO_STORE_HEADERS },
       );
     }
 
@@ -178,13 +197,13 @@ export async function POST(request: Request) {
 
     return Response.json(
       { ok: true, id: row?.id ?? null },
-      { headers: { "Cache-Control": "no-store" } },
+      { headers: NO_STORE_HEADERS },
     );
   } catch (error) {
     console.error("[generations:post] Falha ao salvar geração", error);
     return Response.json(
       { ok: false },
-      { status: 500, headers: { "Cache-Control": "no-store" } },
+      { status: 500, headers: NO_STORE_HEADERS },
     );
   }
 }
