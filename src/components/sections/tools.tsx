@@ -15,7 +15,7 @@ const tools: ToolCard[] = [
     short: "ML",
     eyebrow: "Marketplace",
     title: "Anúncios para Mercado Livre",
-    description: "Título no limite, descrição, benefícios e SEO no formato certo para publicar.",
+    description: "Organize título, descrição, benefícios, ficha técnica e termos para revisar antes de publicar.",
     featured: true,
   },
   {
@@ -23,7 +23,7 @@ const tools: ToolCard[] = [
     short: "SH",
     eyebrow: "Marketplace",
     title: "Anúncios para Shopee",
-    description: "Crie títulos com palavras-chave e descrições pensadas para vender na Shopee.",
+    description: "Crie uma primeira versão de título, descrição e benefícios para adaptar à sua listagem.",
     featured: true,
   },
   {
@@ -31,49 +31,49 @@ const tools: ToolCard[] = [
     short: "OLX",
     eyebrow: "Classificados",
     title: "Anúncios para OLX",
-    description: "Transforme as informações do item em um classificado claro, direto e convincente.",
+    description: "Transforme as informações do item em uma primeira versão de classificado claro e direto.",
   },
   {
     href: "/gerador-de-anuncios-facebook-marketplace",
     short: "FB",
     eyebrow: "Classificados",
     title: "Facebook Marketplace",
-    description: "Monte um anúncio natural, com estado do produto, destaques e chamada para conversa.",
+    description: "Organize título, estado informado, destaques e chamada para conversa sem inventar condições.",
   },
   {
     href: "/gerador-de-anuncios-para-loja-virtual",
     short: "LV",
     eyebrow: "E-commerce",
     title: "Anúncios para loja virtual",
-    description: "Receba uma página de produto completa, persuasiva e preparada para buscas no Google.",
+    description: "Organize página de produto, descrição, benefícios, ficha técnica e sugestões de SEO para revisar.",
   },
   {
     href: "/gerador-de-descricao-de-produto",
     short: "DE",
     eyebrow: "Conteúdo",
     title: "Descrições de produtos",
-    description: "Converta características soltas em uma descrição organizada, útil e persuasiva.",
+    description: "Converta características informadas em uma descrição organizada e fácil de revisar.",
   },
   {
     href: "/gerador-de-titulos-para-produtos",
     short: "TI",
     eyebrow: "Conteúdo",
     title: "Títulos para produtos",
-    description: "Gere títulos fáceis de entender, com os termos que o comprador realmente procura.",
+    description: "Gere variações claras usando o nome, a categoria e as características informadas.",
   },
   {
     href: "/gerador-de-legendas-para-instagram",
     short: "IG",
     eyebrow: "Redes sociais",
     title: "Legendas para Instagram",
-    description: "Crie legendas com gancho, benefícios, chamada para ação e hashtags relevantes.",
+    description: "Crie uma primeira versão com gancho, benefícios, chamada para ação e hashtags relacionadas ao produto.",
   },
   {
     href: "/gerador-de-nomes-para-produtos",
     short: "NM",
     eyebrow: "Marca",
     title: "Nomes para produtos",
-    description: "Explore nomes curtos e memoráveis em estilos diferentes, com explicação de cada ideia.",
+    description: "Explore ideias de nomes em estilos diferentes e revise disponibilidade e uso antes de escolher.",
     featured: true,
   },
   {
@@ -81,7 +81,7 @@ const tools: ToolCard[] = [
     short: "SEO",
     eyebrow: "Busca",
     title: "Palavras-chave para produtos",
-    description: "Encontre termos principais, secundários e de cauda longa para Google e marketplaces.",
+    description: "Receba sugestões de termos ligados ao produto, à categoria e às características informadas.",
     featured: true,
   },
 ];
@@ -99,7 +99,7 @@ export function ToolsSection() {
               Escolha o que você precisa criar
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-muted">
-              Use um gerador específico para cada canal ou etapa do anúncio. Todas as ferramentas funcionam sem
+              Use um gerador específico para cada canal ou etapa do anúncio. As ferramentas atuais funcionam sem
               cadastro e sem cartão de crédito.
             </p>
           </div>

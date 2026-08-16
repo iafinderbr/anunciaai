@@ -9,17 +9,17 @@ const ADSENSE_CLIENT = "ca-pub-2381421388873161";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
+    default: "AnunciaAI | Gerador de anúncios para produtos",
     template: "%s | AnunciaAI",
   },
   description:
-    "Crie títulos, descrições, benefícios e anúncios para seus produtos usando inteligência artificial. Comece grátis.",
+    "Crie primeiras versões de títulos, descrições, benefícios e anúncios para produtos e revise antes de publicar. Comece grátis.",
   keywords: [
-    "criar anúncio com IA",
+    "gerador de anúncios",
     "descrição de produto",
     "título para Mercado Livre",
     "anúncio Shopee",
-    "copywriting para e-commerce",
+    "conteúdo para e-commerce",
     "gerador de descrição de produto",
   ],
   authors: [{ name: "AnunciaAI" }],
@@ -30,15 +30,15 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE_URL,
     siteName: "AnunciaAI",
-    title: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
+    title: "AnunciaAI | Gerador de anúncios para produtos",
     description:
-      "Crie títulos, descrições, benefícios e anúncios para seus produtos usando inteligência artificial. Comece grátis.",
+      "Organize títulos, descrições, benefícios e anúncios para seus produtos e revise cada bloco antes de publicar.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AnunciaAI | Crie anúncios de produtos com Inteligência Artificial",
+    title: "AnunciaAI | Gerador de anúncios para produtos",
     description:
-      "Crie títulos, descrições, benefícios e anúncios para seus produtos usando inteligência artificial. Comece grátis.",
+      "Organize títulos, descrições, benefícios e anúncios para seus produtos e revise cada bloco antes de publicar.",
   },
   robots: {
     index: true,

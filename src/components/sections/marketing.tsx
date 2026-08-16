@@ -1,13 +1,13 @@
 const trustCards = [
   {
     icon: "⏱️",
-    title: "Economize tempo",
-    text: "Crie conteúdo de produtos em segundos.",
+    title: "Economize etapas",
+    text: "Informe o produto uma vez e organize vários blocos de conteúdo na mesma tela.",
   },
   {
     icon: "🛒",
-    title: "Venda em vários canais",
-    text: "Adapte seu anúncio para diferentes plataformas.",
+    title: "Adapte para vários canais",
+    text: "Use estruturas diferentes como ponto de partida para marketplaces, loja virtual e redes sociais.",
   },
   {
     icon: "🎁",
@@ -23,8 +23,7 @@ export function TrustSection() {
         Feito para quem vende online
       </h2>
       <p className="mx-auto mt-3 max-w-xl text-center text-[15px] text-muted">
-        Do primeiro anúncio ao catálogo inteiro: a ferramenta acompanha o ritmo de quem precisa cadastrar produtos
-        todos os dias.
+        Organize a primeira versão do conteúdo e mantenha a revisão final nas suas mãos.
       </p>
 
       <ul className="mt-10 grid gap-4 md:grid-cols-3">
@@ -45,15 +44,15 @@ export function TrustSection() {
 const steps = [
   {
     title: "Informe seu produto",
-    text: "Nome, categoria, preço, público e características. Pode ser em tópicos rápidos — a IA organiza o resto.",
+    text: "Preencha nome, categoria, preço, público e características que você consegue confirmar.",
   },
   {
-    title: "Deixe a IA criar",
-    text: "Em segundos você recebe título, descrição, benefícios, ficha de características, anúncio e SEO.",
+    title: "Gere a primeira versão",
+    text: "A ferramenta organiza os dados em título, descrição, benefícios, ficha de características, anúncio e sugestões de SEO.",
   },
   {
-    title: "Copie e publique",
-    text: "Um clique copia cada bloco no formato certo para Mercado Livre, Shopee, loja virtual ou Instagram.",
+    title: "Revise e adapte",
+    text: "Confira especificações, preço, condições e regras atuais do canal antes de copiar e publicar qualquer bloco.",
   },
 ];
 
@@ -64,10 +63,10 @@ export function HowItWorksSection() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
           <h2 id="como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Três passos entre o produto na caixa e o anúncio no ar
+            Três passos para organizar a primeira versão
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Nada de tela complicada. Você preenche, gera e publica — sem sair da mesma página.
+            Você informa, gera e revisa sem precisar montar cada bloco do zero.
           </p>
         </div>
 
@@ -89,28 +88,28 @@ export function HowItWorksSection() {
 
 const features = [
   {
-    title: "Títulos no limite de cada canal",
-    text: "60 caracteres no Mercado Livre, palavras-chave na Shopee, título SEO na loja virtual. Cada canal tem sua regra e a ferramenta respeita.",
+    title: "Títulos adaptados ao canal",
+    text: "A ferramenta muda a estrutura do título conforme o canal e mantém um preview legível para você revisar.",
   },
   {
-    title: "Descrição completa e estruturada",
-    text: "Abertura, diferenciais, benefícios, público indicado, preço e chamada final — no formato que converte.",
+    title: "Descrição estruturada",
+    text: "Organiza características, público informado, preço e chamada final em blocos fáceis de conferir.",
   },
   {
-    title: "Benefícios que vendem",
-    text: "A IA transforma características técnicas em vantagens claras para o comprador entender o valor.",
+    title: "Benefícios a partir dos dados",
+    text: "Traduz características fornecidas em explicações conservadoras, sem transformar possibilidade em garantia.",
   },
   {
     title: "Ficha de características organizada",
-    text: "Suas anotações soltas viram uma tabela limpa de material, tamanho, cores, garantia e mais.",
+    text: "Suas anotações viram uma lista estruturada de produto, categoria, material, medidas e outros dados informados.",
   },
   {
-    title: "Anúncio persuasivo pronto",
-    text: "Versão com gancho, prova, escassez e chamada para ação para usar em campanhas e redes sociais.",
+    title: "Versão de anúncio para revisar",
+    text: "Cria uma alternativa de copy adequada ao estilo do canal sem inventar desconto, escassez, entrega ou condição do item.",
   },
   {
-    title: "SEO incluído",
-    text: "Título SEO, meta description no tamanho certo e lista de palavras-chave para ranquear no Google.",
+    title: "Sugestões de SEO",
+    text: "Gera título SEO, meta description e ideias de palavras-chave como ponto de partida, sem prometer posição no Google.",
   },
 ];
 
@@ -120,10 +119,10 @@ export function FeaturesSection() {
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
         <h2 id="recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Tudo o que um anúncio precisa, gerado de uma vez
+          Vários blocos organizados a partir do mesmo produto
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Você cola as informações do produto uma única vez e recebe seis blocos prontos para publicar.
+          Você informa os dados uma vez e recebe seis blocos para conferir, editar e adaptar antes do uso.
         </p>
       </div>
 

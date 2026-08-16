@@ -41,7 +41,7 @@ const structuredData = {
       inLanguage: "pt-BR",
       provider: { "@id": `${SITE_URL}/#organization` },
       description:
-        "Ferramenta de inteligência artificial que transforma as informações do seu produto em títulos, descrições, benefícios e anúncios completos para marketplaces e lojas virtuais.",
+        "Ferramenta web que organiza as informações do produto em primeiras versões de títulos, descrições, benefícios e anúncios para diferentes canais de venda.",
       offers: {
         "@type": "Offer",
         name: "Grátis",
@@ -58,7 +58,6 @@ export default function HomePage() {
       <SiteHeader />
 
       <main id="topo">
-        {/* HERO + FERRAMENTA */}
         <section aria-labelledby="hero-titulo" className="relative overflow-hidden">
           <div
             aria-hidden="true"
@@ -69,19 +68,19 @@ export default function HomePage() {
             <div className="mx-auto max-w-3xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-3 py-1.5 text-xs font-medium text-ink-soft shadow-card">
                 <span className="size-1.5 rounded-full bg-brand-500" />
-                Ferramenta gratuita de IA para lojistas
+                Gerador gratuito para quem vende online
               </p>
 
               <h1
                 id="hero-titulo"
                 className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]"
               >
-                Transforme seu produto em um anúncio que vende.
+                Transforme informações do produto em um anúncio mais claro.
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                A AnunciaAI é um gerador de anúncios com inteligência artificial que cria títulos, descrições, benefícios e
-                conteúdo otimizado para seus produtos em segundos.
+                O AnunciaAI organiza os dados que você informa em títulos, descrições, benefícios, ficha técnica,
+                anúncio e sugestões de SEO para revisar antes de publicar.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -129,16 +128,14 @@ export default function HomePage() {
         <PricingSection />
         <FaqSection />
 
-        {/* CTA FINAL */}
         <section aria-labelledby="cta-final" className="border-t border-line bg-white">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
               <h2 id="cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Seu próximo anúncio pode estar pronto em 30 segundos
+                Prepare a primeira versão do seu próximo anúncio
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Cole as informações do produto, escolha o canal e receba título, descrição, benefícios e SEO na mesma
-                tela.
+                Informe o produto, escolha o canal e receba blocos de conteúdo para conferir, ajustar e usar onde fizer sentido.
               </p>
               <a
                 href="#ferramenta"
