@@ -8,7 +8,7 @@ import { ToolsSection } from "@/components/sections/tools";
 import { GuidesHomeSection } from "@/components/sections/guides-home";
 import { SITE_URL } from "@/lib/site";
 
-const channels = ["Mercado Livre", "Shopee", "Loja virtual", "Instagram", "Amazon", "Magalu"];
+const channels = ["Mercado Livre", "Shopee", "OLX", "Facebook Marketplace", "Loja virtual", "Instagram"];
 
 const structuredData = {
   "@context": "https://schema.org",
