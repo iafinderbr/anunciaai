@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   quality:
-    name: Lint e TypeScript
+    name: Segurança, Lint e TypeScript
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -27,6 +27,9 @@ jobs:
 
       - name: Instalar dependências
         run: npm ci --no-audit --no-fund
+
+      - name: Verificar vulnerabilidades altas
+        run: npm audit --audit-level=high
 
       - name: Executar lint
         run: npm run lint
