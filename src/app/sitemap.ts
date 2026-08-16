@@ -24,6 +24,8 @@ const paths = [
   "/como-criar-titulo-para-olx",
   "/como-fazer-descricao-para-olx",
   "/como-criar-anuncio-no-facebook-marketplace",
+  "/como-criar-titulo-para-facebook-marketplace",
+  "/como-fazer-descricao-para-facebook-marketplace",
   "/como-criar-pagina-de-produto-para-loja-virtual",
   "/como-criar-legenda-para-instagram",
   "/guias",
