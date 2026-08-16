@@ -1,0 +1,49 @@
+name: Verificação final de promessas públicas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-public-claims.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: Limpar, validar e registrar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Aplicar limpeza idempotente
+        run: node scripts/cleanup-public-claims-v2.mjs
+
+      - name: Validar promessas públicas
+        run: node scripts/claims-check.mjs
+
+      - name: Registrar validação e correções
+        run: |
+          printf 'public-claims=clean\nverified-by=github-actions\n' > public-claims-clean.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src public-claims-clean.txt
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração necessária."
+            exit 0
+          fi
+
+          git commit -m "ci: registra conteudo publico sem promessas bloqueadas"
+          git push
