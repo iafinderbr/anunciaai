@@ -16,6 +16,7 @@ const paths = [
   "/como-criar-anuncio-no-mercado-livre",
   "/como-fazer-descricao-para-mercado-livre",
   "/como-criar-titulo-para-mercado-livre",
+  "/como-preencher-ficha-tecnica-mercado-livre",
   "/como-criar-anuncio-na-shopee",
   "/como-criar-anuncio-na-olx",
   "/como-criar-anuncio-no-facebook-marketplace",
