@@ -1,4 +1,4 @@
-import { desc, gte, sql } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
@@ -22,14 +22,8 @@ function str(value: unknown, max: number): string {
 export async function GET() {
   try {
     await ensureDatabaseSchema();
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
 
     const [totals] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
-    const [todayRow] = await db
-      .select({ today: sql<number>`count(*)::int` })
-      .from(generations)
-      .where(gte(generations.createdAt, startOfDay));
     const recent = await db
       .select({
         id: generations.id,
@@ -42,11 +36,10 @@ export async function GET() {
 
     return Response.json({
       total: totals?.total ?? 0,
-      today: todayRow?.today ?? 0,
       recent,
     });
   } catch {
-    return Response.json({ total: 0, today: 0, recent: [] }, { status: 200 });
+    return Response.json({ total: 0, recent: [] }, { status: 200 });
   }
 }
 
