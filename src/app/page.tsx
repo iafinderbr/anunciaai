@@ -10,10 +10,42 @@ import { GuidesHomeSection } from "@/components/sections/guides-home";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 300;
 
 const channels = ["Mercado Livre", "Shopee", "Loja virtual", "Instagram", "Amazon", "Magalu"];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "AnunciaAI",
+      alternateName: "Anuncia AI",
+      inLanguage: "pt-BR",
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/#software`,
+      name: "AnunciaAI",
+      url: SITE_URL,
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      inLanguage: "pt-BR",
+      description:
+        "Ferramenta de inteligência artificial que transforma as informações do seu produto em títulos, descrições, benefícios e anúncios completos para marketplaces e lojas virtuais.",
+      offers: {
+        "@type": "Offer",
+        name: "Grátis",
+        price: "0",
+        priceCurrency: "BRL",
+      },
+    },
+  ],
+};
 
 async function getTotal(): Promise<number> {
   try {
@@ -128,6 +160,7 @@ export default async function HomePage() {
       </main>
 
       <SiteFooter />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>
   );
 }
