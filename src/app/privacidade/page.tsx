@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
-  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como as métricas de uso são utilizadas.",
+  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como métricas e publicidade são utilizadas.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Política de Privacidade | AnunciaAI",
-    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como as métricas de uso são utilizadas.",
+    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como métricas e publicidade são utilizadas.",
   },
   robots: { index: true, follow: true },
 };
@@ -43,33 +43,41 @@ const sections = [
     ],
   },
   {
-    title: "4. Cadastro e pagamento",
+    title: "4. Publicidade e Google AdSense",
+    paragraphs: [
+      "O AnunciaAI pode utilizar o Google AdSense para exibir publicidade. Terceiros, incluindo o Google, podem usar cookies, beacons da Web, endereços IP e outros identificadores para veicular, medir e personalizar anúncios conforme as configurações do usuário e as regras aplicáveis.",
+      "O uso de cookies de publicidade permite ao Google e aos parceiros dele exibir anúncios com base em visitas anteriores do usuário a este site e/ou a outros sites. O usuário pode gerenciar ou desativar a personalização de anúncios nas Configurações de anúncios do Google.",
+      "Mais informações sobre como o Google trata dados em sites parceiros estão disponíveis na documentação de privacidade do Google para sites e apps que usam os serviços da empresa.",
+    ],
+  },
+  {
+    title: "5. Cadastro e pagamento",
     paragraphs: [
       "A versão atual pode ser usada sem criar conta e sem informar cartão de crédito. Enquanto os planos pagos estiverem marcados como “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site.",
     ],
   },
   {
-    title: "5. Finalidade e minimização",
+    title: "6. Finalidade e minimização",
     paragraphs: [
-      "Coletamos apenas o necessário para operar a ferramenta, medir o uso e melhorar a experiência. Sempre que uma informação deixa de ser necessária para essas finalidades, buscamos reduzir, anonimizar ou eliminar seu uso.",
+      "Coletamos apenas o necessário para operar a ferramenta, medir o uso, exibir publicidade quando habilitada e melhorar a experiência. Sempre que uma informação deixa de ser necessária para essas finalidades, buscamos reduzir, anonimizar ou eliminar seu uso.",
     ],
   },
   {
-    title: "6. Segurança e terceiros",
+    title: "7. Segurança e terceiros",
     paragraphs: [
-      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido. Serviços de infraestrutura e métricas, como a Vercel, podem processar dados técnicos necessários para hospedar e medir o site segundo as próprias políticas desses fornecedores.",
+      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido. Serviços de infraestrutura, métricas e publicidade, como Vercel e Google, podem processar dados técnicos necessários para hospedar, medir e monetizar o site segundo as próprias políticas desses fornecedores.",
     ],
   },
   {
-    title: "7. Direitos do usuário",
+    title: "8. Direitos do usuário",
     paragraphs: [
       "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei. Como o AnunciaAI não exige conta na versão atual e minimiza os registros de geração, pode não existir informação pessoal vinculável a um usuário específico no banco de gerações.",
     ],
   },
   {
-    title: "8. Alterações desta política",
+    title: "9. Alterações desta política",
     paragraphs: [
-      "Esta política pode ser atualizada quando o produto ganhar novas funcionalidades, integrações, contas ou formas de pagamento. A versão publicada nesta página é a versão vigente.",
+      "Esta política pode ser atualizada quando o produto ganhar novas funcionalidades, integrações, contas, publicidade ou formas de pagamento. A versão publicada nesta página é a versão vigente.",
     ],
   },
 ];
@@ -111,6 +119,31 @@ export default function PrivacidadePage() {
                 </div>
               </section>
             ))}
+
+            <div className="rounded-2xl border border-line bg-white p-6 shadow-card">
+              <h2 className="text-lg font-semibold">Controles de publicidade</h2>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                Você pode revisar as preferências de anúncios diretamente nas configurações da sua Conta Google.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a
+                  href="https://adssettings.google.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600"
+                >
+                  Configurações de anúncios
+                </a>
+                <a
+                  href="https://policies.google.com/technologies/partner-sites?hl=pt-BR"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-line-strong px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600"
+                >
+                  Como o Google usa dados
+                </a>
+              </div>
+            </div>
 
             <div className="rounded-2xl border border-line bg-white p-6 shadow-card">
               <h2 className="text-lg font-semibold">Continue usando o AnunciaAI</h2>
