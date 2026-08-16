@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import { GeneratorTool } from "@/components/generator/generator-tool";
 import { LiveStats } from "@/components/live-stats";
 import { SiteHeader } from "@/components/site-header";
@@ -7,12 +6,7 @@ import { FaqSection, PricingSection, SiteFooter } from "@/components/sections/pr
 import { RecentStrip } from "@/components/sections/recent-strip";
 import { ToolsSection } from "@/components/sections/tools";
 import { GuidesHomeSection } from "@/components/sections/guides-home";
-import { db } from "@/db";
-import { ensureDatabaseSchema } from "@/db/ensure-schema";
-import { generations } from "@/db/schema";
 import { SITE_URL } from "@/lib/site";
-
-export const revalidate = 300;
 
 const channels = ["Mercado Livre", "Shopee", "Loja virtual", "Instagram", "Amazon", "Magalu"];
 
@@ -47,19 +41,7 @@ const structuredData = {
   ],
 };
 
-async function getTotal(): Promise<number> {
-  try {
-    await ensureDatabaseSchema();
-    const [row] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
-    return row?.total ?? 0;
-  } catch {
-    return 0;
-  }
-}
-
-export default async function HomePage() {
-  const total = await getTotal();
-
+export default function HomePage() {
   return (
     <>
       <SiteHeader />
@@ -109,7 +91,7 @@ export default async function HomePage() {
               <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
 
               <div className="mt-6">
-                <LiveStats initialTotal={total} />
+                <LiveStats />
               </div>
 
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium uppercase tracking-[0.1em] text-muted">
