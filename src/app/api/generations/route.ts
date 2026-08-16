@@ -64,9 +64,7 @@ export async function POST(request: Request) {
       })
       .returning({ id: generations.id });
 
-    const [totals] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
-
-    return Response.json({ ok: true, id: row?.id ?? null, total: totals?.total ?? 0 });
+    return Response.json({ ok: true, id: row?.id ?? null });
   } catch (error) {
     console.error("[generations:post] Falha ao salvar geração", error);
     return Response.json({ ok: false }, { status: 500 });
