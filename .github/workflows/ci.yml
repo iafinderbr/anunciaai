@@ -74,8 +74,13 @@ jobs:
             exit 1
           fi
 
+          HOME_HTML=$(curl --fail --silent --show-error http://127.0.0.1:3000/)
+          printf '%s' "$HOME_HTML" | grep -Fq 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2381421388873161'
+
+          ADS_TXT=$(curl --fail --silent --show-error http://127.0.0.1:3000/ads.txt)
+          test "$ADS_TXT" = 'google.com, pub-2381421388873161, DIRECT, f08c47fec0942fa0'
+
           curl --fail --silent --show-error http://127.0.0.1:3000/robots.txt > /dev/null
-          curl --fail --silent --show-error http://127.0.0.1:3000/ads.txt > /dev/null
 
           SITEMAP=$(curl --fail --silent --show-error http://127.0.0.1:3000/sitemap.xml)
           mapfile -t ROUTES < <(
