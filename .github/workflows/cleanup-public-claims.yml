@@ -1,0 +1,45 @@
+name: Limpeza única de promessas públicas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-public-claims.yml"
+      - "scripts/cleanup-public-claims.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Corrigir conteúdo legado
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Aplicar substituições seguras
+        run: node scripts/cleanup-public-claims.mjs
+
+      - name: Validar promessas públicas
+        run: node scripts/claims-check.mjs
+
+      - name: Commitar correções se necessário
+        run: |
+          if git diff --quiet; then
+            echo "Nenhuma alteração necessária."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src
+          git commit -m "produto: remove promessas legadas do conteúdo público"
+          git push
