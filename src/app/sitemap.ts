@@ -27,6 +27,8 @@ const paths = [
   "/como-criar-titulo-para-facebook-marketplace",
   "/como-fazer-descricao-para-facebook-marketplace",
   "/como-criar-pagina-de-produto-para-loja-virtual",
+  "/seo-para-pagina-de-produto",
+  "/como-fazer-ficha-tecnica-de-produto",
   "/como-criar-legenda-para-instagram",
   "/guias",
   "/como-fazer-descricao-de-produto",
