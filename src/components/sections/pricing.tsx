@@ -82,6 +82,7 @@ export function SiteFooter() {
           <p className="mt-1 max-w-sm text-sm text-muted">Ferramenta de inteligência artificial para lojistas criarem anúncios de produtos em segundos.</p>
           <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis</Link>
           <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted">
+            <Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link>
             <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
             <Link href="/termos" className="transition-colors hover:text-brand-600">Termos de uso</Link>
           </div>
@@ -108,7 +109,7 @@ export function SiteFooter() {
           </ul>
         </nav>
       </div>
-      <div className="border-t border-line"><div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p><div className="flex gap-4"><Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link><Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link></div></div></div>
+      <div className="border-t border-line"><div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p><div className="flex gap-4"><Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link><Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link><Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link></div></div></div>
     </footer>
   );
 }
