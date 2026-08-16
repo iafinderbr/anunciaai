@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "conteúdo para loja virtual",
     "criar página de produto",
     "descrição para e-commerce",
+    "benefícios de produto",
     "anúncio de produto para e-commerce",
     "conteúdo de produto com IA",
     "página de produto completa",
@@ -48,7 +49,7 @@ const structuredData = {
   ],
 };
 
-const highlights = ["Título para revisar", "Descrição completa", "Ficha técnica organizada", "Termos de SEO", "100% grátis"];
+const highlights = ["Título para revisar", "Descrição completa", "Benefícios organizados", "Ficha técnica", "Termos de SEO", "100% grátis"];
 
 export default function LojaVirtualPage() {
   return (
@@ -80,10 +81,12 @@ export default function LojaVirtualPage() {
           <div className="container-page py-12 sm:py-16">
             <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
               <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
-                <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias para loja virtual</p><h2 id="store-guias-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">Monte uma página de produto mais completa</h2><p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">Veja o passo a passo completo ou aprofunde SEO e ficha técnica antes de usar a ferramenta.</p></div>
+                <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias para loja virtual</p><h2 id="store-guias-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">Monte uma página de produto mais completa</h2><p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">Veja o passo a passo completo ou aprofunde descrição, benefícios, SEO e ficha técnica antes de usar a ferramenta.</p></div>
                 <Link href="/como-criar-pagina-de-produto-para-loja-virtual" className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Guia completo da página</Link>
               </div>
               <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link href="/como-fazer-descricao-para-loja-virtual" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span><span className="mt-2 block font-semibold text-ink">Como fazer descrição para loja virtual</span><span className="mt-1.5 block text-sm leading-6 text-muted">Estrutura em cinco blocos, modelo editável, erros e checklist.</span></Link>
+                <Link href="/como-escrever-beneficios-de-produto" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Benefícios</span><span className="mt-2 block font-semibold text-ink">Como escrever benefícios de produto</span><span className="mt-1.5 block text-sm leading-6 text-muted">Transforme características em utilidade sem inventar promessas.</span></Link>
                 <Link href="/seo-para-pagina-de-produto" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">SEO</span><span className="mt-2 block font-semibold text-ink">SEO para página de produto</span><span className="mt-1.5 block text-sm leading-6 text-muted">Conteúdo, Product/Offer, preço, disponibilidade e checklist técnico.</span></Link>
                 <Link href="/como-fazer-ficha-tecnica-de-produto" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Ficha técnica</span><span className="mt-2 block font-semibold text-ink">Como fazer ficha técnica de produto</span><span className="mt-1.5 block text-sm leading-6 text-muted">Modelo, campos por categoria, exemplo e checklist.</span></Link>
               </div>

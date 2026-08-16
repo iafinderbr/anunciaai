@@ -19,7 +19,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Legendas para Instagram com IA | Grátis";
 const DESCRIPTION =
-  "Crie legendas para Instagram com gancho, benefícios, chamada para ação e hashtags. Informe seu produto e receba o texto pronto para publicar. Grátis.";
+  "Crie uma primeira versão de legenda para Instagram com gancho, benefícios, chamada para ação e sugestões de hashtags para revisar antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -32,7 +32,8 @@ export const metadata: Metadata = {
     "legenda de produto",
     "legenda para loja no instagram",
     "criar legenda com IA",
-    "legenda de vendas pronta",
+    "CTA para instagram",
+    "hashtags para instagram",
   ],
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: { type: "website", locale: "pt_BR", url: ABSOLUTE_URL, siteName: "AnunciaAI", title: TITLE, description: DESCRIPTION },
@@ -49,7 +50,7 @@ const structuredData = {
   ],
 };
 
-const highlights = ["Legenda pronta em segundos", "Gancho e chamada para ação", "Hashtags relevantes", "Tom de texto ajustável", "100% grátis"];
+const highlights = ["Gancho para revisar", "Benefícios organizados", "Chamada para ação", "Sugestões de hashtags", "100% grátis"];
 
 export default function LegendasParaInstagramPage() {
   return (
@@ -63,14 +64,14 @@ export default function LegendasParaInstagramPage() {
             <div className="mx-auto mt-8 max-w-3xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-3 py-1.5 text-xs font-medium text-ink-soft shadow-card"><span className="size-1.5 rounded-full bg-brand-500" />Ferramenta gratuita para vendedores no Instagram</p>
               <h1 id="instagram-hero-titulo" className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]">Gerador de legendas para Instagram com IA</h1>
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">Informe o seu produto e receba uma legenda pronta para divulgar ou vender pelo Instagram — com gancho, benefícios, chamada para ação e hashtags, em segundos.</p>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">Transforme as informações do produto em uma primeira versão de legenda com gancho, benefícios, chamada para ação e sugestões de hashtags para revisar antes de publicar.</p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"><a href="#ferramenta" className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto">Gerar legenda grátis</a><a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">Ver como funciona</a></div>
               <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-2">{highlights.map((item) => <li key={item} className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft">{item}</li>)}</ul>
             </div>
           </div>
 
-          <div id="ferramenta" className="container-page scroll-mt-20 pb-16 pt-10 sm:pb-20"><div className="mx-auto max-w-3xl"><GeneratorTool lockedChannel="instagram" exampleInput={INSTAGRAM_EXAMPLE_INPUT} title="Crie sua legenda para Instagram" subtitle="Preencha os campos abaixo e receba uma legenda pronta para divulgar ou vender pelo Instagram." /></div></div>
+          <div id="ferramenta" className="container-page scroll-mt-20 pb-16 pt-10 sm:pb-20"><div className="mx-auto max-w-3xl"><GeneratorTool lockedChannel="instagram" exampleInput={INSTAGRAM_EXAMPLE_INPUT} title="Crie sua legenda para Instagram" subtitle="Preencha os campos abaixo e receba uma primeira versão para revisar e adaptar ao seu produto." /></div></div>
         </section>
 
         <InstagramHowItWorks />
@@ -78,25 +79,29 @@ export default function LegendasParaInstagramPage() {
         <InstagramBenefits />
         <InstagramFeatures />
         <InstagramMistakes />
-        <PricingSection />
-        <InstagramFaq />
 
-        <section aria-labelledby="instagram-guia" className="border-t border-line bg-white">
+        <section aria-labelledby="instagram-guias" className="border-y border-line bg-white">
           <div className="container-page py-12 sm:py-16">
-            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
-              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div className="max-w-2xl"><h2 id="instagram-guia" className="text-xl font-semibold sm:text-2xl">Aprenda a criar uma legenda de produto do gancho até a revisão</h2><p className="mt-2 text-sm leading-7 text-ink-soft">Veja como definir objetivo, apresentar o produto, explicar benefícios, criar uma chamada para ação e escolher hashtags relevantes.</p></div>
-                <Link href="/como-criar-legenda-para-instagram" className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Ler o guia de legendas</Link>
+            <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
+              <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
+                <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias para Instagram</p><h2 id="instagram-guias" className="mt-3 text-2xl font-semibold sm:text-3xl">Aprenda cada parte da legenda</h2><p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">Veja o processo completo ou aprofunde chamada para ação e hashtags antes de usar a ferramenta.</p></div>
+                <Link href="/como-criar-legenda-para-instagram" className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Guia completo da legenda</Link>
+              </div>
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link href="/como-criar-cta-para-instagram" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">CTA</span><span className="mt-2 block font-semibold text-ink">Como criar CTA para Instagram</span><span className="mt-1.5 block text-sm leading-6 text-muted">Fórmula, exemplos e checklist para definir o próximo passo.</span></Link>
+                <Link href="/como-escolher-hashtags-para-instagram" className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"><span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Hashtags</span><span className="mt-2 block font-semibold text-ink">Como escolher hashtags para Instagram</span><span className="mt-1.5 block text-sm leading-6 text-muted">Método para selecionar termos coerentes com produto, nicho e conteúdo.</span></Link>
               </div>
             </div>
           </div>
         </section>
 
+        <PricingSection />
+        <InstagramFaq />
+
         <section aria-labelledby="instagram-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
-            <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12"><h2 id="instagram-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Sua próxima legenda pode estar pronta em 30 segundos</h2><p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Cole as informações do produto e receba uma legenda com gancho, benefícios, chamada para ação e hashtags.</p><a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar legenda grátis</a><p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p></div>
-            <p className="mt-8 text-center text-sm text-muted">Precisa de mais conteúdo para o seu produto?{" "}<Link href="/gerador-de-descricao-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Crie a descrição do seu produto</Link>{" · "}<Link href="/gerador-de-titulos-para-produtos" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gere títulos para produtos</Link>{" · "}<Link href="/gerador-de-anuncios-mercado-livre" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Monte um anúncio para Mercado Livre</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Veja todos os geradores</Link>.</p>
+            <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12"><h2 id="instagram-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Prepare a primeira versão da sua próxima legenda</h2><p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Informe os dados reais do produto e organize gancho, benefícios, chamada para ação e sugestões de hashtags para revisar.</p><a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar legenda grátis</a><p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p></div>
+            <p className="mt-8 text-center text-sm text-muted">Precisa de mais conteúdo para o seu produto?{" "}<Link href="/gerador-de-descricao-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Crie a descrição do produto</Link>{" · "}<Link href="/gerador-de-titulos-para-produtos" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gere títulos</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Veja todos os geradores</Link>.</p>
           </div>
         </section>
       </main>
