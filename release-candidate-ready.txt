@@ -1,2 +1,0 @@
-release-candidate=ready
-validated=security,product,claims,generative,seo,lint,typecheck,build,adsense,api,sitemap
