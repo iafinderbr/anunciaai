@@ -18,7 +18,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Shopee com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos de até 120 caracteres, descrições, benefícios e palavras-chave para seus anúncios da Shopee com inteligência artificial. Grátis e sem cadastro.";
+  "Crie títulos de até 120 caracteres, descrições, benefícios e palavras-chave para anúncios da Shopee com IA. Grátis, sem cadastro e pronto para revisar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -66,7 +66,7 @@ const structuredData = {
 
 const highlights = [
   "Título com até 120 caracteres",
-  "Descrição dentro das regras da Shopee",
+  "Descrição organizada",
   "Palavras-chave de busca",
   "Ficha técnica pronta",
   "100% grátis",
@@ -113,8 +113,8 @@ export default function ShopeePage() {
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Transforme as informações do seu produto em título, descrição, benefícios e palavras-chave prontos para
-                publicar na Shopee — em segundos e dentro das regras da plataforma.
+                Transforme as informações do produto em título, descrição, benefícios e palavras-chave para revisar e
+                adaptar antes de publicar na Shopee.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -153,7 +153,7 @@ export default function ShopeePage() {
                 lockedChannel="shopee"
                 exampleInput={SHOPEE_EXAMPLE_INPUT}
                 title="Crie seu anúncio para a Shopee"
-                subtitle="Preencha os campos abaixo. O texto sai formatado nas regras da Shopee."
+                subtitle="Preencha os campos abaixo e receba uma primeira versão organizada para revisar antes de publicar."
               />
             </div>
           </div>
@@ -163,41 +163,61 @@ export default function ShopeePage() {
         <ShopeeAnatomy />
         <ShopeeFeatures />
         <ShopeeMistakes />
-        <PricingSection />
-        <ShopeeFaq />
 
-        <section aria-labelledby="shopee-guia" className="border-t border-line bg-white">
+        <section aria-labelledby="shopee-guias-titulo" className="border-y border-line bg-white">
           <div className="container-page py-12 sm:py-16">
-            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
-              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div className="max-w-2xl">
-                  <h2 id="shopee-guia" className="text-xl font-semibold sm:text-2xl">
-                    Aprenda como criar um anúncio na Shopee do início ao fim
+            <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
+              <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias da Shopee</p>
+                  <h2 id="shopee-guias-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
+                    Aprenda cada parte do anúncio
                   </h2>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">
-                    Veja como organizar categoria, título, fotos, atributos, variações e descrição antes de publicar.
+                  <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
+                    Veja o passo a passo completo ou aprofunde título e descrição antes de usar a ferramenta.
                   </p>
                 </div>
                 <Link
                   href="/como-criar-anuncio-na-shopee"
-                  className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                  className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                 >
-                  Ler o guia da Shopee
+                  Guia completo do anúncio
+                </Link>
+              </div>
+
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link
+                  href="/como-criar-titulo-para-shopee"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Título</span>
+                  <span className="mt-2 block font-semibold text-ink">Como criar título para Shopee</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Fórmula, limite atual, exemplos e checklist.</span>
+                </Link>
+                <Link
+                  href="/como-fazer-descricao-para-shopee"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span>
+                  <span className="mt-2 block font-semibold text-ink">Como fazer descrição para Shopee</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Modelo editável, estrutura, exemplo e revisão.</span>
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
+        <PricingSection />
+        <ShopeeFaq />
+
         <section aria-labelledby="shopee-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
               <h2 id="shopee-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Publique seu próximo anúncio na Shopee hoje mesmo
+                Prepare seu próximo anúncio na Shopee
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Cole as informações do produto e receba o anúncio completo, no formato que a Shopee espera.
+                Cole as informações reais do produto, gere uma primeira versão e revise título, descrição e especificações antes de publicar.
               </p>
               <a
                 href="#ferramenta"
