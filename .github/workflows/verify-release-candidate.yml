@@ -1,0 +1,134 @@
+name: Verificação completa da release candidate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-release-candidate.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: Validar release candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --no-audit --no-fund
+
+      - name: Auditar segurança e produto
+        run: |
+          npm run security:check
+          npm audit --audit-level=high
+          npm run generator:check
+          npm run claims:check
+          node scripts/generative-security-check.mjs
+
+      - name: Auditar SEO e código
+        run: |
+          npm run seo:check
+          npm run lint
+          npm run typecheck
+
+      - name: Build de produção
+        env:
+          DATABASE_URL: postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai
+          ANUNCIAAI_GENERATIVE_ENABLED: "false"
+        run: npm run build
+
+      - name: Smoke test completo
+        env:
+          DATABASE_URL: postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai
+          ANUNCIAAI_GENERATIVE_ENABLED: "false"
+        run: |
+          npm run start -- -p 3000 > /tmp/anunciaai-next.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+
+          READY=0
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error http://127.0.0.1:3000/ > /dev/null; then
+              READY=1
+              break
+            fi
+            sleep 1
+          done
+
+          if [ "$READY" -ne 1 ]; then
+            cat /tmp/anunciaai-next.log
+            exit 1
+          fi
+
+          expect_status() {
+            expected="$1"
+            shift
+            actual=$(curl --silent --output /dev/null --write-out '%{http_code}' "$@")
+            if [ "$actual" != "$expected" ]; then
+              echo "Status inesperado: esperado $expected, recebido $actual para curl $*"
+              exit 1
+            fi
+          }
+
+          HOME_HTML=$(curl --fail --silent --show-error http://127.0.0.1:3000/)
+          printf '%s' "$HOME_HTML" | grep -Fq 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2381421388873161'
+
+          ADS_TXT=$(curl --fail --silent --show-error http://127.0.0.1:3000/ads.txt)
+          test "$ADS_TXT" = 'google.com, pub-2381421388873161, DIRECT, f08c47fec0942fa0'
+
+          ROBOTS=$(curl --fail --silent --show-error http://127.0.0.1:3000/robots.txt)
+          printf '%s' "$ROBOTS" | grep -Fq '/api/'
+          printf '%s' "$ROBOTS" | grep -Fq '/sitemap.xml'
+
+          GENERATIVE_STATUS=$(curl --fail --silent --show-error http://127.0.0.1:3000/api/generate)
+          printf '%s' "$GENERATIVE_STATUS" | grep -Fq '"enabled":false'
+
+          expect_status 503 \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            --data '{"productName":"Produto teste","category":"Teste","price":"","audience":"","features":"Característica confirmada","channel":"outro","tone":"simples"}' \
+            http://127.0.0.1:3000/api/generate
+
+          expect_status 400 'http://127.0.0.1:3000/api/generations?cache=1'
+          expect_status 400 'http://127.0.0.1:3000/api/health?cache=1'
+          expect_status 403 \
+            -X POST \
+            -H 'Origin: https://example.org' \
+            -H 'Content-Type: application/json' \
+            --data '{"channel":"olx"}' \
+            http://127.0.0.1:3000/api/generations
+
+          SITEMAP=$(curl --fail --silent --show-error http://127.0.0.1:3000/sitemap.xml)
+          mapfile -t ROUTES < <(
+            printf '%s' "$SITEMAP" \
+              | grep -oE '<loc>[^<]+</loc>' \
+              | sed -E 's#<loc>https://anunciaai\.vercel\.app([^<]*)</loc>#\1#'
+          )
+
+          test "${#ROUTES[@]}" -gt 0
+          echo "Testando ${#ROUTES[@]} páginas públicas"
+          for route in "${ROUTES[@]}"; do
+            if [ -z "$route" ]; then route="/"; fi
+            echo "GET $route"
+            curl --fail --silent --show-error "http://127.0.0.1:3000$route" > /dev/null
+          done
+
+      - name: Registrar release candidate validada
+        run: |
+          printf 'release-candidate=ready\nvalidated=security,product,claims,generative,seo,lint,typecheck,build,adsense,api,sitemap\n' > release-candidate-ready.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add release-candidate-ready.txt
+          git commit -m "ci: registra release candidate validada"
+          git push
