@@ -1,4 +1,4 @@
-import { gte, sql } from "drizzle-orm";
+import { desc, gte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
@@ -30,13 +30,23 @@ export async function GET() {
       .select({ today: sql<number>`count(*)::int` })
       .from(generations)
       .where(gte(generations.createdAt, startOfDay));
+    const recent = await db
+      .select({
+        id: generations.id,
+        channel: generations.channel,
+        createdAt: generations.createdAt,
+      })
+      .from(generations)
+      .orderBy(desc(generations.createdAt))
+      .limit(6);
 
     return Response.json({
       total: totals?.total ?? 0,
       today: todayRow?.today ?? 0,
+      recent,
     });
   } catch {
-    return Response.json({ total: 0, today: 0 }, { status: 200 });
+    return Response.json({ total: 0, today: 0, recent: [] }, { status: 200 });
   }
 }
 
