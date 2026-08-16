@@ -11,9 +11,9 @@ permissions:
 
 jobs:
   quality:
-    name: Segurança, Lint e TypeScript
+    name: Segurança, SEO, Lint, TypeScript e Build
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Baixar repositório
@@ -31,8 +31,16 @@ jobs:
       - name: Verificar vulnerabilidades altas
         run: npm audit --audit-level=high
 
+      - name: Auditar SEO e links internos
+        run: npm run seo:check
+
       - name: Executar lint
         run: npm run lint
 
       - name: Verificar TypeScript
         run: npm run typecheck
+
+      - name: Validar build de produção
+        run: npm run build
+        env:
+          DATABASE_URL: postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai
