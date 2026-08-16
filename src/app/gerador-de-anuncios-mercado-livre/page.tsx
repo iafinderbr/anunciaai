@@ -163,7 +163,7 @@ export default function MercadoLivrePage() {
                     Aprenda cada parte do anúncio
                   </h2>
                   <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
-                    Veja o passo a passo completo ou aprofunde somente título e descrição antes de usar a ferramenta.
+                    Veja o passo a passo completo ou aprofunde título, descrição e ficha técnica antes de usar a ferramenta.
                   </p>
                 </div>
                 <Link
@@ -173,7 +173,7 @@ export default function MercadoLivrePage() {
                   Guia completo do anúncio
                 </Link>
               </div>
-              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 md:grid-cols-3">
                 <Link
                   href="/como-criar-titulo-para-mercado-livre"
                   className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
@@ -189,6 +189,14 @@ export default function MercadoLivrePage() {
                   <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span>
                   <span className="mt-2 block font-semibold text-ink">Como fazer descrição para Mercado Livre</span>
                   <span className="mt-1.5 block text-sm leading-6 text-muted">Modelo editável, exemplo e revisão da descrição.</span>
+                </Link>
+                <Link
+                  href="/como-preencher-ficha-tecnica-mercado-livre"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Ficha técnica</span>
+                  <span className="mt-2 block font-semibold text-ink">Como preencher a ficha técnica</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Atributos, código universal, variações e checklist.</span>
                 </Link>
               </div>
             </div>
