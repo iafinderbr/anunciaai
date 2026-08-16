@@ -1,12 +1,6 @@
 import type { GeneratorInput } from "./types";
 
-/**
- * Conteúdo da landing page /gerador-de-descricao-de-produto.
- * Fonte única para as seções de conteúdo da página (como funciona,
- * anatomia, recursos, erros, adaptação por canal e FAQ).
- * O FAQ e o passo a passo são renderizados apenas como conteúdo HTML.
- */
-
+/** Conteúdo da landing page /gerador-de-descricao-de-produto. */
 export const DESC_EXAMPLE_INPUT: GeneratorInput = {
   productName: "Cadeira de escritório ergonômica",
   category: "Móveis para escritório",
@@ -21,91 +15,91 @@ export const DESC_EXAMPLE_INPUT: GeneratorInput = {
 export const DESC_STEPS: { title: string; text: string }[] = [
   {
     title: "Informe seu produto",
-    text: "Cole nome, categoria, preço e características. Pode ser em tópicos soltos, do jeito que você tem anotado.",
+    text: "Cole nome, categoria, preço e características que você consegue confirmar.",
   },
   {
-    title: "Deixe a IA escrever",
-    text: "Em segundos você recebe uma descrição estruturada: abertura, benefícios, ficha técnica e chamada para ação.",
+    title: "Gere uma primeira versão",
+    text: "A ferramenta organiza abertura, características, benefícios conservadores, ficha técnica e chamada para ação.",
   },
   {
-    title: "Copie e publique",
-    text: "Copie a descrição com um clique e cole na página do produto da sua loja ou no marketplace.",
+    title: "Revise e adapte",
+    text: "Confira cada informação e ajuste o texto ao canal, à sua loja e às condições reais do produto antes de usar.",
   },
 ];
 
 export const DESC_ANATOMY: { title: string; text: string }[] = [
   {
     title: "Abertura direta",
-    text: "A primeira frase diz o que é o produto e para quem ele foi feito, sem enrolação.",
+    text: "A primeira frase identifica o produto e pode incluir o público informado sem acrescentar uma promessa de desempenho.",
   },
   {
-    title: "Benefícios, não só características",
-    text: "Cada especificação vira uma vantagem que o comprador consegue sentir.",
+    title: "Benefícios apoiados em características",
+    text: "A utilidade é explicada somente quando pode ser ligada a uma informação fornecida pelo vendedor.",
   },
   {
     title: "Ficha técnica organizada",
-    text: "Medidas, material, garantia e itens inclusos, sem fazer o cliente procurar.",
+    text: "Medidas, material, garantia e itens inclusos aparecem quando foram informados e são úteis para identificar a versão.",
   },
   {
-    title: "Prova de confiança",
-    text: "Garantia, troca e envio explicados para reduzir a hesitação de compra.",
+    title: "Condições separadas dos fatos do produto",
+    text: "Frete, troca, estoque e condições comerciais devem ser confirmados nos campos próprios em vez de serem inventados no texto.",
   },
   {
     title: "Chamada para ação",
-    text: "Um convite claro para o próximo passo, sem pressão exagerada.",
+    text: "O fechamento sugere um próximo passo neutro para você adaptar ao caminho realmente disponível.",
   },
 ];
 
 export const DESC_BENEFIT_EXAMPLES: { feature: string; benefit: string }[] = [
-  { feature: "Bateria de 40 horas", benefit: "Use a semana inteira sem procurar a tomada" },
-  { feature: "Solado antiderrapante", benefit: "Firmeza e segurança mesmo em piso molhado" },
-  { feature: "Tecido respirável", benefit: "Conforto mesmo nos dias mais quentes" },
-  { feature: "Garantia de 12 meses", benefit: "Compra sem risco, coberta por garantia" },
+  { feature: "Bateria de 40 horas", benefit: "Autonomia informada para ajudar a comparar o tempo de uso" },
+  { feature: "Solado antiderrapante", benefit: "Recurso antiderrapante informado; confira as condições de uso" },
+  { feature: "Tecido respirável", benefit: "Material respirável destacado nas características do produto" },
+  { feature: "Garantia de 12 meses", benefit: "Garantia de 12 meses conforme a condição informada pelo vendedor" },
 ];
 
 export const DESC_FEATURES: { title: string; text: string }[] = [
   {
-    title: "Abertura que prende a atenção",
-    text: "A primeira frase apresenta o produto e diz para quem ele serve, sem enrolação.",
+    title: "Abertura organizada",
+    text: "A primeira parte apresenta o produto usando os dados fornecidos e pode ser editada antes do uso.",
   },
   {
-    title: "Características viram benefícios",
-    text: "A IA converte especificações técnicas em vantagens que o comprador entende na hora.",
+    title: "Benefícios conservadores",
+    text: "As características são explicadas sem transformar possibilidade em garantia ou inventar resultado de uso.",
   },
   {
-    title: "Estrutura pronta para converter",
-    text: "Abertura, benefícios, ficha técnica, prova de confiança e chamada para ação, na ordem certa.",
+    title: "Estrutura em blocos",
+    text: "Descrição, benefícios, ficha de características e chamada para ação ficam separados para facilitar a revisão.",
   },
   {
     title: "Tom de texto ajustável",
-    text: "Escolha entre profissional, persuasivo, simples ou premium e mantenha a voz da sua marca.",
+    text: "Escolha entre profissional, persuasivo, simples ou premium sem alterar as informações factuais do produto.",
   },
   {
-    title: "Palavras-chave de busca",
-    text: "Termos que o comprador digita no Google e no marketplace, prontos para distribuir pelo texto.",
+    title: "Sugestões de termos",
+    text: "A ferramenta combina produto, categoria e características como ponto de partida. Ela não consulta volume real de busca.",
   },
   {
-    title: "Ficha técnica organizada",
-    text: "Suas anotações viram atributos limpos, prontos para preencher a ficha do produto.",
+    title: "Ficha de características",
+    text: "Suas anotações viram atributos organizados para facilitar a conferência antes de preencher a página do produto.",
   },
 ];
 
 export const DESC_MISTAKES: { wrong: string; right: string }[] = [
   {
     wrong: "Descrição de uma linha: “Produto bom, entrega rápida.”",
-    right: "Descrição completa com abertura, benefícios, ficha técnica e chamada para ação",
+    right: "Descrição com identificação, características, benefícios sustentados e dados técnicos disponíveis",
   },
   {
-    wrong: "Lista de especificações soltas, sem explicar o valor",
-    right: "Cada característica transformada em benefício que o comprador entende",
+    wrong: "Lista de especificações soltas sem contexto",
+    right: "Características acompanhadas de uma explicação cuidadosa sobre sua utilidade quando possível",
   },
   {
-    wrong: "Texto copiado do fornecedor, igual ao de todos os concorrentes",
-    right: "Descrição única, escrita para o seu público e a sua loja",
+    wrong: "Texto copiado de outra versão do produto",
+    right: "Descrição coerente com a versão, as fotos e as especificações realmente anunciadas",
   },
   {
     wrong: "Promessas vazias: “o melhor”, “incrível”, “imperdível”",
-    right: "Texto concreto, mostrando o que o produto realmente entrega",
+    right: "Texto concreto, baseado no que pode ser confirmado",
   },
 ];
 
@@ -119,26 +113,28 @@ export const DESC_COMPARISON: DescriptionComparison = {
   title: "Cadeira de escritório ergonômica",
   bad: "Cadeira de escritório ergonômica, muito boa, confortável, entrega rápida. Aproveite!",
   good:
-    "Trabalhar de casa exige uma cadeira que aguente o dia inteiro. A Cadeira de Escritório Ergonômica foi desenhada para quem passa horas em frente ao computador: o apoio lombar ajustável acompanha a curvatura das suas costas e o tecido respirável evita o abafamento mesmo em dias quentes.\n\n" +
-    "Por que você vai gostar:\n" +
-    "• Encosto reclinável para variar a postura entre uma reunião e outra\n" +
-    "• Braços acolchoados que aliviam a tensão dos ombros\n" +
-    "• Rodízios silenciosos que não riscam o piso\n\n" +
-    "Suporta até 120 kg e acompanha garantia de 2 anos. Clique em comprar e monte o seu espaço de trabalho com conforto.",
+    "Cadeira de Escritório Ergonômica para quem busca organizar o espaço de home office com recursos de ajuste.\n\n" +
+    "Características informadas:\n" +
+    "• Encosto reclinável\n" +
+    "• Apoio lombar ajustável\n" +
+    "• Braços acolchoados\n" +
+    "• Rodízios silenciosos\n" +
+    "• Tecido respirável\n\n" +
+    "Suporta até 120 kg e possui garantia informada de 2 anos. Confira medidas, condições e demais detalhes antes da compra.",
 };
 
 export const DESC_CHANNELS: { title: string; text: string }[] = [
   {
     title: "Loja virtual",
-    text: "Descrição longa e otimizada para SEO. Pode contar a história da marca e usar palavras-chave para ranquear no Google.",
+    text: "Use uma descrição completa, ficha técnica consistente e campos de SEO claros. Sugestões de termos não substituem dados reais de pesquisa.",
   },
   {
     title: "Mercado Livre e Shopee",
-    text: "Texto objetivo, com ficha técnica bem preenchida e sem links externos. Os filtros de busca importam tanto quanto o texto.",
+    text: "Prefira texto objetivo, atributos corretos e consistência entre título, fotos, ficha técnica e descrição.",
   },
   {
     title: "Instagram e redes sociais",
-    text: "Legenda curta, com emojis, chamada para ação e tom mais próximo do seu público.",
+    text: "Adapte a descrição para uma legenda mais curta, com chamada para ação e hashtags relacionadas ao conteúdo quando fizer sentido.",
   },
 ];
 
@@ -149,34 +145,33 @@ export interface FaqItem {
 
 export const DESC_FAQ: FaqItem[] = [
   {
-    question: "Como criar uma descrição de produto com inteligência artificial?",
+    question: "Como usar o gerador de descrição de produto?",
     answer:
-      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar descrição”. Em poucos segundos a IA devolve uma descrição estruturada com abertura, benefícios, ficha técnica e chamada para ação, pronta para colar na página do produto.",
+      "Preencha nome, categoria, preço e características e clique em “Gerar descrição”. A ferramenta organiza uma primeira versão com abertura, características, benefícios conservadores, ficha técnica e chamada para ação.",
   },
   {
-    question: "O que uma boa descrição de produto precisa ter?",
+    question: "O que uma descrição de produto pode ter?",
     answer:
-      "Uma abertura que apresenta o produto, benefícios que traduzem as características, ficha técnica organizada, uma prova de confiança (garantia, troca, envio) e uma chamada para ação. A ferramenta entrega essa estrutura completa a partir das suas anotações.",
+      "Uma estrutura útil inclui identificação do produto, características verificáveis, explicações de benefício quando sustentadas pelos dados, ficha técnica e um próximo passo compatível com a sua loja.",
   },
   {
     question: "Qual a diferença entre característica e benefício?",
     answer:
-      "Característica é o que o produto tem (ex.: bateria de 40 horas). Benefício é o que isso significa para o comprador (usar a semana inteira sem recarregar). Descrições que só listam características soam técnicas; descrições que explicam o benefício vendem.",
+      "Característica é um dado do produto, como bateria de 40 horas. Um benefício deve explicar a utilidade desse dado sem acrescentar uma garantia que não foi informada.",
   },
   {
-    question: "A descrição gerada serve para loja virtual e marketplace?",
+    question: "A descrição serve para loja virtual e marketplace?",
     answer:
-      "Sim. Esta página é otimizada para descrições de loja virtual, mas o texto também funciona em marketplaces como Mercado Livre e Shopee. Para anúncios completos no formato específico de cada plataforma, use os geradores dedicados do AnunciaAI.",
+      "Sim, como primeira versão. Revise e adapte o conteúdo ao formato e às regras atuais do canal escolhido antes de usar.",
   },
   {
     question: "O gerador de descrição é gratuito?",
     answer:
-      "Sim. A geração nesta página é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e publicar quantas descrições quiser durante o período de testes.",
+      "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito.",
   },
   {
-    question: "Preciso revisar a descrição gerada pela IA?",
+    question: "Preciso revisar a descrição?",
     answer:
-      "Recomendamos sempre uma leitura rápida. A IA monta a estrutura completa a partir do que você informou, mas só você conhece detalhes como prazo de envio, estoque e condições específicas do seu produto.",
+      "Sim. Confira especificações, estoque, preço, entrega, garantia e qualquer condição comercial antes de usar o texto. A ferramenta trabalha com os dados que você fornece.",
   },
 ];
-
