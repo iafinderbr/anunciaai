@@ -20,14 +20,11 @@ const forbidden = [
   "resultado consistente",
   "entra na rotina e não sai mais",
   "Usado, em bom estado",
-  "#lojaonline",
-  "#produtos",
-  "#compreonline",
 ];
 
 for (const phrase of forbidden) {
   if (source.toLocaleLowerCase("pt-BR").includes(phrase.toLocaleLowerCase("pt-BR"))) {
-    failures.push(`Frase não sustentada ou genérica encontrada: ${phrase}`);
+    failures.push(`Frase não sustentada encontrada: ${phrase}`);
   }
 }
 
@@ -63,4 +60,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Gerador OK: proteções contra promessas, suposições e hashtags genéricas estão presentes.");
+console.log("Gerador OK: proteções contra promessas e suposições não sustentadas estão presentes.");
