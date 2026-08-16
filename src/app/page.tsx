@@ -14,12 +14,22 @@ const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "AnunciaAI",
+      alternateName: "Anuncia AI",
+      url: SITE_URL,
+      description:
+        "Ferramenta brasileira para criação e organização de conteúdo de anúncios de produtos para marketplaces, lojas virtuais e redes sociais.",
+    },
+    {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "AnunciaAI",
       alternateName: "Anuncia AI",
       inLanguage: "pt-BR",
+      publisher: { "@id": `${SITE_URL}/#organization` },
     },
     {
       "@type": "SoftwareApplication",
@@ -29,6 +39,7 @@ const structuredData = {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       inLanguage: "pt-BR",
+      provider: { "@id": `${SITE_URL}/#organization` },
       description:
         "Ferramenta de inteligência artificial que transforma as informações do seu produto em títulos, descrições, benefícios e anúncios completos para marketplaces e lojas virtuais.",
       offers: {
