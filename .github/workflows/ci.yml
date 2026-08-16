@@ -32,6 +32,9 @@ jobs:
       - name: Instalar dependências
         run: npm ci --no-audit --no-fund
 
+      - name: Procurar segredos versionados
+        run: npm run security:check
+
       - name: Verificar vulnerabilidades altas
         run: npm audit --audit-level=high
 
