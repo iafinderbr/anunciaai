@@ -1,0 +1,79 @@
+name: Verificação do backend generativo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-generative-backend.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: Compilar e testar backend opcional
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --no-audit --no-fund
+
+      - name: Auditar produto
+        run: |
+          npm run security:check
+          npm run generator:check
+          npm run claims:check
+          npm run seo:check
+          npm run lint
+          npm run typecheck
+
+      - name: Build sem chave generativa
+        env:
+          DATABASE_URL: postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai
+          ANUNCIAAI_GENERATIVE_ENABLED: "false"
+        run: npm run build
+
+      - name: Confirmar endpoint desativado por padrão
+        env:
+          DATABASE_URL: postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai
+          ANUNCIAAI_GENERATIVE_ENABLED: "false"
+        run: |
+          npm run start -- -p 3000 > /tmp/anunciaai-next.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          STATUS=$(curl --fail --silent http://127.0.0.1:3000/api/generate)
+          printf '%s' "$STATUS" | grep -Fq '"enabled":false'
+
+          POST_CODE=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            --data '{"productName":"Produto teste","category":"Teste","price":"","audience":"","features":"Característica confirmada","channel":"outro","tone":"simples"}' \
+            http://127.0.0.1:3000/api/generate)
+          test "$POST_CODE" = '503'
+
+      - name: Registrar validação
+        run: |
+          printf 'generative-backend=ready-disabled-by-default\nverified-by=github-actions\n' > generative-backend-ready.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generative-backend-ready.txt
+          git commit -m "ci: registra backend generativo validado"
+          git push
