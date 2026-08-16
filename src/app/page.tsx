@@ -6,6 +6,7 @@ import { FeaturesSection, HowItWorksSection, TrustSection } from "@/components/s
 import { FaqSection, PricingSection, SiteFooter } from "@/components/sections/pricing";
 import { RecentStrip } from "@/components/sections/recent-strip";
 import { ToolsSection } from "@/components/sections/tools";
+import { GuidesHomeSection } from "@/components/sections/guides-home";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
@@ -96,6 +97,7 @@ export default async function HomePage() {
 
         <RecentStrip />
         <ToolsSection />
+        <GuidesHomeSection />
         <TrustSection />
         <HowItWorksSection />
         <FeaturesSection />
