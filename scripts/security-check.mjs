@@ -32,6 +32,13 @@ const SECRET_PATTERNS = [
   ["Google API key", /\bAIza[0-9A-Za-z_-]{30,}\b/],
 ];
 
+const ALLOWED_POSTGRES_EXAMPLES = new Set([
+  "postgresql://USER:PASSWORD@HOST:5432/DATABASE",
+  "postgresql://usuario:senha@host:5432/banco",
+  "postgresql://anunciaai:anunciaai@127.0.0.1:5432/anunciaai",
+  "postgresql://postgres:postgres@127.0.0.1:5432/app_db",
+]);
+
 function walk(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   const files = [];
@@ -76,14 +83,10 @@ for (const file of walk(ROOT)) {
   }
 
   // Connection strings reais quase sempre carregam usuário/senha. Permitimos
-  // apenas exemplos declaradamente fictícios usados na documentação e no CI.
+  // somente exemplos locais/fictícios exatos usados no repositório.
   const postgresUrls = source.match(/postgres(?:ql)?:\/\/[^\s`"')]+/gi) ?? [];
   for (const url of postgresUrls) {
-    const allowedExample =
-      /postgresql:\/\/(?:USER:PASSWORD@HOST|usuario:senha@host|anunciaai:anunciaai@127\.0\.0\.1):5432\/(?:DATABASE|banco|anunciaai)/i.test(
-        url,
-      );
-    if (!allowedExample) {
+    if (!ALLOWED_POSTGRES_EXAMPLES.has(url)) {
       failures.push(`Possível DATABASE_URL real encontrado em ${rel}`);
     }
   }
