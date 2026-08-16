@@ -58,6 +58,10 @@ if (!pathsMatch) {
   const sitemapPaths = [...pathsMatch[1].matchAll(/["']([^"']*)["']/g)].map((match) => match[1]);
   const sitemapRoutes = new Set(sitemapPaths.map((item) => item || "/"));
 
+  if (sitemapRoutes.size !== sitemapPaths.length) {
+    fail("O sitemap contém uma ou mais rotas duplicadas.");
+  }
+
   for (const route of publicRoutes) {
     if (!sitemapRoutes.has(route)) {
       fail(`Página pública fora do sitemap: ${route}`);
@@ -72,8 +76,29 @@ if (!pathsMatch) {
 }
 
 for (const [route, file] of routeToFile) {
-  if (route === "/") continue;
   const source = read(file);
+
+  if (!source.includes("<h1")) {
+    fail(`Página pública sem H1 próprio: ${route}`);
+  }
+
+  if (!source.includes("<main")) {
+    warn(`Página sem elemento <main>: ${route}`);
+  }
+
+  if (route === "/") continue;
+
+  if (!/export\s+const\s+metadata\s*:\s*Metadata\s*=/.test(source)) {
+    fail(`Página sem metadata própria tipada: ${route}`);
+  }
+
+  if (!/\btitle\s*:/.test(source)) {
+    fail(`Página sem título de metadata: ${route}`);
+  }
+
+  if (!/\bdescription\s*:/.test(source)) {
+    fail(`Página sem description de metadata: ${route}`);
+  }
 
   if (!source.includes("alternates") || !source.includes("canonical")) {
     fail(`Página sem canonical explícita: ${route}`);
@@ -81,6 +106,11 @@ for (const [route, file] of routeToFile) {
 
   if (/robots\s*:\s*\{[^}]*index\s*:\s*false/s.test(source)) {
     fail(`Página pública marcada como noindex: ${route}`);
+  }
+
+  const declaredPath = source.match(/const\s+PATH\s*=\s*["']([^"']+)["']/)?.[1];
+  if (declaredPath && declaredPath !== route) {
+    fail(`PATH declarado não corresponde à rota ${route}: ${declaredPath}`);
   }
 
   if (!source.includes("SiteHeader") || !source.includes("SiteFooter")) {
@@ -116,6 +146,7 @@ const forbiddenPatterns = [
   ["localhost:3000", /localhost:3000/i],
   ["FAQPage", /["']@type["']\s*:\s*["']FAQPage["']/],
   ["HowTo", /["']@type["']\s*:\s*["']HowTo["']/],
+  ["link HTTP inseguro", /(?:href\s*=\s*["']|href\s*:\s*["'])http:\/\//i],
 ];
 
 for (const file of sourceFiles) {
@@ -149,4 +180,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`SEO OK: ${publicRoutes.size} páginas públicas, sitemap e links internos consistentes.`);
+console.log(`SEO OK: ${publicRoutes.size} páginas públicas, sitemap, metadata e links internos consistentes.`);
