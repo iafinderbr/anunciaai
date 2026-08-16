@@ -35,6 +35,7 @@ const paths = [
   "/como-criar-titulo-de-produto",
   "/como-escolher-palavras-chave-para-produtos",
   "/como-criar-nome-de-produto",
+  "/sobre",
   "/privacidade",
   "/termos",
 ];
