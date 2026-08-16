@@ -64,21 +64,12 @@ export function GeneratorTool({
     setErrors((current) => ({ ...current, [key]: undefined }));
   }, []);
 
-  const persist = useCallback(async (data: GeneratorInput, generated: GeneratedAd) => {
+  const persist = useCallback(async (data: GeneratorInput) => {
     try {
       const response = await fetch("/api/generations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productName: data.productName,
-          category: data.category,
-          audience: data.audience,
-          price: data.price,
-          channel: data.channel,
-          tone: data.tone,
-          titlePreview: generated.title,
-          featureCount: parseFeatures(data.features).length,
-        }),
+        body: JSON.stringify({ channel: data.channel }),
       });
       const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
       if (response.ok && payload?.ok) {
@@ -107,7 +98,7 @@ export function GeneratorTool({
       const generated = generateAd(data, nextVariant);
       setResult(generated);
       setStatus("result");
-      void persist(data, generated);
+      void persist(data);
     },
     [persist],
   );
