@@ -6,7 +6,6 @@ export const GENERATION_EVENT = "anunciaai:generated";
 
 interface StatsResponse {
   total: number;
-  today: number;
 }
 
 export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
