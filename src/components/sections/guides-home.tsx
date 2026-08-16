@@ -39,6 +39,59 @@ const guides = [
   },
 ];
 
+const guideCollections = [
+  {
+    title: "Mercado Livre",
+    links: [
+      ["/como-criar-anuncio-no-mercado-livre", "Criar anúncio"],
+      ["/como-criar-titulo-para-mercado-livre", "Criar título"],
+      ["/como-fazer-descricao-para-mercado-livre", "Fazer descrição"],
+      ["/como-preencher-ficha-tecnica-mercado-livre", "Preencher ficha técnica"],
+    ],
+  },
+  {
+    title: "Shopee",
+    links: [
+      ["/como-criar-anuncio-na-shopee", "Criar anúncio"],
+      ["/como-criar-titulo-para-shopee", "Criar título"],
+      ["/como-fazer-descricao-para-shopee", "Fazer descrição"],
+    ],
+  },
+  {
+    title: "OLX",
+    links: [
+      ["/como-criar-anuncio-na-olx", "Criar anúncio"],
+      ["/como-criar-titulo-para-olx", "Criar título"],
+      ["/como-fazer-descricao-para-olx", "Fazer descrição"],
+    ],
+  },
+  {
+    title: "Facebook Marketplace",
+    links: [
+      ["/como-criar-anuncio-no-facebook-marketplace", "Criar anúncio"],
+      ["/como-criar-titulo-para-facebook-marketplace", "Criar título"],
+      ["/como-fazer-descricao-para-facebook-marketplace", "Fazer descrição"],
+    ],
+  },
+  {
+    title: "Loja virtual",
+    links: [
+      ["/como-criar-pagina-de-produto-para-loja-virtual", "Criar página de produto"],
+      ["/seo-para-pagina-de-produto", "SEO para produto"],
+      ["/como-fazer-ficha-tecnica-de-produto", "Fazer ficha técnica"],
+    ],
+  },
+  {
+    title: "Conteúdo e redes sociais",
+    links: [
+      ["/como-criar-legenda-para-instagram", "Legenda para Instagram"],
+      ["/como-criar-nome-de-produto", "Criar nome de produto"],
+      ["/como-criar-titulo-de-produto", "Criar título de produto"],
+      ["/como-fazer-descricao-de-produto", "Fazer descrição de produto"],
+    ],
+  },
+] as const;
+
 export function GuidesHomeSection() {
   return (
     <section aria-labelledby="guias-home-titulo" className="border-y border-line bg-white">
@@ -82,6 +135,41 @@ export function GuidesHomeSection() {
               </Link>
             </article>
           ))}
+        </div>
+
+        <div className="mt-12 border-t border-line pt-9">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Explore por canal</p>
+            <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">Encontre o guia certo para cada etapa</h3>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Acesse diretamente os conteúdos de título, descrição, ficha técnica, SEO e publicação de cada canal.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {guideCollections.map((collection) => (
+              <nav
+                key={collection.title}
+                aria-label={`Guias de ${collection.title}`}
+                className="rounded-2xl border border-line bg-canvas p-5"
+              >
+                <p className="text-sm font-semibold text-ink">{collection.title}</p>
+                <ul className="mt-3 grid gap-2">
+                  {collection.links.map(([href, label]) => (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-brand-600"
+                      >
+                        <span aria-hidden="true" className="text-brand-500">→</span>
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
       </div>
     </section>
