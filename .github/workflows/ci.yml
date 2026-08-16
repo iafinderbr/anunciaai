@@ -41,6 +41,9 @@ jobs:
       - name: Auditar motor de geração
         run: npm run generator:check
 
+      - name: Auditar promessas públicas
+        run: npm run claims:check
+
       - name: Auditar SEO e links internos
         run: npm run seo:check
 
