@@ -1,0 +1,2 @@
+generative-backend=ready-disabled-by-default
+verified-by=github-actions
