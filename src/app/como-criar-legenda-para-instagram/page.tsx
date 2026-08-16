@@ -151,7 +151,7 @@ const questions = [
   {
     question: "Posso usar IA para criar legendas?",
     answer:
-      "Sim. A IA pode organizar uma primeira versão com gancho, benefícios e chamada para ação. Antes de publicar, confira se preço, características, condições e destino da CTA correspondem ao que sua loja realmente oferece.",
+      "Sim. A ferramenta pode organizar uma primeira versão com gancho, benefícios e chamada para ação. Antes de publicar, confira se preço, características, condições e destino da CTA correspondem ao que sua loja realmente oferece.",
   },
 ];
 
@@ -169,7 +169,7 @@ export default function ComoCriarLegendaInstagramPage() {
                 <p className="inline-flex rounded-full border border-line-strong bg-canvas px-3 py-1.5 text-xs font-semibold text-brand-600 shadow-card">Guia prático · Atualizado em agosto de 2026</p>
                 <h1 className="mt-6 text-[2.25rem] font-semibold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.65rem]">Como criar legenda para Instagram que apresenta o produto com clareza</h1>
                 <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">Monte uma legenda com contexto, produto, benefícios, chamada para ação e hashtags relevantes sem inventar características ou condições.</p>
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/gerador-de-legendas-para-instagram#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar legenda com IA grátis</Link><a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">Ver o passo a passo</a></div>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/gerador-de-legendas-para-instagram#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar legenda com o gerador gratuito</Link><a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">Ver o passo a passo</a></div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 8 minutos · Por AnunciaAI</p>
               </div>
             </div>

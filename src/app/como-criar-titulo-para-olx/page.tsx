@@ -106,7 +106,7 @@ export default function ComoCriarTituloOlxPage() {
                   Coloque as palavras mais importantes primeiro, identifique o item sem enrolação e use os 90 caracteres disponíveis para acrescentar detalhes que realmente ajudam o comprador.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/gerador-de-anuncios-olx#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Criar anúncio com IA grátis</Link>
+                  <Link href="/gerador-de-anuncios-olx#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Criar anúncio com o gerador gratuito</Link>
                   <a href="#formula" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">Ver a fórmula</a>
                 </div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 7 minutos · Por AnunciaAI</p>

@@ -136,7 +136,7 @@ const steps = [
 
 const questions = [
   {
-    question: "A inteligência artificial pode criar o anúncio inteiro?",
+    question: "A automação de conteúdo pode criar o anúncio inteiro?",
     answer:
       "Ela pode organizar o título, a descrição, os benefícios e as palavras-chave. Ainda assim, o vendedor precisa conferir se todas as informações correspondem ao produto e às condições reais da venda.",
   },
@@ -200,7 +200,7 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
                     href="/gerador-de-anuncios-mercado-livre#ferramenta"
                     className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                   >
-                    Criar anúncio com IA grátis
+                    Criar anúncio com o gerador gratuito
                   </Link>
                   <a
                     href="#passo-a-passo"

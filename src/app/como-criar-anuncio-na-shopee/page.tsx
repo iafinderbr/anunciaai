@@ -189,7 +189,7 @@ export default function ComoCriarAnuncioShopeePage() {
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link href="/gerador-de-anuncios-shopee#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                    Criar anúncio com IA grátis
+                    Criar anúncio com o gerador gratuito
                   </Link>
                   <a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">
                     Ver o passo a passo

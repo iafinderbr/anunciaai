@@ -179,7 +179,7 @@ export default function ComoCriarAnuncioFacebookMarketplacePage() {
                 <h1 className="mt-6 text-[2.25rem] font-semibold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.65rem]">Como criar um anúncio no Facebook Marketplace</h1>
                 <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">Organize fotos, título, preço, categoria, condição e descrição para publicar um classificado fiel ao item que você vende.</p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/gerador-de-anuncios-facebook-marketplace#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio com IA grátis</Link>
+                  <Link href="/gerador-de-anuncios-facebook-marketplace#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio com o gerador gratuito</Link>
                   <a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">Ver o passo a passo</a>
                 </div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 8 minutos · Por AnunciaAI</p>

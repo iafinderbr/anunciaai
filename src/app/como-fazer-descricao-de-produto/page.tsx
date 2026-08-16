@@ -156,9 +156,9 @@ const questions = [
       "Use o nome real do produto no título e no começo do texto, acrescente termos naturais que descrevem modelo, material ou uso e mantenha conteúdo próprio e fácil de ler. Não repita palavras-chave de forma artificial.",
   },
   {
-    question: "Posso usar inteligência artificial para escrever?",
+    question: "Posso usar automação de conteúdo para escrever?",
     answer:
-      "Sim. A IA pode organizar as informações e criar uma primeira versão. Antes de publicar, confira cada característica, medida, benefício e condição para garantir que o texto represente o produto real.",
+      "Sim. A ferramenta pode organizar as informações e criar uma primeira versão. Antes de publicar, confira cada característica, medida, benefício e condição para garantir que o texto represente o produto real.",
   },
   {
     question: "Posso copiar a descrição do fabricante?",
@@ -206,7 +206,7 @@ export default function ComoFazerDescricaoDeProdutoPage() {
                     href="/gerador-de-descricao-de-produto#ferramenta"
                     className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                   >
-                    Criar descrição com IA grátis
+                    Criar descrição com o gerador gratuito
                   </Link>
                   <a
                     href="#estrutura"

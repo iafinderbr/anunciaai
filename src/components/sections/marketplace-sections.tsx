@@ -91,7 +91,7 @@ export function MarketplaceStructure() {
           <div className="mt-3 rounded-2xl border border-line bg-canvas p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Estado de conservação</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
-              A IA identifica sinais de <strong className="font-medium text-ink">novo</strong>,{" "}
+              A ferramenta identifica sinais de <strong className="font-medium text-ink">novo</strong>,{" "}
               <strong className="font-medium text-ink">seminovo</strong> ou{" "}
               <strong className="font-medium text-ink">usado</strong> somente quando essas informações aparecem nos dados
               que você fornece.

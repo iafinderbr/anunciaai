@@ -189,9 +189,9 @@ const questions = [
       "Não. O próprio Google informa que a Busca não usa a tag meta keywords. Concentre o trabalho no conteúdo visível, na estrutura da página e em informações úteis e verificáveis.",
   },
   {
-    question: "A inteligência artificial pode escolher as palavras-chave?",
+    question: "A automação de conteúdo pode escolher as palavras-chave?",
     answer:
-      "A IA pode organizar ideias a partir dos dados do produto. Você ainda precisa remover termos irrelevantes, confirmar atributos e comparar as sugestões com a linguagem usada pelas pessoas e pelo canal de venda.",
+      "A ferramenta pode organizar ideias a partir dos dados do produto. Você ainda precisa remover termos irrelevantes, confirmar atributos e comparar as sugestões com a linguagem usada pelas pessoas e pelo canal de venda.",
   },
 ];
 

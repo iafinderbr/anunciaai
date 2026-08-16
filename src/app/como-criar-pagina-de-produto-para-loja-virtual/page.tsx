@@ -151,7 +151,7 @@ const questions = [
   {
     question: "Posso usar IA para montar a página de produto?",
     answer:
-      "Sim. A IA pode organizar uma primeira versão de título, descrição, benefícios e SEO. Antes de publicar, confirme cada característica, medida, compatibilidade e condição comercial com os dados reais do produto.",
+      "Sim. A ferramenta pode organizar uma primeira versão de título, descrição, benefícios e SEO. Antes de publicar, confirme cada característica, medida, compatibilidade e condição comercial com os dados reais do produto.",
   },
 ];
 
@@ -178,7 +178,7 @@ export default function ComoCriarPaginaProdutoLojaVirtualPage() {
                 <h1 className="mt-6 text-[2.25rem] font-semibold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.65rem]">Como criar uma página de produto para loja virtual</h1>
                 <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">Organize título, imagens, benefícios, descrição, ficha técnica e SEO para montar uma página clara, completa e fácil de revisar.</p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/gerador-de-anuncios-para-loja-virtual#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar conteúdo com IA grátis</Link>
+                  <Link href="/gerador-de-anuncios-para-loja-virtual#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar conteúdo com o gerador gratuito</Link>
                   <a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">Ver o passo a passo</a>
                 </div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 9 minutos · Por AnunciaAI</p>

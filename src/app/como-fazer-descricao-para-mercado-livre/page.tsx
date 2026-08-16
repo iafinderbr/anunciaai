@@ -114,7 +114,7 @@ export default function ComoFazerDescricaoMercadoLivrePage() {
                 <h1 className="mt-6 text-[2.25rem] font-semibold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.65rem]">Como fazer uma descrição para Mercado Livre</h1>
                 <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">Monte uma descrição clara, curta e útil para complementar a ficha técnica, responder dúvidas e representar exatamente o produto anunciado.</p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/gerador-de-anuncios-mercado-livre#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Gerar descrição com IA grátis</Link>
+                  <Link href="/gerador-de-anuncios-mercado-livre#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Gerar descrição com o gerador gratuito</Link>
                   <a href="#modelo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">Ver modelo pronto</a>
                 </div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 7 minutos · Por AnunciaAI</p>

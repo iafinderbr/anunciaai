@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "AnunciaAI — crie anúncios de produtos com inteligência artificial";
+export const alt = "AnunciaAI — crie anúncios de produtos com a ferramenta";
 export const size = {
   width: 1200,
   height: 630,

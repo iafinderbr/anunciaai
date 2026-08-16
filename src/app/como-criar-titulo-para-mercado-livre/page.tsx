@@ -133,7 +133,7 @@ export default function ComoCriarTituloMercadoLivrePage() {
                     href="/gerador-de-anuncios-mercado-livre#ferramenta"
                     className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600"
                   >
-                    Gerar título com IA grátis
+                    Gerar título com o gerador gratuito
                   </Link>
                   <a
                     href="#formula"

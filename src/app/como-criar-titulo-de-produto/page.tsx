@@ -147,7 +147,7 @@ const questions = [
       "Use a mesma base de dados, mas adapte a ordem e o tamanho às regras de cada canal. Nunca mude a identidade do produto apenas para encaixar uma palavra-chave.",
   },
   {
-    question: "A inteligência artificial pode gerar o título?",
+    question: "A automação de conteúdo pode gerar o título?",
     answer:
       "Pode criar opções a partir dos dados fornecidos, mas você precisa conferir cada especificação. Se enviar um título gerado por IA ao Google Merchant Center, siga também as regras atuais do atributo structured_title.",
   },
@@ -186,7 +186,7 @@ export default function ComoCriarTituloDeProdutoPage() {
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link href="/gerador-de-titulos-para-produtos#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                    Criar títulos com IA grátis
+                    Criar títulos com o gerador gratuito
                   </Link>
                   <a href="#formula" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">
                     Ver a fórmula
@@ -318,7 +318,7 @@ export default function ComoCriarTituloDeProdutoPage() {
                       inclua promoção, caixa alta ou símbolos usados apenas para chamar atenção.
                     </p>
                     <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-sm leading-6 text-amber-900/80">
-                      <strong className="text-amber-900">Título criado com IA:</strong> ao enviar para o Merchant Center,
+                      <strong className="text-amber-900">Título criado com a ferramenta:</strong> ao enviar para o Merchant Center,
                       o Google orienta usar o atributo <code>structured_title</code>, com o tipo de fonte digital
                       <code className="ml-1">trained_algorithmic_media</code>. Isso é uma regra do feed, não do texto visível na sua loja.
                     </div>

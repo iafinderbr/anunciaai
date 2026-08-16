@@ -148,7 +148,7 @@ const questions = [
       "Estado de conservação, características, medidas, acessórios incluídos, defeitos relevantes e informações que ajudem o comprador a entender exatamente o item. Evite links, e-mails e palavras sem relação com o anúncio.",
   },
   {
-    question: "Posso usar inteligência artificial para escrever o anúncio?",
+    question: "Posso usar automação de conteúdo para escrever o anúncio?",
     answer:
       "Sim, como apoio para organizar as informações. Antes de publicar, revise cada detalhe e confirme que título, descrição, preço e características correspondem ao produto real.",
   },
@@ -189,7 +189,7 @@ export default function ComoCriarAnuncioOlxPage() {
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link href="/gerador-de-anuncios-olx#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                    Criar anúncio com IA grátis
+                    Criar anúncio com o gerador gratuito
                   </Link>
                   <a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">
                     Ver o passo a passo

@@ -175,9 +175,9 @@ const questions = [
       "O registro de marca é uma decisão jurídica e comercial. Consulte o guia e as bases oficiais do INPI e, se o nome for importante para o negócio, considere orientação de um profissional especializado.",
   },
   {
-    question: "Posso usar inteligência artificial para criar nomes?",
+    question: "Posso usar automação de conteúdo para criar nomes?",
     answer:
-      "Pode usar a IA para ampliar o brainstorm, mas não trate uma sugestão como disponível. Avalie significado, adequação, pronúncia e possíveis conflitos antes de lançar ou investir no nome.",
+      "Pode usar a ferramenta para ampliar o brainstorm, mas não trate uma sugestão como disponível. Avalie significado, adequação, pronúncia e possíveis conflitos antes de lançar ou investir no nome.",
   },
 ];
 
@@ -209,7 +209,7 @@ export default function ComoCriarNomeDeProdutoPage() {
                   fazer antes de apresentar o produto ao mercado.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/gerador-de-nomes-para-produtos#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar nomes com IA grátis</Link>
+                  <Link href="/gerador-de-nomes-para-produtos#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar nomes com o gerador gratuito</Link>
                   <a href="#passo-a-passo" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">Ver o método</a>
                 </div>
                 <p className="mt-5 text-sm text-muted">Leitura de aproximadamente 9 minutos · Por AnunciaAI</p>

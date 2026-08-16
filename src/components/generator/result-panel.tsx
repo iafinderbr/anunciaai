@@ -122,7 +122,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       >
         <p className="text-lg font-semibold leading-snug text-ink">{result.title}</p>
         <p className={`mt-2 text-xs font-medium ${withinLimit ? "text-emerald-600" : "text-amber-600"}`}>
-          {withinLimit ? "✓ Dentro do limite do canal" : "! Acima do limite recomendado — corte alguma palavra"}
+          {withinLimit ? "✓ em um formato de referência para o canal" : "! Acima do limite recomendado — corte alguma palavra"}
         </p>
 
         {result.titleAlternatives.length > 0 ? (
@@ -181,7 +181,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       <Section
         index={5}
         title="Anúncio"
-        hint="Versão persuasiva pronta para publicar ou impulsionar"
+        hint="Versão persuasiva para revisar antes de publicar ou impulsionar"
         copyValue={result.adCopy}
       >
         <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
