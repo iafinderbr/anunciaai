@@ -1,3 +1,12 @@
-.env.local
+# Segredos e variáveis locais
+.env
+.env.*
+!.env.example
+
+# Dependências e builds
 node_modules/
 .next/
+
+# Logs e arquivos do sistema
+*.log
+.DS_Store
