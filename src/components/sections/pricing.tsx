@@ -57,7 +57,7 @@ const faqs = [
   { question: "Preciso pagar para usar?", answer: "Não. A geração de anúncios desta versão é gratuita e ilimitada durante o período de testes. Não pedimos cartão de crédito." },
   { question: "O conteúdo serve para Mercado Livre e Shopee?", answer: "Sim. Você escolhe o canal antes de gerar e o texto é adaptado à estrutura e aos limites indicados para cada plataforma." },
   { question: "Posso editar o texto depois?", answer: "Com certeza. Copie o bloco que quiser, ajuste detalhes específicos do seu estoque e publique. Você também pode clicar em “Gerar novamente” para receber outra versão." },
-  { question: "Meus dados de produto ficam salvos?", answer: "O conteúdo digitado no formulário não é necessário para o contador público. Mantemos apenas um registro técnico mínimo da geração, como o canal utilizado e o horário. Métricas de navegação do site também podem ser coletadas pelo Web Analytics da Vercel." },
+  { question: "Meus dados de produto ficam salvos?", answer: "Não. O conteúdo digitado no formulário é usado para gerar o resultado no navegador e não é salvo no banco de gerações. Para o contador público, enviamos e armazenamos apenas o canal utilizado e o horário da geração. Métricas de navegação também podem ser coletadas pelo Vercel Web Analytics." },
 ];
 
 export function FaqSection() {
@@ -81,6 +81,10 @@ export function SiteFooter() {
           <p className="text-[17px] font-semibold tracking-tight">Anuncia<span className="text-brand-600">AI</span></p>
           <p className="mt-1 max-w-sm text-sm text-muted">Ferramenta de inteligência artificial para lojistas criarem anúncios de produtos em segundos.</p>
           <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis</Link>
+          <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted">
+            <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
+            <Link href="/termos" className="transition-colors hover:text-brand-600">Termos de uso</Link>
+          </div>
         </div>
 
         <nav aria-label="Ferramentas do AnunciaAI">
@@ -104,7 +108,7 @@ export function SiteFooter() {
           </ul>
         </nav>
       </div>
-      <div className="border-t border-line"><div className="container-page py-5"><p className="text-xs text-muted">© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p></div></div>
+      <div className="border-t border-line"><div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p><div className="flex gap-4"><Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link><Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link></div></div></div>
     </footer>
   );
 }
