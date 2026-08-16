@@ -157,32 +157,52 @@ export default function OlxPage() {
         <OlxStructure />
         <OlxFeatures />
         <OlxMistakes />
-        <PricingSection />
-        <OlxFaq />
 
-        <section aria-labelledby="olx-guia" className="border-t border-line bg-white">
+        <section aria-labelledby="olx-guias-titulo" className="border-y border-line bg-white">
           <div className="container-page py-12 sm:py-16">
-            <div className="rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Guia passo a passo</p>
-              <div className="mt-3 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div className="max-w-2xl">
-                  <h2 id="olx-guia" className="text-xl font-semibold sm:text-2xl">
-                    Aprenda como criar um anúncio na OLX do início ao fim
+            <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
+              <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias da OLX</p>
+                  <h2 id="olx-guias-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
+                    Aprenda cada parte do anúncio
                   </h2>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">
-                    Veja as orientações atuais para título, fotos, categoria, descrição, preço, localização e revisão.
+                  <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
+                    Veja o passo a passo completo ou aprofunde título e descrição antes de usar a ferramenta.
                   </p>
                 </div>
                 <Link
                   href="/como-criar-anuncio-na-olx"
-                  className="shrink-0 rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                  className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                 >
-                  Ler o guia da OLX
+                  Guia completo do anúncio
+                </Link>
+              </div>
+
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link
+                  href="/como-criar-titulo-para-olx"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Título</span>
+                  <span className="mt-2 block font-semibold text-ink">Como criar título para OLX</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Primeiras palavras, limite de 90 caracteres, exemplos e checklist.</span>
+                </Link>
+                <Link
+                  href="/como-fazer-descricao-para-olx"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span>
+                  <span className="mt-2 block font-semibold text-ink">Como fazer descrição para OLX</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Modelo editável, estado de conservação, exemplo e revisão.</span>
                 </Link>
               </div>
             </div>
           </div>
         </section>
+
+        <PricingSection />
+        <OlxFaq />
 
         <section aria-labelledby="olx-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
