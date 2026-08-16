@@ -1,19 +1,13 @@
 import type { GeneratorInput } from "./types";
 
-/**
- * Conteúdo da landing page /gerador-de-anuncios-shopee.
- * Fonte única para as seções de conteúdo da página (como funciona,
- * estrutura do anúncio, recursos, erros comuns e FAQ).
- * O FAQ e o passo a passo são renderizados apenas como conteúdo HTML.
- */
-
+/** Conteúdo da landing page /gerador-de-anuncios-shopee. */
 export const SHOPEE_EXAMPLE_INPUT: GeneratorInput = {
   productName: "Carregador portátil 20000mAh",
   category: "Acessórios para celular",
   price: "R$ 89,90",
-  audience: "Quem usa o celular o dia todo fora de casa",
+  audience: "Quem usa o celular com frequência fora de casa",
   features:
-    "20000mAh, carregamento rápido 20W, duas portas USB, entrada USB-C, indicador LED de bateria, carrega até 4 vezes o celular, garantia de 6 meses",
+    "20000mAh, carregamento rápido 20W, duas portas USB, entrada USB-C, indicador LED de bateria, garantia de 6 meses",
   channel: "shopee",
   tone: "persuasivo",
 };
@@ -21,91 +15,91 @@ export const SHOPEE_EXAMPLE_INPUT: GeneratorInput = {
 export const SHOPEE_STEPS: { title: string; text: string }[] = [
   {
     title: "Informe seu produto",
-    text: "Cole nome, categoria, preço e características. Pode ser em tópicos soltos, do jeito que você tem anotado.",
+    text: "Cole nome, categoria, preço e características que você consegue confirmar.",
   },
   {
-    title: "Deixe a IA criar",
-    text: "Em segundos você recebe título, descrição, benefícios, ficha técnica e palavras-chave no formato da Shopee.",
+    title: "Gere uma primeira versão",
+    text: "A ferramenta organiza os dados em título, descrição, benefícios, ficha de características e sugestões de termos relacionados.",
   },
   {
-    title: "Copie e publique",
-    text: "Copie cada bloco com um clique e cole no formulário de anúncio da Shopee. Sem retrabalho.",
+    title: "Revise e adapte",
+    text: "Confira os dados e ajuste o conteúdo às regras atuais da categoria antes de preencher o anúncio da Shopee.",
   },
 ];
 
 export const SHOPEE_ANATOMY: { title: string; text: string }[] = [
   {
-    title: "Título com palavra-chave",
-    text: "Até 120 caracteres, com nome do produto, marca, modelo e características relevantes para a busca.",
+    title: "Título identificável",
+    text: "Use nome do produto, marca, modelo e características relevantes quando elas realmente ajudam a diferenciar a versão.",
   },
   {
-    title: "Descrição que apresenta e convence",
-    text: "Abertura direta, benefícios em tópicos e uma chamada para ação no final.",
+    title: "Descrição organizada",
+    text: "Apresente características, contexto de uso e informações importantes em blocos fáceis de conferir.",
   },
   {
-    title: "Benefícios, não só características",
-    text: "Cada especificação vira uma vantagem que o comprador entende na hora.",
+    title: "Benefícios apoiados nos dados",
+    text: "Explique a utilidade possível de uma característica sem transformar possibilidade em garantia.",
   },
   {
-    title: "Ficha técnica completa",
-    text: "Material, medidas, garantia e itens inclusos preenchidos para deixar o anúncio mais claro.",
+    title: "Atributos consistentes",
+    text: "Material, medidas, garantia, voltagem e outros campos devem refletir exatamente a versão anunciada.",
   },
   {
-    title: "Informações consistentes",
-    text: "Título, fotos, atributos e descrição precisam representar a mesma versão do produto.",
+    title: "Informações coerentes",
+    text: "Título, fotos, atributos e descrição precisam representar o mesmo produto e as mesmas variações.",
   },
 ];
 
 export const SHOPEE_TITLE_BREAKDOWN: { label: string; value: string }[] = [
   { label: "Produto", value: "Carregador Portátil" },
-  { label: "Diferencial", value: "20000mAh" },
-  { label: "Palavra-chave", value: "Carregamento Rápido" },
-  { label: "Atributo", value: "Duas Portas USB" },
+  { label: "Capacidade", value: "20000mAh" },
+  { label: "Característica", value: "Carregamento Rápido 20W" },
+  { label: "Conectividade", value: "USB-C" },
 ];
 
 export const SHOPEE_FEATURES: { title: string; text: string }[] = [
   {
-    title: "Título de até 120 caracteres",
-    text: "A ferramenta mantém o título dentro do limite atual e prioriza informações úteis, sem encher o texto com termos irrelevantes.",
+    title: "Título para revisar",
+    text: "A ferramenta cria um preview legível com produto e características informadas. Confira sempre as regras e o contador exibidos pela Shopee antes de publicar.",
   },
   {
-    title: "Descrição otimizada para a Shopee",
-    text: "Texto organizado para apresentar características, benefícios, medidas, compatibilidades e conteúdo da embalagem.",
+    title: "Descrição estruturada",
+    text: "Texto organizado com características, benefícios conservadores, medidas, compatibilidades e conteúdo da embalagem quando esses dados são informados.",
   },
   {
-    title: "Benefícios que vendem",
-    text: "A IA transforma especificações técnicas em vantagens claras para o comprador.",
+    title: "Benefícios conservadores",
+    text: "As características são explicadas sem inventar desempenho, durabilidade ou condições que você não forneceu.",
   },
   {
-    title: "Palavras-chave de busca",
-    text: "Termos relacionados ao produto, prontos para distribuir de forma natural entre título, descrição e atributos.",
+    title: "Sugestões de termos",
+    text: "Combinações relacionadas ao produto para você revisar; a ferramenta não consulta volume real de busca.",
   },
   {
-    title: "Ficha técnica organizada",
-    text: "Suas anotações viram atributos limpos, prontos para conferir ao preencher o anúncio.",
+    title: "Ficha de características",
+    text: "Suas anotações viram atributos organizados para facilitar a conferência ao preencher o anúncio.",
   },
   {
     title: "Tom de texto ajustável",
-    text: "Escolha entre profissional, persuasivo, simples ou premium e mantenha a voz da sua loja.",
+    text: "Escolha entre profissional, persuasivo, simples ou premium sem alterar os fatos informados.",
   },
 ];
 
 export const SHOPEE_MISTAKES: { wrong: string; right: string }[] = [
   {
     wrong: "Título genérico: “Carregador portátil muito bom”",
-    right: "Carregador Portátil 20000mAh Carregamento Rápido Duas Portas USB",
+    right: "Carregador Portátil 20000mAh Carregamento Rápido 20W USB-C",
   },
   {
     wrong: "Descrição vaga, sem medidas, compatibilidade ou itens inclusos",
-    right: "Descrição focada em uso, características reais e informações que ajudam a decidir",
+    right: "Descrição focada em características reais e informações que ajudam a identificar o produto",
   },
   {
-    wrong: "Foto e título dizendo uma coisa, ficha técnica dizendo outra",
-    right: "Título, fotos, descrição e atributos coerentes, com a mesma versão e especificações",
+    wrong: "Foto e título dizendo uma coisa, atributos dizendo outra",
+    right: "Título, fotos, descrição e atributos coerentes com a mesma versão",
   },
   {
-    wrong: "Prometer frete grátis ou parcelamento que a loja não configura",
-    right: "Deixar frete, cupom e parcelamento para as condições realmente configuradas no anúncio",
+    wrong: "Prometer frete, cupom ou parcelamento que não está configurado",
+    right: "Deixar condições comerciais para os campos e configurações reais do anúncio",
   },
 ];
 
@@ -116,34 +110,33 @@ export interface FaqItem {
 
 export const SHOPEE_FAQ: FaqItem[] = [
   {
-    question: "Como criar um anúncio para a Shopee com inteligência artificial?",
+    question: "Como usar o gerador de anúncios para Shopee?",
     answer:
-      "Preencha o nome do produto, a categoria, o preço e as características na ferramenta desta página e clique em “Gerar anúncio”. Em segundos a IA devolve título, descrição, benefícios, ficha técnica e palavras-chave para você revisar.",
+      "Preencha nome, categoria, preço e características e clique em “Gerar anúncio”. A ferramenta cria uma primeira versão de título, descrição, benefícios e ficha de características para você revisar.",
   },
   {
-    question: "Qual o limite de caracteres do título na Shopee?",
+    question: "Como conferir o tamanho permitido do título na Shopee?",
     answer:
-      "A documentação oficial atual da Shopee indica títulos de produto com até 120 caracteres. Use o espaço para identificar o item com clareza, incluindo marca, modelo e características relevantes quando fizer sentido.",
+      "Use o contador e as orientações exibidas pela Shopee no momento da publicação. Como regras de plataforma podem mudar, o preview do AnunciaAI deve ser tratado como referência editorial, não como garantia de limite oficial.",
   },
   {
     question: "O que colocar na descrição de um anúncio da Shopee?",
     answer:
-      "Inclua as informações que ajudam o comprador a decidir: principais características, medidas, material, compatibilidade, modo de uso e conteúdo da embalagem, sempre de forma clara e fiel ao produto.",
+      "Inclua características, medidas, material, compatibilidade, modo de uso e conteúdo da embalagem quando essas informações existirem e forem relevantes.",
   },
   {
-    question: "O que ajuda um produto a aparecer na busca da Shopee?",
+    question: "O que pode ajudar o produto a ser entendido na busca da Shopee?",
     answer:
-      "Título informativo e atributos precisos ajudam a Shopee e o comprador a entender o produto. Use termos relevantes sem repetição artificial e mantenha as características completas e corretas.",
+      "Um título claro e atributos precisos ajudam a plataforma e o comprador a identificar o item. Evite repetição artificial e mantenha as características consistentes.",
   },
   {
-    question: "O gerador de anúncios para Shopee é gratuito?",
+    question: "O gerador para Shopee é gratuito?",
     answer:
-      "Sim. A geração é gratuita, não exige cadastro e não pede cartão de crédito. Você pode gerar, copiar e revisar anúncios durante o período de testes.",
+      "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito.",
   },
   {
-    question: "A ferramenta serve para outros marketplaces também?",
+    question: "A ferramenta serve para outros canais também?",
     answer:
-      "Sim. Esta página é otimizada para a Shopee, mas o AnunciaAI também gera anúncios para Mercado Livre, loja virtual e outros canais, adaptando a estrutura ao canal escolhido.",
+      "Sim. Existem geradores dedicados a Mercado Livre, OLX, Facebook Marketplace, loja virtual e Instagram, cada um com uma estrutura diferente para revisar.",
   },
 ];
-
