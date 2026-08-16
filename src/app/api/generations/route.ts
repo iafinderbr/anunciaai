@@ -18,6 +18,8 @@ const CHANNELS = new Set([
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 30;
 const MAX_BODY_BYTES = 2_048;
+const RATE_LIMIT_PRUNE_AT = 5_000;
+const RATE_LIMIT_HARD_CAP = 10_000;
 
 type RateEntry = { count: number; resetAt: number };
 
@@ -39,8 +41,21 @@ function requestKey(request: Request): string {
   return forwarded || "unknown";
 }
 
+function pruneRateLimit(now: number) {
+  if (rateLimit.size < RATE_LIMIT_PRUNE_AT) return;
+
+  for (const [key, entry] of rateLimit) {
+    if (entry.resetAt <= now) rateLimit.delete(key);
+  }
+
+  // Evita crescimento ilimitado de memória em uma instância sob tráfego hostil.
+  if (rateLimit.size > RATE_LIMIT_HARD_CAP) rateLimit.clear();
+}
+
 function isRateLimited(request: Request): boolean {
   const now = Date.now();
+  pruneRateLimit(now);
+
   const key = requestKey(request);
   const current = rateLimit.get(key);
 
@@ -51,6 +66,20 @@ function isRateLimited(request: Request): boolean {
 
   current.count += 1;
   return current.count > RATE_LIMIT_MAX;
+}
+
+function isAllowedOrigin(request: Request): boolean {
+  const origin = request.headers.get("origin");
+
+  // Requisições server-to-server podem não enviar Origin. Quando o navegador
+  // envia o cabeçalho, exigimos que ele seja do próprio host da aplicação.
+  if (!origin) return true;
+
+  try {
+    return new URL(origin).origin === new URL(request.url).origin;
+  } catch {
+    return false;
+  }
 }
 
 export async function GET() {
@@ -82,6 +111,13 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    if (!isAllowedOrigin(request)) {
+      return Response.json(
+        { ok: false, error: "forbidden_origin" },
+        { status: 403, headers: { "Cache-Control": "no-store" } },
+      );
+    }
+
     if (isRateLimited(request)) {
       return Response.json(
         { ok: false, error: "rate_limited" },
