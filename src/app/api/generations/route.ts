@@ -175,9 +175,30 @@ export async function POST(request: Request) {
       );
     }
 
-    const body: unknown = rawBody ? JSON.parse(rawBody) : {};
-    const payload = (body ?? {}) as Record<string, unknown>;
-    const channel = str(payload.channel, 40);
+    let body: unknown;
+    try {
+      body = rawBody ? JSON.parse(rawBody) : null;
+    } catch {
+      return Response.json(
+        { ok: false, error: "invalid_json" },
+        { status: 400, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return Response.json(
+        { ok: false, error: "invalid_payload" },
+        { status: 400, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    const channel = str((body as Record<string, unknown>).channel, 40);
+    if (!CHANNELS.has(channel)) {
+      return Response.json(
+        { ok: false, error: "invalid_channel" },
+        { status: 400, headers: NO_STORE_HEADERS },
+      );
+    }
 
     await ensureDatabaseSchema();
 
@@ -186,7 +207,7 @@ export async function POST(request: Request) {
       category: "Não armazenada",
       audience: null,
       price: null,
-      channel: CHANNELS.has(channel) ? channel : "outro",
+      channel,
       tone: "profissional",
       titlePreview: null,
       featureCount: 0,
