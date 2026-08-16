@@ -12,7 +12,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Mercado Livre com IA | Grátis";
 const DESCRIPTION =
-  "Crie títulos, descrições, ficha técnica e palavras-chave para anúncios do Mercado Livre com IA. Grátis, sem cadastro e com limite de 60 caracteres.";
+  "Crie títulos, descrições, ficha técnica e palavras-chave para anúncios do Mercado Livre com IA. Grátis, sem cadastro e pronto para revisar antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -58,7 +58,7 @@ const structuredData = {
   ],
 };
 
-const highlights = ["Título com até 60 caracteres", "Ficha técnica pronta", "Palavras-chave de busca", "100% grátis"];
+const highlights = ["Título claro e objetivo", "Ficha técnica pronta", "Palavras-chave de busca", "100% grátis"];
 
 export default function MercadoLivrePage() {
   return (
@@ -103,7 +103,7 @@ export default function MercadoLivrePage() {
 
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
                 Transforme as informações do seu produto em título, descrição, benefícios, ficha técnica e palavras-chave
-                prontos para publicar no Mercado Livre — em segundos e dentro das regras da plataforma.
+                para revisar e adaptar antes de publicar no Mercado Livre.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -142,7 +142,7 @@ export default function MercadoLivrePage() {
                 lockedChannel="mercado-livre"
                 exampleInput={ML_EXAMPLE_INPUT}
                 title="Crie seu anúncio para o Mercado Livre"
-                subtitle="Preencha os campos abaixo. O texto sai formatado nas regras do Mercado Livre."
+                subtitle="Preencha os campos abaixo. Receba uma primeira versão organizada para revisar antes de publicar."
               />
             </div>
           </div>
@@ -155,23 +155,42 @@ export default function MercadoLivrePage() {
 
         <section aria-labelledby="ml-guia-titulo" className="border-y border-line bg-white">
           <div className="container-page py-12 sm:py-16">
-            <div className="grid items-center gap-7 rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9 lg:grid-cols-[1fr_auto]">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guia completo</p>
-                <h2 id="ml-guia-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
-                  Veja como criar o anúncio do início ao fim
-                </h2>
-                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
-                  Aprenda a escolher categoria, preparar fotos, preencher a ficha técnica e revisar todas as informações
-                  antes de publicar no Mercado Livre.
-                </p>
+            <div className="rounded-3xl border border-line bg-canvas p-6 shadow-card sm:p-9">
+              <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Guias do Mercado Livre</p>
+                  <h2 id="ml-guia-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
+                    Aprenda cada parte do anúncio
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
+                    Veja o passo a passo completo ou aprofunde somente título e descrição antes de usar a ferramenta.
+                  </p>
+                </div>
+                <Link
+                  href="/como-criar-anuncio-no-mercado-livre"
+                  className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                >
+                  Guia completo do anúncio
+                </Link>
               </div>
-              <Link
-                href="/como-criar-anuncio-no-mercado-livre"
-                className="rounded-xl bg-ink px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-              >
-                Ler o guia passo a passo
-              </Link>
+              <div className="mt-7 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+                <Link
+                  href="/como-criar-titulo-para-mercado-livre"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Título</span>
+                  <span className="mt-2 block font-semibold text-ink">Como criar título para Mercado Livre</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Fórmula, exemplos e checklist para deixar o título claro.</span>
+                </Link>
+                <Link
+                  href="/como-fazer-descricao-para-mercado-livre"
+                  className="rounded-2xl border border-line bg-white p-5 transition-colors hover:border-brand-400"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Descrição</span>
+                  <span className="mt-2 block font-semibold text-ink">Como fazer descrição para Mercado Livre</span>
+                  <span className="mt-1.5 block text-sm leading-6 text-muted">Modelo editável, exemplo e revisão da descrição.</span>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -187,7 +206,7 @@ export default function MercadoLivrePage() {
                 Publique seu próximo anúncio hoje mesmo
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Cole as informações do produto e receba o anúncio completo, no formato que o Mercado Livre espera.
+                Cole as informações do produto, gere uma primeira versão e revise tudo de acordo com a categoria e as condições reais da venda.
               </p>
               <a
                 href="#ferramenta"
