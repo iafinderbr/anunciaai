@@ -51,36 +51,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
-      url: SITE_URL,
-      name: "AnunciaAI",
-      inLanguage: "pt-BR",
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": `${SITE_URL}/#software`,
-      name: "AnunciaAI",
-      url: SITE_URL,
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
-      inLanguage: "pt-BR",
-      description:
-        "Ferramenta de inteligência artificial que transforma as informações do seu produto em títulos, descrições, benefícios e anúncios completos para marketplaces e lojas virtuais.",
-      offers: {
-        "@type": "Offer",
-        name: "Grátis",
-        price: "0",
-        priceCurrency: "BRL",
-      },
-    },
-  ],
-};
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
@@ -93,10 +63,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         {children}
         <Analytics />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
       </body>
     </html>
   );
