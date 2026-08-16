@@ -55,16 +55,18 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "AnunciaAI",
+  url: SITE_URL,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "pt-BR",
   description:
     "Ferramenta de inteligência artificial que transforma as informações do seu produto em títulos, descrições, benefícios e anúncios completos para marketplaces e lojas virtuais.",
-  offers: [
-    { "@type": "Offer", name: "Grátis", price: "0", priceCurrency: "BRL" },
-    { "@type": "Offer", name: "Pro", price: "19.90", priceCurrency: "BRL" },
-    { "@type": "Offer", name: "Lojista", price: "49.90", priceCurrency: "BRL" },
-  ],
+  offers: {
+    "@type": "Offer",
+    name: "Grátis",
+    price: "0",
+    priceCurrency: "BRL",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
