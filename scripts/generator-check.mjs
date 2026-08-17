@@ -106,6 +106,11 @@ const requiredPrivacyPatterns = [
     generatorTool,
   ],
   [
+    "POST do contador exige Origin",
+    "if (!origin) return false;",
+    statsApi,
+  ],
+  [
     "API rejeita payload com campos além de channel",
     'if (keys.length !== 1 || keys[0] !== "channel")',
     statsApi,
