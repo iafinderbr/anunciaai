@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "security:check": "node scripts/security-check.mjs",
     "seo:check": "node scripts/seo-check.mjs",
+    "runtime:check": "node scripts/runtime-check.mjs",
     "generator:check": "node scripts/generator-check.mjs",
     "claims:check": "node scripts/claims-check.mjs"
   },
