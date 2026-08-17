@@ -185,6 +185,20 @@ for (const route of guideRoutes) {
   if (!guideSource.includes("/gerador-")) {
     fail(`Guia sem caminho direto para uma ferramenta: ${route}`);
   }
+
+  const publishedAt = extractConstString(guideSource, "PUBLISHED_AT");
+  if (!publishedAt || !/^\d{4}-\d{2}-\d{2}$/.test(publishedAt)) {
+    warn(`Guia sem PUBLISHED_AT padronizado em YYYY-MM-DD: ${route}`);
+  }
+  if (!guideSource.includes("datePublished: PUBLISHED_AT") || !guideSource.includes("dateModified: PUBLISHED_AT")) {
+    warn(`Guia sem datePublished/dateModified padronizados no Article: ${route}`);
+  }
+  if (!guideSource.includes("publishedTime:") || !guideSource.includes("modifiedTime:")) {
+    warn(`Guia sem publishedTime/modifiedTime no Open Graph: ${route}`);
+  }
+  if (!guideSource.includes('name: "Guias"') || !guideSource.includes('`${SITE_URL}/guias`')) {
+    warn(`Guia sem /guias na trilha estruturada de BreadcrumbList: ${route}`);
+  }
 }
 
 const generatorRoutes = [...publicRoutes].filter((route) => route.startsWith("/gerador-"));
