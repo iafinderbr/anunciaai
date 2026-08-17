@@ -29,8 +29,15 @@ jobs:
         with:
           node-version: 22
 
-      - name: Verificar capacidade generativa pública
+      - name: Verificar APIs públicas e banco
         run: |
+          HEALTH=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/health)
+          printf '%s' "$HEALTH" | grep -Fq '"ok":true'
+
+          STATS=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/generations)
+          printf '%s' "$STATS" | grep -Fq '"total":'
+          printf '%s' "$STATS" | grep -Fq '"recent":'
+
           CAPABILITY=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/generate)
           printf '%s' "$CAPABILITY" | grep -Fq '"enabled":false'
 
