@@ -8,7 +8,7 @@ const PATH = "/como-escolher-palavras-chave-para-mercado-livre";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const TITLE = "Como Escolher Palavras-chave para Mercado Livre";
 const DESCRIPTION =
-  "Aprenda a escolher palavras-chave para Mercado Livre usando termos buscados, título claro, categoria correta e ficha técnica completa sem repetir palavras artificialmente.";
+  "Aprenda a escolher palavras-chave para Mercado Livre com título claro, categoria correta, ficha técnica completa e termos relevantes sem repetição artificial.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
