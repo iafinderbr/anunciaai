@@ -113,11 +113,54 @@ function checkInteractiveNames(html, route, idsToText) {
   }
 }
 
+function checkFormControls(html, route) {
+  const labelledIds = new Set();
+  const wrappedControls = new Set();
+
+  for (const label of html.matchAll(/<label\b([^>]*)>([\s\S]*?)<\/label>/gi)) {
+    const openingTag = `<label${label[1]}>`;
+    const htmlFor = attribute(openingTag, "for");
+    if (htmlFor) labelledIds.add(htmlFor);
+
+    for (const control of label[2].matchAll(/<(input|select|textarea)\b[^>]*>/gi)) {
+      wrappedControls.add(control[0]);
+    }
+  }
+
+  for (const match of html.matchAll(/<(input|select|textarea)\b[^>]*>/gi)) {
+    const tagName = match[1].toLowerCase();
+    const openingTag = match[0];
+    const type = (attribute(openingTag, "type") ?? "").toLowerCase();
+
+    if (tagName === "input" && type === "hidden") continue;
+
+    const ariaLabel = attribute(openingTag, "aria-label");
+    const labelledBy = attribute(openingTag, "aria-labelledby");
+    const title = attribute(openingTag, "title");
+    const id = attribute(openingTag, "id");
+    const value = attribute(openingTag, "value");
+
+    const namedByInputValue = tagName === "input" && ["button", "submit", "reset"].includes(type) && Boolean(value?.trim());
+    const named =
+      Boolean(ariaLabel?.trim()) ||
+      Boolean(labelledBy?.trim()) ||
+      Boolean(title?.trim()) ||
+      Boolean(id && labelledIds.has(id)) ||
+      wrappedControls.has(openingTag) ||
+      namedByInputValue;
+
+    if (!named) {
+      fail(`${route}: campo ${tagName}${id ? `#${id}` : ""} sem rótulo acessível detectável.`);
+    }
+  }
+}
+
 function checkDocument(route, html) {
   const { ids, idsToText } = collectIds(html, route);
   checkAriaReferences(html, route, ids);
   checkImages(html, route);
   checkInteractiveNames(html, route, idsToText);
+  checkFormControls(html, route);
 }
 
 async function fetchText(pathname) {
@@ -166,7 +209,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Acessibilidade OK: ids, referências ARIA, alt de imagens e nomes de links/botões validados.");
+  console.log("Acessibilidade OK: ids, referências ARIA, alt de imagens, nomes de links/botões e rótulos de formulários validados.");
 }
 
 main().catch((error) => {
