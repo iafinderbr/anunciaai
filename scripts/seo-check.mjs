@@ -5,7 +5,9 @@ const ROOT = process.cwd();
 const APP_DIR = path.join(ROOT, "src", "app");
 const SITEMAP_FILE = path.join(APP_DIR, "sitemap.ts");
 const ROBOTS_FILE = path.join(APP_DIR, "robots.ts");
+const LAYOUT_FILE = path.join(APP_DIR, "layout.tsx");
 const SITE_FILE = path.join(ROOT, "src", "lib", "site.ts");
+const SITE_HEADER_FILE = path.join(ROOT, "src", "components", "site-header.tsx");
 const ADS_FILE = path.join(ROOT, "public", "ads.txt");
 const HOME_GUIDES_FILE = path.join(ROOT, "src", "components", "sections", "guides-home.tsx");
 const GUIDES_HUB_FILE = path.join(APP_DIR, "guias", "page.tsx");
@@ -97,8 +99,6 @@ for (const [route, file] of routeToFile) {
 
   if (!source.includes("<main")) {
     warn(`Página sem elemento <main>: ${route}`);
-  } else if (!source.includes('id="ferramenta"')) {
-    warn(`Página sem alvo #ferramenta para o link de acessibilidade: ${route}`);
   }
 
   if (route === "/") continue;
@@ -212,6 +212,15 @@ for (const route of ["/sobre", "/privacidade", "/termos"]) {
   if (!sourceReferencesRoute(footerSource, route)) {
     fail(`Página institucional sem link no rodapé: ${route}`);
   }
+}
+
+const layoutSource = read(LAYOUT_FILE);
+const siteHeaderSource = read(SITE_HEADER_FILE);
+if (!layoutSource.includes('href="#inicio-conteudo"')) {
+  fail("O skip link global não aponta para #inicio-conteudo.");
+}
+if (!siteHeaderSource.includes('id="inicio-conteudo"')) {
+  fail("O SiteHeader não fornece o alvo #inicio-conteudo para o skip link global.");
 }
 
 const siteSource = read(SITE_FILE);
