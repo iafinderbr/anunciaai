@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "node scripts/auth-check.mjs && tsc --noEmit",
     "security:check": "node scripts/security-check.mjs",
     "seo:check": "node scripts/seo-check.mjs",
     "runtime:check": "node scripts/runtime-check.mjs",
