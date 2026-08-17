@@ -40,8 +40,39 @@ function hasFragmentTarget(html, fragment) {
   );
 }
 
+function collectJsonLdTypes(value, types) {
+  if (!value || typeof value !== "object") return;
+
+  if (Array.isArray(value)) {
+    for (const item of value) collectJsonLdTypes(item, types);
+    return;
+  }
+
+  const type = value["@type"];
+  if (typeof type === "string") types.add(type);
+  if (Array.isArray(type)) {
+    for (const item of type) {
+      if (typeof item === "string") types.add(item);
+    }
+  }
+
+  if (value["@graph"]) collectJsonLdTypes(value["@graph"], types);
+}
+
+function requiredStructuredTypes(route) {
+  if (route === "/") return ["Organization", "WebSite", "SoftwareApplication"];
+  if (route === "/sobre") return ["AboutPage", "Organization", "BreadcrumbList"];
+  if (route === "/guias") return ["BreadcrumbList"];
+  if (route.startsWith("/gerador-")) return ["BreadcrumbList"];
+  if (route.startsWith("/como-") || route === "/seo-para-pagina-de-produto") {
+    return ["Article", "BreadcrumbList"];
+  }
+  return [];
+}
+
 function checkJsonLd(route, html) {
   const scripts = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  const types = new Set();
   let valid = 0;
 
   for (const [index, script] of scripts.entries()) {
@@ -57,9 +88,22 @@ function checkJsonLd(route, html) {
         fail(`${route}: JSON-LD ${index + 1} não contém objeto ou array.`);
         continue;
       }
+      collectJsonLdTypes(parsed, types);
       valid += 1;
     } catch {
       fail(`${route}: JSON-LD ${index + 1} inválido no HTML renderizado.`);
+    }
+  }
+
+  for (const requiredType of requiredStructuredTypes(route)) {
+    if (!types.has(requiredType)) {
+      fail(`${route}: dados estruturados sem @type ${requiredType}.`);
+    }
+  }
+
+  for (const forbiddenType of ["FAQPage", "HowTo"]) {
+    if (types.has(forbiddenType)) {
+      fail(`${route}: tipo estruturado bloqueado encontrado no HTML: ${forbiddenType}.`);
     }
   }
 
