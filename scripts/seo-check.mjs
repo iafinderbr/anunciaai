@@ -8,6 +8,7 @@ const ROBOTS_FILE = path.join(APP_DIR, "robots.ts");
 const LAYOUT_FILE = path.join(APP_DIR, "layout.tsx");
 const SITE_FILE = path.join(ROOT, "src", "lib", "site.ts");
 const SITE_HEADER_FILE = path.join(ROOT, "src", "components", "site-header.tsx");
+const NEXT_CONFIG_FILE = path.join(ROOT, "next.config.ts");
 const ADS_FILE = path.join(ROOT, "public", "ads.txt");
 const HOME_GUIDES_FILE = path.join(ROOT, "src", "components", "sections", "guides-home.tsx");
 const GUIDES_HUB_FILE = path.join(APP_DIR, "guias", "page.tsx");
@@ -257,6 +258,11 @@ if (!robotsSource.includes('disallow: "/api/"')) {
 }
 if (!robotsSource.includes("/sitemap.xml")) {
   fail("robots.ts não referencia o sitemap.xml.");
+}
+
+const nextConfigSource = read(NEXT_CONFIG_FILE);
+if (!nextConfigSource.includes('source: "/api/:path*"') || !nextConfigSource.includes('value: "noindex, nofollow"')) {
+  fail("next.config.ts não reforça noindex/nofollow nos endpoints de API.");
 }
 
 const adsSource = read(ADS_FILE).trim();
