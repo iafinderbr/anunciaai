@@ -98,6 +98,14 @@ jobs:
           HOME_HTML=$(curl --fail --silent --show-error http://127.0.0.1:3000/)
           printf '%s' "$HOME_HTML" | grep -Fq 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2381421388873161'
 
+          LOGIN_HTML=$(curl --fail --silent --show-error http://127.0.0.1:3000/entrar)
+          printf '%s' "$LOGIN_HTML" | grep -Fq 'Continuar com Google'
+          printf '%s' "$LOGIN_HTML" | grep -Fq 'noindex'
+          if printf '%s' "$LOGIN_HTML" | grep -Fq 'Assinar agora'; then
+            echo "A área de login não pode prometer assinatura ativa antes da cobrança estar configurada."
+            exit 1
+          fi
+
           ADS_TXT=$(curl --fail --silent --show-error http://127.0.0.1:3000/ads.txt)
           test "$ADS_TXT" = 'google.com, pub-2381421388873161, DIRECT, f08c47fec0942fa0'
 
