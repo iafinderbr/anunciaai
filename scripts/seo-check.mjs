@@ -97,6 +97,8 @@ for (const [route, file] of routeToFile) {
 
   if (!source.includes("<main")) {
     warn(`Página sem elemento <main>: ${route}`);
+  } else if (!source.includes('id="ferramenta"')) {
+    warn(`Página sem alvo #ferramenta para o link de acessibilidade: ${route}`);
   }
 
   if (route === "/") continue;
