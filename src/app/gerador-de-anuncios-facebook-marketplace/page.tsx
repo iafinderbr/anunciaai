@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/site";
 const PATH = "/gerador-de-anuncios-facebook-marketplace";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const TITLE = "Gerador de Anúncios para Facebook Marketplace | Grátis";
-const DESCRIPTION = "Organize uma primeira versão de classificado para Facebook Marketplace com título, descrição, características, preço e condição quando informada. Revise antes de publicar.";
+const DESCRIPTION = "Crie uma primeira versão de anúncio para Facebook Marketplace com título, descrição, características e condição informada. Revise antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL), title: TITLE, description: DESCRIPTION,
