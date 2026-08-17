@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/site";
 const PATH = "/gerador-de-anuncios-olx";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const TITLE = "Gerador de Anúncios para OLX | Grátis";
-const DESCRIPTION = "Organize uma primeira versão de anúncio para OLX com título, descrição, características, preço e estado de conservação quando informado. Revise antes de publicar.";
+const DESCRIPTION = "Crie uma primeira versão de anúncio para OLX com título, descrição, características, preço e condição informada. Revise antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL), title: TITLE, description: DESCRIPTION,
