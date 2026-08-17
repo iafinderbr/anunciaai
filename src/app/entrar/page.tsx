@@ -75,12 +75,20 @@ export default function SignInPage() {
                 </p>
               </div>
 
-              <Link
-                href="/#ferramenta"
-                className="mt-5 inline-flex items-center justify-center rounded-xl bg-ink px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-              >
-                Continuar usando grátis
-              </Link>
+              <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                <Link
+                  href="/#ferramenta"
+                  className="inline-flex items-center justify-center rounded-xl bg-ink px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                >
+                  Continuar usando grátis
+                </Link>
+                <Link
+                  href="/conta"
+                  className="inline-flex items-center justify-center rounded-xl border border-line-strong bg-white px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-700"
+                >
+                  Ver estrutura da conta
+                </Link>
+              </div>
 
               <p className="mt-5 text-center text-xs text-muted">
                 Nenhum plano pago está sendo cobrado neste momento.
