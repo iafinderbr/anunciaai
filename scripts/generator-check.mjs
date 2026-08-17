@@ -5,11 +5,13 @@ const ROOT = process.cwd();
 const generatorFile = path.join(ROOT, "src", "lib", "generator.ts");
 const dataFile = path.join(ROOT, "src", "lib", "generator-data.ts");
 const generatorToolFile = path.join(ROOT, "src", "components", "generator", "generator-tool.tsx");
+const keywordsToolFile = path.join(ROOT, "src", "components", "generator", "product-keywords-tool.tsx");
 const statsApiFile = path.join(ROOT, "src", "app", "api", "generations", "route.ts");
 
 const generator = fs.readFileSync(generatorFile, "utf8");
 const data = fs.readFileSync(dataFile, "utf8");
 const generatorTool = fs.readFileSync(generatorToolFile, "utf8");
+const keywordsTool = fs.readFileSync(keywordsToolFile, "utf8");
 const statsApi = fs.readFileSync(statsApiFile, "utf8");
 const source = `${generator}\n${data}`;
 const failures = [];
@@ -76,6 +78,22 @@ for (const [label, pattern] of forbiddenConditionPatterns) {
   }
 }
 
+const requiredKeywordPatterns = [
+  ["Google altera as combinações", 'if (target === "google")'],
+  ["Google usa contexto informativo", 'term: `${product} características`'],
+  ["loja virtual altera as combinações", 'if (target === "loja")'],
+  ["loja usa contexto de compra online", 'term: `comprar ${product}`'],
+  ["Mercado Livre altera as combinações", 'term: `${product} mercado livre`'],
+  ["Shopee altera as combinações", 'term: `${product} shopee`'],
+  ["ferramenta nega consulta a autocomplete", "autocomplete nem dados internos"],
+];
+
+for (const [label, pattern] of requiredKeywordPatterns) {
+  if (!keywordsTool.includes(pattern)) {
+    failures.push(`Proteção ausente no gerador de palavras-chave: ${label}`);
+  }
+}
+
 const requiredPrivacyPatterns = [
   [
     "geração principal continua local no navegador",
@@ -124,5 +142,5 @@ if (failures.length) {
 }
 
 console.log(
-  "Gerador OK: proteções contra promessas, inferência insegura de condição e envio indevido de dados estão presentes.",
+  "Gerador OK: proteções contra promessas, inferência insegura de condição, destinos de palavras-chave e envio indevido de dados estão presentes.",
 );
