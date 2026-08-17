@@ -23,6 +23,8 @@ const patterns = [
     "garantia de conformidade com marketplace",
     /respeita(?: o)? limite de caracteres|respeita[^.\n]{0,100}(?:regras|pol[ií]tica)[^.\n]{0,100}(?:plataforma|marketplace)/gi,
   ],
+  ["contador atribuído a público não verificado", /por lojistas com o AnunciaAI/gi],
+  ["SEO apresentado como otimização comprovada", /Otimizado para busca no Google e dentro do marketplace/gi],
 ];
 
 function walk(dir) {
