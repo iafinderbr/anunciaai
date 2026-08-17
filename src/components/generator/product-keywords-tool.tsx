@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 
 type Target = "todos" | "google" | "loja" | "mercado-livre" | "shopee";
-type KeywordSource = "Produto" | "Categoria" | "Característica" | "Público" | "Canal";
+type KeywordSource = "Produto" | "Categoria" | "Característica" | "Público" | "Contexto";
 
 interface KeywordInput {
   product: string;
@@ -43,10 +43,10 @@ const EMPTY_INPUT: KeywordInput = {
 
 const TARGETS: { value: Target; label: string; hint: string }[] = [
   { value: "todos", label: "Geral", hint: "Combinações neutras para revisar e adaptar" },
-  { value: "google", label: "Google", hint: "Sugestões para conteúdo e página de produto" },
-  { value: "loja", label: "Loja virtual", hint: "Combinações para categoria e página de produto" },
-  { value: "mercado-livre", label: "Mercado Livre", hint: "Termos com produto, categoria e características" },
-  { value: "shopee", label: "Shopee", hint: "Termos com produto, categoria e características" },
+  { value: "google", label: "Google", hint: "Termos informativos para conteúdo e página de produto" },
+  { value: "loja", label: "Loja virtual", hint: "Combinações com contexto de compra online" },
+  { value: "mercado-livre", label: "Mercado Livre", hint: "Combinações que incluem o nome do marketplace" },
+  { value: "shopee", label: "Shopee", hint: "Combinações que incluem o nome do marketplace" },
 ];
 
 const SOURCE_STYLES: Record<KeywordSource, string> = {
@@ -54,7 +54,7 @@ const SOURCE_STYLES: Record<KeywordSource, string> = {
   Categoria: "bg-cyan-50 text-cyan-700",
   Característica: "bg-violet-50 text-violet-700",
   Público: "bg-rose-50 text-rose-700",
-  Canal: "bg-amber-50 text-amber-700",
+  Contexto: "bg-amber-50 text-amber-700",
 };
 
 const STOP_WORDS = new Set([
@@ -123,12 +123,28 @@ function shortAudience(value: string) {
     .join(" ");
 }
 
-function channelTerms(target: Target, product: string): KeywordItem[] {
+/**
+ * O destino selecionado muda apenas a forma de combinar os dados já fornecidos.
+ * Não há consulta a volume, tendência, autocomplete ou dados internos das plataformas.
+ */
+function targetTerms(target: Target, product: string): KeywordItem[] {
+  if (target === "google") {
+    return [
+      { term: `${product} características`, source: "Contexto" },
+      { term: `${product} informações`, source: "Contexto" },
+    ];
+  }
+  if (target === "loja") {
+    return [
+      { term: `${product} online`, source: "Contexto" },
+      { term: `comprar ${product}`, source: "Contexto" },
+    ];
+  }
   if (target === "mercado-livre") {
-    return [{ term: `${product} mercado livre`, source: "Canal" }];
+    return [{ term: `${product} mercado livre`, source: "Contexto" }];
   }
   if (target === "shopee") {
-    return [{ term: `${product} shopee`, source: "Canal" }];
+    return [{ term: `${product} shopee`, source: "Contexto" }];
   }
   return [];
 }
@@ -138,6 +154,7 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
   const category = lower(input.category);
   const features = parseList(input.features).map(shortFeature);
   const audience = shortAudience(input.audience);
+  const contextTerms = targetTerms(input.target, product);
   const safeFeature = (offset: number) =>
     features.length > 0 ? features[(variation + offset) % features.length] : "";
   const f1 = safeFeature(0);
@@ -149,7 +166,7 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
     { term: category, source: "Categoria" },
     { term: `${product} ${category}`, source: "Categoria" },
     ...(f1 ? [{ term: `${product} ${f1}`, source: "Característica" as const }] : []),
-    ...channelTerms(input.target, product),
+    ...contextTerms.slice(0, 1),
   ]).slice(0, 6);
 
   const secondary = unique([
@@ -158,7 +175,7 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
     ...(f3 ? [{ term: `${product} ${f3}`, source: "Característica" as const }] : []),
     ...(f1 ? [{ term: `${category} ${f1}`, source: "Característica" as const }] : []),
     ...(audience ? [{ term: `${product} para ${audience}`, source: "Público" as const }] : []),
-    ...channelTerms(input.target, product),
+    ...contextTerms,
   ]).slice(0, 8);
 
   const longTail = unique([
@@ -177,7 +194,7 @@ function createKeywordResult(input: KeywordInput, variation: number): KeywordRes
     ...(audience
       ? [{ term: `${product} para ${audience}`, source: "Público" as const }]
       : []),
-    ...channelTerms(input.target, product).map((item) => ({
+    ...contextTerms.map((item) => ({
       ...item,
       term: f1 ? `${item.term} ${f1}` : item.term,
     })),
@@ -272,7 +289,7 @@ export function ProductKeywordsTool() {
               </span>
               <h3 className="mt-3 text-2xl font-semibold tracking-tight">Combinações para revisar</h3>
               <p className="mt-1.5 max-w-2xl text-sm leading-6 text-muted">
-                Os termos abaixo são montados somente a partir do produto, categoria, público, canal e características que você informou. O AnunciaAI não consulta volume de busca, tendências, concorrência nem dados internos do Google ou dos marketplaces.
+                Os termos abaixo combinam os dados que você informou com o contexto de uso selecionado. O AnunciaAI não consulta volume de busca, tendências, concorrência, autocomplete nem dados internos do Google ou dos marketplaces.
               </p>
             </div>
             <CopyButton value={allKeywords} label="Copiar tudo" size="md" variant="solid" />
@@ -305,13 +322,13 @@ export function ProductKeywordsTool() {
         <KeywordCard
           index={2}
           title="Combinações com características"
-          hint="Variações montadas a partir dos diferenciais que você informou"
+          hint="Variações montadas a partir dos diferenciais e do contexto selecionado"
           items={result.secondary}
         />
         <KeywordCard
           index={3}
           title="Combinações específicas"
-          hint="Termos mais longos que juntam produto, características, público ou canal"
+          hint="Termos mais longos que juntam produto, características, público ou contexto de uso"
           items={result.longTail}
         />
       </div>
@@ -319,7 +336,7 @@ export function ProductKeywordsTool() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
+    <form onSubmit={handleSubmit} noValidate className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Crie sugestões de palavras-chave</h3>
@@ -348,6 +365,7 @@ export function ProductKeywordsTool() {
             onChange={(event) => update("product", event.target.value)}
             className="field mt-1.5"
             placeholder="Ex: Garrafa térmica de inox 1 litro"
+            maxLength={120}
           />
         </label>
 
@@ -358,6 +376,7 @@ export function ProductKeywordsTool() {
             onChange={(event) => update("category", event.target.value)}
             className="field mt-1.5"
             placeholder="Ex: Garrafas e acessórios"
+            maxLength={80}
           />
         </label>
 
@@ -368,6 +387,7 @@ export function ProductKeywordsTool() {
             onChange={(event) => update("audience", event.target.value)}
             className="field mt-1.5"
             placeholder="Ex: Pessoas que trabalham fora, treinam ou viajam"
+            maxLength={160}
           />
         </label>
 
@@ -378,6 +398,7 @@ export function ProductKeywordsTool() {
             onChange={(event) => update("features", event.target.value)}
             className="field mt-1.5 min-h-28 resize-y"
             placeholder="Ex: mantém 12h quente, tampa antivazamento, sem BPA..."
+            maxLength={1200}
           />
         </label>
       </div>
@@ -390,7 +411,7 @@ export function ProductKeywordsTool() {
             return (
               <label
                 key={target.value}
-                className={`cursor-pointer rounded-xl border px-3 py-3 text-center transition-colors ${
+                className={`cursor-pointer rounded-xl border px-3 py-3 text-center transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${
                   active ? "border-brand-500 bg-brand-50" : "border-line-strong bg-white hover:border-brand-300"
                 }`}
               >
@@ -411,10 +432,10 @@ export function ProductKeywordsTool() {
       </fieldset>
 
       <div className="mt-6 rounded-xl border border-line bg-canvas p-4 text-xs leading-5 text-muted">
-        Esta ferramenta não mede volume de pesquisa, posição, dificuldade, CPC ou tendências. As sugestões são combinações dos dados fornecidos e devem ser validadas antes do uso.
+        Esta ferramenta não mede volume de pesquisa, posição, dificuldade, CPC, autocomplete ou tendências. As sugestões são combinações dos dados fornecidos com o contexto selecionado e devem ser validadas antes do uso.
       </div>
 
-      {error ? <p className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
+      {error ? <p role="alert" className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
 
       <button
         type="submit"
