@@ -1,0 +1,194 @@
+const BASE_URL = (process.env.BASE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+const PRODUCTION_URL = "https://anunciaai.vercel.app";
+const ADSENSE_SCRIPT = "pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2381421388873161";
+const ADS_TXT = "google.com, pub-2381421388873161, DIRECT, f08c47fec0942fa0";
+
+const failures = [];
+
+function fail(message) {
+  failures.push(message);
+}
+
+function decodeHtml(value) {
+  return value
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#x27;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
+}
+
+function extractTagAttribute(html, tagPattern, attribute) {
+  const tag = html.match(tagPattern)?.[0];
+  if (!tag) return null;
+  const match = tag.match(new RegExp(`${attribute}=["']([^"']+)["']`, "i"));
+  return match ? decodeHtml(match[1]) : null;
+}
+
+async function fetchText(pathname, init) {
+  const response = await fetch(`${BASE_URL}${pathname}`, {
+    redirect: "manual",
+    ...init,
+  });
+  const text = await response.text();
+  return { response, text };
+}
+
+function checkSecurityHeaders(response, route) {
+  const expectedHeaders = [
+    ["x-content-type-options", "nosniff"],
+    ["x-frame-options", "DENY"],
+    ["referrer-policy", "strict-origin-when-cross-origin"],
+    ["origin-agent-cluster", "?1"],
+  ];
+
+  for (const [name, expected] of expectedHeaders) {
+    const actual = response.headers.get(name);
+    if (actual !== expected) {
+      fail(`${route}: header ${name} esperado ${expected}, recebido ${actual ?? "ausente"}.`);
+    }
+  }
+
+  const hsts = response.headers.get("strict-transport-security") ?? "";
+  if (!hsts.includes("max-age=63072000")) {
+    fail(`${route}: Strict-Transport-Security ausente ou inesperado.`);
+  }
+
+  const csp = response.headers.get("content-security-policy") ?? "";
+  for (const directive of ["object-src 'none'", "base-uri 'none'", "frame-ancestors 'none'"]) {
+    if (!csp.includes(directive)) {
+      fail(`${route}: CSP sem diretiva obrigatória ${directive}.`);
+    }
+  }
+}
+
+function checkHtml(route, html, response) {
+  if (response.status !== 200) {
+    fail(`${route}: status ${response.status}, esperado 200.`);
+    return;
+  }
+
+  checkSecurityHeaders(response, route);
+
+  if (!/<html[^>]+lang=["']pt-BR["']/i.test(html)) {
+    fail(`${route}: documento sem lang=pt-BR.`);
+  }
+
+  if (!/<main\b/i.test(html)) {
+    fail(`${route}: HTML renderizado sem <main>.`);
+  }
+
+  const h1Count = (html.match(/<h1\b/gi) ?? []).length;
+  if (h1Count !== 1) {
+    fail(`${route}: esperado exatamente 1 H1, encontrado ${h1Count}.`);
+  }
+
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim() ?? "";
+  if (!title) {
+    fail(`${route}: <title> vazio ou ausente.`);
+  }
+
+  const description = extractTagAttribute(
+    html,
+    /<meta\b[^>]*name=["']description["'][^>]*>/i,
+    "content",
+  );
+  if (!description) {
+    fail(`${route}: meta description ausente.`);
+  } else if (description.length > 160) {
+    fail(`${route}: meta description renderizada com ${description.length} caracteres.`);
+  }
+
+  const canonical = extractTagAttribute(
+    html,
+    /<link\b[^>]*rel=["']canonical["'][^>]*>/i,
+    "href",
+  );
+  const expectedCanonical = `${PRODUCTION_URL}${route === "/" ? "" : route}`;
+  if (canonical !== expectedCanonical) {
+    fail(`${route}: canonical esperado ${expectedCanonical}, recebido ${canonical ?? "ausente"}.`);
+  }
+
+  const robots = extractTagAttribute(
+    html,
+    /<meta\b[^>]*name=["']robots["'][^>]*>/i,
+    "content",
+  );
+  if (robots && /noindex/i.test(robots)) {
+    fail(`${route}: página pública renderizada com noindex.`);
+  }
+
+  const ogUrl = extractTagAttribute(
+    html,
+    /<meta\b[^>]*property=["']og:url["'][^>]*>/i,
+    "content",
+  );
+  if (ogUrl && ogUrl !== expectedCanonical) {
+    fail(`${route}: og:url esperado ${expectedCanonical}, recebido ${ogUrl}.`);
+  }
+}
+
+async function main() {
+  const { response: sitemapResponse, text: sitemap } = await fetchText("/sitemap.xml");
+  if (sitemapResponse.status !== 200) {
+    fail(`/sitemap.xml: status ${sitemapResponse.status}, esperado 200.`);
+  }
+
+  const productionUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  if (productionUrls.length === 0) {
+    fail("Sitemap sem URLs públicas.");
+  }
+
+  const uniqueUrls = new Set(productionUrls);
+  if (uniqueUrls.size !== productionUrls.length) {
+    fail("Sitemap contém URLs duplicadas.");
+  }
+
+  const routes = productionUrls.map((url) => {
+    if (!url.startsWith(PRODUCTION_URL)) {
+      fail(`Sitemap contém URL fora do domínio oficial: ${url}.`);
+      return null;
+    }
+    return url.slice(PRODUCTION_URL.length) || "/";
+  }).filter(Boolean);
+
+  console.log(`Auditoria runtime: ${routes.length} páginas públicas.`);
+  for (const route of routes) {
+    const { response, text } = await fetchText(route);
+    checkHtml(route, text, response);
+  }
+
+  const { response: homeResponse, text: homeHtml } = await fetchText("/");
+  if (homeResponse.status === 200 && !homeHtml.includes(ADSENSE_SCRIPT)) {
+    fail("Home sem script esperado do AdSense.");
+  }
+
+  const { response: adsResponse, text: adsText } = await fetchText("/ads.txt");
+  if (adsResponse.status !== 200 || adsText.trim() !== ADS_TXT) {
+    fail("ads.txt ausente ou diferente da autorização esperada do AdSense.");
+  }
+
+  const { response: robotsResponse, text: robotsText } = await fetchText("/robots.txt");
+  if (robotsResponse.status !== 200) {
+    fail(`/robots.txt: status ${robotsResponse.status}, esperado 200.`);
+  }
+  if (!robotsText.includes("Disallow: /api/")) {
+    fail("robots.txt não bloqueia /api/.");
+  }
+  if (!robotsText.includes(`${PRODUCTION_URL}/sitemap.xml`)) {
+    fail("robots.txt não referencia o sitemap oficial.");
+  }
+
+  if (failures.length) {
+    console.error("\nFalhas na auditoria runtime:");
+    for (const message of failures) console.error(`- ${message}`);
+    process.exit(1);
+  }
+
+  console.log("Runtime OK: HTML, canonicals, headers, sitemap, robots e AdSense validados.");
+}
+
+main().catch((error) => {
+  console.error("Falha inesperada na auditoria runtime:", error);
+  process.exit(1);
+});
