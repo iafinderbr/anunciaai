@@ -12,7 +12,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Mercado Livre | Grátis";
 const DESCRIPTION =
-  "Organize títulos, descrições, ficha técnica e sugestões de palavras-chave para anúncios do Mercado Livre. Grátis, sem cadastro e feito para revisar antes de publicar.";
+  "Crie uma primeira versão de título, descrição e ficha técnica para Mercado Livre. Grátis, sem cadastro e feita para revisar antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -165,7 +165,9 @@ export default function MercadoLivrePage() {
 
             <p className="mt-8 text-center text-sm text-muted">
               Vende em outros canais também?{" "}
-              <Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Use o gerador do AnunciaAI para Shopee, loja virtual e Instagram</Link>.
+              <Link href="/gerador-de-anuncios-shopee" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gerador para Shopee</Link>{" · "}
+              <Link href="/gerador-de-anuncios-para-loja-virtual" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gerador para loja virtual</Link>{" · "}
+              <Link href="/gerador-de-legendas-para-instagram" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gerador de legendas para Instagram</Link>.
             </p>
           </div>
         </section>
