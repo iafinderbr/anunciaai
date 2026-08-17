@@ -35,7 +35,7 @@ export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
   return (
     <p className="text-sm text-muted">
       <span className="font-semibold text-ink tabular-nums">{formatted}</span>{" "}
-      {total === 1 ? "anúncio já gerado" : "anúncios já gerados"} por lojistas com o AnunciaAI
+      {total === 1 ? "anúncio já gerado" : "anúncios já gerados"} no AnunciaAI
     </p>
   );
 }
