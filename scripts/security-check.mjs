@@ -32,6 +32,13 @@ const SECRET_PATTERNS = [
   ["Google API key", /\bAIza[0-9A-Za-z_-]{30,}\b/],
 ];
 
+const PUBLIC_SECRET_NAMES = [
+  "NEXT_PUBLIC_BETTER_AUTH_SECRET",
+  "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET",
+  "NEXT_PUBLIC_DATABASE_URL",
+  "NEXT_PUBLIC_GEMINI_API_KEY",
+];
+
 const ALLOWED_POSTGRES_EXAMPLES = new Set([
   "postgresql://USER:PASSWORD@HOST:5432/DATABASE",
   "postgresql://usuario:senha@host:5432/banco",
@@ -119,6 +126,12 @@ for (const file of walk(ROOT)) {
     }
   }
 
+  for (const publicSecret of PUBLIC_SECRET_NAMES) {
+    if (source.includes(publicSecret)) {
+      failures.push(`Variável sensível exposta com prefixo público em ${rel}: ${publicSecret}`);
+    }
+  }
+
   // Connection strings reais quase sempre carregam usuário/senha. Permitimos
   // somente exemplos locais/fictícios exatos usados no repositório.
   const postgresUrls = source.match(/postgres(?:ql)?:\/\/[^\s`"')]+/gi) ?? [];
@@ -143,4 +156,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Segurança OK: sem segredos conhecidos, Actions fixadas em SHA, runner versionado e checkout sem credencial persistida.");
+console.log("Segurança OK: sem segredos conhecidos, sem secrets no bundle cliente, Actions fixadas em SHA, runner versionado e checkout sem credencial persistida.");
