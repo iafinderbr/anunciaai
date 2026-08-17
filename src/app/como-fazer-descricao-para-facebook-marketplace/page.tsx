@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const PUBLISHED_AT = "2026-08-16";
 const TITLE = "Como Fazer Descrição para Facebook Marketplace: Modelo";
 const DESCRIPTION =
-  "Aprenda como fazer descrição para Facebook Marketplace com estrutura pronta, modelo editável, exemplos e checklist para explicar condição, características e itens incluídos.";
+  "Aprenda como fazer descrição para Facebook Marketplace com estrutura, modelo editável, exemplos e checklist de condição, características e itens incluídos.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
