@@ -6,6 +6,8 @@ import { SITE_URL } from "@/lib/site";
 
 const PATH = "/como-escolher-palavras-chave-para-mercado-livre";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
+const PUBLISHED_AT = "2026-08-16";
+const UPDATED_AT = "2026-08-17";
 const TITLE = "Como Escolher Palavras-chave para Mercado Livre";
 const DESCRIPTION =
   "Aprenda a escolher palavras-chave para Mercado Livre com título claro, categoria correta, ficha técnica completa e termos relevantes sem repetição artificial.";
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     "busca Mercado Livre",
   ],
   alternates: { canonical: ABSOLUTE_URL },
-  openGraph: { type: "article", locale: "pt_BR", url: ABSOLUTE_URL, siteName: "AnunciaAI", title: TITLE, description: DESCRIPTION },
+  openGraph: { type: "article", locale: "pt_BR", url: ABSOLUTE_URL, siteName: "AnunciaAI", title: TITLE, description: DESCRIPTION, publishedTime: `${PUBLISHED_AT}T12:00:00-03:00`, modifiedTime: `${UPDATED_AT}T12:00:00-03:00` },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
   robots: { index: true, follow: true },
 };
@@ -39,7 +41,7 @@ const steps = [
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Article", headline: TITLE, description: DESCRIPTION, mainEntityOfPage: ABSOLUTE_URL, inLanguage: "pt-BR", author: { "@type": "Organization", name: "AnunciaAI", url: SITE_URL }, publisher: { "@type": "Organization", name: "AnunciaAI", url: SITE_URL } },
+    { "@type": "Article", headline: TITLE, description: DESCRIPTION, mainEntityOfPage: ABSOLUTE_URL, datePublished: PUBLISHED_AT, dateModified: UPDATED_AT, inLanguage: "pt-BR", author: { "@type": "Organization", name: "AnunciaAI", url: SITE_URL }, publisher: { "@type": "Organization", name: "AnunciaAI", url: SITE_URL } },
     { "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Início", item: `${SITE_URL}/` },
       { "@type": "ListItem", position: 2, name: "Guias", item: `${SITE_URL}/guias` },
