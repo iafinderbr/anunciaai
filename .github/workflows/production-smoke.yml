@@ -1,0 +1,43 @@
+name: Produção
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke
+  cancel-in-progress: true
+
+jobs:
+  production:
+    name: Auditoria do site publicado
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Verificar capacidade generativa pública
+        run: |
+          CAPABILITY=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/generate)
+          printf '%s' "$CAPABILITY" | grep -Fq '"enabled":false'
+
+      - name: Auditar HTML, SEO e segurança em produção
+        env:
+          BASE_URL: https://anunciaai.vercel.app
+        run: node scripts/runtime-check.mjs
+
+      - name: Auditar acessibilidade renderizada em produção
+        env:
+          BASE_URL: https://anunciaai.vercel.app
+        run: node scripts/accessibility-check.mjs
