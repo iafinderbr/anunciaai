@@ -57,6 +57,38 @@ function relative(file) {
   return path.relative(ROOT, file).replaceAll(path.sep, "/");
 }
 
+function checkWorkflowHardening(source, rel) {
+  for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gim)) {
+    const target = match[1];
+    if (target.startsWith("./") || target.startsWith("docker://")) continue;
+
+    const at = target.lastIndexOf("@");
+    if (at <= 0) {
+      failures.push(`GitHub Action sem referência explícita em ${rel}: ${target}`);
+      continue;
+    }
+
+    const ref = target.slice(at + 1);
+    if (!/^[0-9a-f]{40}$/i.test(ref)) {
+      failures.push(`GitHub Action sem SHA imutável em ${rel}: ${target}`);
+    }
+  }
+
+  // O checkout injeta uma credencial temporária do GITHUB_TOKEN no repositório
+  // por padrão. Como nossos workflows são somente leitura, não há motivo para
+  // manter essa credencial disponível aos passos seguintes.
+  for (const match of source.matchAll(/^([ \t]*)uses:\s*actions\/checkout@[0-9a-f]{40}(?:\s+#.*)?$/gim)) {
+    const start = match.index ?? 0;
+    const tail = source.slice(start + match[0].length, start + match[0].length + 260);
+    const nextStep = tail.search(/^\s*-\s+name:/m);
+    const checkoutBlock = nextStep >= 0 ? tail.slice(0, nextStep) : tail;
+
+    if (!/^\s*persist-credentials:\s*false\s*$/im.test(checkoutBlock)) {
+      failures.push(`Checkout persiste GITHUB_TOKEN em ${rel}; configure persist-credentials: false.`);
+    }
+  }
+}
+
 for (const file of walk(ROOT)) {
   const rel = relative(file);
   const basename = path.basename(file);
@@ -77,6 +109,7 @@ for (const file of walk(ROOT)) {
   }
 
   for (const [label, pattern] of SECRET_PATTERNS) {
+    pattern.lastIndex = 0;
     if (pattern.test(source)) {
       failures.push(`Possível ${label} encontrado em ${rel}`);
     }
@@ -95,29 +128,15 @@ for (const file of walk(ROOT)) {
   // repositório devem apontar para o SHA completo do commit da action. A versão
   // legível continua ao lado como comentário para facilitar manutenção.
   if (rel.startsWith(".github/workflows/") && /\.ya?ml$/i.test(rel)) {
-    for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gim)) {
-      const target = match[1];
-      if (target.startsWith("./") || target.startsWith("docker://")) continue;
-
-      const at = target.lastIndexOf("@");
-      if (at <= 0) {
-        failures.push(`GitHub Action sem referência explícita em ${rel}: ${target}`);
-        continue;
-      }
-
-      const ref = target.slice(at + 1);
-      if (!/^[0-9a-f]{40}$/i.test(ref)) {
-        failures.push(`GitHub Action sem SHA imutável em ${rel}: ${target}`);
-      }
-    }
+    checkWorkflowHardening(source, rel);
   }
 }
 
 if (failures.length) {
   console.error("\nFalhas na auditoria de segurança:");
   for (const failure of [...new Set(failures)]) console.error(`- ${failure}`);
-  console.error("\nRemova/rotacione credenciais expostas e fixe actions externas em SHAs completos antes de continuar.");
+  console.error("\nRemova/rotacione credenciais expostas e corrija o hardening dos workflows antes de continuar.");
   process.exit(1);
 }
 
-console.log("Segurança OK: sem segredos conhecidos e GitHub Actions externas fixadas em SHAs imutáveis.");
+console.log("Segurança OK: sem segredos conhecidos, Actions fixadas em SHA e checkout sem credencial persistida.");
