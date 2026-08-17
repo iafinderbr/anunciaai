@@ -32,12 +32,9 @@ const SECRET_PATTERNS = [
   ["Google API key", /\bAIza[0-9A-Za-z_-]{30,}\b/],
 ];
 
-const PUBLIC_SECRET_NAMES = [
-  "NEXT_PUBLIC_BETTER_AUTH_SECRET",
-  "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET",
-  "NEXT_PUBLIC_DATABASE_URL",
-  "NEXT_PUBLIC_GEMINI_API_KEY",
-];
+// Detecta somente uso/atribuição real dessas variáveis. Menções em documentação
+// ou nos próprios testes não devem virar falso positivo.
+const PUBLIC_SECRET_USAGE = /(?:process\.env\.|^\s*)(NEXT_PUBLIC_(?:BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|DATABASE_URL|GEMINI_API_KEY))\s*(?:=|\b)/gm;
 
 const ALLOWED_POSTGRES_EXAMPLES = new Set([
   "postgresql://USER:PASSWORD@HOST:5432/DATABASE",
@@ -126,10 +123,9 @@ for (const file of walk(ROOT)) {
     }
   }
 
-  for (const publicSecret of PUBLIC_SECRET_NAMES) {
-    if (source.includes(publicSecret)) {
-      failures.push(`Variável sensível exposta com prefixo público em ${rel}: ${publicSecret}`);
-    }
+  PUBLIC_SECRET_USAGE.lastIndex = 0;
+  for (const match of source.matchAll(PUBLIC_SECRET_USAGE)) {
+    failures.push(`Variável sensível exposta com prefixo público em ${rel}: ${match[1]}`);
   }
 
   // Connection strings reais quase sempre carregam usuário/senha. Permitimos
