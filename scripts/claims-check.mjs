@@ -7,11 +7,22 @@ const SCAN_DIRS = [path.join(ROOT, "src", "app"), path.join(ROOT, "src", "compon
 const patterns = [
   ["menção a IA ainda não conectada", /\bcom IA\b|\bA IA\b|\bDeixe a IA\b|intelig[eê]ncia artificial/gi],
   ["promessa de resultado pronto em segundos", /pront[oa]s? em \d+ segundos|em apenas \d+ segundos/gi],
-  ["promessa de publicação sem revisão", /pront[oa]s? para publicar|copie e publique/gi],
-  ["promessa de conversão", /f[oó]rmula que converte|t[ií]tulos? que vendem/gi],
-  ["promessa de ranking", /ranquear no Google|melhorar (?:o )?ranking|subir no Google/gi],
-  ["limite antigo do Mercado Livre", /Mercado Livre[^\n]{0,100}(?:at[eé]|limite de) 60 caracteres|60 caracteres[^\n]{0,100}Mercado Livre/gi],
+  [
+    "promessa de publicação sem revisão",
+    /pront[oa]s? para publicar|copie e publique|voc[eê] s[oó] precisa colar|tudo o que precisa para publicar|an[uú]ncio publicado em \d+ passos/gi,
+  ],
+  ["promessa de conversão", /f[oó]rmula que converte|t[ií]tulos? que vendem|an[uú]ncio que vende/gi],
+  ["promessa de ranking", /ranquear no Google|melhorar (?:o )?ranking|subir no Google|\b\d{1,3}% do (?:seu )?resultado na busca/gi],
+  [
+    "limite antigo do Mercado Livre",
+    /Mercado Livre[\s\S]{0,220}(?:at[eé]|limite de|dentro de) 60 caracteres|60 caracteres[\s\S]{0,220}Mercado Livre/gi,
+  ],
+  ["contador estático apresentado como limite", /\b\d{1,3}\/\d{1,3}\s+caracteres\b/gi],
   ["garantia de limite por canal", /limite certo de cada canal|dentro do limite do canal|no limite de cada canal/gi],
+  [
+    "garantia de conformidade com marketplace",
+    /respeita(?: o)? limite de caracteres|respeita[^.\n]{0,100}(?:regras|pol[ií]tica)[^.\n]{0,100}(?:plataforma|marketplace)/gi,
+  ],
 ];
 
 function walk(dir) {
