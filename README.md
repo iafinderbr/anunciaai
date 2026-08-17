@@ -63,7 +63,7 @@ Para executar `runtime:check` localmente, faça o build, inicie o servidor e rod
 - `src/db/` — conexão, schema e inicialização idempotente do PostgreSQL
 - `public/ads.txt` — autorização pública do Google AdSense
 - `scripts/seo-check.mjs` — auditoria estática de SEO e links internos
-- `scripts/runtime-check.mjs` — auditoria do HTML renderizado, canonicals, headers, sitemap, robots e AdSense
+- `scripts/runtime-check.mjs` — auditoria do HTML renderizado, canonicals, links, dados estruturados, headers, sitemap, robots e AdSense
 - `scripts/security-check.mjs` — verificação de segredos versionados
 - `scripts/generator-check.mjs` — verificação das proteções do gerador
 - `scripts/claims-check.mjs` — verificação de promessas públicas bloqueadas
@@ -104,7 +104,10 @@ Depois do build, a auditoria runtime complementa a análise verificando as pági
 - `lang="pt-BR"` e `<main>` no HTML;
 - title e meta description renderizados;
 - canonical e `og:url` coerentes com a rota pública;
-- ausência de `noindex` nas páginas do sitemap;
+- ausência de `noindex` nas páginas do sitemap e presença de `noindex` no 404;
+- links internos e fragmentos/âncoras existentes;
+- JSON-LD sintaticamente válido e os tipos estruturados esperados para home, guias, geradores e página Sobre;
+- ausência dos tipos estruturados bloqueados `FAQPage` e `HowTo`;
 - headers de segurança esperados;
 - `robots.txt`, `ads.txt` e carregamento do AdSense.
 
@@ -114,15 +117,16 @@ A cada push e pull request para `main`, o GitHub Actions executa:
 
 1. instalação reproduzível com `npm ci`;
 2. procura por segredos versionados;
-3. `npm audit` para vulnerabilidades altas;
-4. auditoria do motor de geração;
-5. auditoria de promessas públicas;
-6. auditoria estática de SEO e links internos;
-7. ESLint;
-8. TypeScript;
-9. build de produção;
-10. smoke test das APIs e de todas as páginas do sitemap;
-11. auditoria runtime do HTML e headers.
+3. auditoria das dependências usadas em produção a partir de severidade moderada;
+4. auditoria de todas as dependências para vulnerabilidades altas;
+5. auditoria do motor de geração;
+6. auditoria de promessas públicas;
+7. auditoria estática de SEO e links internos;
+8. ESLint;
+9. TypeScript;
+10. build de produção;
+11. smoke test das APIs e de todas as páginas do sitemap;
+12. auditoria runtime do HTML, links, dados estruturados e headers.
 
 O CodeQL analisa JavaScript e TypeScript separadamente e também roda de forma agendada. O Dependabot verifica dependências npm e GitHub Actions semanalmente.
 
