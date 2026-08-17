@@ -22,6 +22,13 @@ function decodeHtml(value) {
     .replaceAll("&gt;", ">");
 }
 
+function normalizeText(value) {
+  return decodeHtml(value)
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function extractTagAttribute(html, tagPattern, attribute) {
   const tag = html.match(tagPattern)?.[0];
   if (!tag) return null;
@@ -125,6 +132,7 @@ function checkSecurityHeaders(response, route) {
     ["x-frame-options", "DENY"],
     ["referrer-policy", "strict-origin-when-cross-origin"],
     ["origin-agent-cluster", "?1"],
+    ["x-dns-prefetch-control", "off"],
   ];
 
   for (const [name, expected] of expectedHeaders) {
@@ -134,13 +142,30 @@ function checkSecurityHeaders(response, route) {
     }
   }
 
+  if (response.headers.get("x-powered-by")) {
+    fail(`${route}: X-Powered-By não deveria ser exposto.`);
+  }
+
+  const permissionsPolicy = response.headers.get("permissions-policy") ?? "";
+  for (const directive of ["camera=()", "microphone=()", "geolocation=()"]) {
+    if (!permissionsPolicy.includes(directive)) {
+      fail(`${route}: Permissions-Policy sem diretiva obrigatória ${directive}.`);
+    }
+  }
+
   const hsts = response.headers.get("strict-transport-security") ?? "";
-  if (!hsts.includes("max-age=63072000")) {
+  if (!hsts.includes("max-age=63072000") || !hsts.includes("includeSubDomains")) {
     fail(`${route}: Strict-Transport-Security ausente ou inesperado.`);
   }
 
   const csp = response.headers.get("content-security-policy") ?? "";
-  for (const directive of ["object-src 'none'", "base-uri 'none'", "frame-ancestors 'none'"]) {
+  for (const directive of [
+    "object-src 'none'",
+    "base-uri 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "upgrade-insecure-requests",
+  ]) {
     if (!csp.includes(directive)) {
       fail(`${route}: CSP sem diretiva obrigatória ${directive}.`);
     }
@@ -150,7 +175,7 @@ function checkSecurityHeaders(response, route) {
 function checkHtml(route, html, response) {
   if (response.status !== 200) {
     fail(`${route}: status ${response.status}, esperado 200.`);
-    return;
+    return null;
   }
 
   checkSecurityHeaders(response, route);
@@ -163,12 +188,16 @@ function checkHtml(route, html, response) {
     fail(`${route}: HTML renderizado sem <main>.`);
   }
 
-  const h1Count = (html.match(/<h1\b/gi) ?? []).length;
-  if (h1Count !== 1) {
-    fail(`${route}: esperado exatamente 1 H1, encontrado ${h1Count}.`);
+  const h1Matches = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
+  if (h1Matches.length !== 1) {
+    fail(`${route}: esperado exatamente 1 H1, encontrado ${h1Matches.length}.`);
+  }
+  const h1 = h1Matches.length === 1 ? normalizeText(h1Matches[0][1]) : "";
+  if (h1Matches.length === 1 && !h1) {
+    fail(`${route}: H1 renderizado sem texto.`);
   }
 
-  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim() ?? "";
+  const title = normalizeText(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "");
   if (!title) {
     fail(`${route}: <title> vazio ou ausente.`);
   }
@@ -210,6 +239,28 @@ function checkHtml(route, html, response) {
   );
   if (ogUrl && normalizeUrl(ogUrl) !== normalizeUrl(expectedCanonical)) {
     fail(`${route}: og:url esperado ${expectedCanonical}, recebido ${ogUrl}.`);
+  }
+
+  return { route, title, description: description ?? "", h1 };
+}
+
+function checkUniqueRenderedSeo(entries) {
+  for (const field of ["title", "description", "h1"]) {
+    const groups = new Map();
+
+    for (const entry of entries) {
+      const value = entry[field].toLocaleLowerCase("pt-BR").replace(/\s+/g, " ").trim();
+      if (!value) continue;
+      const routes = groups.get(value) ?? [];
+      routes.push(entry.route);
+      groups.set(value, routes);
+    }
+
+    for (const routes of groups.values()) {
+      if (routes.length > 1) {
+        fail(`SEO renderizado duplicado em ${field}: ${routes.join(", ")}.`);
+      }
+    }
   }
 }
 
@@ -292,15 +343,19 @@ async function main() {
   }).filter(Boolean);
 
   const renderedPages = new Map();
+  const renderedSeo = [];
   let jsonLdCount = 0;
 
   console.log(`Auditoria runtime: ${routes.length} páginas públicas.`);
   for (const route of routes) {
     const { response, text } = await fetchText(route);
     renderedPages.set(route, text);
-    checkHtml(route, text, response);
+    const seo = checkHtml(route, text, response);
+    if (seo) renderedSeo.push(seo);
     jsonLdCount += checkJsonLd(route, text);
   }
+
+  checkUniqueRenderedSeo(renderedSeo);
 
   const checkedLinks = await checkRenderedLinks(renderedPages);
   console.log(`Links internos/âncoras validados: ${checkedLinks}. JSON-LD válido encontrado: ${jsonLdCount}.`);
@@ -352,7 +407,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Runtime OK: HTML, canonicals, links, âncoras, JSON-LD, headers, sitemap, robots, AdSense e página 404 validados.");
+  console.log("Runtime OK: SEO único, HTML, canonicals, links, âncoras, JSON-LD, headers, sitemap, robots, AdSense e página 404 validados.");
 }
 
 main().catch((error) => {
