@@ -23,7 +23,10 @@ requirePattern("flag explícita de ativação", provider, 'process.env.ANUNCIAAI
 requirePattern("timeout da chamada externa", provider, "AbortController");
 requirePattern("timeout com limpeza", provider, "clearTimeout(timeout)");
 requirePattern("resposta JSON", provider, 'responseMimeType: "application/json"');
+requirePattern("limite explícito de saída", provider, "MAX_OUTPUT_TOKENS");
+requirePattern("uma única resposta por chamada", provider, "candidateCount: 1");
 requirePattern("filtro de alegações não sustentadas", provider, "hasUnsupportedClaims");
+requirePattern("comparação de alegações por palavras", provider, "containsPhrase");
 requirePattern("checagem de números inventados", provider, "numberTokens");
 requirePattern("falha segura do provedor", provider, "return null;");
 
@@ -39,6 +42,7 @@ requirePattern("no-store", route, '"Cache-Control": "no-store"');
 forbidPattern("chave exposta como NEXT_PUBLIC", combined, /NEXT_PUBLIC_[A-Z0-9_]*(?:GEMINI|GOOGLE|GENERATIVE)/i);
 forbidPattern("chave literal do Google", combined, /AIza[0-9A-Za-z_-]{20,}/);
 forbidPattern("conteúdo do produto enviado para console", combined, /console\.(?:log|info|debug)\s*\([^)]*(?:input|productName|features|audience)/s);
+forbidPattern("alegação comparada por substring simples", provider, /(?:output|facts)\.includes\(phrase\)/);
 
 if (failures.length) {
   console.error("\nFalhas na guarda do backend generativo:");
@@ -46,4 +50,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Backend generativo OK: chave, ativação, validação, rate limit, timeout e filtros de saída permanecem protegidos.");
+console.log("Backend generativo OK: chave, ativação, limites, validação, rate limit, timeout e filtros de saída permanecem protegidos.");
