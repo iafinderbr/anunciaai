@@ -80,9 +80,10 @@ function isRateLimited(request: Request): boolean {
 function isAllowedOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
 
-  // Requisições server-to-server podem não enviar Origin. Quando o navegador
-  // envia o cabeçalho, exigimos que ele seja do próprio host da aplicação.
-  if (!origin) return true;
+  // Este POST existe apenas para o navegador da própria aplicação atualizar o
+  // contador. Exigir Origin evita que clientes server-to-server inflem o número
+  // público simplesmente chamando o endpoint fora do site.
+  if (!origin) return false;
 
   try {
     return new URL(origin).origin === new URL(request.url).origin;
