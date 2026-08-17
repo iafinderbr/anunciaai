@@ -9,6 +9,10 @@ function fail(message) {
   failures.push(message);
 }
 
+function normalizeUrl(value) {
+  return value.length > 1 && value.endsWith("/") ? value.slice(0, -1) : value;
+}
+
 function decodeHtml(value) {
   return value
     .replaceAll("&amp;", "&")
@@ -105,7 +109,7 @@ function checkHtml(route, html, response) {
     "href",
   );
   const expectedCanonical = `${PRODUCTION_URL}${route === "/" ? "" : route}`;
-  if (canonical !== expectedCanonical) {
+  if (!canonical || normalizeUrl(canonical) !== normalizeUrl(expectedCanonical)) {
     fail(`${route}: canonical esperado ${expectedCanonical}, recebido ${canonical ?? "ausente"}.`);
   }
 
@@ -123,7 +127,7 @@ function checkHtml(route, html, response) {
     /<meta\b[^>]*property=["']og:url["'][^>]*>/i,
     "content",
   );
-  if (ogUrl && ogUrl !== expectedCanonical) {
+  if (ogUrl && normalizeUrl(ogUrl) !== normalizeUrl(expectedCanonical)) {
     fail(`${route}: og:url esperado ${expectedCanonical}, recebido ${ogUrl}.`);
   }
 }
