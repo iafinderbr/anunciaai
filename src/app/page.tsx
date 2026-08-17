@@ -76,7 +76,7 @@ export default function HomePage() {
             <div className="mx-auto max-w-3xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-3 py-1.5 text-xs font-medium text-ink-soft shadow-card">
                 <span className="size-1.5 rounded-full bg-brand-500" />
-                Gerador gratuito para quem vende online
+                Versão gratuita disponível sem cadastro
               </p>
 
               <h1
@@ -106,7 +106,7 @@ export default function HomePage() {
                 </a>
               </div>
 
-              <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-muted">Grátis para começar • sem cadastro • sem cartão de crédito</p>
 
               <div className="mt-6">
                 <LiveStats />
@@ -155,7 +155,7 @@ export default function HomePage() {
               >
                 Gerar meu anúncio grátis
               </a>
-              <p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-white/60">Sem cadastro para começar.</p>
             </div>
           </div>
         </section>
