@@ -1,9 +1,10 @@
 import { index, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
- * Registro leve de cada anúncio gerado na ferramenta.
- * Serve para o contador público ("anúncios gerados") e para a
- * lista de últimos produtos processados na landing page.
+ * Registro mínimo de cada geração usado pelo contador público e pela faixa de
+ * atividade recente. Na versão atual, somente canal e horário carregam dados
+ * úteis; as demais colunas são legadas e recebem valores neutros para manter
+ * compatibilidade com o banco existente sem armazenar o conteúdo do produto.
  */
 export const generations = pgTable(
   "generations",
