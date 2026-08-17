@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const PUBLISHED_AT = "2026-08-16";
 const TITLE = "Como Criar Título para Mercado Livre: Fórmula e Exemplos";
 const DESCRIPTION =
-  "Aprenda como criar título para Mercado Livre com fórmula prática, exemplos por categoria, erros comuns e checklist para deixar o anúncio claro e fácil de encontrar.";
+  "Aprenda como criar título para Mercado Livre com fórmula prática, exemplos por categoria, erros comuns e checklist para deixar o anúncio claro.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
