@@ -66,29 +66,27 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
           </div>
         </div>
 
-        {open ? (
-          <div id="menu-mobile" className="border-t border-line bg-white md:hidden">
-            <nav aria-label="Navegação mobile" className="container-page flex flex-col py-2">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-1 py-3 text-sm font-medium text-ink-soft"
-                >
-                  {link.label}
-                </Link>
-              ))}
+        <div id="menu-mobile" hidden={!open} className="border-t border-line bg-white md:hidden">
+          <nav aria-label="Navegação mobile" className="container-page flex flex-col py-2">
+            {links.map((link) => (
               <Link
-                href={ctaHref}
+                key={link.href}
+                href={link.href}
                 onClick={() => setOpen(false)}
-                className="my-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
+                className="rounded-lg px-1 py-3 text-sm font-medium text-ink-soft"
               >
-                Começar grátis
+                {link.label}
               </Link>
-            </nav>
-          </div>
-        ) : null}
+            ))}
+            <Link
+              href={ctaHref}
+              onClick={() => setOpen(false)}
+              className="my-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
+            >
+              Começar grátis
+            </Link>
+          </nav>
+        </div>
       </header>
       <span id="inicio-conteudo" tabIndex={-1} className="block h-0 scroll-mt-20" />
     </>
