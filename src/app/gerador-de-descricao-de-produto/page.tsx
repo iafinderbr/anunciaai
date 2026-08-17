@@ -19,7 +19,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Descrição de Produto | Grátis";
 const DESCRIPTION =
-  "Organize uma primeira versão de descrição de produto com características, benefícios, ficha técnica e sugestões de SEO para revisar antes de usar em lojas e marketplaces.";
+  "Crie uma primeira versão de descrição de produto com características, benefícios e ficha técnica para revisar antes de usar em lojas e marketplaces.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -100,7 +100,7 @@ export default function DescricaoDeProdutoPage() {
         <section aria-labelledby="desc-cta-final" className="border-t border-line bg-canvas">
           <div className="container-page py-14 sm:py-20">
             <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12"><h2 id="desc-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Prepare a primeira versão da sua próxima descrição</h2><p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Cole as informações do produto e organize descrição, benefícios, ficha técnica e chamada para ação para revisar.</p><a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar descrição grátis</a><p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p></div>
-            <p className="mt-8 text-center text-sm text-muted">Precisa de um anúncio completo?{" "}<Link href="/gerador-de-anuncios-mercado-livre" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Use o gerador de anúncios para Mercado Livre</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Veja todos os geradores do AnunciaAI</Link>.</p>
+            <p className="mt-8 text-center text-sm text-muted">Precisa de um anúncio completo?{" "}<Link href="/gerador-de-anuncios-mercado-livre" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gerador para Mercado Livre</Link>{" · "}<Link href="/gerador-de-anuncios-shopee" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Gerador para Shopee</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">Veja todos os geradores</Link>.</p>
           </div>
         </section>
       </main>
