@@ -89,6 +89,16 @@ export function MlAnatomy() {
             <p className="mt-3 text-[15px] text-muted">
               Informações como promoção, frete e parcelamento não ajudam a identificar o produto e normalmente pertencem a outros campos do anúncio. Prefira um título coerente com a ficha técnica e com a versão realmente vendida.
             </p>
+            <p className="mt-4 text-sm">
+              <a
+                href="https://developers.mercadolivre.com.br/pt_br/publicacao-de-produtos"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
+              >
+                Conferir a documentação oficial de publicação do Mercado Livre ↗
+              </a>
+            </p>
           </div>
 
           <div className="space-y-3">
