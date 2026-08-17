@@ -47,7 +47,14 @@ for (const [label, pattern] of requiredGeneratorPatterns) {
 }
 
 const requiredDataPatterns = [
-  ["usado não recebe qualidade inventada", '{ match: /usado|segunda mão|segunda mao/i, state: "Usado" }'],
+  [
+    "estado novo exige característica explícita",
+    '{ match: /^(?:(?:estado|condi[cç][aã]o)\\s*:\\s*)?(?:nov[oa]|novo na caixa|nunca usado|zero uso)$/i, state: "Novo" }',
+  ],
+  [
+    "usado exige característica explícita",
+    '{ match: /^(?:(?:estado|condi[cç][aã]o)\\s*:\\s*)?(?:usad[oa]|segunda mão|segunda mao)(?:\\s+em\\s+.+)?$/i, state: "Usado" }',
+  ],
   ["canal Mercado Livre sem limite universal", 'hint: "Título objetivo e fácil de identificar"'],
   ["tom persuasivo sem gatilhos artificiais", 'hint: "Focado em benefícios e próximo passo"'],
 ];
@@ -55,6 +62,17 @@ const requiredDataPatterns = [
 for (const [label, pattern] of requiredDataPatterns) {
   if (!data.includes(pattern)) {
     failures.push(`Proteção ausente nos dados do gerador: ${label}`);
+  }
+}
+
+const forbiddenConditionPatterns = [
+  ["novo por substring pode confundir marcas como Lenovo", '{ match: /nov[oa]\\b/i, state: "Novo" }'],
+  ["conservado genérico pode melhorar condição negativa", "/bem conservad|conservad/i"],
+];
+
+for (const [label, pattern] of forbiddenConditionPatterns) {
+  if (data.includes(pattern)) {
+    failures.push(`Inferência de condição insegura: ${label}`);
   }
 }
 
@@ -106,5 +124,5 @@ if (failures.length) {
 }
 
 console.log(
-  "Gerador OK: proteções contra promessas, suposições não sustentadas e envio indevido de dados estão presentes.",
+  "Gerador OK: proteções contra promessas, inferência insegura de condição e envio indevido de dados estão presentes.",
 );
