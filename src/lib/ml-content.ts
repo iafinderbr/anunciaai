@@ -97,7 +97,7 @@ export const ML_FAQ: FaqItem[] = [
   {
     question: "O gerador de anúncios é gratuito?",
     answer:
-      "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito.",
+      "Sim. A versão gratuita atual pode ser usada sem cadastro e sem cartão de crédito para começar.",
   },
   {
     question: "Preciso revisar o conteúdo gerado?",
