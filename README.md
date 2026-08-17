@@ -44,12 +44,12 @@ A aplicação cria de forma idempotente a estrutura mínima usada pelo contador 
 npm run dev              # desenvolvimento
 npm run lint             # ESLint
 npm run typecheck        # TypeScript sem emissão
-npm run security:check   # procura padrões conhecidos de segredos versionados
-npm run generator:check  # audita proteções, privacidade e suposições do gerador
+npm run security:check   # segredos e hardening dos workflows
+npm run generator:check  # proteções, privacidade e suposições do gerador
 npm run claims:check     # procura promessas públicas bloqueadas
 npm run seo:check        # sitemap, metadata, datas editoriais, canonicals e links internos
 npm run runtime:check    # valida HTML, SEO e headers com o servidor de produção em execução
-npm run a11y:check       # valida regressões básicas de acessibilidade no HTML renderizado
+npm run a11y:check       # regressões básicas de acessibilidade no HTML renderizado
 npm run build            # build de produção do Next.js
 npm run start            # servidor de produção após o build
 ```
@@ -66,7 +66,7 @@ Para executar as auditorias renderizadas localmente, faça o build, inicie o ser
 - `scripts/seo-check.mjs` — auditoria estática de SEO, datas editoriais e links internos
 - `scripts/runtime-check.mjs` — auditoria do HTML renderizado, conteúdo, canonicals, links, dados estruturados, headers, sitemap, robots e AdSense
 - `scripts/accessibility-check.mjs` — regressões básicas de acessibilidade no HTML renderizado
-- `scripts/security-check.mjs` — verificação de segredos versionados
+- `scripts/security-check.mjs` — verificação de segredos e hardening dos GitHub Actions
 - `scripts/generator-check.mjs` — verificação das proteções, privacidade e comportamento do gerador
 - `scripts/claims-check.mjs` — verificação de promessas públicas bloqueadas
 
@@ -80,9 +80,18 @@ A política pública fica em `/privacidade` e os termos em `/termos`.
 
 ## Backend generativo opcional
 
-A rota `/api/generate` existe como capacidade opcional de backend, mas fica desativada por padrão. Sem `GENERATIVE_BACKEND=gemini`, o endpoint informa `enabled: false` e rejeita geração com HTTP 503.
+A rota `/api/generate` existe como capacidade opcional de backend, mas fica desativada por padrão. O endpoint só informa `enabled: true` quando **as duas condições** abaixo existem no ambiente do servidor:
 
-O fluxo principal atual do site continua usando o gerador local no navegador. O CI possui um smoke test para garantir que o backend opcional não seja ativado acidentalmente por uma mudança de código ou configuração de teste.
+```env
+ANUNCIAAI_GENERATIVE_ENABLED=true
+GEMINI_API_KEY=<segredo configurado apenas no servidor>
+```
+
+`GEMINI_MODEL` é opcional. O fluxo principal atual do site continua usando o gerador local no navegador, e a chave do provedor nunca deve usar prefixo `NEXT_PUBLIC_`.
+
+Além da flag explícita, a integração opcional possui limite de payload e de saída, validação de origem/canal/tom, rate limit por instância, timeout, resposta JSON e filtros conservadores contra números, condições comerciais e alegações que não estejam sustentadas pelos dados informados. O CI mantém uma guarda específica em `.github/workflows/generative-security.yml` para impedir a remoção acidental dessas proteções.
+
+A documentação operacional completa fica em `docs/generative-backend.md`. Antes de ativar esse backend em produção, a política de privacidade e a interface devem ser atualizadas para informar o envio do conteúdo ao provedor externo.
 
 ## SEO
 
@@ -127,20 +136,22 @@ Depois do build, a auditoria runtime complementa a análise verificando as pági
 
 `a11y:check` é uma proteção de regressão automatizada, não uma certificação completa de acessibilidade. Ela percorre as páginas do sitemap e o 404 e verifica, no HTML renderizado:
 
+- exatamente um landmark `<main>` por página;
+- existência do link “Pular para o conteúdo principal” e do alvo correspondente;
 - IDs duplicados;
 - referências `aria-labelledby`, `aria-describedby` e `aria-controls` para alvos existentes;
 - atributo `alt` em imagens;
 - nome acessível detectável em links e botões;
 - rótulo acessível detectável em `input`, `select` e `textarea`.
 
-Essa auditoria já encontrou uma regressão real no menu mobile: o botão tinha `aria-controls="menu-mobile"`, mas o alvo não existia no DOM quando o menu estava fechado. O menu agora mantém o contêiner no DOM e usa `hidden` para controlar o estado fechado.
+Essa auditoria já encontrou uma regressão real no menu mobile: o botão tinha `aria-controls="menu-mobile"`, mas o alvo não existia no DOM quando o menu estava fechado. O menu mantém o contêiner no DOM com `hidden` e também pode ser fechado com `Escape`, devolvendo o foco ao botão de abertura.
 
 ## CI e segurança
 
 A cada push e pull request para `main`, o GitHub Actions executa:
 
 1. instalação reproduzível com `npm ci`;
-2. procura por segredos versionados;
+2. procura por segredos versionados e hardening dos workflows;
 3. auditoria das dependências usadas em produção a partir de severidade moderada;
 4. auditoria de todas as dependências para vulnerabilidades altas;
 5. auditoria do motor de geração e das invariantes de privacidade;
@@ -152,6 +163,8 @@ A cada push e pull request para `main`, o GitHub Actions executa:
 11. smoke test das APIs, do backend generativo desativado por padrão e de todas as páginas do sitemap;
 12. auditoria runtime do HTML, profundidade editorial, links, dados estruturados e headers;
 13. auditoria de acessibilidade renderizada.
+
+As GitHub Actions externas são fixadas em SHAs completos e o checkout é executado com `persist-credentials: false`, reduzindo a exposição da credencial temporária aos passos seguintes. O `security:check` falha se essas garantias forem removidas.
 
 O CodeQL analisa JavaScript e TypeScript separadamente e também roda de forma agendada. O Dependabot verifica dependências npm e GitHub Actions semanalmente.
 
