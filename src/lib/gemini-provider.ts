@@ -2,6 +2,7 @@ import type { Channel, GeneratorInput, Tone } from "@/lib/types";
 
 const DEFAULT_MODEL = "gemini-2.5-flash";
 const REQUEST_TIMEOUT_MS = 12_000;
+const MAX_OUTPUT_TOKENS = 2_048;
 
 export interface AdvancedGeneratedCopy {
   title: string;
@@ -168,6 +169,19 @@ function numberTokens(value: string): Set<string> {
   return new Set(value.match(/\d+(?:[.,]\d+)?/g) ?? []);
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function containsPhrase(text: string, phrase: string): boolean {
+  const body = phrase
+    .trim()
+    .split(/\s+/)
+    .map(escapeRegExp)
+    .join("\\s+");
+  return new RegExp(`(?:^|[^a-z0-9])${body}(?=$|[^a-z0-9])`, "i").test(text);
+}
+
 function hasUnsupportedClaims(input: GeneratorInput, result: AdvancedGeneratedCopy): boolean {
   const facts = normalize(JSON.stringify(compactInput(input)));
   const output = normalize(allText(result));
@@ -181,8 +195,11 @@ function hasUnsupportedClaims(input: GeneratorInput, result: AdvancedGeneratedCo
     "qualidade garantida",
     "ultimas unidades",
     "estoque acabando",
+    "mais vendido",
+    "campeao de vendas",
+    "sucesso garantido",
   ];
-  if (alwaysBlocked.some((phrase) => output.includes(phrase))) return true;
+  if (alwaysBlocked.some((phrase) => containsPhrase(output, phrase))) return true;
 
   const conditionalClaims = [
     "frete gratis",
@@ -193,6 +210,10 @@ function hasUnsupportedClaims(input: GeneratorInput, result: AdvancedGeneratedCo
     "sem juros",
     "garantia",
     "original",
+    "autentico",
+    "oficial",
+    "lacrado",
+    "pronta entrega",
     "impermeavel",
     "a prova d'agua",
     "certificado",
@@ -203,7 +224,7 @@ function hasUnsupportedClaims(input: GeneratorInput, result: AdvancedGeneratedCo
   ];
 
   for (const phrase of conditionalClaims) {
-    if (output.includes(phrase) && !facts.includes(phrase)) return true;
+    if (containsPhrase(output, phrase) && !containsPhrase(facts, phrase)) return true;
   }
 
   const inputNumbers = numberTokens(facts);
@@ -239,6 +260,8 @@ export async function generateWithGemini(input: GeneratorInput): Promise<Advance
           contents: [{ parts: [{ text: buildPrompt(input) }] }],
           generationConfig: {
             temperature: 0.35,
+            candidateCount: 1,
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
             responseMimeType: "application/json",
           },
         }),
