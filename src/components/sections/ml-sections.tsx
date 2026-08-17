@@ -1,5 +1,23 @@
 import { ML_FAQ, ML_FEATURES, ML_MISTAKES, ML_STEPS } from "@/lib/ml-content";
 
+const mlCategoryExamples = [
+  {
+    category: "Eletrônicos",
+    title: "Smartphone Samsung Galaxy A55 256GB 5G",
+    note: "Produto, marca, modelo, capacidade e conectividade ajudam a identificar a versão.",
+  },
+  {
+    category: "Casa e cozinha",
+    title: "Cafeteira Elétrica Oster OCAF300 1,2L 220V",
+    note: "Capacidade e voltagem podem ser úteis quando diferenciam modelos realmente distintos.",
+  },
+  {
+    category: "Moda",
+    title: "Tênis Adidas Grand Court Base Masculino",
+    note: "Priorize produto, marca e linha; tamanho e cor costumam funcionar melhor como variações quando aplicável.",
+  },
+] as const;
+
 export function MlHowItWorks() {
   return (
     <section id="como-funciona" aria-labelledby="ml-como-funciona-titulo" className="border-y border-line bg-white">
@@ -7,10 +25,10 @@ export function MlHowItWorks() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
           <h2 id="ml-como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Do produto na caixa ao anúncio publicado em 3 passos
+            Do produto à primeira versão do anúncio em 3 passos
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você não precisa saber escrever para vender bem. Precisa apenas informar o que o produto é.
+            Informe os dados que você consegue confirmar, gere os blocos de conteúdo e revise tudo antes de preencher o anúncio no Mercado Livre.
           </p>
         </div>
 
@@ -36,11 +54,10 @@ export function MlFeatures() {
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
         <h2 id="ml-recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Feito para as regras do Mercado Livre
+          Estrutura pensada para anúncios no Mercado Livre
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Um texto genérico de IA não serve para marketplace. O conteúdo aqui respeita limite de caracteres, estrutura
-          de título e política de descrição da plataforma.
+          A ferramenta organiza título, descrição, benefícios e ficha de características como primeira versão. Regras, campos e limites podem variar por categoria, então confira sempre o fluxo atual da plataforma antes de publicar.
         </p>
       </div>
 
@@ -64,33 +81,31 @@ export function MlAnatomy() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Anatomia do título</p>
             <h2 id="ml-anatomia-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-              O título é 80% do seu resultado na busca
+              Como deixar o título claro e identificável
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O Mercado Livre recomenda a estrutura <strong className="font-medium text-ink-soft">Produto + Marca +
-              Modelo + especificações</strong>, dentro de 60 caracteres. É exatamente o formato que a ferramenta gera.
+              O Mercado Livre orienta usar uma estrutura com <strong className="font-medium text-ink-soft">produto + marca + modelo + especificações que ajudem a identificar o item</strong>. O limite permitido pode variar por categoria, por isso o AnunciaAI usa apenas um preview editorial e você deve conferir o contador atual no momento da publicação.
             </p>
             <p className="mt-3 text-[15px] text-muted">
-              Palavras como “promoção”, “frete grátis” e emojis ocupam espaço que deveria ser de termos que o comprador
-              realmente digita na busca.
+              Informações como promoção, frete e parcelamento não ajudam a identificar o produto e normalmente pertencem a outros campos do anúncio. Prefira um título coerente com a ficha técnica e com a versão realmente vendida.
             </p>
           </div>
 
           <div className="space-y-3">
             <div className="rounded-2xl border border-line bg-canvas p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Exemplo de título gerado</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Exemplo de título para revisar</p>
               <p className="mt-3 font-mono text-[15px] leading-relaxed text-ink">
                 Fone Bluetooth JBL Tune 510BT Dobrável 40h Bateria
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                 <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
-                  49/60 caracteres
+                  Preview editorial
                 </span>
                 <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                  Sem emoji
+                  Sem promoção no título
                 </span>
                 <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                  Sem CAPS LOCK
+                  Dados verificáveis
                 </span>
               </div>
             </div>
@@ -110,6 +125,25 @@ export function MlAnatomy() {
             </ul>
           </div>
         </div>
+
+        <div className="mt-12 border-t border-line pt-9">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Exemplos por categoria</p>
+            <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">O que vale destacar muda conforme o produto</h3>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Use somente características confirmadas e escolha as que realmente ajudam o comprador a diferenciar uma versão da outra.
+            </p>
+          </div>
+          <ul className="mt-6 grid gap-4 md:grid-cols-3">
+            {mlCategoryExamples.map((example) => (
+              <li key={example.category} className="rounded-2xl border border-line bg-canvas p-5 shadow-card">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">{example.category}</p>
+                <p className="mt-3 font-mono text-sm leading-6 text-ink">{example.title}</p>
+                <p className="mt-3 text-sm leading-6 text-muted">{example.note}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -121,10 +155,10 @@ export function MlMistakes() {
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Checklist</p>
         <h2 id="ml-erros-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Erros que derrubam um anúncio no Mercado Livre
+          Erros comuns que enfraquecem a clareza do anúncio
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          A ferramenta já entrega o texto do lado direito da tabela. Você só precisa colar.
+          Compare os exemplos e revise a versão gerada com os dados reais do produto e os campos disponíveis na sua categoria.
         </p>
       </div>
 
@@ -170,7 +204,7 @@ export function MlFaq() {
               Perguntas sobre anúncios no Mercado Livre
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerados pela ferramenta.
+              Respostas rápidas para gerar uma primeira versão e revisar antes de usar no anúncio.
             </p>
           </div>
 
