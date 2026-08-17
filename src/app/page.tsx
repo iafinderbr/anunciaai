@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { GeneratorTool } from "@/components/generator/generator-tool";
 import { LiveStats } from "@/components/live-stats";
 import { SiteHeader } from "@/components/site-header";
@@ -8,7 +9,14 @@ import { ToolsSection } from "@/components/sections/tools";
 import { GuidesHomeSection } from "@/components/sections/guides-home";
 import { SITE_URL } from "@/lib/site";
 
-const channels = ["Mercado Livre", "Shopee", "OLX", "Facebook Marketplace", "Loja virtual", "Instagram"];
+const channels = [
+  { label: "Mercado Livre", href: "/gerador-de-anuncios-mercado-livre" },
+  { label: "Shopee", href: "/gerador-de-anuncios-shopee" },
+  { label: "OLX", href: "/gerador-de-anuncios-olx" },
+  { label: "Facebook Marketplace", href: "/gerador-de-anuncios-facebook-marketplace" },
+  { label: "Loja virtual", href: "/gerador-de-anuncios-para-loja-virtual" },
+  { label: "Instagram", href: "/gerador-de-legendas-para-instagram" },
+];
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -106,7 +114,11 @@ export default function HomePage() {
 
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium uppercase tracking-[0.1em] text-muted">
                 {channels.map((channel) => (
-                  <li key={channel}>{channel}</li>
+                  <li key={channel.href}>
+                    <Link href={channel.href} className="transition-colors hover:text-brand-600">
+                      {channel.label}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
