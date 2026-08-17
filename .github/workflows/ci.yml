@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Segurança, Produto, SEO, Lint, TypeScript e Build
+    name: Segurança, Produto, SEO, Acessibilidade, Lint, TypeScript e Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -147,3 +147,4 @@ jobs:
           done
 
           BASE_URL=http://127.0.0.1:3000 npm run runtime:check
+          BASE_URL=http://127.0.0.1:3000 npm run a11y:check
