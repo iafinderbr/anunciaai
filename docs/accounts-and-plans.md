@@ -48,7 +48,30 @@ Os itens acima são direção de produto, não promessa de disponibilidade imedi
 
 ## Autenticação
 
-Direção preferida: login social com Google, sem criar um sistema próprio de senha.
+### Base técnica escolhida
+
+Direção escolhida para a implementação: **Better Auth + Google OAuth + PostgreSQL/Drizzle já existentes no projeto**.
+
+Motivos principais:
+
+- integração oficial com Next.js App Router;
+- suporte a Next.js 16;
+- login social com Google;
+- adapter para Drizzle/PostgreSQL;
+- sessão pode ser validada no servidor antes de liberar páginas ou ações protegidas;
+- evita criar um sistema próprio de senha.
+
+A dependência ainda não deve ser ligada à produção até termos as credenciais OAuth e o schema de autenticação preparados e testados. O site continua funcionando normalmente sem ela.
+
+Callback planejado de produção:
+
+`https://anunciaai.vercel.app/api/auth/callback/google`
+
+Variáveis futuras devem existir somente no ambiente seguro da Vercel/desenvolvimento local, nunca no Git:
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- segredo próprio da camada de autenticação
 
 Antes da ativação em produção, a implementação precisa ter:
 
@@ -96,15 +119,16 @@ Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de 
 ## Ordem de implementação
 
 1. Interface de login e posicionamento dos planos. **Concluído.**
-2. Escolha e instalação da camada de autenticação.
-3. Schema/tabelas de usuário, sessão e conta OAuth.
-4. Login real com Google em ambiente de teste.
-5. Área `/conta` protegida.
-6. Modelo de plano e autorização no servidor.
-7. Integração do provedor de pagamento em modo de teste.
-8. Webhooks e sincronização de assinatura.
-9. Testes de acesso, cancelamento, falha e renovação.
-10. Publicação dos preços e ativação da cobrança real.
+2. Escolha da camada de autenticação. **Concluído: Better Auth + Google OAuth.**
+3. Instalação da camada de autenticação e geração do schema Drizzle.
+4. Credenciais OAuth do Google para ambiente de teste/produção.
+5. Login real com Google em ambiente de teste.
+6. Área `/conta` protegida.
+7. Modelo de plano e autorização no servidor.
+8. Integração do provedor de pagamento em modo de teste.
+9. Webhooks e sincronização de assinatura.
+10. Testes de acesso, cancelamento, falha e renovação.
+11. Publicação dos preços e ativação da cobrança real.
 
 ## Regras para o CI
 
