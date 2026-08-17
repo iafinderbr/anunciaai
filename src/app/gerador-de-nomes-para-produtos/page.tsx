@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/site";
 const PATH = "/gerador-de-nomes-para-produtos";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const TITLE = "Gerador de Nomes para Produtos | Grátis";
-const DESCRIPTION = "Crie ideias de nomes para produtos em estilos diferentes a partir do briefing informado. Compare opções e verifique marca, domínio e redes sociais antes de escolher.";
+const DESCRIPTION = "Gere ideias de nomes para produtos em estilos diferentes a partir do seu briefing. Compare opções e verifique marca, domínio e redes sociais antes de escolher.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
