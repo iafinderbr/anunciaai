@@ -148,7 +148,7 @@ for (const [route, file] of routeToFile) {
       warn(`Description possivelmente curta em ${route}: ${metadataDescription.length} caracteres.`);
     }
     if (metadataDescription.length > 160) {
-      warn(`Description possivelmente longa em ${route}: ${metadataDescription.length} caracteres.`);
+      fail(`Description longa demais em ${route}: ${metadataDescription.length} caracteres.`);
     }
   }
 
@@ -200,7 +200,7 @@ for (const route of guideRoutes) {
   }
 
   if (!guideSource.includes('name: "Guias"') || !guideSource.includes('`${SITE_URL}/guias`')) {
-    warn(`Guia sem /guias na trilha estruturada de BreadcrumbList: ${route}`);
+    fail(`Guia sem /guias na trilha estruturada de BreadcrumbList: ${route}`);
   }
 }
 
