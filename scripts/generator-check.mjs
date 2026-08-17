@@ -106,8 +106,13 @@ const requiredPrivacyPatterns = [
     generatorTool,
   ],
   [
-    "API de estatísticas lê somente o canal do payload",
-    "const channel = str((body as Record<string, unknown>).channel, 40);",
+    "API rejeita payload com campos além de channel",
+    'if (keys.length !== 1 || keys[0] !== "channel")',
+    statsApi,
+  ],
+  [
+    "API de estatísticas lê somente o canal do payload validado",
+    "const channel = str(payload.channel, 40);",
     statsApi,
   ],
   ["nome do produto não é armazenado", 'productName: "Produto",', statsApi],
@@ -133,7 +138,7 @@ if (/\bid\s*:\s*generations\.id\b/.test(statsApi)) {
 }
 
 for (const field of ["productName", "category", "audience", "price", "features", "tone"]) {
-  const bodyFieldPattern = new RegExp(`\\bbody(?:\\s+as[^;]+)?[\\s\\S]{0,80}\\.${field}\\b`);
+  const bodyFieldPattern = new RegExp(`\\bpayload\\.${field}\\b`);
   if (bodyFieldPattern.test(statsApi)) {
     failures.push(`Privacidade: a API de estatísticas passou a ler o campo ${field} do payload.`);
   }
