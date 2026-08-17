@@ -17,7 +17,7 @@ const PATH = "/gerador-de-palavras-chave-para-produtos";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const TITLE = "Gerador de Palavras-Chave para Produtos | Grátis";
 const DESCRIPTION =
-  "Crie sugestões de palavras-chave a partir do produto, categoria, público e características informadas. Revise as combinações antes de usar em páginas e marketplaces.";
+  "Gere sugestões de palavras-chave a partir do produto, categoria, público e características informadas. Revise antes de usar em páginas e marketplaces.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
