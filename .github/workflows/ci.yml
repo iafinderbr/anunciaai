@@ -101,6 +101,15 @@ jobs:
 
           curl --fail --silent --show-error http://127.0.0.1:3000/robots.txt > /dev/null
 
+          GENERATE_CAPABILITY=$(curl --fail --silent --show-error http://127.0.0.1:3000/api/generate)
+          printf '%s' "$GENERATE_CAPABILITY" | grep -Fq '"enabled":false'
+          expect_status 503 \
+            -X POST \
+            -H 'Origin: http://127.0.0.1:3000' \
+            -H 'Content-Type: application/json' \
+            --data '{}' \
+            http://127.0.0.1:3000/api/generate
+
           expect_status 400 'http://127.0.0.1:3000/api/generations?cache=1'
           expect_status 400 'http://127.0.0.1:3000/api/health?cache=1'
           expect_status 403 \
