@@ -61,7 +61,8 @@ const structuredData = {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Início", item: `${SITE_URL}/` },
-        { "@type": "ListItem", position: 2, name: "Como criar anúncio no Mercado Livre", item: ABSOLUTE_URL },
+        { "@type": "ListItem", position: 2, name: "Guias", item: `${SITE_URL}/guias` },
+        { "@type": "ListItem", position: 3, name: "Como criar anúncio no Mercado Livre", item: ABSOLUTE_URL },
       ],
     },
   ],
@@ -175,6 +176,12 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
                   <li>
                     <Link href="/" className="transition-colors hover:text-ink">
                       Início
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">/</li>
+                  <li>
+                    <Link href="/guias" className="transition-colors hover:text-ink">
+                      Guias
                     </Link>
                   </li>
                   <li aria-hidden="true">/</li>
@@ -348,7 +355,7 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
               <section aria-labelledby="ia-titulo" className="mt-16 rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-9">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-700">Economize tempo</p>
                 <h2 id="ia-titulo" className="mt-3 text-2xl font-semibold sm:text-3xl">
-                  Transforme os dados do produto em um anúncio pronto
+                  Transforme os dados do produto em uma primeira versão do anúncio
                 </h2>
                 <p className="mt-4 max-w-2xl text-[15px] leading-7 text-ink-soft">
                   Informe nome, categoria, características, público e preço. O AnunciaAI organiza título, descrição,
@@ -438,7 +445,7 @@ export default function ComoCriarAnuncioMercadoLivrePage() {
                   </ol>
                 </nav>
                 <div className="mt-5 border-t border-line pt-5">
-                  <p className="text-sm font-semibold">Quer o texto pronto?</p>
+                  <p className="text-sm font-semibold">Quer uma primeira versão do texto?</p>
                   <p className="mt-1.5 text-xs leading-relaxed text-muted">Gere gratuitamente e revise antes de publicar.</p>
                   <Link
                     href="/gerador-de-anuncios-mercado-livre#ferramenta"
