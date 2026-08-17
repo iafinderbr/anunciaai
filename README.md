@@ -41,13 +41,19 @@ A aplicação cria de forma idempotente a estrutura mínima usada pelo contador 
 ## Comandos
 
 ```bash
-npm run dev        # desenvolvimento
-npm run lint       # ESLint
-npm run typecheck  # TypeScript sem emissão
-npm run seo:check  # sitemap, canonicals, links internos e arquivos essenciais
-npm run build      # build de produção do Next.js
-npm run start      # servidor de produção após o build
+npm run dev              # desenvolvimento
+npm run lint             # ESLint
+npm run typecheck        # TypeScript sem emissão
+npm run security:check   # procura padrões conhecidos de segredos versionados
+npm run generator:check  # audita proteções do motor de geração
+npm run claims:check     # procura promessas públicas bloqueadas
+npm run seo:check        # sitemap, metadata, canonicals e links internos
+npm run runtime:check    # valida HTML/headers com o servidor de produção em execução
+npm run build            # build de produção do Next.js
+npm run start            # servidor de produção após o build
 ```
+
+Para executar `runtime:check` localmente, faça o build, inicie o servidor e rode o comando em outro terminal. O script usa `http://127.0.0.1:3000` por padrão e também aceita `BASE_URL`.
 
 ## Estrutura principal
 
@@ -56,7 +62,11 @@ npm run start      # servidor de produção após o build
 - `src/lib/` — regras de geração, dados e constantes do site
 - `src/db/` — conexão, schema e inicialização idempotente do PostgreSQL
 - `public/ads.txt` — autorização pública do Google AdSense
-- `scripts/seo-check.mjs` — auditoria automatizada de SEO e links internos
+- `scripts/seo-check.mjs` — auditoria estática de SEO e links internos
+- `scripts/runtime-check.mjs` — auditoria do HTML renderizado, canonicals, headers, sitemap, robots e AdSense
+- `scripts/security-check.mjs` — verificação de segredos versionados
+- `scripts/generator-check.mjs` — verificação das proteções do gerador
+- `scripts/claims-check.mjs` — verificação de promessas públicas bloqueadas
 
 ## Privacidade dos dados do gerador
 
@@ -76,29 +86,46 @@ Antes de aceitar uma mudança em rotas ou navegação, rode:
 npm run seo:check
 ```
 
-A auditoria falha se, entre outros casos:
+A auditoria estática falha se, entre outros casos:
 
 - uma página pública ficar fora do sitemap;
 - o sitemap apontar para uma rota inexistente;
 - um link interno estático apontar para uma rota inexistente;
 - uma página pública perder seu canonical;
+- uma meta description ultrapassar o limite definido pelo projeto;
 - aparecer `noindex` em uma página pública;
+- um guia perder a trilha estruturada até `/guias`;
 - o domínio principal, robots ou `ads.txt` saírem da configuração esperada.
+
+Depois do build, a auditoria runtime complementa a análise verificando as páginas realmente renderizadas. Entre outras coisas, ela confirma:
+
+- status HTTP das URLs do sitemap;
+- um único H1 por página;
+- `lang="pt-BR"` e `<main>` no HTML;
+- title e meta description renderizados;
+- canonical e `og:url` coerentes com a rota pública;
+- ausência de `noindex` nas páginas do sitemap;
+- headers de segurança esperados;
+- `robots.txt`, `ads.txt` e carregamento do AdSense.
 
 ## CI e segurança
 
 A cada push e pull request para `main`, o GitHub Actions executa:
 
 1. instalação reproduzível com `npm ci`;
-2. `npm audit` para vulnerabilidades altas;
-3. auditoria de SEO e links internos;
-4. ESLint;
-5. TypeScript;
-6. build de produção;
-7. smoke test das rotas públicas essenciais.
+2. procura por segredos versionados;
+3. `npm audit` para vulnerabilidades altas;
+4. auditoria do motor de geração;
+5. auditoria de promessas públicas;
+6. auditoria estática de SEO e links internos;
+7. ESLint;
+8. TypeScript;
+9. build de produção;
+10. smoke test das APIs e de todas as páginas do sitemap;
+11. auditoria runtime do HTML e headers.
 
 O CodeQL analisa JavaScript e TypeScript separadamente e também roda de forma agendada. O Dependabot verifica dependências npm e GitHub Actions semanalmente.
 
 ## Deploy
 
-A branch `main` está conectada à Vercel. Commits aprovados pelo pipeline são publicados automaticamente pelo projeto da Vercel.
+A branch `main` está conectada à Vercel. Commits enviados para `main` disparam o deploy automático e os pipelines de validação do projeto.
