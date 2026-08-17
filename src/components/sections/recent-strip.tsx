@@ -51,12 +51,12 @@ export function RecentStrip() {
           Gerados recentemente
         </h2>
         <ul className="mt-3 flex flex-wrap gap-2">
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <li
-              key={row.id}
+              key={`${row.channel}-${row.createdAt}-${index}`}
               className="flex items-center gap-2 rounded-full border border-line bg-canvas px-3 py-1.5 text-xs text-ink-soft"
             >
-              <span className="size-1.5 shrink-0 rounded-full bg-brand-500" />
+              <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-brand-500" />
               <span className="font-medium text-ink">Anúncio gerado</span>
               <span className="text-muted">
                 {CHANNEL_LABEL[row.channel as Channel] ?? "Outros canais"} · {timeAgo(new Date(row.createdAt))}
