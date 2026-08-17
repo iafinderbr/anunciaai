@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | AnunciaAI",
   },
   description:
-    "Crie primeiras versões de títulos, descrições, benefícios e anúncios para produtos e revise antes de publicar. Comece grátis.",
+    "Crie títulos, descrições, benefícios e anúncios para produtos. Ferramentas grátis, sem cadastro e feitas para revisar antes de publicar.",
   keywords: [
     "gerador de anúncios",
     "descrição de produto",
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
     siteName: "AnunciaAI",
     title: "AnunciaAI | Gerador de anúncios para produtos",
     description:
-      "Organize títulos, descrições, benefícios e anúncios para seus produtos e revise cada bloco antes de publicar.",
+      "Crie títulos, descrições, benefícios e anúncios para produtos. Ferramentas grátis, sem cadastro e feitas para revisar antes de publicar.",
   },
   twitter: {
     card: "summary_large_image",
     title: "AnunciaAI | Gerador de anúncios para produtos",
     description:
-      "Organize títulos, descrições, benefícios e anúncios para seus produtos e revise cada bloco antes de publicar.",
+      "Crie títulos, descrições, benefícios e anúncios para produtos. Ferramentas grátis, sem cadastro e feitas para revisar antes de publicar.",
   },
   robots: {
     index: true,
