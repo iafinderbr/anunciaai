@@ -90,13 +90,34 @@ for (const file of walk(ROOT)) {
       failures.push(`Possível DATABASE_URL real encontrado em ${rel}`);
     }
   }
+
+  // Tags de GitHub Actions são referências mutáveis. Workflows versionados no
+  // repositório devem apontar para o SHA completo do commit da action. A versão
+  // legível continua ao lado como comentário para facilitar manutenção.
+  if (rel.startsWith(".github/workflows/") && /\.ya?ml$/i.test(rel)) {
+    for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gim)) {
+      const target = match[1];
+      if (target.startsWith("./") || target.startsWith("docker://")) continue;
+
+      const at = target.lastIndexOf("@");
+      if (at <= 0) {
+        failures.push(`GitHub Action sem referência explícita em ${rel}: ${target}`);
+        continue;
+      }
+
+      const ref = target.slice(at + 1);
+      if (!/^[0-9a-f]{40}$/i.test(ref)) {
+        failures.push(`GitHub Action sem SHA imutável em ${rel}: ${target}`);
+      }
+    }
+  }
 }
 
 if (failures.length) {
-  console.error("\nFalhas na auditoria de segredos:");
+  console.error("\nFalhas na auditoria de segurança:");
   for (const failure of [...new Set(failures)]) console.error(`- ${failure}`);
-  console.error("\nRemova a credencial do Git e faça a rotação do segredo antes de continuar.");
+  console.error("\nRemova/rotacione credenciais expostas e fixe actions externas em SHAs completos antes de continuar.");
   process.exit(1);
 }
 
-console.log("Segurança OK: nenhum padrão conhecido de segredo versionado foi detectado.");
+console.log("Segurança OK: sem segredos conhecidos e GitHub Actions externas fixadas em SHAs imutáveis.");
