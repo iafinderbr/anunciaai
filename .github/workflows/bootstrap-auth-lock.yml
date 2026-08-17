@@ -28,7 +28,7 @@ jobs:
           cache: npm
 
       - name: Instalar Better Auth e atualizar lockfile
-        run: npm install better-auth@1.6.26 --save-exact --package-lock-only --ignore-scripts --no-audit --no-fund
+        run: npm install better-auth@1.6.25 --save-exact --package-lock-only --ignore-scripts --no-audit --no-fund
 
       - name: Commitar lockfile reproduzível
         env:
