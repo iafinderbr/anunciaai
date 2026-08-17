@@ -15,7 +15,8 @@
     "runtime:check": "node scripts/runtime-check.mjs",
     "a11y:check": "node scripts/accessibility-check.mjs",
     "generator:check": "node scripts/generator-check.mjs",
-    "claims:check": "node scripts/claims-check.mjs"
+    "claims:check": "node scripts/claims-check.mjs",
+    "auth:check": "node scripts/auth-check.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "2.0.1",
