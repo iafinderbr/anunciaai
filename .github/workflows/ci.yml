@@ -142,3 +142,5 @@ jobs:
             echo "GET $route"
             curl --fail --silent --show-error "http://127.0.0.1:3000$route" > /dev/null
           done
+
+          BASE_URL=http://127.0.0.1:3000 npm run runtime:check
