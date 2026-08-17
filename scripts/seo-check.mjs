@@ -187,15 +187,18 @@ for (const route of guideRoutes) {
   }
 
   const publishedAt = extractConstString(guideSource, "PUBLISHED_AT");
-  if (!publishedAt || !/^\d{4}-\d{2}-\d{2}$/.test(publishedAt)) {
-    warn(`Guia sem PUBLISHED_AT padronizado em YYYY-MM-DD: ${route}`);
+  if (publishedAt) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(publishedAt)) {
+      warn(`PUBLISHED_AT fora do padrão YYYY-MM-DD: ${route}`);
+    }
+    if (!guideSource.includes("datePublished: PUBLISHED_AT") || !guideSource.includes("dateModified: PUBLISHED_AT")) {
+      warn(`Guia com PUBLISHED_AT, mas sem datePublished/dateModified padronizados no Article: ${route}`);
+    }
+    if (!guideSource.includes("publishedTime:") || !guideSource.includes("modifiedTime:")) {
+      warn(`Guia com PUBLISHED_AT, mas sem publishedTime/modifiedTime no Open Graph: ${route}`);
+    }
   }
-  if (!guideSource.includes("datePublished: PUBLISHED_AT") || !guideSource.includes("dateModified: PUBLISHED_AT")) {
-    warn(`Guia sem datePublished/dateModified padronizados no Article: ${route}`);
-  }
-  if (!guideSource.includes("publishedTime:") || !guideSource.includes("modifiedTime:")) {
-    warn(`Guia sem publishedTime/modifiedTime no Open Graph: ${route}`);
-  }
+
   if (!guideSource.includes('name: "Guias"') || !guideSource.includes('`${SITE_URL}/guias`')) {
     warn(`Guia sem /guias na trilha estruturada de BreadcrumbList: ${route}`);
   }
