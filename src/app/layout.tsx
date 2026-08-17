@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className="bg-canvas text-ink antialiased">
         <a
-          href="#inicio-conteudo"
+          href="#ferramenta"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
           Pular para o conteúdo principal
