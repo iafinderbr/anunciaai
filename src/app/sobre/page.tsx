@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const PATH = "/sobre";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
-const TITLE = "Sobre o AnunciaAI";
+const TITLE = "Sobre o AnunciaAI: Ferramentas para Vendedores Online";
 const DESCRIPTION =
   "Conheça o AnunciaAI, a ferramenta brasileira criada para ajudar vendedores a organizar títulos, descrições, benefícios e anúncios de produtos.";
 
