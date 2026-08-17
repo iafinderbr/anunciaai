@@ -115,7 +115,6 @@ export async function GET(request: Request) {
     const [totals] = await db.select({ total: sql<number>`count(*)::int` }).from(generations);
     const recent = await db
       .select({
-        id: generations.id,
         channel: generations.channel,
         createdAt: generations.createdAt,
       })
