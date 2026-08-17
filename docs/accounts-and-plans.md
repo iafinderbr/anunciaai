@@ -52,16 +52,18 @@ Os itens acima são direção de produto, não promessa de disponibilidade imedi
 
 Direção escolhida para a implementação: **Better Auth + Google OAuth + PostgreSQL/Drizzle já existentes no projeto**.
 
+A integração atual do Better Auth com Drizzle usa o adapter oficial `@better-auth/drizzle-adapter`. O handler do Next.js ficará em `/api/auth/[...all]` quando as dependências forem instaladas e as credenciais OAuth estiverem disponíveis.
+
 Motivos principais:
 
-- integração oficial com Next.js App Router;
-- suporte a Next.js 16;
+- integração com Next.js App Router;
+- compatibilidade com Next.js 16;
 - login social com Google;
 - adapter para Drizzle/PostgreSQL;
 - sessão pode ser validada no servidor antes de liberar páginas ou ações protegidas;
 - evita criar um sistema próprio de senha.
 
-A dependência ainda não deve ser ligada à produção até termos as credenciais OAuth e o schema de autenticação preparados e testados. O site continua funcionando normalmente sem ela.
+A dependência ainda não deve ser ligada à produção até termos o lockfile atualizado e as credenciais OAuth configuradas. O site continua funcionando normalmente sem ela.
 
 Callback planejado de produção:
 
@@ -69,9 +71,10 @@ Callback planejado de produção:
 
 Variáveis futuras devem existir somente no ambiente seguro da Vercel/desenvolvimento local, nunca no Git:
 
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL`
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
-- segredo próprio da camada de autenticação
 
 Antes da ativação em produção, a implementação precisa ter:
 
@@ -83,11 +86,29 @@ Antes da ativação em produção, a implementação precisa ter:
 6. Conta protegida contra associação indevida de identidades.
 7. Política de privacidade atualizada com os dados realmente coletados.
 
-A rota `/entrar` já existe como interface de preparação. Ela é `noindex` e não entra no sitemap.
+As rotas `/entrar` e `/conta` já existem como interfaces de preparação. Ambas são `noindex` e ficam fora do sitemap editorial. `/conta` ainda não é uma área autenticada: a proteção real será ativada junto do backend de autenticação.
+
+## Estrutura de banco já preparada
+
+O schema Drizzle e a criação idempotente do banco já possuem a base para:
+
+- `user`;
+- `session`;
+- `account`;
+- `verification`.
+
+O usuário também já possui campos internos para plano e estado da assinatura. Nenhum desses campos deve ser controlado livremente pelo navegador.
 
 ## Modelo de acesso
 
 O plano nunca deve ser confiado apenas ao navegador. Recursos pagos precisam ser autorizados pelo servidor.
+
+A base de autorização já está centralizada em `src/lib/plans.ts`:
+
+- planos possíveis: `free`, `pro`, `premium`;
+- recursos são associados ao plano no servidor;
+- Pro/Premium só viram plano efetivo quando `subscriptionStatus` está `active`;
+- qualquer estado pago inválido, cancelado ou inativo volta para `free` na autorização.
 
 Estado mínimo esperado para um usuário:
 
@@ -120,19 +141,23 @@ Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de 
 
 1. Interface de login e posicionamento dos planos. **Concluído.**
 2. Escolha da camada de autenticação. **Concluído: Better Auth + Google OAuth.**
-3. Instalação da camada de autenticação e geração do schema Drizzle.
-4. Credenciais OAuth do Google para ambiente de teste/produção.
-5. Login real com Google em ambiente de teste.
-6. Área `/conta` protegida.
-7. Modelo de plano e autorização no servidor.
-8. Integração do provedor de pagamento em modo de teste.
-9. Webhooks e sincronização de assinatura.
-10. Testes de acesso, cancelamento, falha e renovação.
-11. Publicação dos preços e ativação da cobrança real.
+3. Base do schema de usuário, sessão, conta OAuth e verificação. **Concluído.**
+4. Modelo inicial de plano e autorização no servidor. **Concluído.**
+5. Shell visual de `/conta`. **Concluído; proteção por sessão ainda pendente.**
+6. Instalar `better-auth` + adapter Drizzle e atualizar o lockfile. **Pendente.**
+7. Criar credenciais OAuth do Google e adicioná-las ao ambiente seguro. **Pendente; exige acesso à conta Google Cloud.**
+8. Criar handler `/api/auth/[...all]`, cliente de autenticação e login real com Google.
+9. Proteger `/conta` com sessão validada no servidor e implementar logout.
+10. Atualizar Política de Privacidade com os dados realmente coletados pela conta.
+11. Integrar o provedor de pagamento em modo de teste.
+12. Implementar webhooks e sincronização de assinatura.
+13. Testar acesso, cancelamento, falha e renovação.
+14. Publicar preços e ativar a cobrança real.
 
 ## Regras para o CI
 
-- `/entrar` deve continuar `noindex` enquanto for uma rota utilitária.
+- `/entrar` e `/conta` devem continuar `noindex` enquanto forem rotas utilitárias.
 - A interface não pode mostrar “Assinar agora” antes da cobrança estar configurada.
 - Rotas protegidas futuras devem validar sessão no servidor.
-- Segredos de OAuth e pagamento nunca podem ser versionados.
+- Segredos de OAuth e pagamento nunca podem ser versionados nem usar prefixo `NEXT_PUBLIC_`.
+- O teste `auth:check` deve continuar validando a base de contas durante o `typecheck`.
