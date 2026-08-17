@@ -136,6 +136,18 @@ export const DESC_CHANNELS: { title: string; text: string }[] = [
     title: "Instagram e redes sociais",
     text: "Adapte a descrição para uma legenda mais curta, com chamada para ação e hashtags relacionadas ao conteúdo quando fizer sentido.",
   },
+  {
+    title: "Eletrônicos",
+    text: "Destaque marca, modelo, capacidade, compatibilidade, alimentação e medidas confirmadas. Evite completar especificações técnicas que não foram informadas.",
+  },
+  {
+    title: "Moda e acessórios",
+    text: "Organize material, tamanho, medidas, modelagem, cor e cuidados informados para facilitar a comparação entre variações do produto.",
+  },
+  {
+    title: "Casa e decoração",
+    text: "Priorize material, dimensões, acabamento, montagem, uso indicado e itens incluídos sempre que esses dados estiverem disponíveis.",
+  },
 ];
 
 export interface FaqItem {
