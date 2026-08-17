@@ -121,7 +121,7 @@ export const BENEFIT_RULES: { match: RegExp; benefit: string; specLabel?: string
   { match: /nota fiscal/i, benefit: "Nota fiscal informada pelo vendedor" },
   { match: /marca|fabricante|modelo/i, benefit: "Marca ou modelo informado para facilitar a identificação", specLabel: "Modelo" },
   { match: /envio|frete|entrega/i, benefit: "Condição de envio informada pelo vendedor", specLabel: "Envio" },
-  { match: /segur|proteç|trava/i, benefit: "Recurso de segurança ou proteção informado; confira instruções e limitações de uso" },
+  { match: /segur|proteç|trava/i, benefit: "Informação de segurança ou proteção destacada; confira instruções e limitações de uso" },
   { match: /moderno|design|elegan|estilo|minimalist/i, benefit: "Design ou estilo destacado nas informações do produto" },
 ];
 
@@ -140,15 +140,15 @@ export const MARKETPLACE_CTAS = [
 ];
 
 /**
- * Infere apenas estados explicitamente reconhecíveis nas características.
- * Termos genéricos como "usado" não recebem uma avaliação de qualidade extra.
+ * Infere estado de conservação apenas quando uma característica inteira declara
+ * explicitamente o estado (ou usa o formato "Estado: ..." / "Condição: ...").
+ * Isso evita falsos positivos em marcas e frases como "Lenovo" ou "imperfeito".
  */
 export const CONDITION_RULES: { match: RegExp; state: string }[] = [
-  { match: /seminov|semi-nov/i, state: "Seminovo" },
-  { match: /lacrado|novo na caixa|nunca usado|zero uso/i, state: "Novo" },
-  { match: /pouco uso|quase novo|como novo/i, state: "Pouco uso" },
-  { match: /impec|excelente estado|perfeito estado|estado de novo/i, state: "Em excelente estado" },
-  { match: /bem conservad|conservad/i, state: "Bem conservado" },
-  { match: /usado|segunda mão|segunda mao/i, state: "Usado" },
-  { match: /nov[oa]\b/i, state: "Novo" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?seminov[oa]$/i, state: "Seminovo" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?(?:nov[oa]|novo na caixa|nunca usado|zero uso)$/i, state: "Novo" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?(?:pouco uso|quase novo|como novo)$/i, state: "Pouco uso" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?(?:impec[aá]vel|excelente estado|perfeito estado|estado de novo)$/i, state: "Em excelente estado" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?bem conservad[oa]$/i, state: "Bem conservado" },
+  { match: /^(?:(?:estado|condi[cç][aã]o)\s*:\s*)?(?:usad[oa]|segunda mão|segunda mao)(?:\s+em\s+.+)?$/i, state: "Usado" },
 ];
