@@ -58,6 +58,10 @@ function relative(file) {
 }
 
 function checkWorkflowHardening(source, rel) {
+  if (/^\s*runs-on:\s*ubuntu-latest\s*$/im.test(source)) {
+    failures.push(`Runner mutável ubuntu-latest em ${rel}; fixe a versão principal do Ubuntu.`);
+  }
+
   for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gim)) {
     const target = match[1];
     if (target.startsWith("./") || target.startsWith("docker://")) continue;
@@ -139,4 +143,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Segurança OK: sem segredos conhecidos, Actions fixadas em SHA e checkout sem credencial persistida.");
+console.log("Segurança OK: sem segredos conhecidos, Actions fixadas em SHA, runner versionado e checkout sem credencial persistida.");
