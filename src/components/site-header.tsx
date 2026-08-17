@@ -56,6 +56,12 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
           <div className="flex items-center gap-2">
             <Link
+              href="/entrar"
+              className="hidden rounded-xl px-3 py-2.5 text-sm font-semibold text-ink-soft transition-colors hover:bg-white hover:text-brand-700 sm:inline-flex"
+            >
+              Entrar
+            </Link>
+            <Link
               href={ctaHref}
               className="hidden rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 sm:inline-flex"
             >
@@ -93,6 +99,13 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/entrar"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-1 py-3 text-sm font-semibold text-ink"
+            >
+              Entrar na conta
+            </Link>
             <Link
               href={ctaHref}
               onClick={() => setOpen(false)}
