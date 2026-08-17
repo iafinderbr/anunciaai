@@ -191,7 +191,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const channel = str((body as Record<string, unknown>).channel, 40);
+    const payload = body as Record<string, unknown>;
+    const keys = Object.keys(payload);
+    if (keys.length !== 1 || keys[0] !== "channel") {
+      return Response.json(
+        { ok: false, error: "unexpected_fields" },
+        { status: 400, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    const channel = str(payload.channel, 40);
     if (!CHANNELS.has(channel)) {
       return Response.json(
         { ok: false, error: "invalid_channel" },
