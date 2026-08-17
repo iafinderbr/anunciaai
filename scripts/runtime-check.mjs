@@ -29,6 +29,43 @@ function extractTagAttribute(html, tagPattern, attribute) {
   return match ? decodeHtml(match[1]) : null;
 }
 
+function hasFragmentTarget(html, fragment) {
+  if (!fragment) return true;
+  const decoded = decodeURIComponent(fragment);
+  return (
+    html.includes(`id="${decoded}"`) ||
+    html.includes(`id='${decoded}'`) ||
+    html.includes(`name="${decoded}"`) ||
+    html.includes(`name='${decoded}'`)
+  );
+}
+
+function checkJsonLd(route, html) {
+  const scripts = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  let valid = 0;
+
+  for (const [index, script] of scripts.entries()) {
+    const raw = script[1].trim();
+    if (!raw) {
+      fail(`${route}: JSON-LD ${index + 1} vazio.`);
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") {
+        fail(`${route}: JSON-LD ${index + 1} não contém objeto ou array.`);
+        continue;
+      }
+      valid += 1;
+    } catch {
+      fail(`${route}: JSON-LD ${index + 1} inválido no HTML renderizado.`);
+    }
+  }
+
+  return valid;
+}
+
 async function fetchText(pathname, init) {
   const response = await fetch(`${BASE_URL}${pathname}`, {
     redirect: "manual",
@@ -132,6 +169,60 @@ function checkHtml(route, html, response) {
   }
 }
 
+async function checkRenderedLinks(renderedPages) {
+  const targets = new Map();
+
+  for (const [sourceRoute, html] of renderedPages) {
+    for (const match of html.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>/gi)) {
+      const rawHref = decodeHtml(match[1].trim());
+      if (!rawHref || rawHref.startsWith("mailto:") || rawHref.startsWith("tel:") || rawHref.startsWith("javascript:")) {
+        continue;
+      }
+
+      let targetUrl;
+      try {
+        targetUrl = new URL(rawHref, `${PRODUCTION_URL}${sourceRoute}`);
+      } catch {
+        fail(`${sourceRoute}: href inválido no HTML renderizado: ${rawHref}.`);
+        continue;
+      }
+
+      if (targetUrl.origin !== PRODUCTION_URL) continue;
+      if (targetUrl.pathname.startsWith("/api/")) continue;
+
+      const route = targetUrl.pathname || "/";
+      const fragment = targetUrl.hash ? targetUrl.hash.slice(1) : "";
+      const key = `${route}#${fragment}`;
+      if (!targets.has(key)) {
+        targets.set(key, { route, fragment, sourceRoute, rawHref });
+      }
+    }
+  }
+
+  let checked = 0;
+  for (const target of targets.values()) {
+    let targetHtml = renderedPages.get(target.route);
+    if (!targetHtml) {
+      const { response, text } = await fetchText(target.route);
+      if (response.status !== 200) {
+        fail(`${target.sourceRoute}: link interno ${target.rawHref} retornou status ${response.status}.`);
+        continue;
+      }
+      targetHtml = text;
+      renderedPages.set(target.route, text);
+    }
+
+    if (target.fragment && !hasFragmentTarget(targetHtml, target.fragment)) {
+      fail(`${target.sourceRoute}: âncora ${target.rawHref} aponta para fragmento inexistente.`);
+      continue;
+    }
+
+    checked += 1;
+  }
+
+  return checked;
+}
+
 async function main() {
   const { response: sitemapResponse, text: sitemap } = await fetchText("/sitemap.xml");
   if (sitemapResponse.status !== 200) {
@@ -156,14 +247,22 @@ async function main() {
     return url.slice(PRODUCTION_URL.length) || "/";
   }).filter(Boolean);
 
+  const renderedPages = new Map();
+  let jsonLdCount = 0;
+
   console.log(`Auditoria runtime: ${routes.length} páginas públicas.`);
   for (const route of routes) {
     const { response, text } = await fetchText(route);
+    renderedPages.set(route, text);
     checkHtml(route, text, response);
+    jsonLdCount += checkJsonLd(route, text);
   }
 
-  const { response: homeResponse, text: homeHtml } = await fetchText("/");
-  if (homeResponse.status === 200 && !homeHtml.includes(ADSENSE_SCRIPT)) {
+  const checkedLinks = await checkRenderedLinks(renderedPages);
+  console.log(`Links internos/âncoras validados: ${checkedLinks}. JSON-LD válido encontrado: ${jsonLdCount}.`);
+
+  const homeHtml = renderedPages.get("/") ?? "";
+  if (!homeHtml.includes(ADSENSE_SCRIPT)) {
     fail("Home sem script esperado do AdSense.");
   }
 
@@ -209,7 +308,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Runtime OK: HTML, canonicals, headers, sitemap, robots, AdSense e página 404 validados.");
+  console.log("Runtime OK: HTML, canonicals, links, âncoras, JSON-LD, headers, sitemap, robots, AdSense e página 404 validados.");
 }
 
 main().catch((error) => {
