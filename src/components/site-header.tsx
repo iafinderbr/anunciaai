@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const links = [
   { href: "/#ferramentas", label: "Ferramentas" },
@@ -13,6 +13,20 @@ const links = [
 
 export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      requestAnimationFrame(() => menuButtonRef.current?.focus());
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
 
   return (
     <>
@@ -48,6 +62,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               Começar grátis
             </Link>
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setOpen((value) => !value)}
               aria-expanded={open}
