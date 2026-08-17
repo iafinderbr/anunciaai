@@ -183,13 +183,33 @@ async function main() {
     fail("robots.txt não referencia o sitemap oficial.");
   }
 
+  const notFoundRoute = "/__auditoria-pagina-inexistente__";
+  const { response: notFoundResponse, text: notFoundHtml } = await fetchText(notFoundRoute);
+  if (notFoundResponse.status !== 404) {
+    fail(`${notFoundRoute}: status ${notFoundResponse.status}, esperado 404.`);
+  } else {
+    checkSecurityHeaders(notFoundResponse, notFoundRoute);
+    const notFoundRobots = extractTagAttribute(
+      notFoundHtml,
+      /<meta\b[^>]*name=["']robots["'][^>]*>/i,
+      "content",
+    );
+    if (!notFoundRobots || !/noindex/i.test(notFoundRobots)) {
+      fail(`${notFoundRoute}: página 404 sem noindex renderizado.`);
+    }
+    const notFoundH1Count = (notFoundHtml.match(/<h1\b/gi) ?? []).length;
+    if (notFoundH1Count !== 1) {
+      fail(`${notFoundRoute}: esperado exatamente 1 H1 na página 404, encontrado ${notFoundH1Count}.`);
+    }
+  }
+
   if (failures.length) {
     console.error("\nFalhas na auditoria runtime:");
     for (const message of failures) console.error(`- ${message}`);
     process.exit(1);
   }
 
-  console.log("Runtime OK: HTML, canonicals, headers, sitemap, robots e AdSense validados.");
+  console.log("Runtime OK: HTML, canonicals, headers, sitemap, robots, AdSense e página 404 validados.");
 }
 
 main().catch((error) => {
