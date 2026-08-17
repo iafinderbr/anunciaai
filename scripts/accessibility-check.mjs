@@ -139,6 +139,11 @@ function checkFormControls(html, route) {
     const title = attribute(openingTag, "title");
     const id = attribute(openingTag, "id");
     const value = attribute(openingTag, "value");
+    const name = attribute(openingTag, "name");
+
+    if (tagName === "input" && type === "radio" && !name?.trim()) {
+      fail(`${route}: radio${id ? `#${id}` : ""} sem atributo name para agrupamento.`);
+    }
 
     const namedByInputValue = tagName === "input" && ["button", "submit", "reset"].includes(type) && Boolean(value?.trim());
     const named =
@@ -240,7 +245,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Acessibilidade OK: landmarks, link de salto, ids, referências ARIA, alt, nomes interativos e rótulos de formulários validados.");
+  console.log("Acessibilidade OK: landmarks, link de salto, ids, referências ARIA, alt, nomes interativos, grupos de radio e rótulos de formulários validados.");
 }
 
 main().catch((error) => {
