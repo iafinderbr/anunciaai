@@ -59,25 +59,24 @@ function hasAccessibleName(openingTag, innerHtml, idsToText) {
 }
 
 function collectIds(html, route) {
-  const ids = new Map();
+  const counts = new Map();
   const idsToText = new Map();
+
+  for (const match of html.matchAll(/<([a-z][\w:-]*)\b[^>]*\sid=["']([^"']+)["'][^>]*>/gi)) {
+    const id = decodeHtml(match[2]);
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
 
   for (const match of html.matchAll(/<([a-z][\w:-]*)\b([^>]*)\sid=["']([^"']+)["']([^>]*)>([\s\S]*?)<\/\1>/gi)) {
     const id = decodeHtml(match[3]);
-    ids.set(id, (ids.get(id) ?? 0) + 1);
     if (!idsToText.has(id)) idsToText.set(id, visibleText(match[5]));
   }
 
-  for (const match of html.matchAll(/<([a-z][\w:-]*)\b([^>]*)\sid=["']([^"']+)["']([^>]*)\/?>/gi)) {
-    const id = decodeHtml(match[3]);
-    if (!ids.has(id)) ids.set(id, 1);
-  }
-
-  for (const [id, count] of ids) {
+  for (const [id, count] of counts) {
     if (count > 1) fail(`${route}: id duplicado no HTML renderizado: ${id} (${count} ocorrências).`);
   }
 
-  return { ids: new Set(ids.keys()), idsToText };
+  return { ids: new Set(counts.keys()), idsToText };
 }
 
 function checkAriaReferences(html, route, ids) {
