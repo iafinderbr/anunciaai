@@ -189,31 +189,31 @@ for (const route of guideRoutes) {
   const publishedAt = extractConstString(guideSource, "PUBLISHED_AT");
   const updatedAt = extractConstString(guideSource, "UPDATED_AT");
   if (!publishedAt) {
-    warn(`Guia sem PUBLISHED_AT verificável: ${route}`);
+    fail(`Guia sem PUBLISHED_AT verificável: ${route}`);
   } else {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(publishedAt)) {
-      warn(`PUBLISHED_AT fora do padrão YYYY-MM-DD: ${route}`);
+      fail(`PUBLISHED_AT fora do padrão YYYY-MM-DD: ${route}`);
     }
 
     if (!guideSource.includes("datePublished: PUBLISHED_AT")) {
-      warn(`Guia com PUBLISHED_AT, mas sem datePublished padronizado no Article: ${route}`);
+      fail(`Guia com PUBLISHED_AT, mas sem datePublished padronizado no Article: ${route}`);
     }
 
     const expectedModifiedConst = updatedAt ? "UPDATED_AT" : "PUBLISHED_AT";
     if (!guideSource.includes(`dateModified: ${expectedModifiedConst}`)) {
-      warn(`Guia sem dateModified padronizado com ${expectedModifiedConst}: ${route}`);
+      fail(`Guia sem dateModified padronizado com ${expectedModifiedConst}: ${route}`);
     }
 
     if (!guideSource.includes("publishedTime:")) {
-      warn(`Guia com PUBLISHED_AT, mas sem publishedTime no Open Graph: ${route}`);
+      fail(`Guia com PUBLISHED_AT, mas sem publishedTime no Open Graph: ${route}`);
     }
     if (!guideSource.includes("modifiedTime:")) {
-      warn(`Guia com PUBLISHED_AT, mas sem modifiedTime no Open Graph: ${route}`);
+      fail(`Guia com PUBLISHED_AT, mas sem modifiedTime no Open Graph: ${route}`);
     }
   }
 
   if (updatedAt && !/^\d{4}-\d{2}-\d{2}$/.test(updatedAt)) {
-    warn(`UPDATED_AT fora do padrão YYYY-MM-DD: ${route}`);
+    fail(`UPDATED_AT fora do padrão YYYY-MM-DD: ${route}`);
   }
   if (publishedAt && updatedAt && updatedAt < publishedAt) {
     fail(`UPDATED_AT anterior a PUBLISHED_AT em ${route}.`);
@@ -309,5 +309,5 @@ if (failures.length) {
 }
 
 console.log(
-  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta e conversão interna validadas.`,
+  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta, datas editoriais e conversão interna validadas.`,
 );
