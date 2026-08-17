@@ -33,7 +33,7 @@ export function LiveStats({ initialTotal = 0 }: { initialTotal?: number }) {
   const formatted = new Intl.NumberFormat("pt-BR").format(total);
 
   return (
-    <p className="text-sm text-muted">
+    <p className="text-sm text-muted" aria-live="polite" aria-atomic="true">
       <span className="font-semibold text-ink tabular-nums">{formatted}</span>{" "}
       {total === 1 ? "anúncio já gerado" : "anúncios já gerados"} no AnunciaAI
     </p>
