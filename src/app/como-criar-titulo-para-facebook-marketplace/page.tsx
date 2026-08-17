@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const PUBLISHED_AT = "2026-08-16";
 const TITLE = "Como Criar Título para Facebook Marketplace: Exemplos";
 const DESCRIPTION =
-  "Aprenda como criar título para Facebook Marketplace com fórmula prática, exemplos, erros comuns e checklist para deixar o classificado claro e fácil de identificar.";
+  "Aprenda como criar título para Facebook Marketplace com fórmula prática, exemplos, erros comuns e checklist para deixar o classificado claro.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
