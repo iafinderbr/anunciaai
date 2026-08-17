@@ -4,12 +4,14 @@ import type { ReactNode } from "react";
 import { CopyButton } from "@/components/copy-button";
 import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
 
-const TITLE_LIMIT: Record<Channel, number> = {
-  "mercado-livre": 60,
-  shopee: 120,
+// Metas editoriais usadas pelo próprio gerador para manter títulos legíveis.
+// Não representam limites oficiais ou universais das plataformas.
+const TITLE_PREVIEW_TARGET: Record<Channel, number> = {
+  "mercado-livre": 80,
+  shopee: 100,
   "loja-virtual": 70,
   instagram: 65,
-  olx: 90,
+  olx: 65,
   "facebook-marketplace": 65,
   outro: 70,
 };
@@ -65,9 +67,9 @@ interface ResultPanelProps {
 }
 
 export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanelProps) {
-  const limit = TITLE_LIMIT[input.channel];
+  const previewTarget = TITLE_PREVIEW_TARGET[input.channel];
   const titleLength = result.title.length;
-  const withinLimit = titleLength <= limit;
+  const withinTarget = titleLength <= previewTarget;
 
   return (
     <div className="animate-fade-up space-y-4">
@@ -81,8 +83,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
             <h3 className="mt-3 text-2xl font-semibold tracking-tight">Seu anúncio está pronto</h3>
             <p className="mt-1.5 text-sm text-muted">
               Conteúdo gerado para <strong className="font-medium text-ink-soft">{result.channelLabel}</strong> com tom{" "}
-              <strong className="font-medium text-ink-soft">{result.toneLabel.toLowerCase()}</strong>. Copie seção por
-              seção ou tudo de uma vez.
+              <strong className="font-medium text-ink-soft">{result.toneLabel.toLowerCase()}</strong>. Revise as informações e copie seção por seção ou tudo de uma vez.
             </p>
           </div>
           <CopyButton value={buildFullText(result)} label="Copiar tudo" size="md" variant="solid" />
@@ -117,12 +118,14 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       <Section
         index={1}
         title="Título do produto"
-        hint={`${titleLength} caracteres — limite recomendado para ${result.channelLabel}: ${limit}`}
+        hint={`${titleLength} caracteres — referência editorial do AnunciaAI para ${result.channelLabel}: até ${previewTarget}`}
         copyValue={result.title}
       >
         <p className="text-lg font-semibold leading-snug text-ink">{result.title}</p>
-        <p className={`mt-2 text-xs font-medium ${withinLimit ? "text-emerald-600" : "text-amber-600"}`}>
-          {withinLimit ? "✓ em um formato de referência para o canal" : "! Acima do limite recomendado — corte alguma palavra"}
+        <p className={`mt-2 text-xs font-medium ${withinTarget ? "text-emerald-600" : "text-amber-600"}`}>
+          {withinTarget
+            ? "✓ dentro da referência editorial usada neste gerador"
+            : "! Acima da referência editorial — considere encurtar antes de publicar"}
         </p>
 
         {result.titleAlternatives.length > 0 ? (
@@ -146,7 +149,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       <Section
         index={2}
         title="Descrição"
-        hint={`${result.description.length} caracteres, prontos para colar no anúncio`}
+        hint={`${result.description.length} caracteres — primeira versão para revisar e adaptar antes de publicar`}
         copyValue={result.description}
       >
         <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
@@ -181,7 +184,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       <Section
         index={5}
         title="Anúncio"
-        hint="Versão persuasiva para revisar antes de publicar ou impulsionar"
+        hint="Versão persuasiva para revisar e adaptar antes de publicar"
         copyValue={result.adCopy}
       >
         <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
@@ -192,14 +195,14 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
       <Section
         index={6}
         title="SEO"
-        hint="Otimizado para busca no Google e dentro do marketplace"
+        hint="Sugestões editoriais de título, descrição e termos relacionados ao produto informado"
         copyValue={`Título SEO: ${result.seoTitle}\nMeta description: ${result.metaDescription}\nPalavras-chave: ${result.keywords.join(", ")}`}
       >
         <div className="space-y-3">
           <div className="rounded-xl bg-canvas p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Título SEO · {result.seoTitle.length}/60
+                Título SEO · {result.seoTitle.length} caracteres
               </p>
               <CopyButton value={result.seoTitle} />
             </div>
@@ -209,7 +212,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
           <div className="rounded-xl bg-canvas p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Meta description · {result.metaDescription.length}/158
+                Meta description · {result.metaDescription.length} caracteres
               </p>
               <CopyButton value={result.metaDescription} />
             </div>
@@ -218,7 +221,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
 
           <div className="rounded-xl bg-canvas p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Palavras-chave</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Palavras-chave sugeridas</p>
               <CopyButton value={result.keywords.join(", ")} />
             </div>
             <ul className="mt-2.5 flex flex-wrap gap-2">
