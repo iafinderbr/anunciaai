@@ -40,8 +40,13 @@ export async function loadStats(force = false): Promise<StatsResponse> {
     .then(async (response) => {
       if (!response.ok) throw new Error("Falha ao carregar estatísticas");
       const data = (await response.json()) as Partial<StatsResponse>;
+      const total =
+        typeof data.total === "number" && Number.isSafeInteger(data.total) && data.total >= 0
+          ? data.total
+          : 0;
+
       return {
-        total: Number.isSafeInteger(data.total) && (data.total ?? -1) >= 0 ? (data.total as number) : 0,
+        total,
         recent: normalizeRecent(data.recent),
       };
     })
