@@ -117,6 +117,104 @@ function checkJsonLd(route, html) {
   return valid;
 }
 
+function extractMainText(html) {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] ?? "";
+  const withoutNonContent = main
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<svg\b[^>]*>[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, " ");
+  return normalizeText(withoutNonContent);
+}
+
+function tokenizeContent(text) {
+  return (
+    text
+      .toLocaleLowerCase("pt-BR")
+      .normalize("NFKC")
+      .match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu) ?? []
+  );
+}
+
+function buildShingles(tokens, size = 5) {
+  const shingles = new Set();
+  for (let index = 0; index <= tokens.length - size; index += 1) {
+    shingles.add(tokens.slice(index, index + size).join(" "));
+  }
+  return shingles;
+}
+
+function jaccard(left, right) {
+  if (left.size === 0 || right.size === 0) return 0;
+  let intersection = 0;
+  const [small, large] = left.size <= right.size ? [left, right] : [right, left];
+  for (const value of small) {
+    if (large.has(value)) intersection += 1;
+  }
+  return intersection / (left.size + right.size - intersection);
+}
+
+function contentKind(route) {
+  if (route.startsWith("/gerador-")) return "gerador";
+  if (route.startsWith("/como-") || route === "/seo-para-pagina-de-produto") return "guia";
+  return null;
+}
+
+function checkContentQuality(renderedPages) {
+  const entries = [];
+
+  for (const [route, html] of renderedPages) {
+    const kind = contentKind(route);
+    if (!kind) continue;
+
+    const text = extractMainText(html);
+    const tokens = tokenizeContent(text);
+    const minimumWords = kind === "guia" ? 350 : 300;
+
+    if (tokens.length < minimumWords) {
+      fail(`${route}: conteúdo principal muito curto para ${kind}: ${tokens.length} palavras; mínimo ${minimumWords}.`);
+    }
+
+    entries.push({ route, kind, words: tokens.length, shingles: buildShingles(tokens) });
+  }
+
+  let closest = null;
+  for (let leftIndex = 0; leftIndex < entries.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < entries.length; rightIndex += 1) {
+      const left = entries[leftIndex];
+      const right = entries[rightIndex];
+      if (left.kind !== right.kind) continue;
+
+      const similarity = jaccard(left.shingles, right.shingles);
+      if (!closest || similarity > closest.similarity) {
+        closest = { left: left.route, right: right.route, similarity };
+      }
+
+      if (similarity >= 0.9) {
+        fail(
+          `Conteúdo quase duplicado (${(similarity * 100).toFixed(1)}% por shingles) entre ${left.route} e ${right.route}.`,
+        );
+      }
+    }
+  }
+
+  const minimumEntry = entries.reduce(
+    (smallest, entry) => (!smallest || entry.words < smallest.words ? entry : smallest),
+    null,
+  );
+
+  if (minimumEntry) {
+    console.log(
+      `Conteúdo: ${entries.length} páginas editoriais verificadas; menor página ${minimumEntry.route} com ${minimumEntry.words} palavras.`,
+    );
+  }
+  if (closest) {
+    console.log(
+      `Maior similaridade editorial: ${(closest.similarity * 100).toFixed(1)}% entre ${closest.left} e ${closest.right}.`,
+    );
+  }
+}
+
 async function fetchText(pathname, init) {
   const response = await fetch(`${BASE_URL}${pathname}`, {
     redirect: "manual",
@@ -176,6 +274,11 @@ function checkHtml(route, html, response) {
   if (response.status !== 200) {
     fail(`${route}: status ${response.status}, esperado 200.`);
     return null;
+  }
+
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.toLowerCase().startsWith("text/html")) {
+    fail(`${route}: Content-Type inesperado para página HTML: ${contentType || "ausente"}.`);
   }
 
   checkSecurityHeaders(response, route);
@@ -324,6 +427,11 @@ async function main() {
     fail(`/sitemap.xml: status ${sitemapResponse.status}, esperado 200.`);
   }
 
+  const sitemapContentType = sitemapResponse.headers.get("content-type") ?? "";
+  if (!/xml/i.test(sitemapContentType)) {
+    fail(`/sitemap.xml: Content-Type inesperado: ${sitemapContentType || "ausente"}.`);
+  }
+
   const productionUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   if (productionUrls.length === 0) {
     fail("Sitemap sem URLs públicas.");
@@ -356,6 +464,7 @@ async function main() {
   }
 
   checkUniqueRenderedSeo(renderedSeo);
+  checkContentQuality(renderedPages);
 
   const checkedLinks = await checkRenderedLinks(renderedPages);
   console.log(`Links internos/âncoras validados: ${checkedLinks}. JSON-LD válido encontrado: ${jsonLdCount}.`);
@@ -407,7 +516,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Runtime OK: SEO único, HTML, canonicals, links, âncoras, JSON-LD, headers, sitemap, robots, AdSense e página 404 validados.");
+  console.log("Runtime OK: profundidade e unicidade editorial, SEO, HTML, canonicals, links, âncoras, JSON-LD, headers, sitemap, robots, AdSense e página 404 validados.");
 }
 
 main().catch((error) => {
