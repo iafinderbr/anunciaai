@@ -14,6 +14,7 @@ const FOOTER_FILE = path.join(ROOT, "src", "components", "sections", "pricing.ts
 
 const failures = [];
 const warnings = [];
+const metadataTitles = new Map();
 
 function fail(message) {
   failures.push(message);
@@ -48,6 +49,10 @@ function normalizeInternalHref(href) {
 
 function sourceReferencesRoute(source, route) {
   return source.includes(`"${route}"`) || source.includes(`'${route}'`);
+}
+
+function extractConstString(source, name) {
+  return source.match(new RegExp(`const\\s+${name}\\s*=\\s*[\"'\`]([^\"'\`]+)[\"'\`]`, "s"))?.[1] ?? null;
 }
 
 const allFiles = walk(APP_DIR);
@@ -121,8 +126,38 @@ for (const [route, file] of routeToFile) {
     fail(`PATH declarado não corresponde à rota ${route}: ${declaredPath}`);
   }
 
+  const metadataTitle = extractConstString(source, "TITLE");
+  if (metadataTitle) {
+    if (metadataTitle.length < 30) {
+      warn(`Title possivelmente curto em ${route}: ${metadataTitle.length} caracteres.`);
+    }
+    if (metadataTitle.length > 60) {
+      warn(`Title possivelmente longo em ${route}: ${metadataTitle.length} caracteres.`);
+    }
+
+    const routesForTitle = metadataTitles.get(metadataTitle) ?? [];
+    routesForTitle.push(route);
+    metadataTitles.set(metadataTitle, routesForTitle);
+  }
+
+  const metadataDescription = extractConstString(source, "DESCRIPTION");
+  if (metadataDescription) {
+    if (metadataDescription.length < 90) {
+      warn(`Description possivelmente curta em ${route}: ${metadataDescription.length} caracteres.`);
+    }
+    if (metadataDescription.length > 160) {
+      warn(`Description possivelmente longa em ${route}: ${metadataDescription.length} caracteres.`);
+    }
+  }
+
   if (!source.includes("SiteHeader") || !source.includes("SiteFooter")) {
     warn(`Página sem SiteHeader/SiteFooter compartilhado: ${route}`);
+  }
+}
+
+for (const [title, routes] of metadataTitles) {
+  if (routes.length > 1) {
+    warn(`Title duplicado (${routes.join(", ")}): ${title}`);
   }
 }
 
