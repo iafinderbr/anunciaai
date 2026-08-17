@@ -7,6 +7,24 @@ import {
   SHOPEE_TITLE_BREAKDOWN,
 } from "@/lib/shopee-content";
 
+const shopeeCategoryExamples = [
+  {
+    category: "Eletrônicos",
+    title: "Carregador Portátil 20000mAh 20W USB-C",
+    note: "Capacidade, potência e conexão ajudam a diferenciar versões quando esses dados foram confirmados.",
+  },
+  {
+    category: "Moda e acessórios",
+    title: "Bolsa Feminina Transversal Couro Sintético Preta",
+    note: "Tipo, material e uma característica visual podem deixar o produto mais fácil de identificar.",
+  },
+  {
+    category: "Casa e decoração",
+    title: "Jogo de Lençol Queen 4 Peças Algodão 200 Fios",
+    note: "Tamanho, quantidade de peças e material são informações úteis para comparar opções semelhantes.",
+  },
+] as const;
+
 export function ShopeeHowItWorks() {
   return (
     <section id="como-funciona" aria-labelledby="shopee-como-funciona-titulo" className="border-y border-line bg-white">
@@ -14,10 +32,10 @@ export function ShopeeHowItWorks() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
           <h2 id="shopee-como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Do produto na caixa ao anúncio publicado em 3 passos
+            Do produto à primeira versão do anúncio em 3 passos
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você não precisa saber escrever para vender bem na Shopee. Precisa apenas informar o que o produto é.
+            Informe os dados que você consegue confirmar, gere uma estrutura organizada e revise tudo de acordo com os campos atuais da Shopee antes de publicar.
           </p>
         </div>
 
@@ -44,11 +62,10 @@ export function ShopeeAnatomy() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">A estrutura</p>
           <h2 id="shopee-anatomia-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            O que um bom anúncio na Shopee precisa ter
+            O que revisar em um anúncio na Shopee
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Um anúncio que vende na Shopee não é só um título bonito. É um conjunto que responde às dúvidas do
-            comprador e ajuda o produto a aparecer na busca.
+            Um anúncio claro combina título, fotos, atributos e descrição coerentes entre si. Quanto mais precisos forem os dados, mais fácil fica para o comprador entender qual versão do produto está sendo oferecida.
           </p>
 
           <ol className="mt-6 space-y-4">
@@ -68,16 +85,16 @@ export function ShopeeAnatomy() {
 
         <div className="lg:pt-10">
           <div className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Exemplo de título gerado</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Exemplo de título para revisar</p>
             <p className="mt-3 font-mono text-[15px] leading-relaxed text-ink">
-              Carregador Portátil 20000mAh Carregamento Rápido Duas Portas USB 🔥
+              Carregador Portátil 20000mAh Carregamento Rápido 20W USB-C
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
-                66/120 caracteres
+                Título informativo
               </span>
               <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-ink-soft">
-                Com palavras-chave
+                Sem repetição artificial
               </span>
             </div>
           </div>
@@ -92,6 +109,25 @@ export function ShopeeAnatomy() {
           </ul>
         </div>
       </div>
+
+      <div className="mt-12 border-t border-line pt-9">
+        <div className="max-w-2xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Exemplos por categoria</p>
+          <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink">Escolha características que realmente diferenciam a versão</h3>
+          <p className="mt-2 text-sm leading-6 text-muted">
+            O tipo de informação mais útil muda conforme o produto. Use somente marca, modelo, material, medidas, capacidade e outras características que você consiga confirmar.
+          </p>
+        </div>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {shopeeCategoryExamples.map((example) => (
+            <li key={example.category} className="rounded-2xl border border-line bg-white p-5 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">{example.category}</p>
+              <p className="mt-3 font-mono text-sm leading-6 text-ink">{example.title}</p>
+              <p className="mt-3 text-sm leading-6 text-muted">{example.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
@@ -103,10 +139,10 @@ export function ShopeeFeatures() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
           <h2 id="shopee-recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Um anúncio completo para a Shopee, gerado de uma vez
+            Blocos essenciais para revisar na Shopee
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você informa o produto uma única vez e recebe tudo o que precisa para publicar, no formato da Shopee.
+            Você informa o produto uma vez e recebe uma primeira versão de título, descrição, benefícios e ficha de características para conferir e adaptar antes do uso.
           </p>
         </div>
 
@@ -132,7 +168,7 @@ export function ShopeeMistakes() {
           Erros comuns em anúncios na Shopee
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Use os exemplos abaixo como revisão antes de publicar o anúncio.
+          Use os exemplos abaixo como revisão e confirme se título, imagens, atributos e descrição representam a mesma versão do produto.
         </p>
       </div>
 
@@ -178,7 +214,7 @@ export function ShopeeFaq() {
               Perguntas sobre anúncios na Shopee
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar o primeiro anúncio gerados pela ferramenta.
+              Respostas rápidas para gerar uma primeira versão e revisar antes de usar na sua listagem.
             </p>
           </div>
 
@@ -203,4 +239,3 @@ export function ShopeeFaq() {
     </section>
   );
 }
-
