@@ -161,16 +161,20 @@ export default function SobrePage() {
           <div className="mx-auto max-w-4xl rounded-3xl border border-line bg-white p-7 shadow-card sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Transparência</p>
             <h2 id="transparencia-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Gratuito durante a fase atual
+              Versão gratuita disponível
             </h2>
             <p className="mt-4 text-[15px] leading-7 text-muted">
-              As ferramentas disponíveis hoje podem ser usadas gratuitamente durante o período de testes. O site pode
-              exibir publicidade para ajudar a financiar a operação e, no futuro, poderá oferecer recursos pagos
-              adicionais. Quando isso acontecer, preços e condições serão apresentados de forma separada e clara.
+              As ferramentas atuais podem ser usadas gratuitamente e sem cadastro para começar. O site pode exibir
+              publicidade para ajudar a financiar a operação. Também estamos preparando conta e planos Pro e Premium,
+              mas nenhuma assinatura paga está ativa hoje. Preços e condições serão apresentados antes de qualquer
+              cobrança ser aberta.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link href="/#ferramenta" className="rounded-2xl bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">
-                Testar o AnunciaAI grátis
+                Usar o AnunciaAI grátis
+              </Link>
+              <Link href="/entrar" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">
+                Ver área de conta
               </Link>
               <Link href="/guias" className="rounded-2xl border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">
                 Explorar os guias
