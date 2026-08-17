@@ -135,6 +135,24 @@ jobs:
             -H 'Content-Type: application/json' \
             --data '{"channel":"canal-inexistente"}' \
             http://127.0.0.1:3000/api/generations
+          expect_status 400 \
+            -X POST \
+            -H 'Origin: http://127.0.0.1:3000' \
+            -H 'Content-Type: application/json' \
+            --data '{"channel":"olx","productName":"nao-deve-ser-enviado"}' \
+            http://127.0.0.1:3000/api/generations
+
+          {
+            printf '{"channel":"olx","padding":"'
+            head -c 2100 /dev/zero | tr '\0' 'a'
+            printf '"}'
+          } > /tmp/oversized.json
+          expect_status 413 \
+            -X POST \
+            -H 'Origin: http://127.0.0.1:3000' \
+            -H 'Content-Type: application/json' \
+            --data-binary @/tmp/oversized.json \
+            http://127.0.0.1:3000/api/generations
 
           SITEMAP=$(curl --fail --silent --show-error http://127.0.0.1:3000/sitemap.xml)
           mapfile -t ROUTES < <(
