@@ -19,11 +19,10 @@ export function InstagramHowItWorks() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
           <h2 id="instagram-como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Do produto na caixa à legenda publicada em 3 passos
+            Do produto à primeira versão da legenda em 3 passos
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            Você não precisa ser social media para escrever uma legenda que vende. Precisa apenas saber o que o
-            produto é.
+            Informe os dados que você consegue confirmar, gere uma estrutura organizada e adapte o texto ao formato da publicação e ao caminho de compra realmente disponível.
           </p>
         </div>
 
@@ -50,11 +49,10 @@ export function InstagramStructure() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">A estrutura</p>
           <h2 id="instagram-estrutura-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            O que uma boa legenda de produto precisa ter
+            O que uma legenda de produto pode organizar
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            No Instagram, a legenda compete com o feed inteiro. Ela precisa segurar a atenção em segundos e levar a um
-            próximo passo claro.
+            Uma estrutura simples ajuda a apresentar o produto, destacar informações relevantes e indicar um próximo passo sem inventar urgência, disponibilidade ou condições comerciais.
           </p>
 
           <ol className="mt-6 space-y-4">
@@ -75,19 +73,13 @@ export function InstagramStructure() {
         <div className="lg:pt-10">
           <div className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-              Legenda gerada pela ferramenta
+              Exemplo de primeira versão
             </p>
             <div className="mt-3 whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
-              Chegou a vela que transforma qualquer cômodo em um spa. ✨{"\n\n"}
-              ✅ Cera de soja, queima limpa{"\n"}
-              ✅ Até 40 horas de aroma{"\n"}
-              ✅ Frasco de vidro reutilizável{"\n\n"}
-              💰 R$ 79,90{"\n"}
-              👉 Garanta a sua pelo link na bio!{"\n\n"}
-              <span className="text-brand-600">#velaaromatica #decoracao #bemestar #lojaonline</span>
+              {INSTAGRAM_COMPARISON.good}
             </div>
             <p className="mt-3 text-xs text-muted">
-              Gancho na abertura, benefícios em tópicos, preço, CTA e hashtags — tudo em um único texto.
+              Use a estrutura como ponto de partida e confira preço, características, chamada para ação e hashtags antes de publicar.
             </p>
           </div>
         </div>
@@ -103,10 +95,10 @@ export function InstagramBenefits() {
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">O essencial</p>
           <h2 id="instagram-beneficios-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Característica vira benefício
+            Da característica à explicação útil
           </h2>
           <p className="mt-3 text-[15px] text-muted">
-            O seguidor não quer saber que a vela tem cera de soja. Ele quer saber que a casa vai ficar mais aconchegante.
+            Uma característica pode ser explicada de forma mais clara sem virar promessa de resultado. O texto deve continuar apoiado no que foi realmente informado sobre o produto.
           </p>
         </div>
 
@@ -116,7 +108,7 @@ export function InstagramBenefits() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">Característica</p>
               <p className="mt-1 text-sm text-ink-soft">{item.feature}</p>
               <p className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-600">
-                <span aria-hidden="true">↓</span> Benefício
+                <span aria-hidden="true">↓</span> Explicação conservadora
               </p>
               <p className="mt-1 text-sm font-medium text-ink">{item.benefit}</p>
             </li>
@@ -133,10 +125,10 @@ export function InstagramFeatures() {
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
         <h2 id="instagram-recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Uma legenda completa, gerada de uma vez
+          Blocos para revisar em uma única legenda
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Você informa o produto uma única vez e recebe o texto pronto, com a estrutura que segura a atenção.
+          Você informa o produto uma vez e recebe uma primeira versão com abertura, características, chamada para ação e hashtags relacionadas aos dados fornecidos.
         </p>
       </div>
 
@@ -158,10 +150,10 @@ export function InstagramMistakes() {
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Checklist</p>
         <h2 id="instagram-erros-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Erros comuns em legendas de venda
+          Erros comuns em legendas de produto
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          A ferramenta entrega o texto do lado direito. Você só precisa colar e revisar.
+          Compare os exemplos e ajuste a primeira versão para que ela continue fiel ao produto, ao conteúdo publicado e ao próximo passo disponível no seu perfil.
         </p>
       </div>
 
@@ -194,16 +186,16 @@ export function InstagramMistakes() {
       </ul>
 
       <div className="mt-10">
-        <h3 className="text-base font-semibold">Na prática: legenda fraca × legenda melhor</h3>
-        <p className="mt-1.5 text-sm text-muted">Mesmo produto, resultados bem diferentes.</p>
+        <h3 className="text-base font-semibold">Na prática: legenda vaga × legenda mais clara</h3>
+        <p className="mt-1.5 text-sm text-muted">O mesmo produto pode ser apresentado com níveis diferentes de informação e precisão.</p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           <div className="rounded-2xl border border-rose-200 bg-rose-50/40 p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">Legenda fraca</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">Legenda vaga</p>
             <p className="mt-3 text-sm leading-relaxed text-rose-900/70">{INSTAGRAM_COMPARISON.bad}</p>
           </div>
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-700">Legenda melhor</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-700">Legenda mais clara</p>
             <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-emerald-900/80">
               {INSTAGRAM_COMPARISON.good}
             </p>
@@ -225,7 +217,7 @@ export function InstagramFaq() {
               Perguntas sobre legendas para Instagram
             </h2>
             <p className="mt-3 text-[15px] text-muted">
-              O que os vendedores mais perguntam antes de publicar a primeira legenda gerados pela ferramenta.
+              O essencial para gerar, conferir e adaptar uma primeira versão antes de usar.
             </p>
           </div>
 
@@ -250,4 +242,3 @@ export function InstagramFaq() {
     </section>
   );
 }
-
