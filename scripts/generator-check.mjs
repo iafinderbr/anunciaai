@@ -128,6 +128,10 @@ if (/fetch\s*\(\s*["']\/api\/generate["']/.test(generatorTool)) {
   failures.push("Privacidade: o gerador principal passou a enviar conteúdo para /api/generate.");
 }
 
+if (/\bid\s*:\s*generations\.id\b/.test(statsApi)) {
+  failures.push("Privacidade: a API pública de estatísticas voltou a expor o id interno das gerações.");
+}
+
 for (const field of ["productName", "category", "audience", "price", "features", "tone"]) {
   const bodyFieldPattern = new RegExp(`\\bbody(?:\\s+as[^;]+)?[\\s\\S]{0,80}\\.${field}\\b`);
   if (bodyFieldPattern.test(statsApi)) {
@@ -142,5 +146,5 @@ if (failures.length) {
 }
 
 console.log(
-  "Gerador OK: proteções contra promessas, inferência insegura de condição, destinos de palavras-chave e envio indevido de dados estão presentes.",
+  "Gerador OK: proteções contra promessas, inferência insegura de condição, destinos de palavras-chave e exposição indevida de dados estão presentes.",
 );
