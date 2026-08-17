@@ -41,14 +41,14 @@ function generateNames(input: GeneratorInput, round: number) {
   const stem = base.slice(0, Math.max(3, Math.min(5, base.length)));
 
   return [
-    { name: `${stem}${rotate(SUFFIXES, 0)}`, style: "Autoral", reason: `Nome curto inspirado em “${base}”, criado para ter sonoridade própria.` },
+    { name: `${stem}${rotate(SUFFIXES, 0)}`, style: "Autoral", reason: `Nome curto inspirado em “${base}”, criado como ponto de partida para uma identidade própria.` },
     { name: `${rotate(prefixes, 1)}${category}`, style: "Composto", reason: `Une uma sensação ${input.tone === "premium" ? "sofisticada" : "marcante"} à categoria do produto.` },
-    { name: `${feature}${rotate(SUFFIXES, 2)}`, style: "Conceitual", reason: `Transforma um diferencial do briefing em um nome compacto e memorável.` },
-    { name: `${rotate(prefixes, 3)} ${base}`, style: "Descritivo", reason: "Explica a proposta com clareza e continua fácil de falar e lembrar." },
-    { name: `${stem}${rotate(prefixes, 4).toLowerCase()}`, style: "Moderno", reason: "Combinação contemporânea, adequada para embalagem, loja e redes sociais." },
-    { name: `${rotate(prefixes, 5)} & ${category}`, style: "Marca-linha", reason: "Uma direção flexível para crescer com novos produtos da mesma linha." },
+    { name: `${feature}${rotate(SUFFIXES, 2)}`, style: "Conceitual", reason: "Transforma um termo do briefing em uma opção curta para você avaliar." },
+    { name: `${rotate(prefixes, 3)} ${base}`, style: "Descritivo", reason: "Mantém a referência ao produto e adiciona uma direção de marca." },
+    { name: `${stem}${rotate(prefixes, 4).toLowerCase()}`, style: "Moderno", reason: "Combinação curta para testar em embalagem, loja e redes sociais." },
+    { name: `${rotate(prefixes, 5)} & ${category}`, style: "Marca-linha", reason: "Uma direção que pode ser avaliada para linhas com mais de um produto." },
     { name: `${base} ${rotate(["Lab", "Casa", "Co.", "Essencial", "Original", "Studio"], 1)}`, style: "Comercial", reason: "Mantém o tipo de produto reconhecível e adiciona personalidade de marca." },
-    { name: `${rotate(prefixes, 0)}${rotate(SUFFIXES, 5)}`, style: "Abstrato", reason: "Nome amplo e sonoro, útil para uma marca que poderá expandir de categoria." },
+    { name: `${rotate(prefixes, 0)}${rotate(SUFFIXES, 5)}`, style: "Abstrato", reason: "Nome abstrato para avaliar quando a marca pode abranger mais de uma categoria." },
   ];
 }
 
@@ -58,7 +58,10 @@ export function ProductNameTool() {
   const [generated, setGenerated] = useState(false);
   const [error, setError] = useState("");
   const names = useMemo(() => generateNames(input, round), [input, round]);
-  const update = (key: keyof GeneratorInput, value: string) => setInput((current) => ({ ...current, [key]: value }));
+  const update = (key: keyof GeneratorInput, value: string) => {
+    setInput((current) => ({ ...current, [key]: value }));
+    setError("");
+  };
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     if (input.productName.trim().length < 3 || input.category.trim().length < 2 || input.features.trim().length < 10) {
@@ -90,16 +93,16 @@ export function ProductNameTool() {
     </div>;
   }
 
-  return <form onSubmit={submit} className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
-    <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-xl font-semibold sm:text-2xl">Crie nomes para o seu produto</h3><p className="mt-1 text-sm text-muted">Dê um briefing curto e receba ideias em estilos diferentes.</p></div><button type="button" onClick={() => setInput(NAMES_EXAMPLE_INPUT)} className="rounded-lg border border-line-strong px-3 py-1.5 text-xs font-semibold hover:border-brand-500 hover:text-brand-600">Preencher com exemplo</button></div>
+  return <form onSubmit={submit} noValidate className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-xl font-semibold sm:text-2xl">Crie nomes para o seu produto</h3><p className="mt-1 text-sm text-muted">Dê um briefing curto e receba ideias em estilos diferentes.</p></div><button type="button" onClick={() => { setInput(NAMES_EXAMPLE_INPUT); setError(""); }} className="rounded-lg border border-line-strong px-3 py-1.5 text-xs font-semibold hover:border-brand-500 hover:text-brand-600">Preencher com exemplo</button></div>
     <div className="mt-6 grid gap-5 sm:grid-cols-2">
-      <label className="sm:col-span-2 text-sm font-medium">Ideia ou tipo de produto <span className="text-brand-600">*</span><input className="field mt-1.5" value={input.productName} onChange={(e) => update("productName", e.target.value)} placeholder="Ex: Garrafa térmica para rotina e viagens" /></label>
-      <label className="text-sm font-medium">Categoria <span className="text-brand-600">*</span><input className="field mt-1.5" value={input.category} onChange={(e) => update("category", e.target.value)} placeholder="Ex: Casa e bem-estar" /></label>
-      <label className="text-sm font-medium">Público-alvo <span className="text-muted">(opcional)</span><input className="field mt-1.5" value={input.audience} onChange={(e) => update("audience", e.target.value)} placeholder="Ex: Pessoas que treinam e viajam" /></label>
-      <label className="sm:col-span-2 text-sm font-medium">Diferenciais e sensações <span className="text-brand-600">*</span><textarea rows={4} className="field mt-1.5 resize-y" value={input.features} onChange={(e) => update("features", e.target.value)} placeholder="Ex: resistente, moderna, prática, sem vazamentos..." /></label>
+      <label className="sm:col-span-2 text-sm font-medium">Ideia ou tipo de produto <span className="text-brand-600">*</span><input className="field mt-1.5" value={input.productName} onChange={(e) => update("productName", e.target.value)} placeholder="Ex: Garrafa térmica para rotina e viagens" maxLength={120} /></label>
+      <label className="text-sm font-medium">Categoria <span className="text-brand-600">*</span><input className="field mt-1.5" value={input.category} onChange={(e) => update("category", e.target.value)} placeholder="Ex: Casa e bem-estar" maxLength={80} /></label>
+      <label className="text-sm font-medium">Público-alvo <span className="text-muted">(opcional)</span><input className="field mt-1.5" value={input.audience} onChange={(e) => update("audience", e.target.value)} placeholder="Ex: Pessoas que treinam e viajam" maxLength={120} /></label>
+      <label className="sm:col-span-2 text-sm font-medium">Diferenciais e sensações <span className="text-brand-600">*</span><textarea rows={4} className="field mt-1.5 resize-y" value={input.features} onChange={(e) => update("features", e.target.value)} placeholder="Ex: resistente, moderna, prática, sem vazamentos..." maxLength={1200} /></label>
     </div>
-    <fieldset className="mt-6"><legend className="mb-2.5 text-sm font-medium">Estilo dos nomes</legend><div className="grid gap-2 sm:grid-cols-4">{TONES.map((tone) => <label key={tone.value} className={`cursor-pointer rounded-xl border px-3.5 py-3 ${input.tone === tone.value ? "border-brand-500 bg-brand-50" : "border-line-strong"}`}><input type="radio" className="sr-only" checked={input.tone === tone.value} onChange={() => update("tone", tone.value)} /><span className="block text-sm font-semibold">{tone.label}</span><span className="text-xs text-muted">{tone.hint}</span></label>)}</div></fieldset>
-    {error ? <p className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
+    <fieldset className="mt-6"><legend className="mb-2.5 text-sm font-medium">Estilo dos nomes</legend><div className="grid gap-2 sm:grid-cols-4">{TONES.map((tone) => <label key={tone.value} className={`cursor-pointer rounded-xl border px-3.5 py-3 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${input.tone === tone.value ? "border-brand-500 bg-brand-50" : "border-line-strong"}`}><input type="radio" name="name-tone" value={tone.value} className="sr-only" checked={input.tone === tone.value} onChange={() => update("tone", tone.value)} /><span className="block text-sm font-semibold">{tone.label}</span><span className="text-xs text-muted">{tone.hint}</span></label>)}</div></fieldset>
+    {error ? <p id="name-tool-error" role="alert" className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
     <button type="submit" className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 font-semibold text-white hover:bg-brand-600">✨ Gerar nomes grátis</button><p className="mt-3 text-center text-xs text-muted">Sem cadastro e sem cartão de crédito.</p>
   </form>;
 }
