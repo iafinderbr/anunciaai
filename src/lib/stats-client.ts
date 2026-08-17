@@ -1,5 +1,4 @@
 export interface RecentGeneration {
-  id: number;
   channel: string;
   createdAt: string;
 }
