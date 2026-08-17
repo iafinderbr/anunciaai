@@ -47,15 +47,15 @@ export default function OpenGraphImage() {
 
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 940 }}>
           <div style={{ fontSize: 68, lineHeight: 1.04, fontWeight: 800, letterSpacing: "-0.05em" }}>
-            Transforme seu produto em um anúncio que vende.
+            Transforme informações do produto em um anúncio mais claro.
           </div>
           <div style={{ marginTop: 28, fontSize: 28, lineHeight: 1.35, color: "#666666" }}>
-            Títulos, descrições, benefícios e conteúdo para marketplaces e lojas virtuais em segundos.
+            Organize títulos, descrições, benefícios e conteúdo para revisar antes de publicar.
           </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 20 }}>
-          <div style={{ color: "#ff5c1a", fontWeight: 700 }}>Ferramenta gratuita de IA para lojistas</div>
+          <div style={{ color: "#ff5c1a", fontWeight: 700 }}>Ferramentas gratuitas para quem vende online</div>
           <div style={{ color: "#777777" }}>anunciaai.vercel.app</div>
         </div>
       </div>
