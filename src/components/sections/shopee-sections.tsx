@@ -67,6 +67,16 @@ export function ShopeeAnatomy() {
           <p className="mt-3 text-[15px] text-muted">
             Um anúncio claro combina título, fotos, atributos e descrição coerentes entre si. Quanto mais precisos forem os dados, mais fácil fica para o comprador entender qual versão do produto está sendo oferecida.
           </p>
+          <p className="mt-4 text-sm">
+            <a
+              href="https://ads.shopee.com.br/learn/faq/323/1462"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700"
+            >
+              Conferir as orientações oficiais da Shopee para a página do produto ↗
+            </a>
+          </p>
 
           <ol className="mt-6 space-y-4">
             {SHOPEE_ANATOMY.map((item, index) => (
