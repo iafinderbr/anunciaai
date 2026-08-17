@@ -16,7 +16,7 @@ concurrency:
 jobs:
   quality:
     name: Segurança, Produto, SEO, Acessibilidade, Lint, TypeScript e Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
