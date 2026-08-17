@@ -15,6 +15,10 @@ const GUIDES_HUB_FILE = path.join(APP_DIR, "guias", "page.tsx");
 const TOOLS_FILE = path.join(ROOT, "src", "components", "sections", "tools.tsx");
 const FOOTER_FILE = path.join(ROOT, "src", "components", "sections", "pricing.tsx");
 
+// Rotas de conta/login são úteis para pessoas, mas não devem disputar espaço no
+// índice de busca nem entrar no sitemap editorial.
+const NON_INDEXABLE_ROUTES = new Set(["/entrar"]);
+
 const failures = [];
 const warnings = [];
 const metadataTitles = new Map();
@@ -65,6 +69,15 @@ const publicPages = allFiles
 
 const routeToFile = new Map(publicPages.map((file) => [routeFromPage(file), file]));
 const publicRoutes = new Set(routeToFile.keys());
+const indexableRoutes = new Set([...publicRoutes].filter((route) => !NON_INDEXABLE_ROUTES.has(route)));
+
+for (const route of NON_INDEXABLE_ROUTES) {
+  if (!publicRoutes.has(route)) continue;
+  const source = read(routeToFile.get(route));
+  if (!/robots\s*:\s*\{[^}]*index\s*:\s*false[^}]*follow\s*:\s*false/s.test(source)) {
+    fail(`Rota utilitária precisa declarar robots index:false/follow:false: ${route}`);
+  }
+}
 
 const sitemapSource = read(SITEMAP_FILE);
 const pathsMatch = sitemapSource.match(/const paths = \[(.*?)\];/s);
@@ -78,15 +91,21 @@ if (!pathsMatch) {
     fail("O sitemap contém uma ou mais rotas duplicadas.");
   }
 
-  for (const route of publicRoutes) {
+  for (const route of indexableRoutes) {
     if (!sitemapRoutes.has(route)) {
-      fail(`Página pública fora do sitemap: ${route}`);
+      fail(`Página indexável fora do sitemap: ${route}`);
     }
   }
 
   for (const route of sitemapRoutes) {
-    if (!publicRoutes.has(route)) {
-      fail(`Rota do sitemap sem page.tsx correspondente: ${route}`);
+    if (!indexableRoutes.has(route)) {
+      fail(`Rota do sitemap não é uma página indexável válida: ${route}`);
+    }
+  }
+
+  for (const route of NON_INDEXABLE_ROUTES) {
+    if (sitemapRoutes.has(route)) {
+      fail(`Rota utilitária/noindex não deve estar no sitemap: ${route}`);
     }
   }
 }
@@ -120,8 +139,11 @@ for (const [route, file] of routeToFile) {
     fail(`Página sem canonical explícita: ${route}`);
   }
 
-  if (/robots\s*:\s*\{[^}]*index\s*:\s*false/s.test(source)) {
-    fail(`Página pública marcada como noindex: ${route}`);
+  const hasNoIndex = /robots\s*:\s*\{[^}]*index\s*:\s*false/s.test(source);
+  if (NON_INDEXABLE_ROUTES.has(route)) {
+    if (!hasNoIndex) fail(`Rota utilitária sem noindex: ${route}`);
+  } else if (hasNoIndex) {
+    fail(`Página indexável marcada como noindex: ${route}`);
   }
 
   const declaredPath = source.match(/const\s+PATH\s*=\s*["']([^"']+)["']/)?.[1];
@@ -131,7 +153,7 @@ for (const [route, file] of routeToFile) {
 
   const metadataTitle = extractConstString(source, "TITLE");
   if (metadataTitle) {
-    if (metadataTitle.length < 30) {
+    if (metadataTitle.length < 30 && !NON_INDEXABLE_ROUTES.has(route)) {
       warn(`Title possivelmente curto em ${route}: ${metadataTitle.length} caracteres.`);
     }
     if (metadataTitle.length > 60) {
@@ -145,7 +167,7 @@ for (const [route, file] of routeToFile) {
 
   const metadataDescription = extractConstString(source, "DESCRIPTION");
   if (metadataDescription) {
-    if (metadataDescription.length < 90) {
+    if (metadataDescription.length < 90 && !NON_INDEXABLE_ROUTES.has(route)) {
       warn(`Description possivelmente curta em ${route}: ${metadataDescription.length} caracteres.`);
     }
     if (metadataDescription.length > 160) {
@@ -169,7 +191,7 @@ const guidesHubSource = read(GUIDES_HUB_FILE);
 const toolsSource = read(TOOLS_FILE);
 const footerSource = read(FOOTER_FILE);
 
-const guideRoutes = [...publicRoutes].filter(
+const guideRoutes = [...indexableRoutes].filter(
   (route) => route.startsWith("/como-") || route === "/seo-para-pagina-de-produto",
 );
 for (const route of guideRoutes) {
@@ -225,7 +247,7 @@ for (const route of guideRoutes) {
   }
 }
 
-const generatorRoutes = [...publicRoutes].filter((route) => route.startsWith("/gerador-"));
+const generatorRoutes = [...indexableRoutes].filter((route) => route.startsWith("/gerador-"));
 for (const route of generatorRoutes) {
   if (!sourceReferencesRoute(toolsSource, route)) {
     fail(`Gerador sem link na seção principal de ferramentas: ${route}`);
@@ -315,5 +337,5 @@ if (failures.length) {
 }
 
 console.log(
-  `SEO OK: ${publicRoutes.size} páginas públicas, ${guideRoutes.length} guias e ${generatorRoutes.length} geradores com descoberta, datas editoriais e conversão interna validadas.`,
+  `SEO OK: ${indexableRoutes.size} páginas indexáveis, ${NON_INDEXABLE_ROUTES.size} rota(s) utilitária(s), ${guideRoutes.length} guias e ${generatorRoutes.length} geradores validados.`,
 );
