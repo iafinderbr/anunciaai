@@ -155,12 +155,43 @@ function checkFormControls(html, route) {
   }
 }
 
+function checkLandmarksAndSkipLink(html, route, ids) {
+  const mainCount = (html.match(/<main\b/gi) ?? []).length;
+  if (mainCount !== 1) {
+    fail(`${route}: esperado exatamente um elemento main, encontrado ${mainCount}.`);
+  }
+
+  let skipLinkFound = false;
+  for (const match of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    const text = visibleText(match[2]);
+    if (text !== "Pular para o conteúdo principal") continue;
+
+    skipLinkFound = true;
+    const openingTag = `<a${match[1]}>`;
+    const href = attribute(openingTag, "href");
+    if (!href?.startsWith("#") || href.length < 2) {
+      fail(`${route}: link de salto não aponta para um fragmento local válido.`);
+      continue;
+    }
+
+    const target = href.slice(1);
+    if (!ids.has(target)) {
+      fail(`${route}: link de salto aponta para id inexistente: ${target}.`);
+    }
+  }
+
+  if (!skipLinkFound) {
+    fail(`${route}: link "Pular para o conteúdo principal" não encontrado.`);
+  }
+}
+
 function checkDocument(route, html) {
   const { ids, idsToText } = collectIds(html, route);
   checkAriaReferences(html, route, ids);
   checkImages(html, route);
   checkInteractiveNames(html, route, idsToText);
   checkFormControls(html, route);
+  checkLandmarksAndSkipLink(html, route, ids);
 }
 
 async function fetchText(pathname) {
@@ -209,7 +240,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Acessibilidade OK: ids, referências ARIA, alt de imagens, nomes de links/botões e rótulos de formulários validados.");
+  console.log("Acessibilidade OK: landmarks, link de salto, ids, referências ARIA, alt, nomes interativos e rótulos de formulários validados.");
 }
 
 main().catch((error) => {
