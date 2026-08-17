@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 const PUBLISHED_AT = "2026-08-16";
 const TITLE = "SEO para Página de Produto: Checklist para Loja Virtual";
 const DESCRIPTION =
-  "Aprenda SEO para página de produto com checklist de título, descrição, imagens, dados estruturados Product, preço, disponibilidade e conteúdo útil para e-commerce.";
+  "Aprenda SEO para página de produto com checklist de título, descrição, imagens, dados estruturados Product, preço, disponibilidade e conteúdo útil.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
