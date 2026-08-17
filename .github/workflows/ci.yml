@@ -35,6 +35,9 @@ jobs:
       - name: Procurar segredos versionados
         run: npm run security:check
 
+      - name: Verificar dependências de produção
+        run: npm audit --omit=dev --audit-level=moderate
+
       - name: Verificar vulnerabilidades altas
         run: npm audit --audit-level=high
 
