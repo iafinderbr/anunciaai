@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
 import { auth } from "@/lib/auth";
 import { effectivePlan, PREMIUM_PLANNED_FEATURES, PRO_FEATURES, PRO_PRICE_LABEL } from "@/lib/plans";
-import { stripeBillingConfigured } from "@/lib/stripe";
+import { stripeBillingConfigured, stripePixConfigured } from "@/lib/stripe";
 import { SITE_URL } from "@/lib/site";
 
 const PATH = "/conta/plano";
@@ -35,11 +35,13 @@ export default async function AccountPlanPage({
   if (!session) redirect("/entrar");
 
   const query = await searchParams;
-  const currentPlan = effectivePlan(session.user.plan, session.user.subscriptionStatus);
+  const currentPlan = effectivePlan(session.user.plan, session.user.subscriptionStatus, session.user.proAccessUntil);
   const proActive = currentPlan === "pro";
   const hasStripeSubscription =
     session.user.subscriptionProvider === "stripe" && Boolean(session.user.externalSubscriptionId);
   const billingReady = stripeBillingConfigured();
+  const pixReady = stripePixConfigured();
+  const pixAccessUntil = session.user.proAccessUntil ? new Date(session.user.proAccessUntil).toISOString() : null;
 
   const modes = [
     {
@@ -52,8 +54,8 @@ export default async function AccountPlanPage({
     {
       name: "Pro",
       status: proActive ? "Ativo" : "Disponível",
-      price: `${PRO_PRICE_LABEL}/mês`,
-      description: "Para comparar mais versões do mesmo produto e acessar os recursos exclusivos Pro.",
+      price: PRO_PRICE_LABEL,
+      description: "Assinatura automática no cartão ou 30 dias de acesso por pagamento único via Pix.",
       features: PRO_FEATURES,
     },
     {
@@ -75,7 +77,12 @@ export default async function AccountPlanPage({
 
             {query.checkout === "success" ? (
               <div className="mt-6 border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm leading-6 text-emerald-800">
-                Pagamento concluído na Stripe. O Pro é liberado somente após a confirmação assinada do webhook; isso normalmente acontece em instantes.
+                Checkout concluído na Stripe. O Pro é liberado somente após a confirmação assinada do webhook; isso normalmente acontece em instantes.
+              </div>
+            ) : null}
+            {query.checkout === "pix-pending" ? (
+              <div className="mt-6 border border-brand-200 bg-brand-50 px-5 py-4 text-sm leading-6 text-brand-800">
+                Pix iniciado. Se você concluiu o pagamento no banco, aguarde a confirmação da Stripe. O acesso de 30 dias só é liberado depois do evento de pagamento confirmado.
               </div>
             ) : null}
             {query.checkout === "canceled" ? (
@@ -92,7 +99,7 @@ export default async function AccountPlanPage({
                     Sua conta está no modo {modeNames[currentPlan]}
                   </h1>
                   <p className="mt-3 max-w-3xl text-sm leading-7 text-muted">
-                    O modo Grátis continua disponível. O Pro custa {PRO_PRICE_LABEL}/mês e a cobrança acontece no Checkout hospedado pela Stripe. O Premium continua planejado.
+                    O modo Grátis continua disponível. O Pro custa {PRO_PRICE_LABEL}: no cartão, a cobrança é mensal e automática; no Pix, cada pagamento libera 30 dias sem renovação automática. O Premium continua planejado.
                   </p>
                 </div>
                 <span className={`w-fit border px-3 py-2 text-xs font-semibold ${proActive ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-line-strong bg-[#f7f7f4] text-muted"}`}>
@@ -122,6 +129,7 @@ export default async function AccountPlanPage({
                     </div>
 
                     <p className={`mt-6 text-xl font-semibold tracking-[-0.03em] ${isPro ? "text-white" : "text-ink"}`}>{mode.price}</p>
+                    {isPro ? <p className="mt-1 text-[11px] text-white/34">por mês no cartão · ou por 30 dias no Pix</p> : null}
                     <p className={`mt-4 min-h-16 text-sm leading-6 ${isPro ? "text-white/55" : "text-muted"}`}>{mode.description}</p>
 
                     <ul className={`mt-6 space-y-3 border-t pt-5 ${isPro ? "border-white/10" : "border-line"}`}>
@@ -144,8 +152,10 @@ export default async function AccountPlanPage({
                           active={proActive}
                           hasStripeSubscription={hasStripeSubscription}
                           billingReady={billingReady}
+                          pixReady={pixReady}
+                          pixAccessUntil={pixAccessUntil}
                         />
-                        <p className="mt-3 text-xs leading-5 text-white/36">Cartão e dados de pagamento ficam na Stripe. O AnunciaAI não recebe os dados do cartão.</p>
+                        <p className="mt-3 text-xs leading-5 text-white/36">Cartão e dados de pagamento ficam na Stripe. O AnunciaAI não recebe os dados do cartão nem credenciais bancárias do Pix.</p>
                       </div>
                     ) : null}
                   </article>
@@ -156,7 +166,7 @@ export default async function AccountPlanPage({
             <div className="mt-5 flex flex-col gap-4 border border-line bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
               <div>
                 <p className="text-sm font-semibold text-ink">Cobrança gerenciada pela Stripe.</p>
-                <p className="mt-1 text-xs leading-5 text-muted">Assinatura, atualização do pagamento e cancelamento ficam no ambiente seguro da Stripe. O Premium permanece apenas como planejamento.</p>
+                <p className="mt-1 text-xs leading-5 text-muted">Cartão usa assinatura recorrente. Pix usa pagamento único para 30 dias e não renova automaticamente. O Premium permanece apenas como planejamento.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {proActive ? <Link href="/conta/pro" className="bg-ink px-4 py-3 text-sm font-semibold text-white hover:bg-brand-600">Abrir Pro</Link> : null}
