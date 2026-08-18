@@ -81,7 +81,7 @@ export default function SobrePage() {
             <p className="mt-4 text-[15px] leading-7 text-muted">Os geradores atuais fazem parte do plano Grátis. O Pro também está disponível em acesso antecipado sem cobrança e já inclui um laboratório exclusivo para comparar três versões do mesmo produto. Não há checkout, cartão ou assinatura paga nesta fase. O preço comercial de referência futuro é {PRO_FUTURE_PRICE_LABEL}/mês e só será usado quando a cobrança real estiver implementada e testada. O Premium continua planejado.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link href="/#ferramenta" className="bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Usar o AnunciaAI grátis</Link>
-              <Link href="/conta/plano" className="bg-brand-500 px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Ver acesso Pro</Link>
+              <Link href="/entrar?callbackURL=/conta/plano" className="bg-brand-500 px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Ver acesso Pro</Link>
               <Link href="/guias" className="border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">Explorar os guias</Link>
             </div>
           </div>
