@@ -35,7 +35,7 @@ export function SavedProductControls({
   const { data: session, isPending } = authClient.useSession();
   const [items, setItems] = useState<SavedProductOption[]>([]);
   const [selectedId, setSelectedId] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -51,12 +51,24 @@ export function SavedProductControls({
   }, []);
 
   useEffect(() => {
-    if (session) void loadProducts();
-    if (!session) {
-      setItems([]);
-      setSelectedId("");
-    }
-  }, [loadProducts, session]);
+    if (!session) return;
+
+    let cancelled = false;
+    void fetch("/api/account/products", { cache: "no-store" })
+      .then(async (response) => {
+        const payload = (await response.json().catch(() => null)) as ProductsPayload | null;
+        if (!cancelled && response.ok && payload?.ok && Array.isArray(payload.items)) {
+          setItems(payload.items);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
 
   function applySelected() {
     const product = items.find((item) => item.id === selectedId);
