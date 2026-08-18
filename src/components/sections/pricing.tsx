@@ -222,11 +222,10 @@ export function SiteFooter() {
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Conta</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Acesso</p>
               <div className="mt-3 grid gap-2.5 text-muted">
-                <Link href="/entrar" className="transition-colors hover:text-brand-600">Entrar</Link>
-                <Link href="/conta" className="transition-colors hover:text-brand-600">Minha conta</Link>
-                <Link href="/conta/produtos" className="transition-colors hover:text-brand-600">Produtos salvos</Link>
+                <Link href="/entrar" className="transition-colors hover:text-brand-600">Entrar ou criar conta</Link>
+                <Link href="/ferramentas" className="transition-colors hover:text-brand-600">Central do AnunciaAI</Link>
               </div>
             </div>
             <div>
