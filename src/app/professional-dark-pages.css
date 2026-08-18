@@ -1,0 +1,118 @@
+/* Identificação estrutural das duas páginas públicas que não usam um id no main. */
+
+main#topo:has(> section#ferramenta) {
+  background: #0b0c0e;
+  color: #f3f3ef;
+}
+
+main#topo:has(> section#ferramenta) > section {
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] {
+  background: #101114 !important;
+}
+
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] .text-ink,
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] .text-ink-soft {
+  color: #f3f3ef !important;
+}
+
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] .text-muted {
+  color: #8e8f89 !important;
+}
+
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] .border-line,
+main#topo:has(> section#ferramenta) > section[aria-label="Resumo do produto"] .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramenta {
+  background: #121316 !important;
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child h2,
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child .text-ink,
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child .text-ink-soft {
+  color: #f3f3ef !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child .text-muted {
+  color: #8e8f89 !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child .border-line,
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:first-child .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramenta > .container-page > .grid > div:last-child {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 32px 90px -58px rgba(0, 0, 0, 0.95) !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas {
+  background: #0e0f12 !important;
+  color: #f3f3ef;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas h2,
+main#topo:has(> section#ferramenta) > section#ferramentas h3,
+main#topo:has(> section#ferramenta) > section#ferramentas .text-ink,
+main#topo:has(> section#ferramenta) > section#ferramentas .text-ink-soft {
+  color: #f3f3ef !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas .text-muted {
+  color: #8e8f89 !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas .border-line,
+main#topo:has(> section#ferramenta) > section#ferramentas .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas .bg-white {
+  background: #131418 !important;
+}
+
+main#topo:has(> section#ferramenta) > section#ferramentas a:hover {
+  background: #18191d !important;
+}
+
+main:has(> section#geradores) {
+  background: #0b0c0e !important;
+  color: #f3f3ef;
+}
+
+main:has(> section#geradores) > section#geradores {
+  background: #101114 !important;
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main:has(> section#geradores) > section#geradores h2,
+main:has(> section#geradores) > section#geradores h3,
+main:has(> section#geradores) > section#geradores .text-ink,
+main:has(> section#geradores) > section#geradores .text-ink-soft {
+  color: #f3f3ef !important;
+}
+
+main:has(> section#geradores) > section#geradores .text-muted {
+  color: #8e8f89 !important;
+}
+
+main:has(> section#geradores) > section#geradores .border-line,
+main:has(> section#geradores) > section#geradores .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main:has(> section#geradores) > section#geradores a[class*="bg-white"] {
+  background: #15161a !important;
+  border-color: rgba(255, 255, 255, 0.085) !important;
+}
+
+main:has(> section#geradores) > section#geradores a[class*="bg-white"]:hover {
+  background: #1a1b20 !important;
+  border-color: rgba(241, 102, 42, 0.42) !important;
+}
