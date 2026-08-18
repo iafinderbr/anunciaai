@@ -29,6 +29,8 @@ const planPage = read("src/app/conta/plano/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const siteHeader = read("src/components/site-header.tsx");
+const generatorTool = read("src/components/generator/generator-tool.tsx");
+const productControls = read("src/components/generator/saved-product-controls.tsx");
 const resultPanel = read("src/components/generator/result-panel.tsx");
 const privacyPage = read("src/app/privacidade/page.tsx");
 const plans = read("src/lib/plans.ts");
@@ -152,6 +154,11 @@ for (const required of [
   requireText(productsApi, required, `API de produtos salvos perdeu proteção: ${required}.`);
 }
 
+requireText(generatorTool, "SavedProductControls", "Geradores perderam o seletor de produtos salvos.");
+requireText(productControls, 'fetch("/api/account/products"', "Controles de produto não carregam a biblioteca protegida.");
+requireText(productControls, "Usar produto", "Biblioteca não permite reutilizar um produto no formulário.");
+requireText(productControls, "Salvar produto atual", "Formulário não permite salvar o produto atual.");
+requireText(productControls, "Nada é salvo automaticamente", "Controles de produto devem explicar que o salvamento é opt-in.");
 requireText(resultPanel, "Salvar no histórico", "Resultado perdeu o salvamento explícito no histórico.");
 requireText(resultPanel, "Salvar produto", "Resultado perdeu o salvamento explícito do produto.");
 requireText(resultPanel, "só são enviados ao servidor quando você usa um dos botões de salvar", "Interface deve deixar claro que os salvamentos são opt-in.");
@@ -173,4 +180,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, sessão protegida, histórico e produtos opt-in, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, sessão protegida, histórico e produtos opt-in, reutilização, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");
