@@ -14,13 +14,15 @@ export function ProBillingActions({
   const [pending, setPending] = useState<"checkout" | "portal" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function openStripe(path: "/api/stripe/checkout" | "/api/stripe/portal", kind: "checkout" | "portal") {
+  async function openStripe(kind: "checkout" | "portal") {
     if (pending || !billingReady) return;
     setPending(kind);
     setError(null);
 
     try {
-      const response = await fetch(path, { method: "POST" });
+      const response = kind === "checkout"
+        ? await fetch("/api/stripe/checkout", { method: "POST" })
+        : await fetch("/api/stripe/portal", { method: "POST" });
       const payload = (await response.json()) as { url?: string; error?: string };
 
       if (response.ok && payload.url) {
@@ -68,7 +70,7 @@ export function ProBillingActions({
       {shouldManage ? (
         <button
           type="button"
-          onClick={() => openStripe("/api/stripe/portal", "portal")}
+          onClick={() => openStripe("portal")}
           disabled={Boolean(pending)}
           className="inline-flex min-h-12 w-full items-center justify-center bg-white px-5 text-sm font-semibold text-[#111216] transition-colors hover:bg-brand-500 hover:text-white disabled:cursor-wait disabled:opacity-60"
         >
@@ -77,7 +79,7 @@ export function ProBillingActions({
       ) : (
         <button
           type="button"
-          onClick={() => openStripe("/api/stripe/checkout", "checkout")}
+          onClick={() => openStripe("checkout")}
           disabled={Boolean(pending)}
           className="inline-flex min-h-12 w-full items-center justify-center bg-brand-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:cursor-wait disabled:opacity-60"
         >
