@@ -20,10 +20,6 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
   const dockRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setOpenId(null);
-  }, [activePath]);
-
-  useEffect(() => {
     if (!openId) return;
 
     function closeFromOutside(event: PointerEvent) {
