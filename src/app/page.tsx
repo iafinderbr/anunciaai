@@ -2,21 +2,33 @@ import Link from "next/link";
 import { GeneratorTool } from "@/components/generator/generator-tool";
 import { LiveStats } from "@/components/live-stats";
 import { SiteHeader } from "@/components/site-header";
-import { FeaturesSection, HowItWorksSection, TrustSection } from "@/components/sections/marketing";
+import { HowItWorksSection } from "@/components/sections/marketing";
 import { FaqSection, PricingSection, SiteFooter } from "@/components/sections/pricing";
-import { RecentStrip } from "@/components/sections/recent-strip";
-import { ToolsSection } from "@/components/sections/tools";
-import { GuidesHomeSection } from "@/components/sections/guides-home";
 import { SITE_URL } from "@/lib/site";
 
-const channels = [
-  { label: "Mercado Livre", href: "/gerador-de-anuncios-mercado-livre" },
-  { label: "Shopee", href: "/gerador-de-anuncios-shopee" },
-  { label: "OLX", href: "/gerador-de-anuncios-olx" },
-  { label: "Facebook Marketplace", href: "/gerador-de-anuncios-facebook-marketplace" },
-  { label: "Loja virtual", href: "/gerador-de-anuncios-para-loja-virtual" },
-  { label: "Instagram", href: "/gerador-de-legendas-para-instagram" },
-];
+const workspaceCards = [
+  {
+    href: "/ferramentas",
+    eyebrow: "Criar",
+    title: "Central de ferramentas",
+    text: "Escolha o gerador certo para Mercado Livre, Shopee, OLX, Instagram, loja virtual e outras tarefas.",
+    action: "Ver ferramentas",
+  },
+  {
+    href: "/entrar",
+    eyebrow: "Organizar",
+    title: "Sua área no AnunciaAI",
+    text: "Entre com Google para acessar histórico, produtos salvos e reutilizar informações sem preencher tudo novamente.",
+    action: "Abrir minha conta",
+  },
+  {
+    href: "/guias",
+    eyebrow: "Aprender",
+    title: "Guias práticos",
+    text: "Consulte conteúdos por canal e objetivo quando precisar revisar uma publicação ou melhorar a estrutura do anúncio.",
+    action: "Explorar guias",
+  },
+] as const;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -66,96 +78,169 @@ export default function HomePage() {
       <SiteHeader />
 
       <main id="topo">
-        <section aria-labelledby="hero-titulo" className="relative overflow-hidden">
+        <section aria-labelledby="hero-titulo" className="relative overflow-hidden border-b border-line bg-white">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(255,92,26,0.10),transparent_70%)]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[560px] bg-[radial-gradient(55%_65%_at_74%_10%,rgba(255,92,26,0.11),transparent_72%)]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,#e8e9ee_1px,transparent_1px),linear-gradient(to_bottom,#e8e9ee_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_72%)]"
           />
 
-          <div className="container-page relative pb-4 pt-14 sm:pt-20">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-3 py-1.5 text-xs font-medium text-ink-soft shadow-card">
+          <div className="container-page relative grid gap-10 pb-12 pt-14 lg:grid-cols-[minmax(0,1.06fr)_minmax(360px,0.74fr)] lg:items-center lg:gap-16 lg:pb-16 lg:pt-20">
+            <div className="max-w-3xl">
+              <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-card backdrop-blur">
                 <span className="size-1.5 rounded-full bg-brand-500" />
-                Versão gratuita disponível sem cadastro
+                Anúncios de produto, sem complicação
               </p>
 
               <h1
                 id="hero-titulo"
-                className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]"
+                className="mt-6 max-w-3xl text-[2.35rem] font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-5xl lg:text-[3.75rem]"
               >
-                Transforme informações do produto em um anúncio mais claro.
+                Crie anúncios de produto com mais clareza e menos trabalho.
               </h1>
 
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                O AnunciaAI organiza os dados que você informa em títulos, descrições, benefícios, ficha técnica,
-                anúncio e sugestões de SEO para revisar antes de publicar.
+              <p className="mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
+                Informe o produto uma vez. O AnunciaAI organiza título, descrição, benefícios, ficha técnica e SEO em uma primeira versão pronta para revisar.
               </p>
 
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#ferramenta"
-                  className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto"
+                  className="inline-flex min-h-12 items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-lift"
                 >
-                  Gerar meu anúncio grátis
+                  Criar anúncio grátis
                 </a>
-                <a
-                  href="#como-funciona"
-                  className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto"
+                <Link
+                  href="/ferramentas"
+                  className="inline-flex min-h-12 items-center justify-center rounded-xl border border-line-strong bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                 >
-                  Ver como funciona
-                </a>
+                  Ver todas as ferramentas
+                </Link>
               </div>
 
-              <p className="mt-3 text-sm text-muted">Grátis para começar • sem cadastro • sem cartão de crédito</p>
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-muted sm:text-sm">
+                <span className="inline-flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-500" />Grátis para começar</span>
+                <span>Sem cartão</span>
+                <span>Conta Google opcional</span>
+              </div>
 
-              <div className="mt-6">
+              <div className="mt-7 max-w-xl">
                 <LiveStats />
               </div>
-
-              <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                {channels.map((channel) => (
-                  <li key={channel.href}>
-                    <Link href={channel.href} className="transition-colors hover:text-brand-600">
-                      {channel.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
             </div>
-          </div>
 
-          <div id="ferramenta" className="container-page scroll-mt-20 pb-16 pt-10 sm:pb-20">
+            <aside className="relative mx-auto w-full max-w-lg lg:max-w-none" aria-label="Visão geral do fluxo do AnunciaAI">
+              <div className="absolute -inset-4 rounded-[2rem] bg-brand-50/60 blur-2xl" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-3xl border border-line bg-white shadow-[0_30px_80px_-46px_rgba(16,19,26,0.5)]">
+                <div className="flex items-center justify-between border-b border-line bg-canvas/80 px-5 py-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Seu fluxo</p>
+                    <p className="mt-0.5 text-sm font-semibold text-ink">Do produto ao conteúdo</p>
+                  </div>
+                  <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-[10px] font-semibold text-muted">AnunciaAI</span>
+                </div>
+
+                <div className="space-y-2 p-4 sm:p-5">
+                  {[
+                    ["01", "Informe o produto", "Nome, categoria e características reais."],
+                    ["02", "Escolha o canal", "Marketplace, loja virtual ou rede social."],
+                    ["03", "Gere a primeira versão", "Conteúdo organizado em blocos claros."],
+                    ["04", "Salve e reutilize", "Histórico e produtos ficam na sua conta quando você quiser."],
+                  ].map(([number, title, text]) => (
+                    <div key={number} className="flex gap-3 rounded-2xl border border-line bg-canvas/65 p-3.5">
+                      <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white text-[11px] font-bold text-ink shadow-card">{number}</span>
+                      <div>
+                        <p className="text-sm font-semibold text-ink">{title}</p>
+                        <p className="mt-0.5 text-xs leading-5 text-muted">{text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t border-line px-5 py-4">
+                  <p className="text-xs leading-5 text-muted">Você mantém o controle: revise especificações, preço e regras do canal antes de publicar.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="ferramenta" aria-labelledby="ferramenta-principal-titulo" className="scroll-mt-20 border-b border-line bg-canvas">
+          <div className="container-page py-12 sm:py-16 lg:py-20">
+            <div className="mx-auto mb-7 max-w-3xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Ferramenta principal</p>
+              <h2 id="ferramenta-principal-titulo" className="mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+                Comece pelo seu produto
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted sm:text-[15px]">
+                Preencha apenas o necessário. Depois você pode salvar o produto, reutilizar os dados e escolher geradores específicos.
+              </p>
+            </div>
             <div className="mx-auto max-w-3xl">
               <GeneratorTool />
             </div>
           </div>
         </section>
 
-        <RecentStrip />
-        <ToolsSection />
-        <GuidesHomeSection />
-        <TrustSection />
+        <section aria-labelledby="workspace-titulo" className="bg-white">
+          <div className="container-page py-14 sm:py-20">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Seu espaço de trabalho</p>
+                <h2 id="workspace-titulo" className="mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+                  O essencial fica organizado. O restante aparece quando você precisa.
+                </h2>
+                <p className="mt-3 text-[15px] leading-7 text-muted">
+                  Em vez de espalhar dezenas de links pela página, o AnunciaAI concentra criação, conta e conteúdo em áreas próprias.
+                </p>
+              </div>
+              <Link href="/ferramentas" className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-800">
+                Abrir central completa <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+
+            <div className="mt-8 grid gap-4 lg:grid-cols-3">
+              {workspaceCards.map((card) => (
+                <Link
+                  key={card.href}
+                  href={card.href}
+                  className="group flex min-h-56 flex-col rounded-2xl border border-line bg-canvas/65 p-5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-white hover:shadow-lift sm:p-6"
+                >
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-600">{card.eyebrow}</span>
+                  <h3 className="mt-3 text-lg font-semibold text-ink group-hover:text-brand-700">{card.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-muted">{card.text}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink-soft group-hover:text-brand-700">
+                    {card.action}<span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <HowItWorksSection />
-        <FeaturesSection />
         <PricingSection />
         <FaqSection />
 
         <section aria-labelledby="cta-final" className="border-t border-line bg-white">
           <div className="container-page py-14 sm:py-20">
-            <div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12">
-              <h2 id="cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Prepare a primeira versão do seu próximo anúncio
+            <div className="overflow-hidden rounded-3xl bg-ink px-6 py-11 text-center shadow-lift sm:px-12 sm:py-14">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Pronto para começar?</p>
+              <h2 id="cta-final" className="mx-auto mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                Crie a primeira versão do seu próximo anúncio em poucos passos.
               </h2>
-              <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">
-                Informe o produto, escolha o canal e receba blocos de conteúdo para conferir, ajustar e usar onde fizer sentido.
+              <p className="mx-auto mt-3 max-w-xl text-[15px] leading-7 text-white/65">
+                Sem cartão para começar. Use a conta apenas quando quiser guardar histórico e produtos.
               </p>
               <a
                 href="#ferramenta"
-                className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
+                className="mt-7 inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
               >
-                Gerar meu anúncio grátis
+                Criar anúncio grátis
               </a>
-              <p className="mt-3 text-sm text-white/60">Sem cadastro para começar.</p>
             </div>
           </div>
         </section>
