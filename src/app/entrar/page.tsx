@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { FacebookSignInButton } from "@/components/auth/facebook-sign-in-button";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/sections/pricing";
@@ -10,7 +11,7 @@ import { SITE_URL } from "@/lib/site";
 
 const PATH = "/entrar";
 const TITLE = "Entrar na sua conta";
-const DESCRIPTION = "Entre no AnunciaAI com Google para liberar os geradores gratuitos, histórico e produtos salvos.";
+const DESCRIPTION = "Entre no AnunciaAI para liberar os geradores gratuitos, histórico e produtos salvos.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -34,9 +35,22 @@ const accountBenefits = [
   },
 ] as const;
 
-export default async function SignInPage() {
+function safeCallbackURL(value?: string) {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/conta";
+  return value;
+}
+
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ voltar?: string }>;
+}) {
   const session = await auth.api.getSession({ headers: await headers() });
-  if (session) redirect("/conta");
+  const { voltar } = await searchParams;
+  const callbackURL = safeCallbackURL(voltar);
+  const facebookEnabled = Boolean(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET);
+
+  if (session) redirect(callbackURL);
 
   return (
     <>
@@ -53,7 +67,7 @@ export default async function SignInPage() {
                 Entre uma vez e use tudo do Grátis
               </h1>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted sm:text-[15px]">
-                Sem criar outra senha, sem formulário longo e sem cartão. Sua conta Google libera o workspace gratuito do AnunciaAI.
+                Sem formulário longo e sem cartão. Use uma das formas de acesso disponíveis e volte direto para o seu workspace.
               </p>
             </div>
 
@@ -68,23 +82,26 @@ export default async function SignInPage() {
                 </div>
 
                 <div className="mt-8 max-w-lg">
-                  <p className="text-sm font-semibold text-ink">Continuar com sua Conta Google</p>
+                  <p className="text-sm font-semibold text-ink">Continuar para sua conta</p>
                   <p className="mt-1.5 text-sm leading-6 text-muted">
-                    É o único passo necessário para identificar sua conta e manter histórico e produtos salvos ligados ao mesmo acesso.
+                    {facebookEnabled
+                      ? "Escolha Google ou Facebook. Os dois acessos liberam o mesmo plano Grátis e a mesma área de conta."
+                      : "O Google é o acesso disponível agora. Outras opções sociais só aparecem depois de configuradas e testadas de verdade."}
                   </p>
 
-                  <div className="mt-5">
-                    <GoogleSignInButton />
+                  <div className="mt-5 grid gap-3">
+                    <GoogleSignInButton callbackURL={callbackURL} />
+                    {facebookEnabled ? <FacebookSignInButton callbackURL={callbackURL} /> : null}
                   </div>
 
                   <div className="mt-4 grid gap-2.5 text-xs text-muted sm:grid-cols-3">
                     <span className="rounded-lg border border-line bg-canvas/65 px-3 py-2 text-center font-medium">R$ 0</span>
                     <span className="rounded-lg border border-line bg-canvas/65 px-3 py-2 text-center font-medium">Sem cartão</span>
-                    <span className="rounded-lg border border-line bg-canvas/65 px-3 py-2 text-center font-medium">Sem nova senha</span>
+                    <span className="rounded-lg border border-line bg-canvas/65 px-3 py-2 text-center font-medium">Acesso social</span>
                   </div>
 
                   <p className="mt-4 text-xs leading-5 text-muted">
-                    O AnunciaAI não recebe sua senha do Google. Entrar não inicia assinatura nem cobrança.
+                    O AnunciaAI não recebe a senha da sua conta social. Entrar não inicia assinatura nem cobrança.
                   </p>
                 </div>
 
