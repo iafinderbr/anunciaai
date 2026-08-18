@@ -1,16 +1,16 @@
 const trustCards = [
   {
-    icon: "⏱️",
+    icon: "01",
     title: "Economize etapas",
     text: "Informe o produto uma vez e organize vários blocos de conteúdo na mesma tela.",
   },
   {
-    icon: "🛒",
+    icon: "02",
     title: "Adapte para vários canais",
     text: "Use estruturas diferentes como ponto de partida para marketplaces, loja virtual e redes sociais.",
   },
   {
-    icon: "🎁",
+    icon: "03",
     title: "Comece grátis",
     text: "Teste a ferramenta sem precisar cadastrar cartão.",
   },
@@ -29,7 +29,7 @@ export function TrustSection() {
       <ul className="mt-10 grid gap-4 md:grid-cols-3">
         {trustCards.map((card) => (
           <li key={card.title} className="rounded-2xl border border-line bg-white p-6 shadow-card">
-            <span aria-hidden="true" className="grid size-10 place-items-center rounded-xl bg-brand-50 text-lg">
+            <span aria-hidden="true" className="grid size-9 place-items-center rounded-xl border border-line-strong bg-canvas text-[11px] font-bold text-ink-soft">
               {card.icon}
             </span>
             <h3 className="mt-4 text-base font-semibold">{card.title}</h3>
@@ -58,29 +58,31 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="como-funciona" aria-labelledby="como-funciona-titulo" className="border-y border-line bg-white">
+    <section id="como-funciona" aria-labelledby="como-funciona-titulo" className="border-y border-line bg-canvas">
       <div className="container-page py-14 sm:py-20">
-        <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Como funciona</p>
-          <h2 id="como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Três passos para organizar a primeira versão
-          </h2>
-          <p className="mt-3 text-[15px] text-muted">
-            Você informa, gera e revisa sem precisar montar cada bloco do zero.
-          </p>
-        </div>
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Como funciona</p>
+            <h2 id="como-funciona-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+              Um fluxo simples do começo ao fim
+            </h2>
+            <p className="mt-3 text-[15px] leading-7 text-muted">
+              Sem etapas escondidas: você informa, gera e decide o que vale usar.
+            </p>
+          </div>
 
-        <ol className="mt-10 grid gap-4 md:grid-cols-3">
-          {steps.map((step, index) => (
-            <li key={step.title} className="relative rounded-2xl border border-line bg-canvas p-6">
-              <span className="grid size-9 place-items-center rounded-xl bg-ink text-sm font-semibold text-white">
-                {index + 1}
-              </span>
-              <h3 className="mt-4 text-base font-semibold">{step.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.text}</p>
-            </li>
-          ))}
-        </ol>
+          <ol className="divide-y divide-line border-y border-line">
+            {steps.map((step, index) => (
+              <li key={step.title} className="grid gap-3 py-5 sm:grid-cols-[56px_1fr] sm:gap-5 sm:py-6">
+                <span className="text-sm font-semibold tabular-nums text-brand-600">0{index + 1}</span>
+                <div>
+                  <h3 className="text-base font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-1.5 max-w-2xl text-sm leading-6 text-muted">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );
@@ -117,7 +119,7 @@ export function FeaturesSection() {
   return (
     <section id="recursos" aria-labelledby="recursos-titulo" className="container-page py-14 sm:py-20">
       <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Recursos</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Recursos</p>
         <h2 id="recursos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
           Vários blocos organizados a partir do mesmo produto
         </h2>
