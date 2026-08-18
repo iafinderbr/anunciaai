@@ -19,6 +19,8 @@ function requireText(source, text, message) {
 const sitemap = read("src/app/sitemap.ts");
 const globals = read("src/app/globals.css");
 const guideHub = read("src/app/guias/page.tsx");
+const header = read("src/components/site-header.tsx");
+const toolsHub = read("src/app/ferramentas/page.tsx");
 
 const publicPaths = [...sitemap.matchAll(/^\s*"(\/[^\"]*)",?\s*$/gm)].map((match) => match[1]);
 const generatorPaths = publicPaths.filter((route) => route.startsWith("/gerador-"));
@@ -35,33 +37,28 @@ if (guidePaths.length !== 27) {
 }
 
 for (const route of generatorPaths) {
-  const file = routeFile(route);
-  const source = read(file);
-
-  requireText(source, '<main id="topo">', `${route} precisa manter o main#topo usado pelo acabamento visual.`);
+  const source = read(routeFile(route));
+  requireText(source, '<main id="topo">', `${route} precisa manter o main#topo usado pelo layout de aquisição.`);
   requireText(source, 'id="ferramenta"', `${route} precisa manter a âncora #ferramenta dentro da landing.`);
   requireText(source, "<SiteHeader", `${route} perdeu o cabeçalho compartilhado.`);
   requireText(source, "<SiteFooter", `${route} perdeu o rodapé compartilhado.`);
 }
 
 for (const route of guidePaths) {
-  const file = routeFile(route);
-  const source = read(file);
-
+  const source = read(routeFile(route));
   requireText(source, '<main id="ferramenta">', `${route} precisa manter o main#ferramenta usado pelo layout editorial.`);
   requireText(source, "<article>", `${route} precisa manter a estrutura semântica de artigo.`);
   requireText(source, "<SiteHeader", `${route} perdeu o cabeçalho compartilhado.`);
   requireText(source, "<SiteFooter", `${route} perdeu o rodapé compartilhado.`);
 }
 
-requireText(guideHub, 'id="guias-titulo"', "/guias perdeu o identificador principal usado pelo acabamento visual.");
-requireText(
-  globals,
-  "main#topo:has(> section:first-child #ferramenta)",
-  "CSS perdeu o escopo das landing pages dos geradores.",
-);
+requireText(guideHub, 'id="guias-titulo"', "/guias perdeu o identificador principal usado pelo acabamento editorial.");
+requireText(globals, "main#topo > section:first-child:has(#ferramenta)", "CSS perdeu o escopo profissional das landing pages dos geradores.");
 requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial dos guias.");
 requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo visual do hub de guias.");
+requireText(globals, "--color-canvas: #f7f7f5", "O sistema visual perdeu a paleta neutra definida para o produto.");
+requireText(header, 'id="inicio-conteudo"', "O cabeçalho perdeu o alvo acessível do skip link.");
+requireText(toolsHub, 'id="geradores"', "/ferramentas perdeu a biblioteca de geradores.");
 
 if (failures.length) {
   console.error("\nFalhas na auditoria de UI pública:");
@@ -70,5 +67,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landing pages de geradores, ${guidePaths.length} guias e o hub /guias mantêm a estrutura visual compartilhada.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, /guias e /ferramentas preservam o novo sistema visual compartilhado.`,
 );
