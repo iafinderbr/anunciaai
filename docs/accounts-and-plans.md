@@ -171,6 +171,10 @@ O contador público de gerações continua separado e recebe somente dados míni
 12. Customer Portal: **implementado**.
 13. Produção real: **depende de credenciais/Price ID live e validação final do fluxo em ambiente de produção**.
 
+## Validação sandbox
+
+Antes do merge para `main`, a branch V8 deve ser reimplantada como **Preview** com as variáveis Stripe de teste configuradas somente nesse ambiente. O webhook sandbox deve apontar para o domínio desse Preview durante os testes de checkout, ativação e cancelamento.
+
 ## Regras de CI
 
 - `/entrar`, `/conta`, `/conta/historico`, `/conta/produtos`, `/conta/plano` e `/conta/pro` devem permanecer `noindex`.
