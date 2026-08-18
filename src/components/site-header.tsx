@@ -22,9 +22,9 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
   const accountHref = session ? "/conta" : "/entrar";
   const accountLabel = session ? "Minha conta" : "Entrar";
-  const historyHref = session ? "/conta/historico" : "/entrar";
-  const productsHref = session ? "/conta/produtos" : "/entrar";
-  const modesHref = session ? "/conta/plano" : "/entrar?callbackURL=/conta/plano";
+  const historyHref = session ? "/conta/historico" : "/entrar?voltar=/conta/historico";
+  const productsHref = session ? "/conta/produtos" : "/entrar?voltar=/conta/produtos";
+  const modesHref = session ? "/conta/plano" : "/entrar?voltar=/conta/plano";
   const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
   const navItem = "group relative inline-flex min-h-11 items-center px-1 text-[13px] font-medium text-white/58 transition-colors hover:text-white";
 
