@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 /**
- * Mantido como export para preservar compatibilidade com a Home, mas os modos
- * comerciais agora vivem exclusivamente dentro da conta autenticada.
+ * Mantido como export para preservar compatibilidade. Os modos comerciais
+ * vivem exclusivamente dentro da conta autenticada.
  */
 export function PricingSection() {
   return null;
@@ -11,48 +11,44 @@ export function PricingSection() {
 const faqs = [
   {
     question: "Preciso pagar para usar?",
-    answer: "Não para começar. O modo Grátis continua disponível depois do login e já libera os geradores atuais. Outros modos ficam disponíveis dentro da área da conta.",
+    answer: "Não para começar. O modo Grátis libera os geradores atuais depois do login e não exige cartão de crédito.",
   },
   {
-    question: "Existe um modo Pro?",
-    answer: "Sim. O Pro existe como modo adicional para contas autenticadas e possui recursos exclusivos. Detalhes de contratação e gerenciamento ficam dentro da conta, não na página principal.",
+    question: "Quais canais são atendidos?",
+    answer: "Há fluxos para Mercado Livre, Shopee, OLX, Facebook Marketplace, Instagram e loja virtual, além de geradores focados em títulos, descrições e outras partes do conteúdo.",
   },
   {
-    question: "E o Premium?",
-    answer: "O Premium continua planejado. Fluxos em lote, voz da marca e recursos avançados de catálogo ainda não são apresentados como disponíveis.",
+    question: "Meus dados ficam salvos automaticamente?",
+    answer: "Não. Histórico e produtos só recebem conteúdo quando você está conectado e escolhe explicitamente salvar.",
   },
   {
-    question: "O conteúdo serve para Mercado Livre e Shopee?",
-    answer: "Sim. Você escolhe o canal e recebe uma estrutura adaptada como primeira versão. Revise sempre os dados do produto e as regras atuais da plataforma antes de publicar.",
+    question: "O AnunciaAI publica o anúncio por mim?",
+    answer: "Não. A ferramenta organiza uma primeira versão para revisão. A conferência dos dados e a publicação final continuam sob seu controle.",
   },
-  {
-    question: "Meus dados de produto ficam salvos?",
-    answer: "Por padrão, não. Quando você está conectado, conteúdo ou dados do produto só são armazenados se você clicar explicitamente em salvar no histórico ou salvar produto.",
-  },
-];
+] as const;
 
 export function FaqSection() {
   return (
-    <section aria-labelledby="faq-titulo" className="border-b border-white/[0.08] bg-[#101114] text-white">
-      <div className="container-page py-20 sm:py-24 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-24">
+    <section aria-labelledby="faq-titulo" className="border-b border-white/[0.08] bg-[#0d0e11] text-white">
+      <div className="container-page py-12 sm:py-14">
+        <div className="grid gap-8 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-16">
           <div>
-            <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/32">
+            <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/28">
               <span className="h-5 w-[2px] bg-brand-500" />
               Dúvidas
             </div>
-            <h2 id="faq-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-white">Antes de começar.</h2>
-            <p className="mt-6 max-w-xs text-[15px] leading-7 text-white/42">Respostas diretas sobre acesso, conta e dados do AnunciaAI.</p>
+            <h2 id="faq-titulo" className="mt-4 text-2xl font-semibold tracking-[-0.045em] text-white">Antes de usar.</h2>
+            <p className="mt-3 text-xs leading-6 text-white/34">Só o essencial sobre acesso, canais e dados.</p>
           </div>
 
           <div className="border-y border-white/[0.09]">
             {faqs.map((faq, index) => (
-              <details key={faq.question} className={`group py-6 sm:py-7 ${index < faqs.length - 1 ? "border-b border-white/[0.09]" : ""}`}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-8 text-[16px] font-semibold tracking-[-0.02em] text-white/88 transition-colors hover:text-white">
+              <details key={faq.question} className={`group py-4 sm:py-5 ${index < faqs.length - 1 ? "border-b border-white/[0.09]" : ""}`}>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-8 text-sm font-semibold text-white/82 transition-colors hover:text-white">
                   {faq.question}
-                  <span aria-hidden="true" className="shrink-0 text-xl font-normal text-white/25 transition-all group-open:rotate-45 group-open:text-brand-300">+</span>
+                  <span aria-hidden="true" className="shrink-0 text-lg font-normal text-white/22 transition-all group-open:rotate-45 group-open:text-brand-300">+</span>
                 </summary>
-                <p className="mt-5 max-w-3xl pr-10 text-[15px] leading-7 text-white/44">{faq.answer}</p>
+                <p className="mt-4 max-w-3xl pr-8 text-sm leading-6 text-white/40">{faq.answer}</p>
               </details>
             ))}
           </div>
@@ -64,64 +60,36 @@ export function FaqSection() {
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden border-t border-[#25262a] bg-[#0b0c0e] text-white">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -right-56 -top-72 size-[700px] rounded-full bg-brand-500/[0.045] blur-3xl" />
-      </div>
-
-      <div className="container-page relative py-16 sm:py-20">
-        <div className="grid gap-12 border-b border-white/[0.09] pb-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-20">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/34">
-              <span className="h-5 w-[2px] bg-brand-500" />
-              Comece pelo produto
-            </div>
-            <h2 className="mt-6 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-white sm:text-[3.5rem]">Transforme as informações do produto em uma primeira versão organizada.</h2>
-            <p className="mt-6 max-w-2xl text-[15px] leading-7 text-white/42">Use o gerador completo, revise cada bloco e escolha o canal onde o conteúdo será usado.</p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span></Link>
-            <Link href="/entrar" className="inline-flex min-h-14 items-center justify-center border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Entrar na conta</Link>
-          </div>
-        </div>
-
-        <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24">
-          <div className="max-w-lg">
+    <footer className="border-t border-white/[0.08] bg-[#090a0c] text-white">
+      <div className="container-page py-9 sm:py-10">
+        <div className="flex flex-col gap-6 border-b border-white/[0.08] pb-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-xl">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="AnunciaAI, página inicial">
-              <span className="relative grid size-9 place-items-center overflow-hidden border border-white/[0.14] bg-[#17181c] text-[14px] font-extrabold text-white">A<span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" /></span>
-              <span className="text-[20px] font-semibold tracking-[-0.05em] text-white">Anuncia<span className="text-brand-300">AI</span></span>
+              <span className="relative grid size-9 place-items-center border border-white/[0.13] bg-[#15161a] text-[13px] font-extrabold text-white">
+                A
+                <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" />
+              </span>
+              <span className="text-[19px] font-semibold tracking-[-0.05em] text-white">Anuncia<span className="text-brand-300">AI</span></span>
             </Link>
-            <p className="mt-6 max-w-md text-[15px] leading-7 text-white/42">Crie, organize e compare conteúdo de produtos para diferentes canais de venda.</p>
+            <p className="mt-3 text-xs leading-6 text-white/32">Conteúdo de produto organizado para revisar antes de publicar.</p>
           </div>
 
-          <nav aria-label="Links do rodapé" className="grid gap-10 text-sm sm:grid-cols-3 sm:gap-16">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Produto</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/ferramentas" className="hover:text-white">Ferramentas</Link>
-                <Link href="/guias" className="hover:text-white">Guias</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/entrar" className="hover:text-white">Entrar</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Empresa</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/sobre" className="hover:text-white">Sobre</Link>
-                <Link href="/privacidade" className="hover:text-white">Privacidade</Link>
-                <Link href="/termos" className="hover:text-white">Termos</Link>
-              </div>
-            </div>
-          </nav>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/#ferramenta" className="inline-flex min-h-11 items-center justify-center bg-brand-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio →</Link>
+            <Link href="/entrar" className="inline-flex min-h-11 items-center justify-center border border-white/[0.11] px-5 text-sm font-semibold text-white/62 transition-colors hover:bg-white/[0.04] hover:text-white">Entrar</Link>
+          </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/[0.09] pt-7 text-[11px] leading-5 text-white/28 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 AnunciaAI. Conteúdo deve ser revisado antes da publicação.</p>
-          <p>Conta gratuita disponível · modos adicionais dentro da conta</p>
+        <div className="mt-7 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <nav aria-label="Links do rodapé" className="flex flex-wrap gap-x-5 gap-y-3 text-xs text-white/42">
+            <Link href="/ferramentas" className="hover:text-white">Ferramentas</Link>
+            <Link href="/guias" className="hover:text-white">Guias</Link>
+            <Link href="/sobre" className="hover:text-white">Sobre</Link>
+            <Link href="/privacidade" className="hover:text-white">Privacidade</Link>
+            <Link href="/termos" className="hover:text-white">Termos</Link>
+          </nav>
+
+          <p className="text-[10px] leading-5 text-white/24">© 2026 AnunciaAI · Revise o conteúdo antes da publicação.</p>
         </div>
       </div>
     </footer>
