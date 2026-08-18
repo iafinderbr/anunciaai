@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
-  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como métricas e publicidade são utilizadas.",
+  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, métricas e publicidade são utilizados.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Política de Privacidade | AnunciaAI",
-    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como métricas e publicidade são utilizadas.",
+    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, métricas e publicidade são utilizados.",
   },
   robots: { index: true, follow: true },
 };
@@ -31,19 +31,27 @@ const sections = [
     ],
   },
   {
-    title: "2. O que fica armazenado",
+    title: "2. O que fica armazenado nas gerações",
     paragraphs: [
       "O registro técnico da geração não guarda o nome do produto, categoria, preço, público, título gerado nem as características digitadas. O banco mantém apenas informações mínimas necessárias ao contador e à operação, como o canal utilizado e o horário da geração.",
     ],
   },
   {
-    title: "3. Métricas de navegação",
+    title: "3. Conta e login com Google",
+    paragraphs: [
+      "Criar uma conta é opcional para usar as ferramentas gratuitas. Quando o usuário escolhe entrar com Google, o AnunciaAI recebe do fluxo de autenticação os dados necessários para reconhecer a conta, como identificador interno, nome, endereço de e-mail, indicação de e-mail verificado e, quando disponibilizada pelo Google, imagem de perfil.",
+      "Também são mantidos registros técnicos necessários à autenticação, como identificador da conta no provedor, sessões, datas de criação e expiração e informações técnicas de sessão que podem incluir endereço IP e agente do navegador. Dados OAuth retornados pelo provedor, quando armazenados, ficam protegidos pela camada de criptografia configurada no sistema de autenticação.",
+      "O AnunciaAI não recebe nem armazena a senha da Conta Google. O login é realizado no ambiente do Google e o usuário pode encerrar a sessão no AnunciaAI pelo botão de sair da conta.",
+    ],
+  },
+  {
+    title: "4. Métricas de navegação",
     paragraphs: [
       "O AnunciaAI utiliza o Vercel Web Analytics para entender, de forma agregada, o uso do site e melhorar desempenho, páginas e recursos. Essas métricas podem incluir informações técnicas e de navegação disponibilizadas pelo serviço de analytics.",
     ],
   },
   {
-    title: "4. Publicidade e Google AdSense",
+    title: "5. Publicidade e Google AdSense",
     paragraphs: [
       "O AnunciaAI pode utilizar o Google AdSense para exibir publicidade. Terceiros, incluindo o Google, podem usar cookies, beacons da Web, endereços IP e outros identificadores para veicular, medir e personalizar anúncios conforme as configurações do usuário e as regras aplicáveis.",
       "O uso de cookies de publicidade permite ao Google e aos parceiros dele exibir anúncios com base em visitas anteriores do usuário a este site e/ou a outros sites. O usuário pode gerenciar ou desativar a personalização de anúncios nas Configurações de anúncios do Google.",
@@ -51,31 +59,33 @@ const sections = [
     ],
   },
   {
-    title: "5. Cadastro e pagamento",
+    title: "6. Planos e pagamento",
     paragraphs: [
-      "A versão atual pode ser usada sem criar conta e sem informar cartão de crédito. Enquanto os planos pagos estiverem marcados como “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site.",
+      "Entrar na conta não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
+      "Quando pagamentos forem ativados, esta política será atualizada para explicar o provedor utilizado e os dados efetivamente processados. O AnunciaAI não pretende armazenar número completo de cartão ou código de segurança.",
     ],
   },
   {
-    title: "6. Finalidade e minimização",
+    title: "7. Finalidade e minimização",
     paragraphs: [
-      "Coletamos apenas o necessário para operar a ferramenta, medir o uso, exibir publicidade quando habilitada e melhorar a experiência. Sempre que uma informação deixa de ser necessária para essas finalidades, buscamos reduzir, anonimizar ou eliminar seu uso.",
+      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, medir o uso, exibir publicidade quando habilitada e melhorar a experiência. Sempre que uma informação deixa de ser necessária para essas finalidades, buscamos reduzir, anonimizar ou eliminar seu uso.",
     ],
   },
   {
-    title: "7. Segurança e terceiros",
+    title: "8. Segurança e terceiros",
     paragraphs: [
-      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido. Serviços de infraestrutura, métricas e publicidade, como Vercel e Google, podem processar dados técnicos necessários para hospedar, medir e monetizar o site segundo as próprias políticas desses fornecedores.",
+      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido, incluindo segredos fora do código público, validação de sessão no servidor e criptografia dos tokens OAuth armazenados pela camada de autenticação.",
+      "Serviços de infraestrutura, autenticação, métricas e publicidade, como Vercel e Google, podem processar dados técnicos necessários para hospedar, autenticar, medir e monetizar o site segundo as próprias políticas desses fornecedores.",
     ],
   },
   {
-    title: "8. Direitos do usuário",
+    title: "9. Direitos do usuário",
     paragraphs: [
-      "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei. Como o AnunciaAI não exige conta na versão atual e minimiza os registros de geração, pode não existir informação pessoal vinculável a um usuário específico no banco de gerações.",
+      "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei. Contas autenticadas passam a possuir dados vinculáveis ao usuário; por isso, pedidos relacionados a acesso, correção ou eliminação serão tratados conforme a finalidade, as obrigações aplicáveis e as capacidades disponíveis no serviço.",
     ],
   },
   {
-    title: "9. Alterações desta política",
+    title: "10. Alterações desta política",
     paragraphs: [
       "Esta política pode ser atualizada quando o produto ganhar novas funcionalidades, integrações, contas, publicidade ou formas de pagamento. A versão publicada nesta página é a versão vigente.",
     ],
@@ -100,7 +110,7 @@ export default function PrivacidadePage() {
               <p className="mt-5 text-base leading-8 text-muted">
                 Esta página explica de forma direta quais informações o AnunciaAI processa e quais dados são mantidos para o funcionamento do serviço.
               </p>
-              <p className="mt-3 text-sm text-muted">Última atualização: 16 de agosto de 2026.</p>
+              <p className="mt-3 text-sm text-muted">Última atualização: 17 de agosto de 2026.</p>
             </div>
           </div>
         </section>
