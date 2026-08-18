@@ -33,7 +33,7 @@ const plans: Plan[] = [
     summary: "Para comparar mais abordagens do mesmo produto e testar primeiro os novos recursos Pro.",
     features: PRO_FEATURES,
     cta: "Ativar acesso Pro",
-    href: "/conta/plano",
+    href: "/entrar?callbackURL=/conta/plano",
     featured: true,
   },
   {
@@ -42,8 +42,8 @@ const plans: Plan[] = [
     badge: "Próxima camada",
     summary: "Para operações maiores que precisem de escala, catálogo e padronização de marca.",
     features: PREMIUM_PLANNED_FEATURES,
-    cta: "Ver plano da conta",
-    href: "/conta/plano",
+    cta: "Ver planos",
+    href: "/entrar?callbackURL=/conta/plano",
     planned: true,
   },
 ];
@@ -83,7 +83,7 @@ export function PricingSection() {
                     <p className={`text-[10px] font-semibold uppercase tracking-[0.15em] ${featured ? "text-brand-300" : "text-brand-700"}`}>{plan.badge}</p>
                     <h3 className={`mt-3 text-[1.45rem] font-semibold tracking-[-0.04em] ${featured ? "text-white" : "text-ink"}`}>{plan.name}</h3>
                   </div>
-                  {featured ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-emerald-300">Acesso ativo</span> : plan.planned ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-muted">Planejado</span> : null}
+                  {featured ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-emerald-300">Disponível</span> : plan.planned ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-muted">Planejado</span> : null}
                 </div>
 
                 <div className="mt-10">
@@ -213,7 +213,7 @@ export function SiteFooter() {
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span></Link>
-            <Link href="/conta/plano" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Ver planos</Link>
+            <Link href="/entrar?callbackURL=/conta/plano" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Ver planos</Link>
           </div>
         </div>
 
@@ -228,7 +228,7 @@ export function SiteFooter() {
 
           <nav aria-label="Links do rodapé" className="grid gap-10 text-sm sm:grid-cols-3 sm:gap-16">
             <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Produto</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/ferramentas" className="hover:text-white">Ferramentas</Link><Link href="/guias" className="hover:text-white">Guias</Link><Link href="/#precos" className="hover:text-white">Preços</Link></div></div>
-            <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/entrar" className="hover:text-white">Entrar</Link><Link href="/conta/plano" className="hover:text-white">Plano</Link></div></div>
+            <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/entrar" className="hover:text-white">Entrar</Link><Link href="/entrar?callbackURL=/conta/plano" className="hover:text-white">Plano</Link></div></div>
             <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Empresa</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/sobre" className="hover:text-white">Sobre</Link><Link href="/privacidade" className="hover:text-white">Privacidade</Link><Link href="/termos" className="hover:text-white">Termos</Link></div></div>
           </nav>
         </div>
