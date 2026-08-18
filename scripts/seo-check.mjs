@@ -23,6 +23,7 @@ const NON_INDEXABLE_ROUTES = new Set([
   "/conta/historico",
   "/conta/produtos",
   "/conta/plano",
+  "/conta/pro",
 ]);
 
 const failures = [];
