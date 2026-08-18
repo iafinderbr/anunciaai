@@ -1,0 +1,137 @@
+/*
+ * Workspace autenticado: mesma linguagem visual do produto público, com
+ * grafite dominante, superfícies claras somente quando ajudam uma tarefa e
+ * laranja reservado para ação/estado.
+ */
+
+main:has(nav[aria-label="Navegação da conta"]) {
+  background: #0d0e11 !important;
+  color: #f3f3ef;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) > section {
+  position: relative;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .surface-premium,
+main:has(nav[aria-label="Navegação da conta"]) .bg-white {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  background: #15161a !important;
+  box-shadow: none !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .bg-canvas,
+main:has(nav[aria-label="Navegação da conta"]) [class*="bg-canvas/"] {
+  background: #111216 !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-ink {
+  color: #f3f3ef !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-ink-soft {
+  color: #c5c5be !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-muted {
+  color: #858680 !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-brand-600,
+main:has(nav[aria-label="Navegação da conta"]) .text-brand-700,
+main:has(nav[aria-label="Navegação da conta"]) .text-brand-800 {
+  color: #ff9b67 !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .border-line,
+main:has(nav[aria-label="Navegação da conta"]) .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .shadow-card,
+main:has(nav[aria-label="Navegação da conta"]) .shadow-lift {
+  box-shadow: none !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) article.rounded-3xl,
+main:has(nav[aria-label="Navegação da conta"]) article.rounded-2xl,
+main:has(nav[aria-label="Navegação da conta"]) .surface-premium {
+  border-radius: 6px !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) :is(a, button).bg-ink {
+  background: #f1662a !important;
+  color: #fff !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) :is(a, button).bg-ink:hover {
+  background: #d9551e !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) :is(a, button).bg-white {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f3f3ef !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) :is(a, button).bg-white:hover {
+  border-color: rgba(241, 102, 42, 0.45) !important;
+  background: #1b1c20 !important;
+  color: #fff !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) details {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  background: #111216 !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .bg-brand-50 {
+  background: rgba(241, 102, 42, 0.09) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .border-brand-200,
+main:has(nav[aria-label="Navegação da conta"]) .border-brand-300 {
+  border-color: rgba(241, 102, 42, 0.28) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .bg-emerald-50 {
+  background: rgba(52, 211, 153, 0.07) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .border-emerald-200 {
+  border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-emerald-700,
+main:has(nav[aria-label="Navegação da conta"]) .text-emerald-800 {
+  color: #8fe3be !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .bg-rose-50 {
+  background: rgba(251, 113, 133, 0.07) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .border-rose-200 {
+  border-color: rgba(251, 113, 133, 0.22) !important;
+}
+
+main:has(nav[aria-label="Navegação da conta"]) .text-rose-700 {
+  color: #fda4af !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  main:has(nav[aria-label="Navegação da conta"]) article[class*="border"]:hover,
+  main:has(nav[aria-label="Navegação da conta"]) .surface-premium:hover {
+    border-color: rgba(241, 102, 42, 0.26) !important;
+  }
+}
+
+@media (max-width: 639px) {
+  main:has(nav[aria-label="Navegação da conta"]) > section {
+    padding-top: 1.25rem !important;
+  }
+
+  main:has(nav[aria-label="Navegação da conta"]) nav[aria-label="Navegação da conta"] {
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+}
