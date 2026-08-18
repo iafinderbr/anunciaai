@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { GENERATION_EVENT } from "@/components/live-stats";
 import { ResultPanel } from "@/components/generator/result-panel";
+import { SavedProductControls } from "@/components/generator/saved-product-controls";
+import { GENERATION_EVENT } from "@/components/live-stats";
 import { EMPTY_INPUT, EXAMPLE_INPUT, generateAd, parseFeatures } from "@/lib/generator";
 import { CHANNEL_LABEL, CHANNELS, TONES } from "@/lib/generator-data";
 import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
@@ -18,16 +19,9 @@ const LOADING_STEPS = [
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/**
- * Todas as props são opcionais. Sem nenhuma prop, o componente se comporta
- * exatamente como na home: canal selecionável e exemplo padrão.
- */
 export interface GeneratorToolProps {
-  /** Fixa o canal e esconde o seletor "Onde você vai vender?". */
   lockedChannel?: Channel;
-  /** Estado inicial do formulário. */
   initialInput?: GeneratorInput;
-  /** Dados usados pelo botão "Preencher com exemplo". */
   exampleInput?: GeneratorInput;
   title?: string;
   subtitle?: string;
@@ -64,6 +58,14 @@ export function GeneratorTool({
     setErrors((current) => ({ ...current, [key]: undefined }));
   }, []);
 
+  const applySavedProduct = useCallback(
+    (nextInput: GeneratorInput) => {
+      setInput(lockedChannel ? { ...nextInput, channel: lockedChannel } : nextInput);
+      setErrors({});
+    },
+    [lockedChannel],
+  );
+
   const persist = useCallback(async (data: GeneratorInput) => {
     try {
       const response = await fetch("/api/generations", {
@@ -72,11 +74,9 @@ export function GeneratorTool({
         body: JSON.stringify({ channel: data.channel }),
       });
       const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
-      if (response.ok && payload?.ok) {
-        window.dispatchEvent(new Event(GENERATION_EVENT));
-      }
+      if (response.ok && payload?.ok) window.dispatchEvent(new Event(GENERATION_EVENT));
     } catch {
-      // o resultado já está na tela: falha de rede não quebra a experiência
+      // A geração já aconteceu no navegador; telemetria não deve quebrar a experiência.
     }
   }, []);
 
@@ -116,8 +116,7 @@ export function GeneratorTool({
 
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length > 0) {
-        const first = document.querySelector<HTMLElement>('[aria-invalid="true"]');
-        first?.focus();
+        requestAnimationFrame(() => document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
         return;
       }
 
@@ -143,11 +142,7 @@ export function GeneratorTool({
   return (
     <div ref={anchorRef} className="scroll-mt-24">
       {status === "form" ? (
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8"
-        >
+        <form onSubmit={handleSubmit} noValidate className="rounded-3xl border border-line bg-white p-5 shadow-lift sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h3>
@@ -165,6 +160,8 @@ export function GeneratorTool({
             </button>
           </div>
 
+          <SavedProductControls input={input} lockedChannel={lockedChannel} onApply={applySavedProduct} />
+
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label htmlFor="productName" className="mb-1.5 block text-sm font-medium text-ink">
@@ -181,11 +178,7 @@ export function GeneratorTool({
                 aria-describedby={errors.productName ? "productName-error" : undefined}
                 maxLength={120}
               />
-              {errors.productName ? (
-                <p id="productName-error" className="mt-1.5 text-xs font-medium text-rose-600">
-                  {errors.productName}
-                </p>
-              ) : null}
+              {errors.productName ? <p id="productName-error" className="mt-1.5 text-xs font-medium text-rose-600">{errors.productName}</p> : null}
             </div>
 
             <div>
@@ -203,11 +196,7 @@ export function GeneratorTool({
                 aria-describedby={errors.category ? "category-error" : undefined}
                 maxLength={80}
               />
-              {errors.category ? (
-                <p id="category-error" className="mt-1.5 text-xs font-medium text-rose-600">
-                  {errors.category}
-                </p>
-              ) : null}
+              {errors.category ? <p id="category-error" className="mt-1.5 text-xs font-medium text-rose-600">{errors.category}</p> : null}
             </div>
 
             <div>
@@ -247,7 +236,9 @@ export function GeneratorTool({
                   Características do produto <span className="text-brand-600">*</span>
                 </label>
                 <span className="text-xs text-muted">
-                  {featureCount > 0 ? `${featureCount} característica${featureCount > 1 ? "s" : ""} detectada${featureCount > 1 ? "s" : ""}` : "separe por vírgulas"}
+                  {featureCount > 0
+                    ? `${featureCount} característica${featureCount > 1 ? "s" : ""} detectada${featureCount > 1 ? "s" : ""}`
+                    : "separe por vírgulas"}
                 </span>
               </div>
               <textarea
@@ -262,11 +253,7 @@ export function GeneratorTool({
                 aria-describedby={errors.features ? "features-error" : undefined}
                 maxLength={1200}
               />
-              {errors.features ? (
-                <p id="features-error" className="mt-1.5 text-xs font-medium text-rose-600">
-                  {errors.features}
-                </p>
-              ) : null}
+              {errors.features ? <p id="features-error" className="mt-1.5 text-xs font-medium text-rose-600">{errors.features}</p> : null}
             </div>
           </div>
 
@@ -277,42 +264,38 @@ export function GeneratorTool({
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-500" />
                 {CHANNEL_LABEL[lockedChannel]}
               </span>
-              <span className="text-xs text-muted">
-                {CHANNELS.find((channel) => channel.value === lockedChannel)?.hint}
-              </span>
+              <span className="text-xs text-muted">{CHANNELS.find((channel) => channel.value === lockedChannel)?.hint}</span>
             </div>
           ) : (
-          <fieldset className="mt-7">
-            <legend className="mb-2.5 text-sm font-medium text-ink">Onde você vai vender?</legend>
-            <div className="flex flex-wrap gap-2">
-              {CHANNELS.map((channel) => {
-                const active = input.channel === channel.value;
-                return (
-                  <label
-                    key={channel.value}
-                    className={`cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm font-medium transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${
-                      active
-                        ? "border-ink bg-ink text-white"
-                        : "border-line-strong bg-white text-ink-soft hover:border-brand-500 hover:text-brand-600"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="channel"
-                      value={channel.value}
-                      checked={active}
-                      onChange={() => update("channel", channel.value)}
-                      className="sr-only"
-                    />
-                    {channel.label}
-                  </label>
-                );
-              })}
-            </div>
-            <p className="mt-2 text-xs text-muted">
-              {CHANNELS.find((channel) => channel.value === input.channel)?.hint}
-            </p>
-          </fieldset>
+            <fieldset className="mt-7">
+              <legend className="mb-2.5 text-sm font-medium text-ink">Onde você vai vender?</legend>
+              <div className="flex flex-wrap gap-2">
+                {CHANNELS.map((channel) => {
+                  const active = input.channel === channel.value;
+                  return (
+                    <label
+                      key={channel.value}
+                      className={`cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm font-medium transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${
+                        active
+                          ? "border-ink bg-ink text-white"
+                          : "border-line-strong bg-white text-ink-soft hover:border-brand-500 hover:text-brand-600"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="channel"
+                        value={channel.value}
+                        checked={active}
+                        onChange={() => update("channel", channel.value)}
+                        className="sr-only"
+                      />
+                      {channel.label}
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-xs text-muted">{CHANNELS.find((channel) => channel.value === input.channel)?.hint}</p>
+            </fieldset>
           )}
 
           <fieldset className="mt-6">
@@ -324,9 +307,7 @@ export function GeneratorTool({
                   <label
                     key={tone.value}
                     className={`cursor-pointer rounded-xl border px-3.5 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${
-                      active
-                        ? "border-brand-500 bg-brand-50"
-                        : "border-line-strong bg-white hover:border-line-strong hover:bg-canvas"
+                      active ? "border-brand-500 bg-brand-50" : "border-line-strong bg-white hover:border-line-strong hover:bg-canvas"
                     }`}
                   >
                     <input
@@ -337,9 +318,7 @@ export function GeneratorTool({
                       onChange={() => update("tone", tone.value)}
                       className="sr-only"
                     />
-                    <span className={`block text-sm font-semibold ${active ? "text-brand-700" : "text-ink"}`}>
-                      {tone.label}
-                    </span>
+                    <span className={`block text-sm font-semibold ${active ? "text-brand-700" : "text-ink"}`}>{tone.label}</span>
                     <span className="mt-0.5 block text-xs text-muted">{tone.hint}</span>
                   </label>
                 );
@@ -347,15 +326,10 @@ export function GeneratorTool({
             </div>
           </fieldset>
 
-          <button
-            type="submit"
-            className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-600"
-          >
+          <button type="submit" className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-600">
             ✨ Gerar anúncio
           </button>
-          <p className="mt-3 text-center text-xs text-muted">
-            Grátis, sem cadastro e sem cartão de crédito. Você recebe o resultado nesta mesma página.
-          </p>
+          <p className="mt-3 text-center text-xs text-muted">Grátis, sem cadastro e sem cartão de crédito. Você recebe o resultado nesta mesma página.</p>
         </form>
       ) : null}
 
@@ -363,9 +337,7 @@ export function GeneratorTool({
         <div className="rounded-3xl border border-line bg-white p-8 shadow-lift" role="status" aria-live="polite">
           <div className="relative h-1 w-full overflow-hidden rounded-full bg-line loading-bar" />
           <h3 className="mt-6 text-xl font-semibold tracking-tight">Gerando seu anúncio…</h3>
-          <p className="mt-1 text-sm text-muted">
-            Estamos montando título, descrição, benefícios e SEO para {input.productName || "o seu produto"}.
-          </p>
+          <p className="mt-1 text-sm text-muted">Estamos montando título, descrição, benefícios e SEO para {input.productName || "o seu produto"}.</p>
           <ul className="mt-6 space-y-3">
             {LOADING_STEPS.map((label, index) => {
               const done = index < step;
@@ -374,11 +346,7 @@ export function GeneratorTool({
                 <li key={label} className="flex items-center gap-3 text-sm">
                   <span
                     className={`grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold ${
-                      done
-                        ? "bg-emerald-100 text-emerald-700"
-                        : current
-                          ? "bg-brand-100 text-brand-700"
-                          : "bg-line text-muted"
+                      done ? "bg-emerald-100 text-emerald-700" : current ? "bg-brand-100 text-brand-700" : "bg-line text-muted"
                     }`}
                   >
                     {done ? "✓" : index + 1}

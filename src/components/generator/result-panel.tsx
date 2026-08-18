@@ -73,12 +73,17 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
   const titleLength = result.title.length;
   const withinTarget = titleLength <= previewTarget;
   const fullText = buildFullText(result);
+  const productKey = JSON.stringify(input);
   const { data: session } = authClient.useSession();
   const [savingContent, setSavingContent] = useState<string | null>(null);
   const [savedContent, setSavedContent] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<{ key: string; message: string } | null>(null);
+  const [savingProduct, setSavingProduct] = useState(false);
+  const [savedProductKey, setSavedProductKey] = useState<string | null>(null);
+  const [productError, setProductError] = useState<string | null>(null);
   const isSaving = savingContent === fullText;
   const isSaved = savedContent === fullText;
+  const isProductSaved = savedProductKey === productKey;
   const visibleError = saveError?.key === fullText ? saveError.message : null;
 
   async function handleSave() {
@@ -124,6 +129,38 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
     }
   }
 
+  async function handleSaveProduct() {
+    if (!session || savingProduct || isProductSaved) return;
+    setSavingProduct(true);
+    setProductError(null);
+
+    try {
+      const response = await fetch("/api/account/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (response.ok) {
+        setSavedProductKey(productKey);
+        return;
+      }
+      setProductError(
+        payload?.error === "product_limit"
+          ? "Sua biblioteca chegou ao limite atual de 20 produtos. Exclua um para salvar outro."
+          : response.status === 401
+            ? "Sua sessão expirou. Entre novamente para salvar o produto."
+            : response.status === 429
+              ? "Muitas alterações em pouco tempo. Aguarde um minuto e tente novamente."
+              : "Não foi possível salvar o produto agora.",
+      );
+    } catch {
+      setProductError("Não foi possível salvar o produto agora.");
+    } finally {
+      setSavingProduct(false);
+    }
+  }
+
   return (
     <div className="animate-fade-up space-y-4">
       <div className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
@@ -145,47 +182,40 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
         <div className="mt-5 flex flex-wrap gap-2">
           {session ? (
             isSaved ? (
-              <Link
-                href="/conta/historico"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300"
-              >
+              <Link href="/conta/historico" className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300">
                 ✓ Salvo no histórico
               </Link>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                disabled={isSaving}
-                className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400 disabled:cursor-wait disabled:opacity-70"
-              >
+              <button type="button" onClick={handleSave} disabled={isSaving} className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400 disabled:cursor-wait disabled:opacity-70">
                 {isSaving ? "Salvando..." : "Salvar no histórico"}
               </button>
             )
           ) : (
-            <Link
-              href="/entrar"
-              className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400"
-            >
+            <Link href="/entrar" className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400">
               Entrar para salvar
             </Link>
           )}
 
-          <button
-            type="button"
-            onClick={onRegenerate}
-            className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600"
-          >
+          {session ? (
+            isProductSaved ? (
+              <Link href="/conta/produtos" className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300">
+                ✓ Produto salvo
+              </Link>
+            ) : (
+              <button type="button" onClick={handleSaveProduct} disabled={savingProduct} className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-700 disabled:cursor-wait disabled:opacity-70">
+                {savingProduct ? "Salvando produto..." : "Salvar produto"}
+              </button>
+            )
+          ) : null}
+
+          <button type="button" onClick={onRegenerate} className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">
             <svg aria-hidden="true" viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M16.5 10a6.5 6.5 0 1 1-1.9-4.6" strokeLinecap="round" />
               <path d="M16.5 3v3.5H13" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Gerar novamente
           </button>
-          <button
-            type="button"
-            onClick={onEdit}
-            className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600"
-          >
+          <button type="button" onClick={onEdit} className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600">
             <svg aria-hidden="true" viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 16h3l8-8-3-3-8 8v3Z" strokeLinejoin="round" />
               <path d="M12.5 4.5 15.5 7.5" strokeLinecap="round" />
@@ -195,17 +225,18 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
         </div>
 
         {isSaved ? (
-          <p role="status" className="mt-3 text-xs font-medium text-emerald-700">
-            Resultado salvo na sua conta.
-          </p>
+          <p role="status" className="mt-3 text-xs font-medium text-emerald-700">Resultado salvo na sua conta.</p>
         ) : visibleError ? (
-          <p role="alert" className="mt-3 text-xs font-medium text-rose-700">
-            {visibleError}
-          </p>
+          <p role="alert" className="mt-3 text-xs font-medium text-rose-700">{visibleError}</p>
+        ) : null}
+        {isProductSaved ? (
+          <p role="status" className="mt-2 text-xs font-medium text-emerald-700">Produto salvo na sua biblioteca privada.</p>
+        ) : productError ? (
+          <p role="alert" className="mt-2 text-xs font-medium text-rose-700">{productError}</p>
         ) : null}
 
         <p className="mt-3 text-xs leading-5 text-muted">
-          Salvar é opcional. O conteúdo do produto só é enviado ao servidor quando você usa este botão estando conectado.
+          Salvar é opcional. O conteúdo e os dados do produto só são enviados ao servidor quando você usa um dos botões de salvar estando conectado.
         </p>
       </div>
 
@@ -227,10 +258,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
             <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Variações</p>
             <ul className="mt-2 space-y-2">
               {result.titleAlternatives.map((alternative) => (
-                <li
-                  key={alternative}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-canvas px-3 py-2.5"
-                >
+                <li key={alternative} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-canvas px-3 py-2.5">
                   <span className="text-sm text-ink-soft">{alternative}</span>
                   <CopyButton value={alternative} />
                 </li>
@@ -240,24 +268,15 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
         ) : null}
       </Section>
 
-      <Section
-        index={2}
-        title="Descrição"
-        hint={`${result.description.length} caracteres — primeira versão para revisar e adaptar antes de publicar`}
-        copyValue={result.description}
-      >
-        <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
-          {result.description}
-        </div>
+      <Section index={2} title="Descrição" hint={`${result.description.length} caracteres — primeira versão para revisar e adaptar antes de publicar`} copyValue={result.description}>
+        <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">{result.description}</div>
       </Section>
 
       <Section index={3} title="Principais benefícios" copyValue={result.benefits.map((b) => `• ${b}`).join("\n")}>
         <ul className="space-y-2.5">
           {result.benefits.map((benefit) => (
             <li key={benefit} className="flex gap-3 text-[15px] leading-relaxed text-ink-soft">
-              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-brand-50 text-[11px] font-bold text-brand-600">
-                ✓
-              </span>
+              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-brand-50 text-[11px] font-bold text-brand-600">✓</span>
               {benefit}
             </li>
           ))}
@@ -275,29 +294,15 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
         </dl>
       </Section>
 
-      <Section
-        index={5}
-        title="Anúncio"
-        hint="Versão persuasiva para revisar e adaptar antes de publicar"
-        copyValue={result.adCopy}
-      >
-        <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">
-          {result.adCopy}
-        </div>
+      <Section index={5} title="Anúncio" hint="Versão persuasiva para revisar e adaptar antes de publicar" copyValue={result.adCopy}>
+        <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-canvas p-4 text-[15px] leading-relaxed text-ink-soft">{result.adCopy}</div>
       </Section>
 
-      <Section
-        index={6}
-        title="SEO"
-        hint="Sugestões editoriais de título, descrição e termos relacionados ao produto informado"
-        copyValue={`Título SEO: ${result.seoTitle}\nMeta description: ${result.metaDescription}\nPalavras-chave: ${result.keywords.join(", ")}`}
-      >
+      <Section index={6} title="SEO" hint="Sugestões editoriais de título, descrição e termos relacionados ao produto informado" copyValue={`Título SEO: ${result.seoTitle}\nMeta description: ${result.metaDescription}\nPalavras-chave: ${result.keywords.join(", ")}`}>
         <div className="space-y-3">
           <div className="rounded-xl bg-canvas p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Título SEO · {result.seoTitle.length} caracteres
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Título SEO · {result.seoTitle.length} caracteres</p>
               <CopyButton value={result.seoTitle} />
             </div>
             <p className="mt-2 text-[15px] font-medium text-[#1a0dab]">{result.seoTitle}</p>
@@ -305,9 +310,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
 
           <div className="rounded-xl bg-canvas p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Meta description · {result.metaDescription.length} caracteres
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Meta description · {result.metaDescription.length} caracteres</p>
               <CopyButton value={result.metaDescription} />
             </div>
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">{result.metaDescription}</p>
@@ -320,12 +323,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
             </div>
             <ul className="mt-2.5 flex flex-wrap gap-2">
               {result.keywords.map((keyword) => (
-                <li
-                  key={keyword}
-                  className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-xs text-ink-soft"
-                >
-                  {keyword}
-                </li>
+                <li key={keyword} className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-xs text-ink-soft">{keyword}</li>
               ))}
             </ul>
           </div>

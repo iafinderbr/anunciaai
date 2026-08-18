@@ -20,12 +20,17 @@ const authServer = read("src/lib/auth.ts");
 const authClient = read("src/lib/auth-client.ts");
 const authRoute = read("src/app/api/auth/[...all]/route.ts");
 const historyApi = read("src/app/api/account/history/route.ts");
+const productsApi = read("src/app/api/account/products/route.ts");
 const signInPage = read("src/app/entrar/page.tsx");
 const accountPage = read("src/app/conta/page.tsx");
 const historyPage = read("src/app/conta/historico/page.tsx");
+const productsPage = read("src/app/conta/produtos/page.tsx");
+const planPage = read("src/app/conta/plano/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const siteHeader = read("src/components/site-header.tsx");
+const generatorTool = read("src/components/generator/generator-tool.tsx");
+const productControls = read("src/components/generator/saved-product-controls.tsx");
 const resultPanel = read("src/components/generator/result-panel.tsx");
 const privacyPage = read("src/app/privacidade/page.tsx");
 const plans = read("src/lib/plans.ts");
@@ -58,6 +63,7 @@ for (const table of [
   'pgTable(\n  "account"',
   'pgTable(\n  "verification"',
   'pgTable(\n  "saved_generation"',
+  'pgTable(\n  "saved_product"',
 ]) {
   requireText(schema, table, `Schema de autenticação/conta incompleto: ${table}.`);
 }
@@ -72,6 +78,7 @@ for (const table of [
   'create table if not exists "account"',
   "create table if not exists verification",
   "create table if not exists saved_generation",
+  "create table if not exists saved_product",
 ]) {
   requireText(ensureSchema, table, `Criação idempotente ausente: ${table}.`);
 }
@@ -98,6 +105,8 @@ for (const [name, source] of [
   ["/entrar", signInPage],
   ["/conta", accountPage],
   ["/conta/historico", historyPage],
+  ["/conta/produtos", productsPage],
+  ["/conta/plano", planPage],
 ]) {
   if (!/robots\s*:\s*\{[^}]*index\s*:\s*false[^}]*follow\s*:\s*false/s.test(source)) {
     failures.push(`${name} deve continuar noindex/nofollow.`);
@@ -111,8 +120,11 @@ requireText(accountPage, 'auth.api.getSession', "Área /conta não valida sessã
 requireText(accountPage, 'redirect("/entrar")', "Área /conta não bloqueia visitante sem sessão.");
 requireText(accountPage, "effectivePlan", "Área /conta não calcula o plano efetivo no servidor.");
 requireText(accountPage, 'href="/conta/historico"', "Minha conta não oferece acesso ao histórico.");
+requireText(accountPage, 'href="/conta/produtos"', "Minha conta não oferece acesso aos produtos salvos.");
 requireText(historyPage, 'auth.api.getSession', "Histórico não valida sessão no servidor.");
 requireText(historyPage, 'redirect("/entrar")', "Histórico não bloqueia visitante sem sessão.");
+requireText(productsPage, 'auth.api.getSession', "Produtos salvos não validam sessão no servidor.");
+requireText(productsPage, 'redirect("/entrar")', "Produtos salvos não bloqueiam visitante sem sessão.");
 requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
 requireText(googleButton, 'callbackURL: "/conta"', "Login Google não retorna para /conta.");
 requireText(signOutButton, "authClient.signOut", "Logout da conta não está implementado.");
@@ -130,13 +142,33 @@ for (const required of [
   requireText(historyApi, required, `API do histórico perdeu proteção: ${required}.`);
 }
 requireText(historyApi, "unexpected_fields", "API do histórico deve rejeitar campos inesperados.");
+
+for (const required of [
+  "auth.api.getSession",
+  "isAllowedOrigin(request)",
+  "MAX_BODY_BYTES",
+  "MAX_PRODUCTS = 20",
+  "eq(savedProduct.userId, userId)",
+  "unexpected_fields",
+]) {
+  requireText(productsApi, required, `API de produtos salvos perdeu proteção: ${required}.`);
+}
+
+requireText(generatorTool, "SavedProductControls", "Geradores perderam o seletor de produtos salvos.");
+requireText(productControls, 'fetch("/api/account/products"', "Controles de produto não carregam a biblioteca protegida.");
+requireText(productControls, "Usar produto", "Biblioteca não permite reutilizar um produto no formulário.");
+requireText(productControls, "Salvar produto atual", "Formulário não permite salvar o produto atual.");
+requireText(productControls, "Nada é salvo automaticamente", "Controles de produto devem explicar que o salvamento é opt-in.");
 requireText(resultPanel, "Salvar no histórico", "Resultado perdeu o salvamento explícito no histórico.");
-requireText(resultPanel, "O conteúdo do produto só é enviado ao servidor quando você usa este botão", "Interface deve deixar claro que o histórico é opt-in.");
+requireText(resultPanel, "Salvar produto", "Resultado perdeu o salvamento explícito do produto.");
+requireText(resultPanel, "só são enviados ao servidor quando você usa um dos botões de salvar", "Interface deve deixar claro que os salvamentos são opt-in.");
 requireText(privacyPage, "Histórico salvo pelo usuário", "Política de privacidade não explica o histórico salvo.");
-requireText(privacyPage, "não acontece apenas por gerar um anúncio", "Política deve informar que o histórico não é automático.");
+requireText(privacyPage, "Biblioteca de produtos salvos", "Política de privacidade não explica a biblioteca de produtos.");
+requireText(privacyPage, "não é adicionado ao histórico ou à biblioteca de forma automática", "Política deve informar que dados pessoais não são salvos automaticamente.");
 
 requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
 requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
+requireText(plans, 'free: new Set(["basic_generators", "history", "saved_products"])', "Plano Grátis deve refletir histórico e produtos salvos atualmente disponíveis.");
 
 if (/Assinar agora/i.test(pricing)) {
   failures.push("A interface não pode mostrar 'Assinar agora' antes do checkout real estar ativo.");
@@ -148,4 +180,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, sessão protegida, histórico opt-in, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, sessão protegida, histórico e produtos opt-in, reutilização, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");

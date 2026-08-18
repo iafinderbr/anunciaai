@@ -174,12 +174,40 @@ async function createSchema() {
     create index if not exists saved_generation_user_idx
       on saved_generation (user_id)
   `);
+
+  // Biblioteca de produtos opt-in: os dados só são salvos quando a pessoa
+  // autenticada aciona explicitamente "Salvar produto" no gerador.
+  await db.execute(sql`
+    create table if not exists saved_product (
+      id text primary key,
+      user_id text not null references "user"(id) on delete cascade,
+      product_name text not null,
+      category text not null,
+      price text not null default '',
+      audience text not null default '',
+      features text not null,
+      channel text not null,
+      tone text not null,
+      created_at timestamp with time zone not null default now(),
+      updated_at timestamp with time zone not null default now()
+    )
+  `);
+
+  await db.execute(sql`
+    create index if not exists saved_product_user_updated_idx
+      on saved_product (user_id, updated_at)
+  `);
+
+  await db.execute(sql`
+    create index if not exists saved_product_user_idx
+      on saved_product (user_id)
+  `);
 }
 
 /**
  * Garante de forma idempotente a estrutura usada pelo contador, autenticação,
- * planos e histórico opt-in. A anonimização de registros antigos é marcada
- * como migração para não varrer a tabela a cada nova instância do servidor.
+ * planos, histórico e biblioteca de produtos. A anonimização de registros
+ * antigos é marcada como migração para não varrer a tabela a cada instância.
  */
 export function ensureDatabaseSchema(): Promise<void> {
   if (!schemaPromise) {
