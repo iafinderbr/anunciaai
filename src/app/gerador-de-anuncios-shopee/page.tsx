@@ -18,7 +18,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Shopee | Grátis";
 const DESCRIPTION =
-  "Organize uma primeira versão de título, descrição, benefícios e sugestões de palavras-chave para anúncios da Shopee. Grátis com login Google simples e feita para revisar.";
+  "Crie título, descrição e benefícios para anúncios da Shopee. Grátis com login Google simples e pronta para revisar antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
