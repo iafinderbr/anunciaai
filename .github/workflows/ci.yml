@@ -38,6 +38,14 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Sincronizar lockfile para validação
+        run: |
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          echo 'PACKAGE_LOCK_GZIP_BASE64_BEGIN'
+          gzip -c package-lock.json | base64 -w0
+          echo
+          echo 'PACKAGE_LOCK_GZIP_BASE64_END'
+
       - name: Instalar dependências
         run: npm ci --no-audit --no-fund
 
