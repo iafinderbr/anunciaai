@@ -16,19 +16,26 @@ function requireText(source, text, message) {
   if (!source.includes(text)) failures.push(message);
 }
 
+function forbidText(source, text, message) {
+  if (source.includes(text)) failures.push(message);
+}
+
 const sitemap = read("src/app/sitemap.ts");
 const globals = read("src/app/globals.css");
 const darkSystem = read("src/app/professional-dark.css");
 const darkPages = read("src/app/professional-dark-pages.css");
 const accountDark = read("src/app/account-dark.css");
 const generatorDark = read("src/app/generator-dark.css");
+const finalPolish = read("src/app/final-polish.css");
 const layout = read("src/app/layout.tsx");
 const guideHub = read("src/app/guias/page.tsx");
 const header = read("src/components/site-header.tsx");
 const toolsHub = read("src/app/ferramentas/page.tsx");
 const loginPage = read("src/app/entrar/page.tsx");
 const accountOverview = read("src/app/conta/page.tsx");
+const accountLoading = read("src/app/conta/loading.tsx");
 const accountNav = read("src/components/account/account-nav.tsx");
+const proVariations = read("src/components/account/pro-variations-tool.tsx");
 const generatorGate = read("src/components/auth/generator-access-gate.tsx");
 const channelShowcase = read("src/components/channel-showcase.tsx");
 const channelDock = read("src/components/channel-side-dock.tsx");
@@ -69,8 +76,17 @@ requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial
 requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo base do hub de guias.");
 requireText(globals, "--color-canvas: #f7f7f5", "O sistema de superfícies claras/formulários perdeu sua paleta neutra de apoio.");
 
-for (const cssImport of ['./professional-dark.css', './professional-dark-pages.css', './account-dark.css', './generator-dark.css']) {
+for (const cssImport of [
+  './professional-dark.css',
+  './professional-dark-pages.css',
+  './account-dark.css',
+  './generator-dark.css',
+  './final-polish.css',
+]) {
   requireText(layout, cssImport, `Layout deixou de carregar ${cssImport}.`);
+}
+if (layout.indexOf('./final-polish.css') < layout.indexOf('./generator-dark.css')) {
+  failures.push("final-polish.css precisa carregar depois do tema do gerador para fechar a cascata visual.");
 }
 requireText(layout, 'themeColor: "#0c0d0f"', "Tema do navegador precisa acompanhar o shell grafite.");
 
@@ -118,6 +134,18 @@ requireText(
   "Tema do gerador precisa continuar explicitamente isolado dos guias editoriais.",
 );
 
+for (const required of [
+  "Acabamento final do sistema visual",
+  "background: #111216 !important",
+  'aside[aria-label="Prévia do workspace AnunciaAI"]',
+  'rounded-[10px]',
+  "border-radius: 5px !important",
+  "background: #17181c !important",
+  "outline-color: #f1662a",
+]) {
+  requireText(finalPolish, required, `Acabamento profissional final incompleto: ${required}.`);
+}
+
 requireText(header, 'id="inicio-conteudo"', "O cabeçalho perdeu o alvo acessível do skip link.");
 requireText(header, "ChannelSideDock", "O shell público perdeu a navegação lateral por canal.");
 requireText(header, 'pathname === "/"', "A Home precisa exibir a navegação lateral por canal.");
@@ -130,8 +158,22 @@ requireText(loginPage, "Entre no seu workspace.", "Login perdeu a linguagem de p
 requireText(loginPage, 'border-l-2 border-brand-500', "Login perdeu a hierarquia editorial laranja discreta.");
 requireText(accountOverview, 'bg-[#0d0e11]', "Visão geral da conta voltou para uma superfície clara.");
 requireText(accountOverview, 'grid gap-px overflow-hidden border border-white/[0.08]', "Métricas da conta perderam a grade reta definida.");
+requireText(accountLoading, "sm:grid-cols-3", "Loading da conta deixou de acompanhar as três métricas do workspace enxuto.");
+forbidText(accountLoading, "xl:grid-cols-4", "Loading da conta voltou ao desenho antigo de quatro métricas.");
 requireText(accountNav, 'border-y border-white/[0.09]', "Navegação da conta voltou a usar um cartão arredondado.");
 requireText(accountNav, 'h-[2px] bg-brand-500', "Navegação da conta perdeu o marcador ativo discreto.");
+
+for (const required of [
+  'bg-[#121316]',
+  'bg-[#0b0c0f]',
+  "bg-brand-500",
+  'bg-[#101114]',
+  "border-white/[0.09]",
+]) {
+  requireText(proVariations, required, `Laboratório Pro perdeu o tema grafite nativo: ${required}.`);
+}
+forbidText(proVariations, 'bg-[#f7f7f4]', "Laboratório Pro voltou a usar empty state claro.");
+
 requireText(generatorGate, 'bg-[#121316] text-white', "Gate de acesso dos geradores voltou a uma superfície clara.");
 requireText(generatorGate, "Entre para usar este gerador.", "Gate dos geradores perdeu a linguagem objetiva definida.");
 requireText(generatorGate, 'divide-y divide-white/[0.08]', "Gate dos geradores voltou a listar benefícios como pills/cards.");
@@ -163,5 +205,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, fluxo de criação integralmente escuro, gates/login/workspace autenticado profissionais e navegação de 6 canais preservados.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, acabamento final protegido, fluxo de criação integralmente escuro, Pro nativamente escuro, gates/login/workspace profissionais e navegação de 6 canais preservados.`,
 );
