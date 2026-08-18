@@ -34,7 +34,7 @@ const SECRET_PATTERNS = [
 
 // Detecta somente uso/atribuição real dessas variáveis. Menções em documentação
 // ou nos próprios testes não devem virar falso positivo.
-const PUBLIC_SECRET_USAGE = /(?:process\.env\.|^\s*)(NEXT_PUBLIC_(?:BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|DATABASE_URL|GEMINI_API_KEY))\s*(?:=|\b)/gm;
+const PUBLIC_SECRET_USAGE = /(?:process\.env\.|^\s*)(NEXT_PUBLIC_(?:BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|FACEBOOK_CLIENT_SECRET|DATABASE_URL|GEMINI_API_KEY))\s*(?:=|\b)/gm;
 
 const ALLOWED_POSTGRES_EXAMPLES = new Set([
   "postgresql://USER:PASSWORD@HOST:5432/DATABASE",
