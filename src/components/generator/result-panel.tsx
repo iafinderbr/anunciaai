@@ -250,7 +250,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
         </div>
 
         <div className="flex flex-col gap-2 bg-canvas/55 px-5 py-3.5 text-[11px] leading-5 text-muted sm:flex-row sm:items-center sm:justify-between sm:px-7">
-          <span>Salvar é opcional. Nada entra no histórico ou na biblioteca sem sua ação.</span>
+          <span>Salvar é opcional. O conteúdo e os dados do produto só são enviados ao servidor quando você usa um dos botões de salvar estando conectado.</span>
           <span className="shrink-0 font-semibold text-ink-soft">6 blocos de conteúdo</span>
         </div>
       </div>
