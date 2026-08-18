@@ -26,9 +26,9 @@ export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: numbe
 
 export const PRO_FEATURES = [
   "Tudo do plano Grátis",
-  "Mais variações de título por criação",
+  "Laboratório com 3 versões do mesmo produto",
+  "Mais opções de título para comparação",
   "Acesso antecipado aos próximos recursos Pro",
-  "Ativação sem cobrança durante o acesso antecipado",
 ] as const;
 
 export const PREMIUM_PLANNED_FEATURES = [
