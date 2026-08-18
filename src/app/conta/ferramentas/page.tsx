@@ -38,7 +38,7 @@ export default async function AccountToolsPage() {
             <section aria-labelledby="ferramentas-workspace" className="mt-7">
               <div className="flex flex-col gap-3 border-b border-white/[0.09] pb-5 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <h2 id="ferramentas-workspace" className="text-xl font-semibold tracking-[-0.04em] text-white sm:text-2xl">Ferramentas</h2>
+                  <h1 id="ferramentas-workspace" className="text-xl font-semibold tracking-[-0.04em] text-white sm:text-2xl">Ferramentas</h1>
                   <p className="mt-1.5 text-xs leading-5 text-white/34">Escolha o que quer criar sem sair do workspace.</p>
                 </div>
                 <span className="text-xs font-semibold text-white/32">{tools.length} disponíveis</span>
