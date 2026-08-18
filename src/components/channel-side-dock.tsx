@@ -61,7 +61,7 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
                 aria-expanded={expanded}
                 aria-controls={panelId}
                 onClick={() => setOpenId((current) => (current === channel.id ? null : channel.id))}
-                className={`group relative grid size-12 place-items-center rounded-[8px] outline-none transition-all focus-visible:ring-2 focus-visible:ring-brand-400/70 ${
+                className={`group relative grid size-12 place-items-center rounded-[8px] outline-none transition-all focus-visible:ring-2 focus-visible:ring-brand-500/70 ${
                   active || expanded
                     ? "bg-white text-[#111216] shadow-[0_10px_24px_-18px_rgba(255,255,255,.45)]"
                     : "text-white/48 hover:bg-white/[0.065] hover:text-white"
@@ -118,7 +118,7 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
         <Link
           href="/ferramentas"
           aria-label="Ver todas as ferramentas"
-          className="group grid size-12 place-items-center rounded-[8px] text-white/34 transition-colors hover:bg-white/[0.065] hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/70"
+          className="group grid size-12 place-items-center rounded-[8px] text-white/34 transition-colors hover:bg-white/[0.065] hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/70"
         >
           <LibraryIcon />
         </Link>
