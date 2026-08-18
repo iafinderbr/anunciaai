@@ -10,7 +10,7 @@ const items: ReadonlyArray<{
   { href: "/conta", label: "Início", activeKeys: ["overview"] },
   { href: "/conta/historico", label: "Biblioteca", activeKeys: ["history", "products"] },
   { href: "/conta/plano", label: "Outros modos", activeKeys: ["plan", "pro"] },
-  { href: "/ferramentas", label: "Ferramentas", activeKeys: ["tools"] },
+  { href: "/conta/ferramentas", label: "Ferramentas", activeKeys: ["tools"] },
 ];
 
 export function AccountNav({ active }: { active: AccountNavKey }) {
