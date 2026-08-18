@@ -40,8 +40,10 @@ export function ProBillingActions({
         return;
       }
 
-      if (payload.error === "billing_not_configured" || payload.error === "pix_not_configured") {
-        setError("A cobrança ainda não está configurada neste ambiente.");
+      if (payload.error === "billing_not_configured") {
+        setError("A cobrança por cartão ainda não está configurada neste ambiente.");
+      } else if (payload.error === "pix_not_configured") {
+        setError("O Pix ainda está em ativação na conta Stripe.");
       } else if (payload.error === "already_active") {
         window.location.reload();
       } else if (payload.error === "manage_existing_subscription") {
@@ -49,7 +51,7 @@ export function ProBillingActions({
       } else if (response.status === 401) {
         setError("Sua sessão expirou. Entre novamente.");
       } else if (kind === "pix") {
-        setError("Não foi possível abrir o Pix agora. Confira a disponibilidade do método na Stripe e tente novamente.");
+        setError("O Pix ainda não está disponível para esta conta Stripe.");
       } else {
         setError("Não foi possível abrir a Stripe agora. Tente novamente em instantes.");
       }
@@ -124,14 +126,18 @@ export function ProBillingActions({
           type="button"
           onClick={() => openStripe("pix")}
           disabled={Boolean(pending) || !pixReady}
-          className="inline-flex min-h-12 w-full items-center justify-between border border-white/14 bg-white/[0.035] px-5 text-sm font-semibold text-white transition-colors hover:border-brand-300/50 hover:bg-white/[0.065] disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-12 w-full items-center justify-between border border-white/14 bg-white/[0.035] px-5 text-sm font-semibold text-white transition-colors hover:border-brand-300/50 hover:bg-white/[0.065] disabled:cursor-not-allowed disabled:opacity-45"
         >
-          <span>{pending === "pix" ? "Abrindo Pix..." : "Pagar com Pix"}</span>
+          <span>{!pixReady ? "Pix em ativação" : pending === "pix" ? "Abrindo Pix..." : "Pagar com Pix"}</span>
           <span className="text-xs font-medium text-white/50">R$ 19,90 · 30 dias</span>
         </button>
       </div>
 
-      <p className="mt-3 text-[11px] leading-5 text-white/34">Cartão renova mensalmente. Pix é pagamento único por 30 dias e precisa ser renovado manualmente.</p>
+      <p className="mt-3 text-[11px] leading-5 text-white/34">
+        {pixReady
+          ? "Cartão renova mensalmente. Pix é pagamento único por 30 dias e precisa ser renovado manualmente."
+          : "Cartão usa assinatura mensal. Pix já está preparado, mas será liberado somente depois da ativação da conta Stripe."}
+      </p>
       {error ? <p role="alert" className="mt-3 text-xs font-medium leading-5 text-rose-300">{error}</p> : null}
     </div>
   );
