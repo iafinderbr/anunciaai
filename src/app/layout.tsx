@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
+import "./professional-dark.css";
 
 const ADSENSE_CLIENT = "ca-pub-2381421388873161";
 
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#0c0d0f",
   width: "device-width",
   initialScale: 1,
 };
@@ -66,7 +67,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="bg-canvas text-ink antialiased">
         <a
           href="#inicio-conteudo"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
           Pular para o conteúdo principal
         </a>
