@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { toolLinks } from "@/components/sections/tools";
 
 interface Plan {
   name: string;
@@ -198,51 +197,53 @@ export function FaqSection() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-white">
-      <div className="container-page grid gap-10 py-12 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
-        <div>
-          <p className="text-[17px] font-semibold tracking-tight">Anuncia<span className="text-brand-600">AI</span></p>
-          <p className="mt-1 max-w-sm text-sm text-muted">
-            Ferramenta gratuita para organizar primeiras versões de anúncios e conteúdo de produtos.
-          </p>
-          <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis</Link>
-          <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted">
-            <Link href="/entrar" className="font-medium text-ink-soft transition-colors hover:text-brand-600">Entrar</Link>
-            <Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link>
-            <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
-            <Link href="/termos" className="transition-colors hover:text-brand-600">Termos de uso</Link>
+      <div className="container-page py-10 sm:py-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-md">
+            <Link href="/" className="inline-flex items-center gap-2.5" aria-label="AnunciaAI, página inicial">
+              <span className="grid size-8 place-items-center rounded-lg bg-ink text-sm font-bold text-white">A</span>
+              <span className="text-[17px] font-semibold tracking-tight">Anuncia<span className="text-brand-600">AI</span></span>
+            </Link>
+            <p className="mt-3 text-sm leading-6 text-muted">
+              Ferramentas simples para criar, organizar e reutilizar conteúdo de produtos sem complicar o processo.
+            </p>
+            <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+              Criar anúncio grátis
+            </Link>
           </div>
-        </div>
 
-        <nav aria-label="Ferramentas do AnunciaAI">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Ferramentas gratuitas</p>
-          <ul className="mt-4 grid gap-x-8 gap-y-2.5 text-sm text-muted sm:grid-cols-2">
-            {toolLinks.map((tool) => <li key={tool.href}><Link className="transition-colors hover:text-brand-600" href={tool.href}>{tool.label}</Link></li>)}
-          </ul>
-          <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Guias práticos</p>
-          <ul className="mt-4 grid gap-2.5 text-sm text-muted">
-            <li><Link className="font-medium text-ink-soft transition-colors hover:text-brand-600" href="/guias">Ver todos os guias</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-mercado-livre">Como criar anúncio no Mercado Livre</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-shopee">Como criar anúncio na Shopee</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-na-olx">Como criar anúncio na OLX</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-anuncio-no-facebook-marketplace">Como criar anúncio no Facebook Marketplace</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-pagina-de-produto-para-loja-virtual">Como criar página de produto para loja virtual</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-legenda-para-instagram">Como criar legenda para Instagram</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-fazer-descricao-de-produto">Como fazer descrição de produto</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-titulo-de-produto">Como criar título de produto</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-escolher-palavras-chave-para-produtos">Como escolher palavras-chave</Link></li>
-            <li><Link className="transition-colors hover:text-brand-600" href="/como-criar-nome-de-produto">Como criar nome de produto</Link></li>
-          </ul>
-        </nav>
+          <nav aria-label="Links do rodapé" className="grid gap-7 text-sm sm:grid-cols-3 sm:gap-10">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Produto</p>
+              <div className="mt-3 grid gap-2.5 text-muted">
+                <Link href="/ferramentas" className="transition-colors hover:text-brand-600">Ferramentas</Link>
+                <Link href="/guias" className="transition-colors hover:text-brand-600">Guias</Link>
+                <Link href="/#precos" className="transition-colors hover:text-brand-600">Preços</Link>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Acesso</p>
+              <div className="mt-3 grid gap-2.5 text-muted">
+                <Link href="/entrar" className="transition-colors hover:text-brand-600">Entrar ou criar conta</Link>
+                <Link href="/ferramentas" className="transition-colors hover:text-brand-600">Central do AnunciaAI</Link>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Institucional</p>
+              <div className="mt-3 grid gap-2.5 text-muted">
+                <Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link>
+                <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
+                <Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
+
       <div className="border-t border-line">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p>
-          <div className="flex gap-4">
-            <Link href="/entrar" className="transition-colors hover:text-brand-600">Entrar</Link>
-            <Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link>
-            <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
-            <Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link>
-          </div>
+          <p>Conteúdo gerado deve ser revisado antes da publicação.</p>
         </div>
       </div>
     </footer>
