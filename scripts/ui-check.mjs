@@ -136,6 +136,8 @@ requireText(
 
 for (const required of [
   "Acabamento final do sistema visual",
+  "color-scheme: dark",
+  "scrollbar-color: #34353a #0b0c0e",
   "background: #111216 !important",
   'aside[aria-label="Prévia do workspace AnunciaAI"]',
   'rounded-[10px]',
