@@ -40,14 +40,25 @@ function safeCallbackURL(value?: string) {
   return value;
 }
 
+function socialErrorMessage(error?: string) {
+  if (error === "google") {
+    return "O Google não conseguiu concluir o acesso. Escolha outra conta e tente novamente. Se continuar falhando, a configuração OAuth do Google precisa ser revisada.";
+  }
+  if (error === "facebook") {
+    return "O Facebook não conseguiu concluir o acesso. Tente novamente ou use o Google.";
+  }
+  return null;
+}
+
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ voltar?: string }>;
+  searchParams: Promise<{ voltar?: string; erro?: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const { voltar } = await searchParams;
+  const { voltar, erro } = await searchParams;
   const callbackURL = safeCallbackURL(voltar);
+  const errorMessage = socialErrorMessage(erro);
   const facebookEnabled = Boolean(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET);
 
   if (session) redirect(callbackURL);
@@ -71,6 +82,12 @@ export default async function SignInPage({
               </p>
             </div>
 
+            {errorMessage ? (
+              <div role="alert" className="mb-5 border border-rose-400/25 bg-rose-400/[0.05] px-5 py-4 text-sm leading-6 text-rose-100">
+                {errorMessage}
+              </div>
+            ) : null}
+
             <div className="grid overflow-hidden border border-white/[0.10] bg-[#121316] lg:grid-cols-[minmax(0,1fr)_380px]">
               <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-11">
                 <div className="flex items-center gap-3 border-b border-white/[0.08] pb-6">
@@ -88,8 +105,8 @@ export default async function SignInPage({
                   <p className="text-sm font-semibold text-white">Continuar para sua conta</p>
                   <p className="mt-2 text-sm leading-6 text-white/44">
                     {facebookEnabled
-                      ? "Escolha Google ou Facebook. Os dois acessos levam ao mesmo workspace e ao mesmo modo Grátis."
-                      : "O Google é o acesso disponível agora. Outras opções sociais só aparecem depois de configuradas e testadas de verdade."}
+                      ? "Escolha Google ou Facebook. Contas Google pessoais e Google Workspace usam o mesmo acesso."
+                      : "Use uma conta Google pessoal ou Google Workspace. Outras opções sociais só aparecem depois de configuradas e testadas de verdade."}
                   </p>
 
                   <div className="mt-5 grid gap-3 rounded-none [&_button]:rounded-none">
@@ -100,7 +117,7 @@ export default async function SignInPage({
                   <div className="mt-5 grid border-y border-white/[0.08] text-xs text-white/42 sm:grid-cols-3 sm:divide-x sm:divide-white/[0.08]">
                     <span className="px-3 py-3 text-center font-medium">R$ 0 para começar</span>
                     <span className="border-t border-white/[0.08] px-3 py-3 text-center font-medium sm:border-t-0">Sem cartão</span>
-                    <span className="border-t border-white/[0.08] px-3 py-3 text-center font-medium sm:border-t-0">Login social</span>
+                    <span className="border-t border-white/[0.08] px-3 py-3 text-center font-medium sm:border-t-0">Google pessoal ou empresa</span>
                   </div>
 
                   <p className="mt-4 text-xs leading-5 text-white/34">
