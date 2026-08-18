@@ -15,7 +15,7 @@ export const FEATURE_KEYS = [
 export type FeatureKey = (typeof FEATURE_KEYS)[number];
 
 const PLAN_FEATURES: Record<PlanId, ReadonlySet<FeatureKey>> = {
-  free: new Set(["basic_generators"]),
+  free: new Set(["basic_generators", "history"]),
   pro: new Set(["basic_generators", "history", "saved_products", "extra_variations"]),
   premium: new Set([
     "basic_generators",

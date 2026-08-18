@@ -19,11 +19,11 @@ const plans: Plan[] = [
     price: "R$ 0",
     period: "/mês",
     badge: "Disponível agora",
-    summary: "Para criar e revisar conteúdo de produtos sem precisar abrir uma conta.",
+    summary: "Para criar e revisar conteúdo de produtos, com conta opcional para guardar resultados importantes.",
     features: [
-      "Geradores atuais sem cadastro",
-      "Títulos e descrições",
-      "Benefícios e ficha técnica",
+      "10 geradores atuais sem cadastro",
+      "Conta Google opcional",
+      "Histórico salvo manualmente",
       "Ferramentas para diferentes canais",
     ],
     cta: "Começar grátis",
@@ -33,9 +33,9 @@ const plans: Plan[] = [
     name: "Pro",
     price: "Em breve",
     badge: "Em preparação",
-    summary: "Planejado para quem cria conteúdo de produtos com frequência e quer manter o trabalho organizado.",
+    summary: "Planejado para quem cria conteúdo de produtos com frequência e quer mais produtividade e reutilização.",
     features: [
-      "Conta e histórico de trabalho",
+      "Tudo do Grátis",
       "Salvar produtos e preferências",
       "Mais variações e atalhos",
       "Recursos de produtividade",
@@ -70,8 +70,7 @@ export function PricingSection() {
             Comece grátis. Faça upgrade quando os recursos avançados chegarem.
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            A versão gratuita já está disponível sem cadastro. Pro e Premium serão liberados somente depois de login,
-            cobrança e controle de acesso estarem prontos e testados.
+            A versão gratuita, o login com Google e o histórico salvo já estão disponíveis. Pro e Premium serão liberados somente depois da cobrança e do controle de acesso pago estarem prontos e testados.
           </p>
         </div>
 
@@ -151,11 +150,11 @@ export function PricingSection() {
 const faqs = [
   {
     question: "Preciso pagar para usar?",
-    answer: "Não. A versão gratuita atual pode ser usada sem cadastro e não pede cartão de crédito para começar.",
+    answer: "Não. A versão gratuita atual pode ser usada sem cadastro e não pede cartão de crédito para começar. Criar uma conta Google é opcional e permite usar o histórico salvo.",
   },
   {
     question: "Pro e Premium já estão disponíveis?",
-    answer: "Ainda não. Estamos preparando conta, autenticação e controle de acesso antes de ativar qualquer cobrança. Os preços serão mostrados antes do lançamento das assinaturas.",
+    answer: "Ainda não. Login e histórico já estão ativos, mas Pro e Premium só serão liberados depois que cobrança e controle de acesso pago estiverem prontos e testados. Os preços serão mostrados antes do lançamento das assinaturas.",
   },
   {
     question: "O conteúdo serve para Mercado Livre e Shopee?",
@@ -167,7 +166,7 @@ const faqs = [
   },
   {
     question: "Meus dados de produto ficam salvos?",
-    answer: "Não. O conteúdo digitado no formulário é usado para gerar o resultado no navegador e não é salvo no banco de gerações. Para o contador público, enviamos e armazenamos apenas o canal utilizado e o horário da geração. Métricas de navegação também podem ser coletadas pelo Vercel Web Analytics.",
+    answer: "Por padrão, não. O conteúdo usado para gerar um anúncio não é salvo no banco de gerações; para o contador público guardamos apenas canal e horário. Se você estiver conectado e clicar explicitamente em “Salvar no histórico”, aí o resultado escolhido é armazenado na sua conta até você excluí-lo.",
   },
 ];
 
