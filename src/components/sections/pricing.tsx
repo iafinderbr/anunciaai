@@ -215,8 +215,7 @@ export function SiteFooter() {
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Conta</p>
               <div className="mt-4 grid gap-2.5 text-ink-soft">
-                <Link href="/entrar" className="hover:text-brand-700">Entrar</Link>
-                <Link href="/conta" className="hover:text-brand-700">Minha conta</Link>
+                <Link href="/entrar" className="hover:text-brand-700">Entrar ou acessar conta</Link>
               </div>
             </div>
             <div>
