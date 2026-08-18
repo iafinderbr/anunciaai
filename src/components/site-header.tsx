@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ChannelSideDock } from "@/components/channel-showcase";
+import { ChannelSideDock } from "@/components/channel-side-dock";
 import { authClient } from "@/lib/auth-client";
 
 function BrandMark() {
@@ -25,8 +25,8 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const historyHref = session ? "/conta/historico" : "/entrar";
   const productsHref = session ? "/conta/produtos" : "/entrar";
   const modesHref = session ? "/conta/plano" : "/entrar?callbackURL=/conta/plano";
-  const showChannelDock = pathname.startsWith("/gerador-");
-  const navItem = "inline-flex min-h-11 items-center border-b-2 border-transparent px-1 text-sm font-medium text-ink-soft transition-colors hover:border-black/10 hover:text-ink";
+  const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
+  const navItem = "group relative inline-flex min-h-11 items-center px-1 text-sm font-medium text-ink-soft transition-colors hover:text-ink";
 
   return (
     <>
@@ -40,9 +40,18 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
           </Link>
 
           <nav aria-label="Navegação principal" className="hidden flex-1 items-center justify-center gap-8 md:flex">
-            <Link href="/ferramentas" className={navItem}>Ferramentas</Link>
-            <Link href="/guias" className={navItem}>Guias</Link>
-            <Link href="/sobre" className={navItem}>Sobre</Link>
+            <Link href="/ferramentas" className={navItem}>
+              Ferramentas
+              <span aria-hidden="true" className="absolute inset-x-1 bottom-1.5 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
+            </Link>
+            <Link href="/guias" className={navItem}>
+              Guias
+              <span aria-hidden="true" className="absolute inset-x-1 bottom-1.5 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
+            </Link>
+            <Link href="/sobre" className={navItem}>
+              Sobre
+              <span aria-hidden="true" className="absolute inset-x-1 bottom-1.5 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
+            </Link>
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
