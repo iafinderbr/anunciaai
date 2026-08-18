@@ -1,184 +1,154 @@
 # Contas, Grátis, Pro e Premium
 
-Este documento registra o estado atual e a direção de produto da área de contas do AnunciaAI. A versão gratuita deve continuar simples, a privacidade deve permanecer por padrão e cobrança só pode ser ativada quando autorização e pagamentos estiverem prontos.
+Este documento registra o estado atual da área de contas e planos do AnunciaAI. Privacidade continua sendo padrão, recursos pagos nunca são liberados apenas pelo navegador e cobrança só poderá entrar quando checkout, webhooks e estados de assinatura estiverem implementados e testados.
 
 ## Princípios
 
-- Os geradores atuais fazem parte do plano Grátis, mas exigem uma conta autenticada.
-- O plano Grátis custa R$ 0 e não exige cartão de crédito.
-- Google continua como provider principal enquanto alternativas sociais são configuradas e testadas.
-- Conteúdo de produto não deve ser armazenado apenas porque alguém gerou um anúncio.
-- Histórico e biblioteca continuam opt-in: só recebem conteúdo quando o usuário escolhe salvar.
-- Pro e Premium exigem uma conta autenticada e autorização de plano no servidor.
-- Nenhuma cobrança deve ser ativada antes de checkout, autorização e webhooks de pagamento estarem testados.
-- O AnunciaAI não deve armazenar número completo de cartão, CVV ou outros dados completos de pagamento.
-- Um preço planejado pode ser exibido com transparência, mas nunca como contratação disponível antes do checkout real.
+- Os geradores atuais fazem parte do plano Grátis e exigem conta autenticada.
+- O Grátis custa R$ 0 e não exige cartão.
+- Histórico e biblioteca de produtos são opt-in: conteúdo só é salvo quando o usuário escolhe salvar.
+- Google continua como provider principal; Facebook permanece condicional às credenciais da Meta.
+- O plano efetivo é calculado no servidor.
+- Nenhuma tela pode apresentar checkout, cartão ou assinatura paga como disponíveis antes da integração real.
+- O AnunciaAI não deve armazenar número completo de cartão ou CVV.
 
-## Planos
+## Grátis
 
-### Grátis
+Disponível por **R$ 0/mês**.
 
-Disponível agora por **R$ 0/mês**.
-
-- Conta autenticada.
 - 10 geradores atuais.
 - Área Minha conta.
-- Histórico opt-in de até 100 resultados salvos.
-- Biblioteca opt-in de até 20 produtos salvos.
-- Títulos, descrições, benefícios, ficha técnica e ferramentas para diferentes canais.
+- Histórico opt-in de até 100 resultados.
+- Biblioteca opt-in de até 20 produtos.
 - Sem cartão de crédito.
 
-### Pro
+## Pro — acesso antecipado
 
-Pacote preparado, ainda sem contratação.
+O Pro está disponível como **acesso antecipado sem cobrança**.
 
-**Preço planejado: R$ 19,90/mês.** O valor pode ser ajustado antes da abertura.
+A ativação é explícita na área `/conta/plano`. O servidor grava:
 
-Direção planejada:
+- `plan = pro`;
+- `subscriptionStatus = trialing`;
+- `subscriptionProvider = early-access`;
+- nenhum identificador de assinatura externa;
+- nenhuma cobrança.
+
+O usuário pode voltar ao Grátis pela mesma área. O status `trialing` representa somente acesso antecipado e não deve ser confundido com uma assinatura comercial.
+
+### Recursos ativos do Pro
 
 - Tudo do plano Grátis.
-- Biblioteca ampliada de produtos.
-- Mais variações por criação.
-- Atalhos e preferências de produtividade.
-- Prioridade para novos recursos do AnunciaAI.
+- Laboratório em `/conta/pro` para gerar e comparar 3 versões do mesmo produto.
+- Mais opções de título para comparação.
+- Acesso antecipado aos próximos recursos Pro que forem realmente implementados.
 
-### Premium
+O laboratório usa o motor existente do AnunciaAI e trabalha apenas com os dados informados pelo usuário. A revisão final continua obrigatória.
 
-Em estudo.
+### Preço comercial futuro
 
-Direção planejada:
+A referência de produto continua em **R$ 19,90/mês**, mas esse valor **não é cobrado hoje**. Ele só poderá virar preço contratável quando existir checkout real, confirmação server-side e fluxo de assinatura testado.
+
+## Premium — planejado
+
+O Premium continua planejado. Direção de produto, ainda não disponível:
 
 - Tudo do Pro.
 - Fluxos em lote.
 - Padrões e voz da marca.
 - Recursos avançados para catálogos.
 
-Os itens planejados são direção de produto, não promessa de disponibilidade imediata.
+Esses itens não devem ser apresentados como funcionalidades atuais nem como promessa de data.
 
-## Autenticação — ativa em produção
+## Autenticação
 
-A implementação usa **Better Auth + OAuth social + PostgreSQL/Drizzle**.
+A implementação usa Better Auth + OAuth social + PostgreSQL/Drizzle.
 
-Fluxo atual:
+Fluxo principal:
 
-1. visitante abre um gerador;
-2. se não houver sessão, o gerador mostra o acesso social disponível;
+1. visitante abre uma ferramenta;
+2. sem sessão, o gerador apresenta login;
 3. o provider autentica a identidade;
-4. o callback retorna para `/api/auth/callback/<provider>`;
-5. Better Auth cria ou recupera usuário e sessão;
-6. o usuário volta à ferramenta de origem ou à área de conta;
-7. os geradores do plano Grátis ficam disponíveis enquanto a sessão for válida.
+4. Better Auth cria ou recupera usuário e sessão;
+5. o usuário volta para uma rota interna validada;
+6. o modo Grátis fica disponível enquanto a sessão estiver válida.
 
-Configuração atual:
+Configuração principal:
 
 - handler: `/api/auth/[...all]`;
 - callback Google: `https://anunciaai.vercel.app/api/auth/callback/google`;
-- callback Facebook preparado: `https://anunciaai.vercel.app/api/auth/callback/facebook`;
-- credenciais mantidas somente nas variáveis seguras da Vercel;
-- tokens OAuth armazenados pela camada de autenticação com criptografia habilitada;
-- escopos Google limitados a `openid`, `email` e `profile`;
-- logout disponível na área de conta;
-- cabeçalho acompanha a sessão e mostra “Minha conta” para usuário conectado.
+- Facebook só aparece quando App ID e App Secret estiverem configurados;
+- tokens OAuth são tratados pela camada de autenticação com criptografia habilitada;
+- segredos ficam somente em variáveis privadas da Vercel.
 
-Variáveis privadas necessárias hoje:
+## Autorização de plano
 
-- `BETTER_AUTH_SECRET`
-- `BETTER_AUTH_URL`
-- `GOOGLE_CLIENT_ID`
-- `GOOGLE_CLIENT_SECRET`
-- `DATABASE_URL`
+A autorização fica centralizada em `src/lib/plans.ts`.
 
-Variáveis opcionais já suportadas para Facebook:
+- planos: `free`, `pro`, `premium`;
+- `free` é o fallback seguro;
+- `trialing` libera o Pro somente para acesso antecipado;
+- `active` fica preparado para uma assinatura comercial confirmada no futuro;
+- `past_due`, `canceled`, `inactive` ou valores inválidos não devem conceder acesso pago;
+- Premium não possui mecanismo público de ativação.
 
-- `FACEBOOK_CLIENT_ID`
-- `FACEBOOK_CLIENT_SECRET`
+A área `/conta/pro` valida sessão e plano efetivo no servidor. Usuário sem Pro/Premium é redirecionado para `/conta/plano`.
 
-O provider Facebook é condicional: ele só entra na configuração do Better Auth e só aparece na tela de login quando **as duas credenciais** estiverem presentes. Assim o site nunca mostra um botão social que não funciona.
+## API de acesso antecipado
 
-Nenhuma variável privada deve receber prefixo `NEXT_PUBLIC_`.
+`/api/account/plan`:
 
-## Providers alternativos
+- exige sessão;
+- exige mesma origem para mutações;
+- `POST` ativa Pro em `trialing` com provider `early-access`;
+- `DELETE` restaura Grátis/inactive;
+- respostas deixam explícito `billing: false`.
 
-### Facebook
+## Histórico e produtos
 
-A integração de código está preparada. Antes de ativar em produção ainda é necessário criar/configurar o app no Meta for Developers, cadastrar o callback do AnunciaAI, obter App ID/App Secret e salvar essas credenciais na Vercel. Depois disso o botão aparece automaticamente na página de entrada.
+O contador público de gerações continua separado e recebe somente dados mínimos necessários para atividade agregada. Nome do produto, características e conteúdo gerado não são enviados automaticamente para histórico ou biblioteca.
 
-### E-mail e senha
-
-Não deve ser liberado apenas como atalho. Uma implementação pública profissional precisa de verificação de e-mail e recuperação de senha com um serviço transacional. Habilitar cadastro por e-mail sem validar a propriedade do endereço aumenta risco de conflito de identidade e de vinculação incorreta com providers sociais.
-
-### Telefone
-
-Login por número depende de OTP enviado por SMS. Isso exige um provedor de SMS, novas regras de tratamento de telefone, proteção contra abuso e custo operacional. Por isso deve ser implementado apenas quando houver um serviço real de envio e validação, nunca como botão decorativo.
-
-## Estrutura de banco
-
-A base de autenticação possui `user`, `session`, `account` e `verification`. O usuário possui campos internos de plano, status da assinatura, provedor e identificador externo da assinatura. Esses campos são controlados no servidor e não podem ser escolhidos livremente pelo navegador.
-
-## Histórico e produtos salvos
-
-O contador público de gerações continua separado e recebe somente canal e horário. Nome do produto, características e texto gerado não são armazenados automaticamente por causa do login.
-
-Quando um usuário autenticado escolhe **Salvar no histórico**, o servidor armazena o resultado em `saved_generation`, vinculado ao proprietário. O limite atual é 100 itens por conta.
-
-Quando escolhe **Salvar produto**, o servidor armazena os dados informados em `saved_product`, também vinculado ao proprietário. O limite atual do Grátis é 20 produtos.
-
-As APIs validam sessão, origem, tamanho do corpo, campos permitidos, limites e propriedade do registro antes de mutações.
-
-## Modelo de acesso
-
-O plano nunca deve ser confiado apenas ao navegador. A autorização está centralizada em `src/lib/plans.ts`:
-
-- planos possíveis: `free`, `pro`, `premium`;
-- recursos são associados ao plano;
-- Pro/Premium só viram plano efetivo quando `subscriptionStatus` está `active`;
-- qualquer estado pago inválido, cancelado ou inativo volta para `free` na autorização;
-- preço planejado e recursos planejados do Pro ficam centralizados no mesmo catálogo.
-
-O gate visual dos geradores exige sessão para a experiência normal do produto. Histórico, produtos e qualquer futuro recurso pago continuam protegidos no servidor.
+- Histórico: até 100 itens na implementação atual.
+- Produtos salvos: até 20 itens na implementação atual.
+- O Pro **não anuncia limites maiores enquanto as APIs ainda não implementarem esses limites**.
 
 ## Pagamentos — ainda não ativos
 
 Não existe checkout, assinatura paga ou cobrança ativa.
 
-Fluxo esperado quando pagamentos forem implementados:
+Fluxo obrigatório antes de abrir cobrança:
 
 1. usuário autenticado escolhe um plano;
-2. backend cria ou inicia o checkout no provedor;
+2. backend cria checkout no provedor;
 3. usuário conclui o pagamento no ambiente do provedor;
-4. webhook assinado confirma o estado da assinatura;
-5. backend atualiza o plano do usuário;
-6. recursos pagos são liberados pelo servidor;
-7. cancelamento, falha ou expiração atualizam o acesso automaticamente.
+4. webhook assinado confirma o estado;
+5. backend atualiza plano e assinatura;
+6. recursos comerciais são liberados pelo servidor;
+7. falha, cancelamento e renovação atualizam acesso automaticamente.
 
-Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de pagamento. O webhook e o estado verificado no servidor devem ser a fonte de verdade.
+Nunca liberar assinatura paga apenas porque o navegador retornou de uma página externa.
 
 ## Estado da implementação
 
-1. Interface Grátis / Pro / Premium: **concluída**.
-2. Better Auth + Google OAuth: **concluído e testado em produção**.
-3. Provider Facebook condicional no servidor e botão real: **preparados; aguardando credenciais da Meta para ativação**.
-4. `/conta`, histórico e produtos protegidos: **concluídos**.
-5. Logout e navegação autenticada: **concluídos**.
-6. Histórico opt-in: **concluído**.
-7. Produtos salvos opt-in: **concluído**.
-8. Login obrigatório na interface dos geradores: **concluído**.
-9. Retorno à ferramenta de origem após login: **validado por rota interna**.
-10. Login por telefone/OTP: **não ativado; depende de provedor de SMS**.
-11. E-mail/senha: **não ativado; depende de verificação e recuperação de conta adequadas**.
-12. Pacote Pro e preço planejado de R$ 19,90/mês: **preparados, sem venda ativa**.
-13. Checkout em modo de teste: **pendente**.
-14. Webhooks e sincronização de assinatura: **pendentes**.
-15. Testes de cancelamento, falha e renovação: **pendentes**.
-16. Preços contratáveis e cobrança real: **pendentes**.
+1. Grátis: **ativo**.
+2. Google OAuth: **ativo**.
+3. Facebook OAuth: **código preparado, dependente de credenciais**.
+4. Histórico opt-in: **ativo**.
+5. Produtos salvos opt-in: **ativo**.
+6. Pro em acesso antecipado: **ativo sem cobrança**.
+7. Área `/conta/pro`: **ativa e protegida**.
+8. Laboratório Pro com 3 versões: **ativo**.
+9. Premium: **planejado**.
+10. Checkout pago: **pendente**.
+11. Webhooks de assinatura: **pendentes**.
+12. Testes de cobrança, renovação, falha e cancelamento: **pendentes**.
 
-## Regras para o CI
+## Regras de CI
 
-- `/entrar`, `/conta` e rotas pessoais devem permanecer fora do sitemap e `noindex`.
-- A interface não pode mostrar “Assinar agora” antes da cobrança estar configurada.
-- Os três motores de geração devem manter o gate de sessão.
-- Rotas protegidas devem validar sessão no servidor.
-- Ações que alteram dados pessoais devem validar propriedade e origem.
-- Segredos de OAuth e pagamento nunca podem ser versionados nem usar prefixo `NEXT_PUBLIC_`.
-- Provider opcional não pode aparecer na interface antes de suas credenciais estarem presentes.
-- O teste `auth:check` deve continuar validando contas, gate dos geradores, providers, histórico, produtos, privacidade, preço planejado e autorização durante o `typecheck`.
+- `/entrar`, `/conta`, `/conta/historico`, `/conta/produtos`, `/conta/plano` e `/conta/pro` devem permanecer `noindex`.
+- O Pro antecipado precisa manter `billing: false` e ativação server-side.
+- Premium deve continuar identificado como planejado.
+- A interface não pode mostrar `Assinar agora` ou checkout disponível antes da integração real.
+- Rotas pessoais devem validar sessão e propriedade dos dados.
+- Segredos nunca podem ser versionados ou usar prefixo `NEXT_PUBLIC_`.
+- O `auth:check` deve validar autenticação, privacidade, acesso antecipado Pro e separação entre acesso antecipado e futura cobrança comercial.
