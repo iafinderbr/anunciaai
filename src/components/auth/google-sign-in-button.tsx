@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
-export function GoogleSignInButton() {
+export function GoogleSignInButton({ callbackURL = "/conta" }: { callbackURL?: string }) {
   const [pending, setPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ export function GoogleSignInButton() {
     try {
       const result = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/conta",
+        callbackURL,
         errorCallbackURL: "/entrar?erro=google",
       });
 
@@ -35,9 +35,9 @@ export function GoogleSignInButton() {
         type="button"
         onClick={handleSignIn}
         disabled={pending}
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-line-strong bg-white px-4 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-brand-400 hover:bg-brand-50 disabled:cursor-wait disabled:opacity-70"
+        className="interactive-lift flex w-full items-center justify-center gap-3 rounded-xl border border-line-strong bg-white px-4 py-3.5 text-sm font-semibold text-ink shadow-card hover:border-brand-300 hover:bg-brand-50 disabled:cursor-wait disabled:opacity-70"
       >
-        <span aria-hidden="true" className="grid size-6 place-items-center rounded-full border border-line-strong text-xs font-bold">
+        <span aria-hidden="true" className="grid size-6 place-items-center rounded-full border border-line-strong bg-white text-xs font-bold">
           G
         </span>
         {pending ? "Abrindo Google..." : "Continuar com Google"}
