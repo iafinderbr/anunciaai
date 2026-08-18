@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
-  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, métricas e publicidade são utilizados.",
+  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, histórico, métricas e publicidade são utilizados.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Política de Privacidade | AnunciaAI",
-    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, métricas e publicidade são utilizados.",
+    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, histórico, métricas e publicidade são utilizados.",
   },
   robots: { index: true, follow: true },
 };
@@ -27,13 +27,13 @@ const sections = [
     title: "1. Dados informados na ferramenta",
     paragraphs: [
       "Os dados digitados nos campos do gerador, como nome, categoria, preço, público e características do produto, são usados para montar o resultado exibido na própria página.",
-      "A geração do texto acontece no navegador. Para registrar o contador de uso, o site envia ao servidor somente o canal selecionado, como Mercado Livre, Shopee, OLX ou loja virtual.",
+      "Na geração comum, o texto é montado no navegador. Para registrar o contador público de uso, o site envia ao servidor somente o canal selecionado, como Mercado Livre, Shopee, OLX ou loja virtual.",
     ],
   },
   {
-    title: "2. O que fica armazenado nas gerações",
+    title: "2. O que fica armazenado nas gerações comuns",
     paragraphs: [
-      "O registro técnico da geração não guarda o nome do produto, categoria, preço, público, título gerado nem as características digitadas. O banco mantém apenas informações mínimas necessárias ao contador e à operação, como o canal utilizado e o horário da geração.",
+      "O registro técnico usado pelo contador não guarda o nome do produto, categoria, preço, público, título gerado nem as características digitadas. O banco mantém apenas informações mínimas necessárias ao contador e à operação, como o canal utilizado e o horário da geração.",
     ],
   },
   {
@@ -45,13 +45,21 @@ const sections = [
     ],
   },
   {
-    title: "4. Métricas de navegação",
+    title: "4. Histórico salvo pelo usuário",
+    paragraphs: [
+      "Quando uma pessoa autenticada clica explicitamente em “Salvar no histórico”, o AnunciaAI passa a armazenar, vinculado àquela conta, o nome do produto, o canal, o título do resultado, o conteúdo completo que foi salvo e a data do salvamento.",
+      "Esse armazenamento é opcional e não acontece apenas por gerar um anúncio. O histórico existe para permitir que o próprio usuário reencontre os resultados que decidiu guardar entre diferentes acessos.",
+      "Cada conta pode manter até 100 resultados salvos nesta fase. O usuário pode excluir itens individualmente pela área de histórico; a exclusão remove aquele registro do histórico da conta.",
+    ],
+  },
+  {
+    title: "5. Métricas de navegação",
     paragraphs: [
       "O AnunciaAI utiliza o Vercel Web Analytics para entender, de forma agregada, o uso do site e melhorar desempenho, páginas e recursos. Essas métricas podem incluir informações técnicas e de navegação disponibilizadas pelo serviço de analytics.",
     ],
   },
   {
-    title: "5. Publicidade e Google AdSense",
+    title: "6. Publicidade e Google AdSense",
     paragraphs: [
       "O AnunciaAI pode utilizar o Google AdSense para exibir publicidade. Terceiros, incluindo o Google, podem usar cookies, beacons da Web, endereços IP e outros identificadores para veicular, medir e personalizar anúncios conforme as configurações do usuário e as regras aplicáveis.",
       "O uso de cookies de publicidade permite ao Google e aos parceiros dele exibir anúncios com base em visitas anteriores do usuário a este site e/ou a outros sites. O usuário pode gerenciar ou desativar a personalização de anúncios nas Configurações de anúncios do Google.",
@@ -59,33 +67,35 @@ const sections = [
     ],
   },
   {
-    title: "6. Planos e pagamento",
+    title: "7. Planos e pagamento",
     paragraphs: [
-      "Entrar na conta não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
+      "Entrar na conta ou salvar um resultado não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
       "Quando pagamentos forem ativados, esta política será atualizada para explicar o provedor utilizado e os dados efetivamente processados. O AnunciaAI não pretende armazenar número completo de cartão ou código de segurança.",
     ],
   },
   {
-    title: "7. Finalidade e minimização",
+    title: "8. Finalidade e minimização",
     paragraphs: [
-      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, medir o uso, exibir publicidade quando habilitada e melhorar a experiência. Sempre que uma informação deixa de ser necessária para essas finalidades, buscamos reduzir, anonimizar ou eliminar seu uso.",
+      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, armazenar resultados quando o usuário escolhe salvá-los, medir o uso, exibir publicidade quando habilitada e melhorar a experiência.",
+      "O conteúdo de produto não é adicionado ao histórico de forma automática. Sempre que uma informação deixa de ser necessária para as finalidades descritas, buscamos reduzir, anonimizar ou eliminar seu uso conforme aplicável.",
     ],
   },
   {
-    title: "8. Segurança e terceiros",
+    title: "9. Segurança e terceiros",
     paragraphs: [
-      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido, incluindo segredos fora do código público, validação de sessão no servidor e criptografia dos tokens OAuth armazenados pela camada de autenticação.",
+      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido, incluindo segredos fora do código público, validação de sessão no servidor, separação entre telemetria anônima e histórico pessoal e criptografia dos tokens OAuth armazenados pela camada de autenticação.",
       "Serviços de infraestrutura, autenticação, métricas e publicidade, como Vercel e Google, podem processar dados técnicos necessários para hospedar, autenticar, medir e monetizar o site segundo as próprias políticas desses fornecedores.",
     ],
   },
   {
-    title: "9. Direitos do usuário",
+    title: "10. Direitos e controle do usuário",
     paragraphs: [
-      "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei. Contas autenticadas passam a possuir dados vinculáveis ao usuário; por isso, pedidos relacionados a acesso, correção ou eliminação serão tratados conforme a finalidade, as obrigações aplicáveis e as capacidades disponíveis no serviço.",
+      "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei.",
+      "Contas autenticadas possuem dados vinculáveis ao usuário. O histórico oferece exclusão individual dos resultados salvos, e pedidos relacionados a acesso, correção ou eliminação de outros dados serão tratados conforme a finalidade, as obrigações aplicáveis e as capacidades disponíveis no serviço.",
     ],
   },
   {
-    title: "10. Alterações desta política",
+    title: "11. Alterações desta política",
     paragraphs: [
       "Esta política pode ser atualizada quando o produto ganhar novas funcionalidades, integrações, contas, publicidade ou formas de pagamento. A versão publicada nesta página é a versão vigente.",
     ],
