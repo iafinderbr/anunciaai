@@ -19,12 +19,12 @@ const plans: Plan[] = [
     price: "R$ 0",
     period: "/mês",
     badge: "Disponível agora",
-    summary: "Para criar e revisar conteúdo de produtos, com conta opcional para guardar resultados importantes.",
+    summary: "Para criar conteúdo de produtos, com conta opcional para guardar resultados e produtos importantes.",
     features: [
       "10 geradores atuais sem cadastro",
       "Conta Google opcional",
       "Histórico salvo manualmente",
-      "Ferramentas para diferentes canais",
+      "Até 20 produtos salvos",
     ],
     cta: "Começar grátis",
     href: "#ferramenta",
@@ -36,9 +36,9 @@ const plans: Plan[] = [
     summary: "Planejado para quem cria conteúdo de produtos com frequência e quer mais produtividade e reutilização.",
     features: [
       "Tudo do Grátis",
-      "Salvar produtos e preferências",
+      "Biblioteca ampliada de produtos",
       "Mais variações e atalhos",
-      "Recursos de produtividade",
+      "Preferências e recursos de produtividade",
     ],
     cta: "Ver área de conta",
     href: "/entrar",
@@ -70,7 +70,7 @@ export function PricingSection() {
             Comece grátis. Faça upgrade quando os recursos avançados chegarem.
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            A versão gratuita, o login com Google e o histórico salvo já estão disponíveis. Pro e Premium serão liberados somente depois da cobrança e do controle de acesso pago estarem prontos e testados.
+            A versão gratuita, o login com Google, o histórico e a biblioteca de produtos já estão disponíveis. Pro e Premium serão liberados somente depois da cobrança e do controle de acesso pago estarem prontos e testados.
           </p>
         </div>
 
@@ -150,11 +150,11 @@ export function PricingSection() {
 const faqs = [
   {
     question: "Preciso pagar para usar?",
-    answer: "Não. A versão gratuita atual pode ser usada sem cadastro e não pede cartão de crédito para começar. Criar uma conta Google é opcional e permite usar o histórico salvo.",
+    answer: "Não. A versão gratuita atual pode ser usada sem cadastro e não pede cartão de crédito para começar. Criar uma conta Google é opcional e permite usar histórico e produtos salvos.",
   },
   {
     question: "Pro e Premium já estão disponíveis?",
-    answer: "Ainda não. Login e histórico já estão ativos, mas Pro e Premium só serão liberados depois que cobrança e controle de acesso pago estiverem prontos e testados. Os preços serão mostrados antes do lançamento das assinaturas.",
+    answer: "Ainda não. Login, histórico e biblioteca de produtos já estão ativos, mas Pro e Premium só serão liberados depois que cobrança e controle de acesso pago estiverem prontos e testados. Os preços serão mostrados antes do lançamento das assinaturas.",
   },
   {
     question: "O conteúdo serve para Mercado Livre e Shopee?",
@@ -166,7 +166,7 @@ const faqs = [
   },
   {
     question: "Meus dados de produto ficam salvos?",
-    answer: "Por padrão, não. O conteúdo usado para gerar um anúncio não é salvo no banco de gerações; para o contador público guardamos apenas canal e horário. Se você estiver conectado e clicar explicitamente em “Salvar no histórico”, aí o resultado escolhido é armazenado na sua conta até você excluí-lo.",
+    answer: "Por padrão, não. O conteúdo usado para gerar um anúncio não é salvo no banco de gerações; para o contador público guardamos apenas canal e horário. Quando você está conectado, só armazenamos conteúdo ou dados do produto se você clicar explicitamente em “Salvar no histórico” ou “Salvar produto”.",
   },
 ];
 
