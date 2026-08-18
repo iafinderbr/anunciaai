@@ -69,6 +69,6 @@ export const MARKETPLACE_FAQ: FaqItem[] = [
   { question: "Existe um limite fixo de título informado pelo AnunciaAI?", answer: "Não. O AnunciaAI usa um tamanho editorial conservador para facilitar a leitura. Confira os campos e orientações atuais mostrados pelo Facebook Marketplace antes de publicar." },
   { question: "O que devo colocar na descrição?", answer: "Informe condição, características, marca, medidas, itens incluídos e defeitos relevantes quando essas informações existirem e puderem ser confirmadas." },
   { question: "Preciso informar o estado de conservação?", answer: "Quando você souber a condição, informe-a nas características. A ferramenta não deve adivinhar se o item é novo, seminovo ou usado." },
-  { question: "O gerador para Facebook Marketplace é gratuito?", answer: "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito." },
+  { question: "O gerador para Facebook Marketplace é gratuito?", answer: "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito." },
   { question: "A ferramenta serve para outros canais?", answer: "Sim. Existem geradores dedicados a OLX, Mercado Livre, Shopee, loja virtual e Instagram." },
 ];
