@@ -9,7 +9,7 @@ interface Plan {
   features: string[];
   cta: string;
   href: string;
-  featured?: boolean;
+  available?: boolean;
 }
 
 const plans: Plan[] = [
@@ -18,7 +18,7 @@ const plans: Plan[] = [
     price: "R$ 0",
     period: "/mês",
     badge: "Disponível agora",
-    summary: "Para criar conteúdo de produtos, com conta opcional para guardar resultados e produtos importantes.",
+    summary: "Para criar conteúdo de produtos e guardar o que você quiser na sua conta.",
     features: [
       "10 geradores atuais sem cadastro",
       "Conta Google opcional",
@@ -27,34 +27,34 @@ const plans: Plan[] = [
     ],
     cta: "Começar grátis",
     href: "#ferramenta",
+    available: true,
   },
   {
     name: "Pro",
     price: "Em breve",
     badge: "Em preparação",
-    summary: "Planejado para quem cria conteúdo de produtos com frequência e quer mais produtividade e reutilização.",
+    summary: "Para quem cria conteúdo com frequência e quer ganhar mais velocidade no dia a dia.",
     features: [
       "Tudo do Grátis",
       "Biblioteca ampliada de produtos",
       "Mais variações e atalhos",
-      "Preferências e recursos de produtividade",
+      "Preferências de produtividade",
     ],
-    cta: "Ver área de conta",
+    cta: "Ver minha conta",
     href: "/entrar",
-    featured: true,
   },
   {
     name: "Premium",
     price: "Em breve",
     badge: "Em preparação",
-    summary: "Planejado para catálogos maiores e fluxos que precisam de mais escala e padronização.",
+    summary: "Para catálogos maiores e fluxos que precisam de mais padronização e escala.",
     features: [
       "Tudo do Pro",
       "Fluxos em lote planejados",
       "Padrões e voz da marca",
       "Recursos avançados de catálogo",
     ],
-    cta: "Acompanhar preparação",
+    cta: "Ver minha conta",
     href: "/entrar",
   },
 ];
@@ -63,83 +63,75 @@ export function PricingSection() {
   return (
     <section id="precos" aria-labelledby="precos-titulo" className="border-y border-line bg-white">
       <div className="container-page py-14 sm:py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Planos</p>
-          <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Comece grátis. Faça upgrade quando os recursos avançados chegarem.
-          </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            A versão gratuita, o login com Google, o histórico e a biblioteca de produtos já estão disponíveis. Pro e Premium serão liberados somente depois da cobrança e do controle de acesso pago estarem prontos e testados.
-          </p>
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.52fr)] lg:items-end lg:gap-12">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Planos</p>
+            <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              Comece com o que já funciona hoje.
+            </h2>
+            <p className="mt-3 text-[15px] leading-7 text-muted">
+              O plano gratuito já inclui os geradores, login com Google, histórico e produtos salvos. Pro e Premium só serão abertos quando cobrança e controle de acesso estiverem prontos.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-line bg-canvas px-4 py-3.5 text-sm leading-6 text-muted lg:text-right">
+            <span className="font-semibold text-ink-soft">Sem cobrança ativa.</span> Os preços pagos serão publicados antes do lançamento.
+          </div>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+        <div className="mt-9 grid gap-4 lg:grid-cols-3">
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`relative flex flex-col rounded-2xl border p-6 shadow-card sm:p-7 ${
-                plan.featured ? "border-brand-300 bg-brand-50/45" : "border-line bg-canvas"
+              className={`flex min-h-[360px] flex-col rounded-2xl border p-5 sm:p-6 ${
+                plan.available ? "border-ink bg-ink text-white shadow-lift" : "border-line bg-canvas/70"
               }`}
             >
-              {plan.featured ? (
-                <span className="absolute right-5 top-5 rounded-full bg-brand-500 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
-                  Planejado para uso frequente
+              <div className="flex items-center justify-between gap-3">
+                <h3 className={`text-lg font-semibold tracking-tight ${plan.available ? "text-white" : "text-ink"}`}>{plan.name}</h3>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
+                    plan.available ? "bg-white/10 text-white/75" : "border border-line-strong bg-white text-muted"
+                  }`}
+                >
+                  {plan.badge}
                 </span>
-              ) : null}
-
-              <div className="pr-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-brand-700">{plan.badge}</p>
-                <h3 className="mt-2 text-lg font-semibold tracking-tight text-ink">{plan.name}</h3>
               </div>
 
               <p className="mt-5 flex items-baseline gap-1">
-                <span className="text-3xl font-semibold tracking-tight">{plan.price}</span>
-                {plan.period ? <span className="text-sm text-muted">{plan.period}</span> : null}
+                <span className={`text-3xl font-semibold tracking-tight ${plan.available ? "text-white" : "text-ink"}`}>{plan.price}</span>
+                {plan.period ? <span className={plan.available ? "text-sm text-white/55" : "text-sm text-muted"}>{plan.period}</span> : null}
               </p>
-              <p className="mt-3 min-h-16 text-sm leading-relaxed text-muted">{plan.summary}</p>
+              <p className={`mt-3 text-sm leading-6 ${plan.available ? "text-white/65" : "text-muted"}`}>{plan.summary}</p>
 
-              <ul className="mt-6 flex-1 space-y-2.5">
+              <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2.5 text-sm">
-                    <svg
+                    <span
                       aria-hidden="true"
-                      viewBox="0 0 20 20"
-                      className="mt-0.5 size-4 shrink-0 text-brand-600"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                    >
-                      <path d="M4 10.5 8 14.5 16 6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="text-ink-soft">{feature}</span>
+                      className={`mt-1 size-1.5 shrink-0 rounded-full ${plan.available ? "bg-brand-500" : "bg-brand-500/80"}`}
+                    />
+                    <span className={plan.available ? "text-white/78" : "text-ink-soft"}>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              {plan.name === "Grátis" ? (
+              {plan.available ? (
                 <a
                   href={plan.href}
-                  className="mt-7 w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                  className="mt-7 w-full rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
                 >
                   {plan.cta}
                 </a>
               ) : (
                 <Link
                   href={plan.href}
-                  className="mt-7 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-700"
+                  className="mt-7 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                 >
                   {plan.cta}
                 </Link>
               )}
             </article>
           ))}
-        </div>
-
-        <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-line bg-canvas px-5 py-4 text-center">
-          <p className="text-sm font-medium text-ink-soft">
-            Não há cobrança de Pro ou Premium ativa hoje.
-            <span className="font-normal text-muted"> Os preços serão publicados antes de qualquer assinatura ser aberta.</span>
-          </p>
         </div>
       </div>
     </section>
@@ -172,20 +164,20 @@ const faqs = [
 export function FaqSection() {
   return (
     <section aria-labelledby="faq-titulo" className="container-page py-14 sm:py-20">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-16">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Dúvidas</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Dúvidas</p>
           <h2 id="faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Perguntas frequentes</h2>
-          <p className="mt-3 text-[15px] text-muted">Use a versão gratuita e revise a primeira versão com os dados reais do seu produto.</p>
+          <p className="mt-3 text-[15px] leading-7 text-muted">Respostas rápidas sobre uso, conta, dados e próximos planos.</p>
         </div>
-        <div className="divide-y divide-line rounded-2xl border border-line bg-white shadow-card">
+        <div className="divide-y divide-line border-y border-line">
           {faqs.map((faq) => (
-            <details key={faq.question} className="group p-5 sm:p-6">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-ink">
+            <details key={faq.question} className="group py-5 sm:py-6">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-semibold text-ink">
                 {faq.question}
-                <span aria-hidden="true" className="grid size-6 shrink-0 place-items-center rounded-full border border-line-strong text-muted transition-transform group-open:rotate-45">+</span>
+                <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-full border border-line-strong bg-white text-muted transition-transform group-open:rotate-45">+</span>
               </summary>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{faq.answer}</p>
+              <p className="mt-3 max-w-3xl pr-10 text-sm leading-6 text-muted">{faq.answer}</p>
             </details>
           ))}
         </div>
