@@ -1,45 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", sans-serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  --color-canvas: #f6f7f9;
-  --color-ink: #101217;
-  --color-ink-soft: #313743;
-  --color-muted: #687180;
-  --color-line: #e5e7ec;
-  --color-line-strong: #d5d9e1;
+  --color-canvas: #f7f7f5;
+  --color-ink: #171714;
+  --color-ink-soft: #3f403b;
+  --color-muted: #73746d;
+  --color-line: #e7e7e2;
+  --color-line-strong: #d7d7d0;
 
-  --color-brand-50: #fff5ef;
-  --color-brand-100: #ffe5d6;
-  --color-brand-200: #ffc5a6;
-  --color-brand-500: #ff5c1a;
-  --color-brand-600: #e94a0a;
-  --color-brand-700: #b93a08;
+  --color-brand-50: #fff7f2;
+  --color-brand-100: #ffeadc;
+  --color-brand-200: #ffd0b4;
+  --color-brand-300: #ffae80;
+  --color-brand-500: #f1662a;
+  --color-brand-600: #d9541d;
+  --color-brand-700: #a83e15;
+  --color-brand-800: #7f3014;
 
-  --shadow-card: 0 1px 2px rgba(16, 18, 23, 0.035), 0 12px 34px -26px rgba(16, 18, 23, 0.34);
-  --shadow-lift: 0 3px 8px rgba(16, 18, 23, 0.045), 0 34px 72px -38px rgba(16, 18, 23, 0.46);
+  --shadow-card: 0 1px 2px rgba(23, 23, 20, 0.035), 0 8px 24px -22px rgba(23, 23, 20, 0.28);
+  --shadow-lift: 0 1px 2px rgba(23, 23, 20, 0.04), 0 18px 42px -28px rgba(23, 23, 20, 0.3);
 
-  --radius-xl2: 1.25rem;
+  --radius-xl2: 0.9rem;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 88px;
+    scroll-padding-top: 78px;
     -webkit-text-size-adjust: 100%;
     color-scheme: light;
   }
 
   body {
-    background:
-      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.92), transparent 24rem),
-      var(--color-canvas);
+    min-width: 320px;
+    background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-feature-settings: "cv11", "ss01";
-    letter-spacing: -0.011em;
+    letter-spacing: -0.009em;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -47,7 +47,8 @@
   h1,
   h2,
   h3 {
-    letter-spacing: -0.034em;
+    color: var(--color-ink);
+    letter-spacing: -0.038em;
     text-wrap: balance;
   }
 
@@ -69,20 +70,20 @@
   }
 
   ::selection {
-    background-color: var(--color-brand-100);
-    color: var(--color-brand-700);
+    background: var(--color-brand-100);
+    color: var(--color-brand-800);
   }
 
   :focus-visible {
     outline: 2px solid var(--color-brand-500);
-    outline-offset: 2px;
+    outline-offset: 3px;
   }
 }
 
 @layer components {
   .container-page {
     width: 100%;
-    max-width: 76rem;
+    max-width: 74rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
@@ -95,66 +96,50 @@
 
   .field {
     width: 100%;
-    border-radius: 0.8rem;
+    min-height: 46px;
+    border-radius: 0.65rem;
     border: 1px solid var(--color-line-strong);
-    background-color: #fff;
-    padding: 0.82rem 0.92rem;
+    background: #fff;
+    padding: 0.78rem 0.9rem;
     font-size: 0.95rem;
     line-height: 1.45;
     color: var(--color-ink);
-    box-shadow: inset 0 1px 0 rgba(16, 18, 23, 0.016), 0 1px 2px rgba(16, 18, 23, 0.018);
-    transition:
-      border-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 160ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
   }
 
   .field::placeholder {
-    color: #98a0af;
+    color: #a0a19a;
   }
 
   .field:hover {
-    border-color: #c5cad4;
+    border-color: #c8c8c0;
   }
 
   .field:focus {
     outline: none;
     border-color: var(--color-brand-500);
-    box-shadow: 0 0 0 3px var(--color-brand-50), 0 6px 20px -16px rgba(16, 18, 23, 0.32);
+    box-shadow: 0 0 0 3px rgba(241, 102, 42, 0.11);
   }
 
   .field[aria-invalid="true"] {
-    border-color: #e11d48;
-    box-shadow: 0 0 0 3px #fee2e2;
+    border-color: #dc3654;
+    box-shadow: 0 0 0 3px rgba(220, 54, 84, 0.1);
   }
 
-  .product-surface {
+  .product-surface,
+  .surface-premium {
     border: 1px solid var(--color-line);
-    background: rgba(255, 255, 255, 0.97);
+    background: #fff;
     box-shadow: var(--shadow-card);
   }
 
-  .surface-premium {
-    border: 1px solid var(--color-line);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.985), rgba(255, 255, 255, 0.945)),
-      #fff;
-    box-shadow:
-      0 1px 2px rgba(16, 18, 23, 0.028),
-      0 18px 48px -36px rgba(16, 18, 23, 0.34);
-  }
-
   .interactive-lift {
-    transition:
-      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
   }
 
   .interactive-lift:active {
-    transform: translateY(0) scale(0.985);
+    transform: translateY(0);
   }
 
   .scrollbar-none {
@@ -168,7 +153,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .interactive-lift:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: var(--shadow-lift);
   }
 }
@@ -176,7 +161,7 @@
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -185,23 +170,23 @@
 }
 
 .animate-fade-up {
-  animation: fade-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes menu-in {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.99);
+    transform: translateY(-3px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
 .animate-menu-in {
   transform-origin: top center;
-  animation: menu-in 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: menu-in 140ms ease-out both;
 }
 
 @keyframes shimmer-bar {
@@ -222,342 +207,332 @@
   animation: shimmer-bar 1.1s ease-in-out infinite;
 }
 
-/*
- * Refinamento estrutural das páginas públicas de aquisição e conteúdo.
- * Os seletores usam a estrutura semântica que já existe nas páginas para
- * preservar os componentes, SEO e funcionalidades, evitando duplicar estilos
- * em dezenas de arquivos.
- */
-
-/* Landing pages dos 10 geradores: o #ferramenta fica dentro da primeira seção. */
-main#topo:has(> section:first-child #ferramenta) {
-  background: #f8f9fb;
-}
-
-main#topo:has(> section:first-child #ferramenta) > section:first-child {
+/* Landing pages dos geradores: mais produto, menos template de marketing. */
+main#topo > section:first-child:has(#ferramenta) {
   border-bottom: 1px solid var(--color-line);
-  background:
-    radial-gradient(55% 46% at 50% 0%, rgba(255, 92, 26, 0.075), transparent 78%),
-    linear-gradient(180deg, #ffffff 0%, #fcfcfd 56%, #f7f8fa 100%);
+  background: #fff;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child > .container-page:first-of-type {
-  padding-top: clamp(2rem, 4vw, 3.25rem);
-  padding-bottom: 0.4rem;
+main#topo > section:first-child:has(#ferramenta) > [aria-hidden="true"] {
+  opacity: 0.48;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child > .container-page:last-of-type {
-  padding-top: clamp(1.8rem, 3vw, 2.5rem);
-  padding-bottom: clamp(3.5rem, 6vw, 5rem);
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type {
+  padding-top: clamp(1.8rem, 3vw, 2.6rem);
+  padding-bottom: 0;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child h1 {
-  max-width: 58rem;
-  margin-inline: auto;
-  font-size: clamp(2.15rem, 5.2vw, 3.4rem);
-  line-height: 1.025;
-  letter-spacing: -0.048em;
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type > nav {
+  max-width: 64rem;
+  margin-inline: 0;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child h1 + p {
-  max-width: 44rem;
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type > div:last-child {
+  max-width: 52rem;
+  margin-top: clamp(2.7rem, 5vw, 4.5rem);
+  margin-inline: 0;
+  text-align: left;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type > div:last-child > p:first-child {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--color-brand-700);
+  box-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+main#topo > section:first-child:has(#ferramenta) h1 {
+  max-width: 52rem;
+  margin-inline: 0;
+  margin-top: 1rem;
+  font-size: clamp(2.45rem, 5.2vw, 4.25rem);
+  line-height: 0.99;
+  letter-spacing: -0.055em;
+}
+
+main#topo > section:first-child:has(#ferramenta) h1 + p {
+  max-width: 43rem;
+  margin-inline: 0;
+  margin-top: 1.35rem;
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
   line-height: 1.72;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child a.rounded-2xl {
-  min-height: 46px;
-  border-radius: 0.88rem;
-  padding-block: 0.76rem;
-  transition:
-    transform 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 170ms cubic-bezier(0.22, 1, 0.36, 1);
+main#topo > section:first-child:has(#ferramenta) .flex.justify-center,
+main#topo > section:first-child:has(#ferramenta) ul.justify-center {
+  justify-content: flex-start;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:first-child ul > li.rounded-full {
-  border-color: rgba(213, 217, 225, 0.86);
-  background: rgba(255, 255, 255, 0.72);
-  color: #596171;
+main#topo > section:first-child:has(#ferramenta) a.rounded-2xl {
+  min-height: 44px;
+  border-radius: 0.68rem;
+  padding: 0.72rem 1.1rem;
+  font-size: 0.875rem;
   box-shadow: none;
-  backdrop-filter: blur(8px);
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) > .container-page,
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child).container-page {
-  padding-top: clamp(3.25rem, 5vw, 4.6rem);
-  padding-bottom: clamp(3.25rem, 5vw, 4.6rem);
+main#topo > section:first-child:has(#ferramenta) ul > li.rounded-full {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--color-muted);
+  box-shadow: none;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) h2 {
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+main#topo > section:first-child:has(#ferramenta) ul > li.rounded-full:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.55rem;
+  color: var(--color-line-strong);
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) .rounded-2xl {
-  border-radius: 0.95rem;
+main#topo > section:first-child:has(#ferramenta) #ferramenta {
+  padding-top: clamp(2.5rem, 4vw, 3.4rem);
+  padding-bottom: clamp(4rem, 6vw, 5.5rem);
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) .rounded-3xl {
-  border-radius: 1.18rem;
+main#topo > section:first-child:has(#ferramenta) #ferramenta > div {
+  max-width: 62rem;
+  margin-inline: 0;
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) .shadow-card {
-  box-shadow:
-    0 1px 2px rgba(16, 18, 23, 0.024),
-    0 10px 30px -27px rgba(16, 18, 23, 0.28);
+main#topo > section:first-child:has(#ferramenta) #ferramenta form,
+main#topo > section:first-child:has(#ferramenta) #ferramenta .surface-premium {
+  border-radius: 0.85rem;
+  box-shadow: 0 1px 2px rgba(23, 23, 20, 0.03), 0 18px 50px -42px rgba(23, 23, 20, 0.35);
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) details {
-  transition:
-    background-color 170ms ease,
-    border-color 170ms ease;
+main#topo > section:first-child:has(#ferramenta) ~ section {
+  background: var(--color-canvas);
 }
 
-main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) details[open] {
-  background-color: #fff;
+main#topo > section:first-child:has(#ferramenta) ~ section:nth-of-type(even) {
+  background: #fff;
 }
 
-/* Guias individuais: leitura mais editorial, menos cartões e sombras. */
+main#topo > section:first-child:has(#ferramenta) ~ section > .container-page,
+main#topo > section:first-child:has(#ferramenta) ~ section.container-page {
+  padding-top: clamp(3.5rem, 6vw, 5.25rem);
+  padding-bottom: clamp(3.5rem, 6vw, 5.25rem);
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section h2 {
+  max-width: 48rem;
+  line-height: 1.08;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .rounded-2xl {
+  border-radius: 0.72rem;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .rounded-3xl {
+  border-radius: 0.9rem;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .shadow-card,
+main#topo > section:first-child:has(#ferramenta) ~ section .shadow-lift {
+  box-shadow: none;
+}
+
+/* Guias individuais: leitura editorial, sem excesso de caixas. */
 main#ferramenta > article {
-  background: #f8f9fb;
+  background: #fff;
 }
 
 main#ferramenta > article > header {
-  background:
-    radial-gradient(56% 62% at 50% 0%, rgba(255, 92, 26, 0.07), transparent 76%),
-    #fff;
+  border-bottom: 1px solid var(--color-line);
+  background: #fff;
+}
+
+main#ferramenta > article > header > [aria-hidden="true"] {
+  opacity: 0.32;
 }
 
 main#ferramenta > article > header > .container-page {
-  padding-top: clamp(2.2rem, 4vw, 3.7rem);
-  padding-bottom: clamp(3rem, 5vw, 4.4rem);
+  padding-top: clamp(2rem, 3.5vw, 3rem);
+  padding-bottom: clamp(3.25rem, 6vw, 5rem);
 }
 
 main#ferramenta > article > header h1 {
-  max-width: 62rem;
-  font-size: clamp(2.2rem, 5vw, 3.45rem);
-  line-height: 1.035;
-  letter-spacing: -0.047em;
+  max-width: 58rem;
+  font-size: clamp(2.45rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.052em;
+}
+
+main#ferramenta > article > header p.inline-flex {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--color-brand-700);
+  box-shadow: none;
 }
 
 main#ferramenta > article > header a.rounded-2xl {
   min-height: 44px;
-  border-radius: 0.85rem;
+  border-radius: 0.68rem;
 }
 
 main#ferramenta > article > .container-page {
-  max-width: 74rem;
-  gap: clamp(2.5rem, 5vw, 4rem);
-  padding-top: clamp(2.8rem, 4.5vw, 4rem);
-  padding-bottom: clamp(3.5rem, 5vw, 5rem);
+  max-width: 72rem;
+  gap: clamp(3rem, 6vw, 5rem);
+  padding-top: clamp(3rem, 5vw, 4.5rem);
+  padding-bottom: clamp(4rem, 6vw, 6rem);
 }
 
 main#ferramenta > article > .container-page section {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 6rem;
 }
 
 main#ferramenta > article > .container-page section.mt-16 {
-  margin-top: 3.55rem;
+  margin-top: 4rem;
 }
 
 main#ferramenta > article .rounded-2xl {
-  border-radius: 0.92rem;
+  border-radius: 0.7rem;
 }
 
 main#ferramenta > article .rounded-3xl {
-  border-radius: 1.08rem;
+  border-radius: 0.85rem;
 }
 
-main#ferramenta > article .shadow-card {
-  box-shadow:
-    0 1px 2px rgba(16, 18, 23, 0.022),
-    0 10px 30px -28px rgba(16, 18, 23, 0.24);
-}
-
+main#ferramenta > article .shadow-card,
 main#ferramenta > article .shadow-lift {
-  box-shadow:
-    0 2px 6px rgba(16, 18, 23, 0.04),
-    0 26px 54px -36px rgba(16, 18, 23, 0.42);
+  box-shadow: none;
 }
 
 main#ferramenta > article section h2 {
-  line-height: 1.14;
-  letter-spacing: -0.033em;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
 }
 
 main#ferramenta > article section h2 + p {
-  max-width: 48rem;
+  max-width: 46rem;
+}
+
+main#ferramenta > article ol.space-y-5 > li,
+main#ferramenta > article ul.grid > li[class*="border"] {
+  border-color: var(--color-line);
+  background: #fbfbfa;
 }
 
 main#ferramenta > article aside .sticky {
-  border-radius: 0.95rem;
-  border-color: rgba(213, 217, 225, 0.9);
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 34px -30px rgba(16, 18, 23, 0.3);
-  backdrop-filter: blur(12px);
+  border-radius: 0.7rem;
+  border-color: var(--color-line);
+  background: #fbfbfa;
+  box-shadow: none;
 }
 
-main#ferramenta > article aside a {
-  transition:
-    color 150ms ease,
-    transform 150ms ease;
-}
-
-/* Hub de guias: cartões mais baixos e hierarquia mais próxima do produto. */
+/* Hub de guias. */
 main#topo:has(#guias-titulo) {
-  background: #f8f9fb;
+  background: var(--color-canvas);
 }
 
 main#topo:has(#guias-titulo) > section:first-child {
-  background:
-    radial-gradient(55% 55% at 50% 0%, rgba(255, 92, 26, 0.065), transparent 78%),
-    #fff;
+  background: #fff;
 }
 
 main#topo:has(#guias-titulo) > section:first-child .container-page {
-  padding-top: clamp(2.25rem, 4vw, 3.5rem);
-  padding-bottom: clamp(3rem, 5vw, 4.2rem);
+  padding-top: clamp(2rem, 3vw, 2.8rem);
+  padding-bottom: clamp(3.5rem, 6vw, 5.25rem);
 }
 
 main#topo:has(#guias-titulo) #guias-titulo {
-  font-size: clamp(2.2rem, 5vw, 3.45rem);
-  line-height: 1.035;
-  letter-spacing: -0.047em;
+  font-size: clamp(2.5rem, 5.2vw, 4.2rem);
+  line-height: 0.99;
+  letter-spacing: -0.055em;
 }
 
-main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a {
-  border-radius: 0.95rem;
-  box-shadow: none;
-  transition:
-    transform 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 170ms ease,
-    background-color 170ms ease,
-    box-shadow 170ms ease;
-}
-
+main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a,
 main#topo:has(#guias-titulo) article.rounded-3xl {
-  border-radius: 1.05rem;
-  border-color: rgba(213, 217, 225, 0.9);
-  background: rgba(255, 255, 255, 0.88);
-  transition:
-    transform 170ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 170ms ease,
-    box-shadow 170ms ease;
+  border-radius: 0.72rem;
+  border-color: var(--color-line);
+  background: #fff;
+  box-shadow: none;
 }
 
 main#topo:has(#guias-titulo) article.rounded-3xl li.rounded-full {
-  background: #f8f9fb;
-  color: #5e6675;
+  border-radius: 0.4rem;
+  background: var(--color-canvas);
 }
 
 main#topo:has(#guias-titulo) section .rounded-3xl {
-  border-radius: 1.12rem;
+  border-radius: 0.82rem;
 }
 
 main#topo:has(#guias-titulo) section .rounded-2xl {
-  border-radius: 0.92rem;
+  border-radius: 0.68rem;
 }
 
-/* Institucional (Sobre, Privacidade e Termos): leitura limpa e consistente. */
+/* Institucional. */
 main#ferramenta:not(:has(> article)) > section:first-child {
-  background:
-    radial-gradient(54% 62% at 42% 0%, rgba(255, 92, 26, 0.055), transparent 78%),
-    #fff;
+  background: #fff;
 }
 
 main#ferramenta:not(:has(> article)) > section:first-child .container-page {
   padding-top: clamp(2.5rem, 4vw, 4rem);
-  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  padding-bottom: clamp(3.5rem, 5vw, 5rem);
 }
 
 main#ferramenta:not(:has(> article)) > section:not(:first-child) .container-page {
-  padding-top: clamp(3rem, 4.5vw, 4.5rem);
+  padding-top: clamp(3.5rem, 5vw, 5rem);
   padding-bottom: clamp(3.5rem, 5vw, 5rem);
 }
 
 main#ferramenta:not(:has(> article)) .rounded-2xl {
-  border-radius: 0.95rem;
+  border-radius: 0.7rem;
 }
 
 main#ferramenta:not(:has(> article)) .shadow-card {
-  box-shadow:
-    0 1px 2px rgba(16, 18, 23, 0.022),
-    0 10px 30px -28px rgba(16, 18, 23, 0.24);
+  box-shadow: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  main#topo:has(> section:first-child #ferramenta) > section:first-child a.rounded-2xl:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 34px -24px rgba(16, 18, 23, 0.38);
+  main#topo > section:first-child:has(#ferramenta) ~ section :is(ul, ol).grid > li[class*="border"],
+  main#ferramenta > article ol.space-y-5 > li,
+  main#ferramenta > article ul.grid > li[class*="border"],
+  main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a,
+  main#topo:has(#guias-titulo) article.rounded-3xl {
+    transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
   }
 
-  main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) :is(ul, ol).grid > li[class*="border"] {
-    transition:
-      transform 170ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 170ms ease,
-      box-shadow 170ms ease,
-      background-color 170ms ease;
-  }
-
-  main#topo:has(> section:first-child #ferramenta) > section:not(:first-child) :is(ul, ol).grid > li[class*="border"]:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-line-strong);
-    box-shadow: 0 18px 44px -34px rgba(16, 18, 23, 0.34);
-  }
-
+  main#topo > section:first-child:has(#ferramenta) ~ section :is(ul, ol).grid > li[class*="border"]:hover,
   main#ferramenta > article ol.space-y-5 > li:hover,
-  main#ferramenta > article ul.grid > li[class*="border"]:hover {
-    border-color: var(--color-line-strong);
-    box-shadow: 0 18px 42px -34px rgba(16, 18, 23, 0.3);
-  }
-
+  main#ferramenta > article ul.grid > li[class*="border"]:hover,
   main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a:hover,
   main#topo:has(#guias-titulo) article.rounded-3xl:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-brand-200);
-    box-shadow: 0 18px 44px -35px rgba(16, 18, 23, 0.32);
-  }
-}
-
-@keyframes page-settle {
-  from {
-    opacity: 0.985;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  main#topo:has(> section:first-child #ferramenta) > section:first-child,
-  main#ferramenta > article > header,
-  main#topo:has(#guias-titulo) > section:first-child {
-    animation: page-settle 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transform: translateY(-1px);
+    border-color: var(--color-line-strong);
+    background: #fff;
   }
 }
 
 @media (max-width: 639px) {
-  main#topo:has(> section:first-child #ferramenta) > section:first-child h1,
+  main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type > div:last-child {
+    margin-top: 2.4rem;
+  }
+
+  main#topo > section:first-child:has(#ferramenta) h1,
   main#ferramenta > article > header h1,
   main#topo:has(#guias-titulo) #guias-titulo {
-    letter-spacing: -0.04em;
+    letter-spacing: -0.045em;
   }
 
-  main#topo:has(> section:first-child #ferramenta) > section:first-child ul {
-    gap: 0.4rem;
+  main#topo > section:first-child:has(#ferramenta) ul {
+    gap: 0.45rem;
   }
 
-  main#topo:has(> section:first-child #ferramenta) > section:first-child ul > li.rounded-full {
-    padding: 0.32rem 0.62rem;
-    font-size: 0.68rem;
+  main#topo > section:first-child:has(#ferramenta) #ferramenta {
+    padding-top: 2rem;
   }
 
   main#ferramenta > article > .container-page section.mt-16 {
-    margin-top: 3rem;
+    margin-top: 3.25rem;
   }
 }
 
