@@ -27,9 +27,12 @@ const historyPage = read("src/app/conta/historico/page.tsx");
 const productsPage = read("src/app/conta/produtos/page.tsx");
 const planPage = read("src/app/conta/plano/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
+const generatorAccessGate = read("src/components/auth/generator-access-gate.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const siteHeader = read("src/components/site-header.tsx");
 const generatorTool = read("src/components/generator/generator-tool.tsx");
+const productNameTool = read("src/components/generator/product-name-tool.tsx");
+const productKeywordsTool = read("src/components/generator/product-keywords-tool.tsx");
 const productControls = read("src/components/generator/saved-product-controls.tsx");
 const resultPanel = read("src/components/generator/result-panel.tsx");
 const privacyPage = read("src/app/privacidade/page.tsx");
@@ -116,6 +119,7 @@ for (const [name, source] of [
 requireText(signInPage, "GoogleSignInButton", "Tela de login perdeu o CTA real do Google.");
 requireText(signInPage, 'auth.api.getSession', "Tela de login não reconhece sessão existente.");
 requireText(signInPage, 'redirect("/conta")', "Usuário autenticado não é redirecionado para /conta.");
+requireText(signInPage, "use tudo do Grátis", "Tela de login deve explicar que a conta libera o modo Grátis.");
 requireText(accountPage, 'auth.api.getSession', "Área /conta não valida sessão no servidor.");
 requireText(accountPage, 'redirect("/entrar")', "Área /conta não bloqueia visitante sem sessão.");
 requireText(accountPage, "effectivePlan", "Área /conta não calcula o plano efetivo no servidor.");
@@ -126,7 +130,18 @@ requireText(historyPage, 'redirect("/entrar")', "Histórico não bloqueia visita
 requireText(productsPage, 'auth.api.getSession', "Produtos salvos não validam sessão no servidor.");
 requireText(productsPage, 'redirect("/entrar")', "Produtos salvos não bloqueiam visitante sem sessão.");
 requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
-requireText(googleButton, 'callbackURL: "/conta"', "Login Google não retorna para /conta.");
+requireText(googleButton, 'callbackURL = "/conta"', "Login Google precisa manter /conta como retorno padrão.");
+requireText(googleButton, "callbackURL,", "Botão Google precisa aceitar retorno para a ferramenta de origem.");
+requireText(generatorAccessGate, "authClient.useSession()", "Gate dos geradores não valida sessão.");
+requireText(generatorAccessGate, "GoogleSignInButton", "Gate dos geradores perdeu o login Google inline.");
+requireText(generatorAccessGate, "10 geradores grátis", "Gate deve explicar o acesso gratuito liberado pelo login.");
+for (const [name, source] of [
+  ["gerador principal", generatorTool],
+  ["gerador de nomes", productNameTool],
+  ["gerador de palavras-chave", productKeywordsTool],
+]) {
+  requireText(source, "GeneratorAccessGate", `${name} precisa exigir login antes de liberar a ferramenta.`);
+}
 requireText(signOutButton, "authClient.signOut", "Logout da conta não está implementado.");
 requireText(siteHeader, "authClient.useSession()", "Cabeçalho não acompanha a sessão autenticada.");
 requireText(siteHeader, 'session ? "/conta" : "/entrar"', "Cabeçalho não alterna entre login e Minha conta.");
@@ -169,6 +184,9 @@ requireText(privacyPage, "não é adicionado ao histórico ou à biblioteca de f
 requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
 requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
 requireText(plans, 'free: new Set(["basic_generators", "history", "saved_products"])', "Plano Grátis deve refletir histórico e produtos salvos atualmente disponíveis.");
+requireText(plans, 'PRO_PLANNED_PRICE_LABEL = "R$ 19,90"', "Preço planejado do Pro precisa ficar centralizado no catálogo de planos.");
+requireText(pricing, "Preço planejado", "Seção de preços deve marcar o valor do Pro como planejado.");
+requireText(pricing, "Ainda não é possível contratar", "Seção de preços deve deixar claro que o Pro não está à venda.");
 
 if (/Assinar agora/i.test(pricing)) {
   failures.push("A interface não pode mostrar 'Assinar agora' antes do checkout real estar ativo.");
@@ -180,4 +198,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, sessão protegida, histórico e produtos opt-in, reutilização, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, login obrigatório nos geradores, modo Grátis, histórico e produtos opt-in, preço Pro planejado, schema, variáveis e controle de plano validados.");
