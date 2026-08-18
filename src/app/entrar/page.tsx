@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/sections/pricing";
-import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { auth } from "@/lib/auth";
 import { SITE_URL } from "@/lib/site";
 
@@ -36,7 +35,6 @@ const accountBenefits = [
 ];
 
 export default async function SignInPage() {
-  await ensureDatabaseSchema();
   const session = await auth.api.getSession({ headers: await headers() });
   if (session) redirect("/conta");
 
