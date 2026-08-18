@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 import "./professional-dark.css";
 import "./professional-dark-pages.css";
+import "./account-dark.css";
 
 const ADSENSE_CLIENT = "ca-pub-2381421388873161";
 
