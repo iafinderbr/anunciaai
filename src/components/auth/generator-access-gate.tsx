@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
@@ -29,6 +30,7 @@ export function GeneratorAccessGate({ children }: { children: ReactNode }) {
 
   if (!session) {
     const callbackURL = pathname === "/" ? "/#ferramenta" : pathname;
+    const allMethodsHref = `/entrar?voltar=${encodeURIComponent(callbackURL)}`;
 
     return (
       <div className="surface-premium overflow-hidden rounded-[1.4rem]">
@@ -45,17 +47,23 @@ export function GeneratorAccessGate({ children }: { children: ReactNode }) {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-brand-600">Acesso ao plano Grátis</p>
                 <h3 className="mt-2 text-xl font-semibold tracking-tight text-ink sm:text-2xl">Entre uma vez para liberar o gerador</h3>
                 <p className="mt-2 text-sm leading-6 text-muted">
-                  O login com Google identifica sua conta e libera as ferramentas gratuitas. Sem formulário longo, senha nova ou cartão de crédito.
+                  Use o acesso social disponível para identificar sua conta e liberar as ferramentas gratuitas. Sem formulário longo ou cartão de crédito.
                 </p>
               </div>
             </div>
 
             <div className="mt-6 max-w-md">
               <GoogleSignInButton callbackURL={callbackURL} />
+              <Link
+                href={allMethodsHref}
+                className="mt-3 flex min-h-11 w-full items-center justify-center rounded-xl border border-line-strong bg-white px-4 py-3 text-sm font-semibold text-ink-soft transition-colors hover:border-brand-300 hover:bg-canvas hover:text-brand-700"
+              >
+                Ver outras formas de entrar
+              </Link>
             </div>
 
             <p className="mt-3 text-xs leading-5 text-muted">
-              Entrar não inicia assinatura nem cobrança. O AnunciaAI não recebe sua senha do Google.
+              Entrar não inicia assinatura nem cobrança. O AnunciaAI não recebe a senha da sua conta social.
             </p>
           </div>
 
