@@ -15,7 +15,7 @@ export function AccountNav({ active }: { active: AccountNavKey }) {
   return (
     <nav
       aria-label="Navegação da conta"
-      className="scrollbar-none flex gap-1 overflow-x-auto rounded-2xl border border-line bg-canvas/70 p-1.5 shadow-card"
+      className="scrollbar-none flex gap-6 overflow-x-auto border-y border-white/[0.09] bg-[#0f1013] px-1 sm:gap-8"
     >
       {items.map((item) => {
         const isActive = item.key === active;
@@ -24,13 +24,12 @@ export function AccountNav({ active }: { active: AccountNavKey }) {
             key={item.key}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className={`interactive-lift shrink-0 rounded-xl px-3.5 py-2.5 text-sm font-semibold ${
-              isActive
-                ? "border border-line-strong bg-white text-ink shadow-card"
-                : "border border-transparent text-ink-soft hover:bg-white hover:text-brand-700"
+            className={`relative shrink-0 py-4 text-[13px] font-semibold transition-colors ${
+              isActive ? "text-white" : "text-white/42 hover:text-white/76"
             }`}
           >
             {item.label}
+            {isActive ? <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" /> : null}
           </Link>
         );
       })}
