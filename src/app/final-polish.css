@@ -3,6 +3,11 @@
  * da versão anterior sem alterar a estrutura da cobrança autenticada.
  */
 
+html {
+  color-scheme: dark;
+  scrollbar-color: #34353a #0b0c0e;
+}
+
 /* A antiga regra clara das landings nunca deve voltar a ganhar do tema do gerador. */
 main#topo > section:first-child:has(#ferramenta) #ferramenta form,
 main#topo > section:first-child:has(#ferramenta) #ferramenta .surface-premium,
