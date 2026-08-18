@@ -28,14 +28,14 @@ const plannedPlans = [
   {
     name: "Grátis",
     status: "Disponível agora",
-    description: "Para criar anúncios e manter uma conta com histórico salvo manualmente.",
-    features: ["10 geradores", "Conta Google", "Histórico salvo", "Guias práticos"],
+    description: "Para criar anúncios e manter uma conta com histórico e biblioteca de produtos salvos manualmente.",
+    features: ["10 geradores", "Conta Google", "Histórico salvo", "Até 20 produtos salvos"],
   },
   {
     name: "Pro",
     status: "Em preparação",
-    description: "Para quem usa o AnunciaAI com frequência e quer mais produtividade.",
-    features: ["Tudo do Grátis", "Produtos salvos", "Mais variações", "Atalhos e preferências"],
+    description: "Para quem usa o AnunciaAI com frequência e quer mais produtividade e reutilização.",
+    features: ["Tudo do Grátis", "Biblioteca ampliada", "Mais variações", "Atalhos e preferências"],
   },
   {
     name: "Premium",
@@ -115,8 +115,8 @@ export default async function AccountPlanPage() {
                 <p className="mt-1 text-xs leading-5 text-muted">A versão Grátis continua disponível enquanto preparamos os recursos pagos.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Link href="/#precos" className="rounded-xl border border-line-strong bg-canvas px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">
-                  Ver planos na home
+                <Link href="/conta/produtos" className="rounded-xl border border-line-strong bg-canvas px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">
+                  Produtos salvos
                 </Link>
                 <Link href="/ferramentas" className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600">
                   Abrir ferramentas
