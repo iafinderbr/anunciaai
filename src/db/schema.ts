@@ -135,6 +135,33 @@ export const savedGeneration = pgTable(
   ],
 );
 
+/**
+ * Biblioteca de produtos da conta. O usuário escolhe explicitamente quando
+ * salvar os dados de um produto para reutilizá-los em outros geradores.
+ */
+export const savedProduct = pgTable(
+  "saved_product",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    productName: text("product_name").notNull(),
+    category: text("category").notNull(),
+    price: text("price").notNull().default(""),
+    audience: text("audience").notNull().default(""),
+    features: text("features").notNull(),
+    channel: text("channel").notNull(),
+    tone: text("tone").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("saved_product_user_updated_idx").on(table.userId, table.updatedAt),
+    index("saved_product_user_idx").on(table.userId),
+  ],
+);
+
 export type Generation = typeof generations.$inferSelect;
 export type NewGeneration = typeof generations.$inferInsert;
 export type User = typeof user.$inferSelect;
@@ -142,3 +169,5 @@ export type Session = typeof session.$inferSelect;
 export type Account = typeof account.$inferSelect;
 export type SavedGeneration = typeof savedGeneration.$inferSelect;
 export type NewSavedGeneration = typeof savedGeneration.$inferInsert;
+export type SavedProduct = typeof savedProduct.$inferSelect;
+export type NewSavedProduct = typeof savedProduct.$inferInsert;
