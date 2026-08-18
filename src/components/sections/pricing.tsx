@@ -33,23 +33,26 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section aria-labelledby="faq-titulo" className="bg-white">
+    <section aria-labelledby="faq-titulo" className="border-b border-white/[0.08] bg-[#101114] text-white">
       <div className="container-page py-20 sm:py-24 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-24">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Dúvidas</p>
-            <h2 id="faq-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-ink">Antes de começar.</h2>
-            <p className="mt-6 max-w-xs text-[15px] leading-7 text-muted">Respostas diretas sobre acesso, conta e dados do AnunciaAI.</p>
+            <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/32">
+              <span className="h-5 w-[2px] bg-brand-500" />
+              Dúvidas
+            </div>
+            <h2 id="faq-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-white">Antes de começar.</h2>
+            <p className="mt-6 max-w-xs text-[15px] leading-7 text-white/42">Respostas diretas sobre acesso, conta e dados do AnunciaAI.</p>
           </div>
 
-          <div className="border-y border-line">
+          <div className="border-y border-white/[0.09]">
             {faqs.map((faq, index) => (
-              <details key={faq.question} className={`group py-6 sm:py-7 ${index < faqs.length - 1 ? "border-b border-line" : ""}`}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-8 text-[16px] font-semibold tracking-[-0.02em] text-ink">
+              <details key={faq.question} className={`group py-6 sm:py-7 ${index < faqs.length - 1 ? "border-b border-white/[0.09]" : ""}`}>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-8 text-[16px] font-semibold tracking-[-0.02em] text-white/88 transition-colors hover:text-white">
                   {faq.question}
-                  <span aria-hidden="true" className="shrink-0 text-xl font-normal text-muted transition-all group-open:rotate-45 group-open:text-brand-700">+</span>
+                  <span aria-hidden="true" className="shrink-0 text-xl font-normal text-white/25 transition-all group-open:rotate-45 group-open:text-brand-300">+</span>
                 </summary>
-                <p className="mt-5 max-w-3xl pr-10 text-[15px] leading-7 text-muted">{faq.answer}</p>
+                <p className="mt-5 max-w-3xl pr-10 text-[15px] leading-7 text-white/44">{faq.answer}</p>
               </details>
             ))}
           </div>
@@ -61,9 +64,9 @@ export function FaqSection() {
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden border-t border-[#25262a] bg-[#0e0f12] text-white">
+    <footer className="relative overflow-hidden border-t border-[#25262a] bg-[#0b0c0e] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -right-56 -top-72 size-[700px] rounded-full bg-brand-500/[0.055] blur-3xl" />
+        <div className="absolute -right-56 -top-72 size-[700px] rounded-full bg-brand-500/[0.045] blur-3xl" />
       </div>
 
       <div className="container-page relative py-16 sm:py-20">
@@ -77,15 +80,15 @@ export function SiteFooter() {
             <p className="mt-6 max-w-2xl text-[15px] leading-7 text-white/42">Use o gerador completo, revise cada bloco e escolha o canal onde o conteúdo será usado.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span></Link>
-            <Link href="/entrar" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Entrar na conta</Link>
+            <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span></Link>
+            <Link href="/entrar" className="inline-flex min-h-14 items-center justify-center border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Entrar na conta</Link>
           </div>
         </div>
 
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24">
           <div className="max-w-lg">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="AnunciaAI, página inicial">
-              <span className="relative grid size-10 place-items-center overflow-hidden rounded-[8px] bg-white text-[15px] font-extrabold text-[#151619]">A<span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-brand-500" /></span>
+              <span className="relative grid size-9 place-items-center overflow-hidden border border-white/[0.14] bg-[#17181c] text-[14px] font-extrabold text-white">A<span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" /></span>
               <span className="text-[20px] font-semibold tracking-[-0.05em] text-white">Anuncia<span className="text-brand-300">AI</span></span>
             </Link>
             <p className="mt-6 max-w-md text-[15px] leading-7 text-white/42">Crie, organize e compare conteúdo de produtos para diferentes canais de venda.</p>
