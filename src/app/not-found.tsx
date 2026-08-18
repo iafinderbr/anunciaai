@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main id="inicio-conteudo" className="min-h-[68vh] bg-[#0d0e11] text-white">
+      <main className="min-h-[68vh] bg-[#0d0e11] text-white">
         <section className="container-page py-16 sm:py-20 lg:py-28">
           <div className="mx-auto max-w-5xl border-y border-white/[0.09] py-12 sm:py-16">
             <div className="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
