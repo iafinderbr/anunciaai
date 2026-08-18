@@ -100,6 +100,11 @@ export const auth = betterAuth({
         required: false,
         input: false,
       },
+      proAccessUntil: {
+        type: "date",
+        required: false,
+        input: false,
+      },
     },
   },
 });
