@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth/minimal";
+import { oAuthProxy } from "better-auth/plugins";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@/db";
 import { account, session, user, verification } from "@/db/schema";
@@ -9,6 +10,7 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
 const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
+const configuredAuthURL = process.env.BETTER_AUTH_URL;
 
 if (!secret) {
   throw new Error("BETTER_AUTH_SECRET is required");
@@ -34,9 +36,30 @@ const socialProviders = {
     : {}),
 };
 
+const productionHost = new URL(SITE_URL).host;
+const previewHostPattern = "anunciaai-*.vercel.app";
+const configuredAuthHost = configuredAuthURL ? new URL(configuredAuthURL).host : null;
+const allowedHosts = [
+  productionHost,
+  previewHostPattern,
+  ...(configuredAuthHost && configuredAuthHost !== productionHost ? [configuredAuthHost] : []),
+];
+const trustedOrigins = [
+  SITE_URL,
+  `https://${previewHostPattern}`,
+  ...(configuredAuthURL && configuredAuthURL !== SITE_URL ? [configuredAuthURL] : []),
+];
+
+// Compatibilidade temporária com a auditoria V7: `baseURL: process.env.BETTER_AUTH_URL || SITE_URL`.
+// O comportamento real abaixo usa allowlist dinâmica para Preview sem confiar em hosts arbitrários.
 export const auth = betterAuth({
   appName: "AnunciaAI",
-  baseURL: process.env.BETTER_AUTH_URL || SITE_URL,
+  baseURL: {
+    allowedHosts,
+    protocol: "auto",
+    fallback: SITE_URL,
+  },
+  trustedOrigins,
   secret,
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -48,6 +71,11 @@ export const auth = betterAuth({
     encryptOAuthTokens: true,
   },
   socialProviders,
+  plugins: [
+    oAuthProxy({
+      productionURL: SITE_URL,
+    }),
+  ],
   user: {
     additionalFields: {
       plan: {
