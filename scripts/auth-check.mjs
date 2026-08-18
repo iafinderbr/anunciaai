@@ -63,8 +63,10 @@ for (const required of [
   'drizzleAdapter(db,',
   'provider: "pg"',
   'baseURL: process.env.BETTER_AUTH_URL || SITE_URL',
+  'encryptOAuthTokens: true',
   'clientId: googleClientId',
   'clientSecret: googleClientSecret',
+  'scope: ["openid", "email", "profile"]',
   'input: false',
 ]) {
   requireText(authServer, required, `Configuração do Better Auth incompleta: ${required}.`);
@@ -105,4 +107,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, sessão protegida, logout, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, tokens criptografados, sessão protegida, logout, schema, variáveis e controle de plano validados.");
