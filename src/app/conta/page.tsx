@@ -4,7 +4,7 @@ import { desc, eq, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { AccountNav } from "@/components/account/account-nav";
-import { SignOutButton } from "@/components/auth/sign-out-button";
+import { AccountShellHeader } from "@/components/account/account-shell-header";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
 import { db } from "@/db";
@@ -109,23 +109,7 @@ export default async function AccountPage() {
 
         <section className="container-page relative py-7 sm:py-9 lg:py-10">
           <div className="mx-auto max-w-6xl">
-            <header className="flex flex-col gap-5 border-b border-white/[0.09] pb-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Conta</p>
-                <h1 className="mt-2 truncate text-2xl font-semibold tracking-[-0.045em] text-white sm:text-[1.7rem]">{session.user.name}</h1>
-                <p className="mt-1 truncate text-sm text-white/34">{session.user.email}</p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 sm:justify-end">
-                <Link href="/conta/plano" className="inline-flex items-center gap-2 text-xs font-semibold text-white/52 transition-colors hover:text-white">
-                  <span className="size-1.5 bg-emerald-400" aria-hidden="true" />
-                  Plano {planNames[currentPlan]}
-                </Link>
-                <div className="[&_button]:rounded-none [&_button]:border-white/[0.10] [&_button]:bg-transparent [&_button]:px-3.5 [&_button]:py-2.5 [&_button]:text-xs [&_button]:text-white/58 hover:[&_button]:text-white">
-                  <SignOutButton />
-                </div>
-              </div>
-            </header>
+            <AccountShellHeader name={session.user.name} email={session.user.email} plan={currentPlan} />
 
             <div className="mt-3">
               <AccountNav active="overview" />
@@ -134,7 +118,7 @@ export default async function AccountPage() {
             <section aria-labelledby="resumo-conta" className="mt-7">
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <h2 id="resumo-conta" className="text-xl font-semibold tracking-[-0.04em] text-white sm:text-2xl">Visão geral</h2>
+                  <h1 id="resumo-conta" className="text-xl font-semibold tracking-[-0.04em] text-white sm:text-2xl">Visão geral</h1>
                   <p className="mt-1.5 text-xs leading-5 text-white/34">Seus salvos e o acesso atual, sem informação sobrando.</p>
                 </div>
                 <Link href="/#ferramenta" className="hidden text-sm font-semibold text-brand-300 transition-colors hover:text-white sm:inline-flex">Criar anúncio →</Link>
@@ -202,7 +186,7 @@ export default async function AccountPage() {
                 <h2 className="text-base font-semibold tracking-[-0.03em] text-white">Atalhos</h2>
                 <div className="mt-3 grid divide-y divide-white/[0.08] border-y border-white/[0.08]">
                   <Link href="/#ferramenta" className="flex items-center justify-between py-3 text-sm font-semibold text-white transition-colors hover:text-brand-300">Criar anúncio <span aria-hidden="true">→</span></Link>
-                  <Link href="/ferramentas" className="flex items-center justify-between py-3 text-sm font-semibold text-white/55 transition-colors hover:text-white">Ferramentas <span aria-hidden="true">→</span></Link>
+                  <Link href="/conta/ferramentas" className="flex items-center justify-between py-3 text-sm font-semibold text-white/55 transition-colors hover:text-white">Ferramentas <span aria-hidden="true">→</span></Link>
                   <Link href="/guias" className="flex items-center justify-between py-3 text-sm font-semibold text-white/55 transition-colors hover:text-white">Guias <span aria-hidden="true">→</span></Link>
                 </div>
               </aside>
