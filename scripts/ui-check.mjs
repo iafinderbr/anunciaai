@@ -21,6 +21,8 @@ const globals = read("src/app/globals.css");
 const guideHub = read("src/app/guias/page.tsx");
 const header = read("src/components/site-header.tsx");
 const toolsHub = read("src/app/ferramentas/page.tsx");
+const channelShowcase = read("src/components/channel-showcase.tsx");
+const channelDock = read("src/components/channel-side-dock.tsx");
 
 const publicPaths = [...sitemap.matchAll(/^\s*"(\/[^\"]*)",?\s*$/gm)].map((match) => match[1]);
 const generatorPaths = publicPaths.filter((route) => route.startsWith("/gerador-"));
@@ -58,7 +60,24 @@ requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial
 requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo visual do hub de guias.");
 requireText(globals, "--color-canvas: #f7f7f5", "O sistema visual perdeu a paleta neutra definida para o produto.");
 requireText(header, 'id="inicio-conteudo"', "O cabeçalho perdeu o alvo acessível do skip link.");
+requireText(header, "ChannelSideDock", "O shell público perdeu a navegação lateral por canal.");
+requireText(header, 'pathname === "/"', "A Home precisa exibir a navegação lateral por canal.");
+requireText(header, 'pathname === "/ferramentas"', "A biblioteca precisa manter a navegação lateral por canal.");
 requireText(toolsHub, 'id="geradores"', "/ferramentas perdeu a biblioteca de geradores.");
+requireText(channelDock, "data-channel-side-dock", "A dock lateral precisa manter um marcador estável para auditoria visual.");
+requireText(channelDock, "Abrir gerador", "A dock lateral precisa abrir contexto antes de navegar para o canal.");
+requireText(channelShowcase, "ChannelCompactBar", "Telas menores perderam o fallback compacto de canais.");
+
+for (const href of [
+  "/gerador-de-anuncios-mercado-livre",
+  "/gerador-de-anuncios-shopee",
+  "/gerador-de-legendas-para-instagram",
+  "/gerador-de-anuncios-olx",
+  "/gerador-de-anuncios-facebook-marketplace",
+  "/gerador-de-anuncios-para-loja-virtual",
+]) {
+  requireText(channelShowcase, href, `Navegação lateral perdeu o canal ${href}.`);
+}
 
 if (failures.length) {
   console.error("\nFalhas na auditoria de UI pública:");
@@ -67,5 +86,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, /guias e /ferramentas preservam o novo sistema visual compartilhado.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, navegação lateral de 6 canais, /guias e /ferramentas preservam o sistema visual compartilhado.`,
 );
