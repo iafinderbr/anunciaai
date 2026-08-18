@@ -1,31 +1,33 @@
 import Link from "next/link";
 
-const items = [
-  { href: "/conta", label: "Visão geral", key: "overview" },
-  { href: "/conta/historico", label: "Histórico", key: "history" },
-  { href: "/conta/produtos", label: "Produtos", key: "products" },
-  { href: "/conta/pro", label: "Pro", key: "pro" },
-  { href: "/conta/plano", label: "Outros modos", key: "plan" },
-  { href: "/ferramentas", label: "Ferramentas", key: "tools" },
-] as const;
+type AccountNavKey = "overview" | "history" | "products" | "pro" | "plan" | "tools";
 
-type AccountNavKey = (typeof items)[number]["key"];
+const items: ReadonlyArray<{
+  href: string;
+  label: string;
+  activeKeys: readonly AccountNavKey[];
+}> = [
+  { href: "/conta", label: "Início", activeKeys: ["overview"] },
+  { href: "/conta/historico", label: "Biblioteca", activeKeys: ["history", "products"] },
+  { href: "/conta/plano", label: "Planos", activeKeys: ["plan", "pro"] },
+  { href: "/ferramentas", label: "Ferramentas", activeKeys: ["tools"] },
+];
 
 export function AccountNav({ active }: { active: AccountNavKey }) {
   return (
     <nav
       aria-label="Navegação da conta"
-      className="scrollbar-none flex gap-6 overflow-x-auto border-y border-white/[0.09] bg-[#0f1013] px-1 sm:gap-8"
+      className="scrollbar-none flex gap-7 overflow-x-auto border-y border-white/[0.09] bg-[#0f1013] px-1 sm:gap-9"
     >
       {items.map((item) => {
-        const isActive = item.key === active;
+        const isActive = item.activeKeys.includes(active);
         return (
           <Link
-            key={item.key}
+            key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className={`relative shrink-0 py-4 text-[13px] font-semibold transition-colors ${
-              isActive ? "text-white" : "text-white/42 hover:text-white/76"
+            className={`relative shrink-0 py-3.5 text-[13px] font-semibold transition-colors ${
+              isActive ? "text-white" : "text-white/40 hover:text-white/76"
             }`}
           >
             {item.label}
