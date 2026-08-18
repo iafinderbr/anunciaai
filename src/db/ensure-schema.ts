@@ -59,8 +59,7 @@ async function createSchema() {
       )
   `);
 
-  // Estrutura compatível com o núcleo do Better Auth e campos próprios de plano.
-  // Criar as tabelas agora é seguro: nenhuma conta é criada até o OAuth ser ativado.
+  // Estrutura do Better Auth e campos próprios de plano.
   await db.execute(sql`
     create table if not exists "user" (
       id text primary key,
@@ -151,13 +150,36 @@ async function createSchema() {
   await db.execute(sql`
     create index if not exists verification_identifier_idx on verification (identifier)
   `);
+
+  // Histórico opt-in: conteúdo só entra aqui depois de uma ação explícita de
+  // um usuário autenticado. O contador anônimo continua separado e minimizado.
+  await db.execute(sql`
+    create table if not exists saved_generation (
+      id text primary key,
+      user_id text not null references "user"(id) on delete cascade,
+      product_name text not null,
+      channel text not null,
+      title text not null,
+      content text not null,
+      created_at timestamp with time zone not null default now()
+    )
+  `);
+
+  await db.execute(sql`
+    create index if not exists saved_generation_user_created_idx
+      on saved_generation (user_id, created_at)
+  `);
+
+  await db.execute(sql`
+    create index if not exists saved_generation_user_idx
+      on saved_generation (user_id)
+  `);
 }
 
 /**
- * Garante a estrutura mínima usada pelo contador e deixa a base de autenticação
- * pronta para a próxima fase. A criação é idempotente e a anonimização de
- * registros antigos é marcada como migração para não varrer toda a tabela a
- * cada nova instância do servidor.
+ * Garante de forma idempotente a estrutura usada pelo contador, autenticação,
+ * planos e histórico opt-in. A anonimização de registros antigos é marcada
+ * como migração para não varrer a tabela a cada nova instância do servidor.
  */
 export function ensureDatabaseSchema(): Promise<void> {
   if (!schemaPromise) {
