@@ -5,15 +5,17 @@ import { useState } from "react";
 export function ProBillingActions({
   active,
   hasStripeSubscription,
+  billingReady,
 }: {
   active: boolean;
   hasStripeSubscription: boolean;
+  billingReady: boolean;
 }) {
   const [pending, setPending] = useState<"checkout" | "portal" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function openStripe(path: "/api/stripe/checkout" | "/api/stripe/portal", kind: "checkout" | "portal") {
-    if (pending) return;
+    if (pending || !billingReady) return;
     setPending(kind);
     setError(null);
 
@@ -45,6 +47,21 @@ export function ProBillingActions({
   }
 
   const shouldManage = active || hasStripeSubscription;
+
+  if (!billingReady) {
+    return (
+      <div>
+        <button
+          type="button"
+          disabled
+          className="inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center bg-white/10 px-5 text-sm font-semibold text-white/45"
+        >
+          Pagamento em configuração
+        </button>
+        <p className="mt-3 text-xs leading-5 text-white/36">O modo Pro só abre cobrança quando a integração segura com a Stripe estiver pronta neste ambiente.</p>
+      </div>
+    );
+  }
 
   return (
     <div>
