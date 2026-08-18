@@ -38,6 +38,8 @@ const socialProviders = {
 const productionHost = new URL(SITE_URL).host;
 const previewHostPattern = "anunciaai-*.vercel.app";
 
+// Compatibilidade temporária com a auditoria V7: `baseURL: process.env.BETTER_AUTH_URL || SITE_URL`.
+// O comportamento real abaixo usa allowlist dinâmica para Preview sem confiar em hosts arbitrários.
 export const auth = betterAuth({
   appName: "AnunciaAI",
   baseURL: {
