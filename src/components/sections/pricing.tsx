@@ -19,8 +19,8 @@ const plans: Plan[] = [
     name: "Grátis",
     price: "R$ 0",
     period: "/mês",
-    badge: "Disponível",
-    summary: "Para criar anúncios, guardar resultados escolhidos e organizar produtos em uma conta simples.",
+    badge: "Disponível agora",
+    summary: "Para começar a criar, organizar e reutilizar conteúdo de produtos sem cartão de crédito.",
     features: [
       "10 geradores com login Google",
       "Sem cartão de crédito",
@@ -35,7 +35,7 @@ const plans: Plan[] = [
     name: "Pro",
     price: PRO_PLANNED_PRICE_LABEL,
     period: "/mês",
-    badge: "Preço planejado",
+    badge: "Próximo passo",
     summary: "Para quem cria conteúdo com frequência e quer mais espaço, velocidade e reutilização no fluxo de trabalho.",
     features: PRO_PLANNED_FEATURES,
     cta: "Acompanhar lançamento",
@@ -58,76 +58,117 @@ const plans: Plan[] = [
   },
 ];
 
+function Check({ inverse = false }: { inverse?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${
+        inverse ? "bg-brand-500/16 text-brand-300" : "bg-brand-50 text-brand-700"
+      }`}
+    >
+      ✓
+    </span>
+  );
+}
+
 export function PricingSection() {
   return (
-    <section id="precos" aria-labelledby="precos-titulo" className="border-y border-line bg-white">
+    <section id="precos" aria-labelledby="precos-titulo" className="border-y border-line bg-[#f4f4f1]">
       <div className="container-page py-16 sm:py-20 lg:py-24">
-        <div className="grid gap-8 border-b border-line pb-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Planos</p>
-            <h2 id="precos-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink sm:text-[2.35rem]">
-              Comece sem custo. Evolua quando precisar.
-            </h2>
-            <p className="mt-4 text-[15px] leading-7 text-muted">
-              O modo Grátis libera os geradores atuais depois do login com Google. O Pro tem pacote e preço planejados, mas checkout e cobrança seguem desligados.
-            </p>
-          </div>
-          <div className="border-l border-line pl-5 text-sm leading-6 text-muted">
-            <p className="font-semibold text-ink">Nenhuma cobrança está ativa.</p>
-            <p className="mt-1">O valor do Pro é uma proposta de lançamento e pode mudar antes da abertura.</p>
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Planos</p>
+          <h2 id="precos-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-ink sm:text-[2.65rem]">
+            Comece grátis. Só evolua quando fizer sentido.
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-7 text-muted">
+            O plano Grátis já libera os geradores atuais. O Pro tem pacote e preço planejados, mas checkout e cobrança continuam desligados.
+          </p>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <article
-              key={plan.name}
-              className={`relative flex min-h-[370px] flex-col rounded-lg border bg-white p-6 ${plan.plannedPrice ? "border-ink" : "border-line"}`}
-            >
-              {plan.plannedPrice ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 rounded-t-lg bg-brand-500" /> : null}
+        <div className="mt-11 grid gap-5 lg:grid-cols-3 lg:items-stretch">
+          {plans.map((plan) => {
+            const featured = Boolean(plan.plannedPrice);
 
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold tracking-[-0.025em] text-ink">{plan.name}</h3>
-                  <p className="mt-1 text-xs text-muted">{plan.badge}</p>
+            return (
+              <article
+                key={plan.name}
+                className={`relative flex min-h-[430px] flex-col overflow-hidden rounded-2xl border p-6 sm:p-7 ${
+                  featured
+                    ? "border-[#24252a] bg-[#111216] text-white shadow-[0_28px_80px_-42px_rgba(0,0,0,.72)]"
+                    : "border-line bg-white text-ink shadow-[0_18px_50px_-44px_rgba(23,23,20,.3)]"
+                }`}
+              >
+                {featured ? (
+                  <div className="absolute inset-x-0 top-0 h-1 bg-brand-500" aria-hidden="true" />
+                ) : null}
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className={`text-[10px] font-semibold uppercase tracking-[0.13em] ${featured ? "text-brand-300" : "text-brand-700"}`}>
+                      {plan.badge}
+                    </p>
+                    <h3 className={`mt-3 text-xl font-semibold tracking-[-0.035em] ${featured ? "text-white" : "text-ink"}`}>
+                      {plan.name}
+                    </h3>
+                  </div>
+                  {plan.available ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700">
+                      <span className="size-1.5 rounded-full bg-emerald-500" /> Ativo
+                    </span>
+                  ) : null}
                 </div>
-                {plan.available ? <span className="size-2 rounded-full bg-emerald-500" aria-label="Plano disponível" /> : null}
-              </div>
 
-              <div className="mt-7">
-                <p className="flex items-baseline gap-1">
-                  <span className="text-3xl font-semibold tracking-[-0.04em] text-ink">{plan.price}</span>
-                  {plan.period ? <span className="text-sm text-muted">{plan.period}</span> : null}
-                </p>
-                <p className="mt-3 text-sm leading-6 text-muted">{plan.summary}</p>
-              </div>
+                <div className="mt-8">
+                  <p className="flex items-baseline gap-1.5">
+                    <span className={`text-[2.7rem] font-semibold leading-none tracking-[-0.055em] ${featured ? "text-white" : "text-ink"}`}>
+                      {plan.price}
+                    </span>
+                    {plan.period ? <span className={`text-sm ${featured ? "text-white/42" : "text-muted"}`}>{plan.period}</span> : null}
+                  </p>
+                  <p className={`mt-4 text-sm leading-6 ${featured ? "text-white/55" : "text-muted"}`}>{plan.summary}</p>
+                </div>
 
-              <div className="mt-6 border-t border-line pt-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Inclui</p>
-                <ul className="mt-4 space-y-3">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm leading-5 text-ink-soft">
-                      <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                <div className={`mt-7 border-t pt-6 ${featured ? "border-white/10" : "border-line"}`}>
+                  <p className={`text-[10px] font-semibold uppercase tracking-[0.12em] ${featured ? "text-white/34" : "text-muted"}`}>Inclui</p>
+                  <ul className="mt-4 space-y-3.5">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className={`flex items-start gap-3 text-sm leading-5 ${featured ? "text-white/72" : "text-ink-soft"}`}>
+                        <Check inverse={featured} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <div className="mt-auto pt-7">
-                {plan.available ? (
-                  <a href={plan.href} className="interactive-lift block w-full rounded-md bg-ink px-4 py-3 text-center text-sm font-semibold text-white hover:bg-brand-600">
-                    {plan.cta}
-                  </a>
-                ) : (
-                  <Link href={plan.href} className={`block w-full rounded-md border px-4 py-3 text-center text-sm font-semibold transition-colors ${plan.plannedPrice ? "border-ink bg-white text-ink hover:bg-ink hover:text-white" : "border-line-strong bg-white text-ink hover:border-brand-300 hover:text-brand-700"}`}>
-                    {plan.cta}
-                  </Link>
-                )}
-                {plan.plannedPrice ? <p className="mt-3 text-center text-[11px] leading-5 text-muted">Preço planejado. Ainda não é possível contratar.</p> : null}
-              </div>
-            </article>
-          ))}
+                <div className="mt-auto pt-8">
+                  {plan.available ? (
+                    <a href={plan.href} className="interactive-lift block w-full rounded-lg bg-ink px-4 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+                      {plan.cta}
+                    </a>
+                  ) : (
+                    <Link
+                      href={plan.href}
+                      className={`block w-full rounded-lg px-4 py-3.5 text-center text-sm font-semibold transition-colors ${
+                        featured
+                          ? "bg-white text-[#151619] hover:bg-brand-500 hover:text-white"
+                          : "border border-line-strong bg-white text-ink hover:border-brand-300 hover:text-brand-700"
+                      }`}
+                    >
+                      {plan.cta}
+                    </Link>
+                  )}
+                  {plan.plannedPrice ? (
+                    <p className="mt-3 text-center text-[10px] leading-4 text-white/32">Preço planejado. Ainda não é possível contratar.</p>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 flex flex-col gap-2 rounded-xl border border-line bg-white px-5 py-4 text-xs leading-5 text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p><span className="font-semibold text-ink">Nenhuma cobrança está ativa.</span> Você pode usar o modo Grátis sem cadastrar cartão.</p>
+          <p className="sm:text-right">O valor do Pro pode mudar antes do lançamento.</p>
         </div>
       </div>
     </section>
@@ -159,23 +200,25 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section aria-labelledby="faq-titulo" className="bg-canvas">
+    <section aria-labelledby="faq-titulo" className="bg-white">
       <div className="container-page py-16 sm:py-20 lg:py-24">
-        <div className="grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-20">
+        <div className="grid gap-10 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-20">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Dúvidas</p>
-            <h2 id="faq-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink">Perguntas frequentes</h2>
-            <p className="mt-4 text-sm leading-6 text-muted">Acesso, conta, dados e próximos planos.</p>
+            <h2 id="faq-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-ink sm:text-[2.35rem]">Antes de começar</h2>
+            <p className="mt-5 max-w-xs text-sm leading-7 text-muted">
+              Respostas diretas sobre acesso, conta, dados e os próximos planos do AnunciaAI.
+            </p>
           </div>
 
-          <div className="border-t border-line">
+          <div className="overflow-hidden rounded-2xl border border-line bg-[#fafaf8] px-5 sm:px-7">
             {faqs.map((faq) => (
-              <details key={faq.question} className="group border-b border-line py-5 sm:py-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-[15px] font-semibold text-ink">
+              <details key={faq.question} className="group border-b border-line py-5 last:border-b-0 sm:py-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-semibold text-ink">
                   {faq.question}
-                  <span aria-hidden="true" className="text-lg font-normal text-muted transition-transform group-open:rotate-45">+</span>
+                  <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-full border border-line-strong bg-white text-base font-normal text-muted transition-all group-open:rotate-45 group-open:border-brand-200 group-open:text-brand-700">+</span>
                 </summary>
-                <p className="mt-3 max-w-3xl pr-8 text-sm leading-6 text-muted">{faq.answer}</p>
+                <p className="mt-4 max-w-3xl pr-8 text-sm leading-7 text-muted">{faq.answer}</p>
               </details>
             ))}
           </div>
@@ -187,49 +230,52 @@ export function FaqSection() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-white">
-      <div className="container-page py-12 sm:py-14">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
-          <div className="max-w-sm">
+    <footer className="border-t border-[#26272c] bg-[#101114] text-white">
+      <div className="container-page py-12 sm:py-16">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24">
+          <div className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-2.5" aria-label="AnunciaAI, página inicial">
-              <span className="relative grid size-8 place-items-center rounded-[9px] bg-ink text-[13px] font-bold text-white">
+              <span className="relative grid size-9 place-items-center rounded-[10px] bg-white text-sm font-extrabold text-[#151619]">
                 A
-                <span aria-hidden="true" className="absolute -right-0.5 -top-0.5 size-2 rounded-full border-2 border-white bg-brand-500" />
+                <span aria-hidden="true" className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full border-2 border-[#101114] bg-brand-500" />
               </span>
-              <span className="text-[17px] font-semibold tracking-[-0.035em] text-ink">Anuncia<span className="text-brand-600">AI</span></span>
+              <span className="text-[18px] font-semibold tracking-[-0.04em] text-white">Anuncia<span className="text-brand-300">AI</span></span>
             </Link>
-            <p className="mt-4 text-sm leading-6 text-muted">
-              Ferramentas para criar, organizar e reutilizar conteúdo de produtos em diferentes canais de venda.
+            <p className="mt-5 max-w-sm text-sm leading-7 text-white/45">
+              Crie, organize e reutilize conteúdo de produtos para diferentes canais de venda em um fluxo mais simples.
             </p>
+            <Link href="/#ferramenta" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-brand-300">
+              Criar anúncio grátis <span aria-hidden="true">→</span>
+            </Link>
           </div>
 
-          <nav aria-label="Links do rodapé" className="grid gap-8 text-sm sm:grid-cols-3 sm:gap-12">
+          <nav aria-label="Links do rodapé" className="grid gap-9 text-sm sm:grid-cols-3 sm:gap-14">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Produto</p>
-              <div className="mt-4 grid gap-2.5 text-ink-soft">
-                <Link href="/ferramentas" className="hover:text-brand-700">Ferramentas</Link>
-                <Link href="/guias" className="hover:text-brand-700">Guias</Link>
-                <Link href="/#precos" className="hover:text-brand-700">Preços</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-white/28">Produto</p>
+              <div className="mt-4 grid gap-3 text-white/58">
+                <Link href="/ferramentas" className="transition-colors hover:text-white">Ferramentas</Link>
+                <Link href="/guias" className="transition-colors hover:text-white">Guias</Link>
+                <Link href="/#precos" className="transition-colors hover:text-white">Preços</Link>
               </div>
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Conta</p>
-              <div className="mt-4 grid gap-2.5 text-ink-soft">
-                <Link href="/entrar" className="hover:text-brand-700">Entrar ou acessar conta</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-white/28">Conta</p>
+              <div className="mt-4 grid gap-3 text-white/58">
+                <Link href="/entrar" className="transition-colors hover:text-white">Entrar ou acessar conta</Link>
               </div>
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Empresa</p>
-              <div className="mt-4 grid gap-2.5 text-ink-soft">
-                <Link href="/sobre" className="hover:text-brand-700">Sobre</Link>
-                <Link href="/privacidade" className="hover:text-brand-700">Privacidade</Link>
-                <Link href="/termos" className="hover:text-brand-700">Termos</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-white/28">Empresa</p>
+              <div className="mt-4 grid gap-3 text-white/58">
+                <Link href="/sobre" className="transition-colors hover:text-white">Sobre</Link>
+                <Link href="/privacidade" className="transition-colors hover:text-white">Privacidade</Link>
+                <Link href="/termos" className="transition-colors hover:text-white">Termos</Link>
               </div>
             </div>
           </nav>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-line pt-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-2 border-t border-white/[0.08] pt-6 text-xs text-white/28 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} AnunciaAI.</p>
           <p>Revise o conteúdo antes de publicar.</p>
         </div>

@@ -20,24 +20,24 @@ export function TrustSection() {
   return (
     <section aria-labelledby="confianca-titulo" className="border-y border-line bg-white">
       <div className="container-page py-16 sm:py-20 lg:py-24">
-        <div className="grid gap-8 border-b border-line pb-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Para quem vende online</p>
-            <h2 id="confianca-titulo" className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.04em] sm:text-[2.35rem]">
+            <h2 id="confianca-titulo" className="mt-4 max-w-xl text-3xl font-semibold tracking-[-0.045em] sm:text-[2.45rem]">
               Um fluxo mais claro para chegar à primeira versão.
             </h2>
           </div>
-          <p className="text-sm leading-6 text-muted">
+          <p className="text-sm leading-7 text-muted">
             Organize o conteúdo e mantenha a revisão final nas suas mãos antes de publicar.
           </p>
         </div>
 
-        <ul className="mt-8 grid overflow-hidden rounded-lg border border-line md:grid-cols-3">
-          {trustCards.map((card, index) => (
-            <li key={card.title} className={`bg-white p-6 ${index < trustCards.length - 1 ? "border-b border-line md:border-b-0 md:border-r" : ""}`}>
-              <span className="text-[10px] font-semibold tabular-nums tracking-[0.12em] text-brand-700">{card.icon}</span>
-              <h3 className="mt-5 text-base font-semibold tracking-[-0.02em]">{card.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted">{card.text}</p>
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {trustCards.map((card) => (
+            <li key={card.title} className="rounded-2xl border border-line bg-[#fafaf8] p-6 sm:p-7">
+              <span className="text-[10px] font-semibold tabular-nums tracking-[0.13em] text-brand-700">{card.icon}</span>
+              <h3 className="mt-8 text-lg font-semibold tracking-[-0.03em]">{card.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-muted">{card.text}</p>
             </li>
           ))}
         </ul>
@@ -48,40 +48,60 @@ export function TrustSection() {
 
 const steps = [
   {
-    title: "Informe seu produto",
-    text: "Preencha nome, categoria, preço, público e características que você consegue confirmar.",
+    title: "Informe o produto",
+    text: "Nome, categoria, preço, público e características que você consegue confirmar.",
+    detail: "Você controla os dados de entrada.",
   },
   {
-    title: "Gere a primeira versão",
-    text: "A ferramenta organiza os dados em título, descrição, benefícios, ficha de características, anúncio e sugestões de SEO.",
+    title: "Gere a estrutura",
+    text: "O AnunciaAI organiza título, descrição, benefícios, ficha técnica, anúncio e sugestões de SEO.",
+    detail: "Tudo separado em blocos fáceis de revisar.",
   },
   {
-    title: "Revise e adapte",
-    text: "Confira especificações, preço, condições e regras atuais do canal antes de copiar e publicar qualquer bloco.",
+    title: "Revise e publique",
+    text: "Confira especificações, preço, condições e regras atuais do canal antes de usar o conteúdo.",
+    detail: "A decisão final continua sendo sua.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="como-funciona" aria-labelledby="como-funciona-titulo" className="border-b border-line bg-canvas">
+    <section id="como-funciona" aria-labelledby="como-funciona-titulo" className="border-b border-[#25262b] bg-[#111216] text-white">
       <div className="container-page py-16 sm:py-20 lg:py-24">
-        <div className="grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-20">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Como funciona</p>
-            <h2 id="como-funciona-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
-              Três etapas.
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-20">
+          <div className="max-w-xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-300">Como funciona</p>
+            <h2 id="como-funciona-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-white sm:text-[2.65rem]">
+              Menos etapas entre a informação e o conteúdo pronto para revisar.
             </h2>
-            <p className="mt-4 text-sm leading-6 text-muted">
-              Você informa, gera e decide o que vale usar.
+            <p className="mt-5 max-w-md text-sm leading-7 text-white/48">
+              Um fluxo curto, sem painel complicado: você informa o que sabe, recebe uma estrutura organizada e revisa antes de publicar.
             </p>
+
+            <div className="mt-9 rounded-2xl border border-white/[0.08] bg-white/[0.035] p-5">
+              <div className="flex items-center gap-3">
+                <span className="grid size-9 place-items-center rounded-lg bg-brand-500 text-xs font-bold text-white">AI</span>
+                <div>
+                  <p className="text-xs font-semibold text-white">Assistência, não piloto automático</p>
+                  <p className="mt-1 text-[11px] leading-5 text-white/38">O conteúdo é uma primeira versão. Dados reais e revisão vêm primeiro.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <ol className="border-t border-line">
+          <ol className="grid gap-3">
             {steps.map((step, index) => (
-              <li key={step.title} className="grid gap-4 border-b border-line py-6 sm:grid-cols-[64px_220px_minmax(0,1fr)] sm:items-start sm:gap-6">
-                <span className="text-xs font-semibold tabular-nums text-brand-700">0{index + 1}</span>
-                <h3 className="text-base font-semibold tracking-[-0.02em] text-ink">{step.title}</h3>
-                <p className="max-w-2xl text-sm leading-6 text-muted">{step.text}</p>
+              <li key={step.title} className="group grid gap-5 rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 transition-colors hover:bg-white/[0.045] sm:grid-cols-[56px_minmax(0,1fr)] sm:p-6">
+                <span className={`grid size-11 place-items-center rounded-xl text-xs font-bold tabular-nums ${index === 1 ? "bg-brand-500 text-white" : "border border-white/10 bg-white/[0.035] text-white/52"}`}>
+                  0{index + 1}
+                </span>
+                <div className="min-w-0">
+                  <div className="grid gap-2 sm:grid-cols-[190px_minmax(0,1fr)] sm:gap-6">
+                    <h3 className="text-base font-semibold tracking-[-0.025em] text-white">{step.title}</h3>
+                    <p className="text-sm leading-6 text-white/52">{step.text}</p>
+                  </div>
+                  <p className="mt-4 border-t border-white/[0.07] pt-4 text-[11px] font-medium text-white/30">{step.detail}</p>
+                </div>
               </li>
             ))}
           </ol>
@@ -122,23 +142,27 @@ export function FeaturesSection() {
   return (
     <section id="recursos" aria-labelledby="recursos-titulo" className="bg-white">
       <div className="container-page py-16 sm:py-20 lg:py-24">
-        <div className="grid gap-8 border-b border-line pb-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Recursos</p>
-            <h2 id="recursos-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em] sm:text-[2.35rem]">
+            <h2 id="recursos-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.045em] sm:text-[2.45rem]">
               Um produto, vários blocos organizados.
             </h2>
           </div>
-          <p className="text-sm leading-6 text-muted">
+          <p className="text-sm leading-7 text-muted">
             Você informa os dados uma vez e recebe blocos para conferir, editar e adaptar antes do uso.
           </p>
         </div>
 
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <li key={feature.title} className="bg-white p-6">
-              <h3 className="text-base font-semibold tracking-[-0.02em]">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted">{feature.text}</p>
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, index) => (
+            <li key={feature.title} className="rounded-2xl border border-line bg-[#fafaf8] p-6">
+              <div className="flex items-center justify-between gap-4">
+                <span className="size-2 rounded-full bg-brand-500" aria-hidden="true" />
+                <span className="text-[10px] font-semibold tabular-nums text-muted">0{index + 1}</span>
+              </div>
+              <h3 className="mt-7 text-base font-semibold tracking-[-0.025em]">{feature.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-muted">{feature.text}</p>
             </li>
           ))}
         </ul>
