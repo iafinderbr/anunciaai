@@ -168,17 +168,11 @@ export default async function AccountPlanPage({
               })}
             </div>
 
-            <div className="mt-5 flex flex-col gap-4 border border-line bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-              <div>
-                <p className="text-sm font-semibold text-ink">Cobrança gerenciada pela Stripe.</p>
-                <p className="mt-1 text-xs leading-5 text-muted">
-                  Cartão usa assinatura recorrente. {pixReady ? "Pix usa pagamento único para 30 dias e não renova automaticamente." : "Pix permanece em ativação até a conta Stripe estar habilitada para pagamentos."} O Premium permanece apenas como planejamento.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {proActive ? <Link href="/conta/pro" className="bg-ink px-4 py-3 text-sm font-semibold text-white hover:bg-brand-600">Abrir Pro</Link> : null}
-                <Link href="/conta/ferramentas" className="border border-line-strong bg-white px-4 py-3 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">Ferramentas</Link>
-              </div>
+            <div className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-5 text-xs leading-5 text-white/34 sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                Cobrança Pro gerenciada pela Stripe. {pixReady ? "Pix libera 30 dias sem renovação automática." : "Pix permanece em ativação até a conta Stripe ser habilitada."}
+              </p>
+              <Link href="/conta/ferramentas" className="shrink-0 font-semibold text-brand-300 transition-colors hover:text-white">Voltar às ferramentas →</Link>
             </div>
           </div>
         </section>
