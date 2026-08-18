@@ -97,7 +97,7 @@ export const ML_FAQ: FaqItem[] = [
   {
     question: "O gerador de anúncios é gratuito?",
     answer:
-      "Sim. A versão gratuita atual pode ser usada sem cadastro e sem cartão de crédito para começar.",
+      "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito.",
   },
   {
     question: "Preciso revisar o conteúdo gerado?",
