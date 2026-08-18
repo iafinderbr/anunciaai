@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/site";
 
 const PATH = "/ferramentas";
 const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
-const TITLE = "Ferramentas gratuitas para criar anúncios com IA";
+const TITLE = "Ferramentas gratuitas para criar anúncios de produtos";
 const DESCRIPTION =
   "Acesse os geradores do AnunciaAI, seu histórico salvo, sua conta e guias para criar títulos, descrições e anúncios de produtos.";
 
