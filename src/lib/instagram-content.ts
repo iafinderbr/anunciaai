@@ -78,6 +78,6 @@ export const INSTAGRAM_FAQ: FaqItem[] = [
   { question: "O que uma legenda de produto pode ter?", answer: "Uma estrutura útil inclui contexto ou gancho, apresentação do produto, características, benefícios sustentados e um próximo passo coerente com o objetivo da publicação." },
   { question: "Quantas hashtags devo usar?", answer: "Não é necessário perseguir um número fixo. Prefira termos realmente relacionados ao produto e ao conteúdo e remova palavras genéricas sem relação direta." },
   { question: "A legenda serve para divulgar ou vender?", answer: "Pode ser adaptada para objetivos diferentes. Revise preço, chamada para ação e qualquer condição comercial conforme o que sua loja realmente oferece." },
-  { question: "O gerador de legendas é gratuito?", answer: "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito." },
+  { question: "O gerador de legendas é gratuito?", answer: "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito." },
   { question: "Posso usar o texto em posts, Reels e Stories?", answer: "Use como base e adapte ao formato. Stories normalmente pedem textos mais curtos, enquanto posts e Reels podem aproveitar uma legenda mais completa." },
 ];
