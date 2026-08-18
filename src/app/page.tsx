@@ -169,7 +169,7 @@ export default function HomePage() {
               </aside>
             </div>
 
-            <div className="mt-10 border-t border-white/[0.08] pt-6">
+            <div id="ferramentas" className="scroll-mt-24 mt-10 border-t border-white/[0.08] pt-6">
               <ChannelStrip dark />
             </div>
           </div>
