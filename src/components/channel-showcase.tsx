@@ -179,3 +179,42 @@ export function ChannelStrip({ dark = false }: { dark?: boolean }) {
     </div>
   );
 }
+
+export function ChannelSideDock({ activePath }: { activePath?: string }) {
+  const visible = featuredChannels.filter((item) => ["mercado-livre", "instagram", "olx", "facebook"].includes(item.id));
+
+  return (
+    <nav aria-label="Atalhos para outros canais" className="fixed right-4 top-1/2 z-30 hidden -translate-y-1/2 min-[1380px]:block">
+      <div className="overflow-visible rounded-2xl border border-black/[0.08] bg-white/92 p-1.5 shadow-[0_22px_60px_-34px_rgba(15,15,18,.4)] backdrop-blur-xl">
+        {visible.map((channel) => {
+          const active = activePath === channel.href;
+          return (
+            <Link
+              key={channel.href}
+              href={channel.href}
+              aria-label={channel.action}
+              className={`group relative mt-1 grid size-10 first:mt-0 place-items-center rounded-xl transition-all ${
+                active
+                  ? "bg-[#111216] text-white shadow-[0_8px_18px_-12px_rgba(15,15,18,.7)]"
+                  : "text-ink-soft hover:bg-brand-50 hover:text-brand-700"
+              }`}
+            >
+              <ChannelIcon id={channel.id} className="size-[18px]" />
+              <span className="pointer-events-none absolute right-[calc(100%+0.7rem)] top-1/2 w-[190px] -translate-y-1/2 translate-x-1 rounded-xl border border-black/[0.08] bg-[#111216] px-3.5 py-3 text-left opacity-0 shadow-[0_18px_50px_-28px_rgba(0,0,0,.8)] transition-all group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+                <span className="block text-[10px] font-semibold text-white">{channel.action}</span>
+                <span className="mt-1 block font-mono text-[9px] text-white/32">{channel.path}</span>
+              </span>
+            </Link>
+          );
+        })}
+        <Link href="/ferramentas" aria-label="Ver todos os geradores" className="group relative mt-1 grid size-10 place-items-center rounded-xl border-t border-line text-xs font-semibold text-muted transition-colors hover:bg-[#f7f7f4] hover:text-brand-700">
+          +
+          <span className="pointer-events-none absolute right-[calc(100%+0.7rem)] top-1/2 w-[190px] -translate-y-1/2 translate-x-1 rounded-xl border border-black/[0.08] bg-[#111216] px-3.5 py-3 text-left opacity-0 shadow-[0_18px_50px_-28px_rgba(0,0,0,.8)] transition-all group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+            <span className="block text-[10px] font-semibold text-white">Ver todos os geradores</span>
+            <span className="mt-1 block font-mono text-[9px] text-white/32">/ferramentas</span>
+          </span>
+        </Link>
+      </div>
+    </nav>
+  );
+}
