@@ -19,8 +19,8 @@ const plans: Plan[] = [
     name: "Grátis",
     price: "R$ 0",
     period: "/mês",
-    badge: "Disponível agora",
-    summary: "Para criar anúncios, salvar o que importa e organizar seus produtos em uma conta simples.",
+    badge: "Disponível",
+    summary: "Para criar anúncios, guardar resultados escolhidos e organizar produtos em uma conta simples.",
     features: [
       "10 geradores com login Google",
       "Sem cartão de crédito",
@@ -35,10 +35,10 @@ const plans: Plan[] = [
     name: "Pro",
     price: PRO_PLANNED_PRICE_LABEL,
     period: "/mês",
-    badge: "Preço planejado",
-    summary: "Para quem cria conteúdo com frequência e quer ganhar espaço, velocidade e reutilização no dia a dia.",
+    badge: "Planejado",
+    summary: "Para quem cria conteúdo com frequência e quer mais espaço, velocidade e reutilização no fluxo de trabalho.",
     features: PRO_PLANNED_FEATURES,
-    cta: "Entrar para acompanhar",
+    cta: "Acompanhar lançamento",
     href: "/entrar",
     plannedPrice: true,
   },
@@ -46,14 +46,14 @@ const plans: Plan[] = [
     name: "Premium",
     price: "Depois",
     badge: "Em estudo",
-    summary: "Uma camada futura para catálogos maiores, padronização de marca e fluxos com mais escala.",
+    summary: "Uma camada futura para catálogos maiores, padronização de marca e operações com mais escala.",
     features: [
       "Tudo do Pro",
       "Fluxos em lote planejados",
       "Padrões e voz da marca",
       "Recursos avançados de catálogo",
     ],
-    cta: "Entrar para acompanhar",
+    cta: "Acompanhar novidades",
     href: "/entrar",
   },
 ];
@@ -61,99 +61,70 @@ const plans: Plan[] = [
 export function PricingSection() {
   return (
     <section id="precos" aria-labelledby="precos-titulo" className="border-y border-line bg-white">
-      <div className="container-page py-14 sm:py-20">
-        <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.48fr)] lg:items-end lg:gap-12">
+      <div className="container-page py-16 sm:py-20 lg:py-24">
+        <div className="grid gap-8 border-b border-line pb-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Planos</p>
-            <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-              Comece com o necessário. Evolua quando o uso pedir.
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Planos</p>
+            <h2 id="precos-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink sm:text-[2.35rem]">
+              Comece sem custo. Evolua quando precisar.
             </h2>
-            <p className="mt-3 text-[15px] leading-7 text-muted">
-              O plano Grátis libera todos os geradores atuais depois de um login simples com Google. O Pro já tem pacote e preço planejados, mas checkout e cobrança continuam desligados.
+            <p className="mt-4 text-[15px] leading-7 text-muted">
+              O modo Grátis libera os geradores atuais depois do login com Google. O Pro tem pacote e preço planejados, mas checkout e cobrança seguem desligados.
             </p>
           </div>
-          <div className="surface-premium rounded-2xl px-5 py-4 text-sm leading-6 text-muted lg:text-right">
-            <span className="font-semibold text-ink-soft">Nenhuma cobrança ativa.</span> O valor do Pro é uma proposta de lançamento e ainda pode mudar antes da abertura.
+          <div className="border-l border-line pl-5 text-sm leading-6 text-muted">
+            <p className="font-semibold text-ink">Nenhuma cobrança está ativa.</p>
+            <p className="mt-1">O valor do Pro é uma proposta de lançamento e pode mudar antes da abertura.</p>
           </div>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`relative flex min-h-[390px] flex-col overflow-hidden rounded-[1.4rem] border p-5 sm:p-6 ${
-                plan.plannedPrice
-                  ? "border-ink bg-[#111318] text-white shadow-lift"
-                  : plan.available
-                    ? "border-line-strong bg-white shadow-card"
-                    : "border-line bg-canvas/75"
-              }`}
+              className={`relative flex min-h-[370px] flex-col rounded-lg border bg-white p-6 ${plan.plannedPrice ? "border-ink" : "border-line"}`}
             >
-              {plan.plannedPrice ? (
-                <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(65%_100%_at_50%_0%,rgba(255,92,26,0.19),transparent_74%)]" />
-              ) : null}
+              {plan.plannedPrice ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 rounded-t-lg bg-brand-500" /> : null}
 
-              <div className="relative flex items-center justify-between gap-3">
-                <h3 className={`text-lg font-semibold tracking-tight ${plan.plannedPrice ? "text-white" : "text-ink"}`}>{plan.name}</h3>
-                <span
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
-                    plan.plannedPrice
-                      ? "border border-white/10 bg-white/[0.06] text-brand-200"
-                      : plan.available
-                        ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-                        : "border border-line-strong bg-white text-muted"
-                  }`}
-                >
-                  {plan.badge}
-                </span>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold tracking-[-0.025em] text-ink">{plan.name}</h3>
+                  <p className="mt-1 text-xs text-muted">{plan.badge}</p>
+                </div>
+                {plan.available ? <span className="size-2 rounded-full bg-emerald-500" aria-label="Plano disponível" /> : null}
               </div>
 
-              <div className="relative mt-6">
+              <div className="mt-7">
                 <p className="flex items-baseline gap-1">
-                  <span className={`text-3xl font-semibold tracking-tight ${plan.plannedPrice ? "text-white" : "text-ink"}`}>{plan.price}</span>
-                  {plan.period ? <span className={plan.plannedPrice ? "text-sm text-white/45" : "text-sm text-muted"}>{plan.period}</span> : null}
+                  <span className="text-3xl font-semibold tracking-[-0.04em] text-ink">{plan.price}</span>
+                  {plan.period ? <span className="text-sm text-muted">{plan.period}</span> : null}
                 </p>
-                <p className={`mt-3 text-sm leading-6 ${plan.plannedPrice ? "text-white/58" : "text-muted"}`}>{plan.summary}</p>
+                <p className="mt-3 text-sm leading-6 text-muted">{plan.summary}</p>
               </div>
 
-              <div className={`relative mt-6 border-t pt-5 ${plan.plannedPrice ? "border-white/10" : "border-line"}`}>
-                <p className={`text-[10px] font-semibold uppercase tracking-[0.11em] ${plan.plannedPrice ? "text-white/35" : "text-muted"}`}>Inclui</p>
-                <ul className="mt-4 flex-1 space-y-3">
+              <div className="mt-6 border-t border-line pt-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Inclui</p>
+                <ul className="mt-4 space-y-3">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm">
-                      <span
-                        aria-hidden="true"
-                        className={`mt-1.5 size-1.5 shrink-0 rounded-full ${plan.plannedPrice ? "bg-brand-500" : "bg-brand-500/80"}`}
-                      />
-                      <span className={plan.plannedPrice ? "text-white/70" : "text-ink-soft"}>{feature}</span>
+                    <li key={feature} className="flex items-start gap-2.5 text-sm leading-5 text-ink-soft">
+                      <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="relative mt-auto pt-7">
+              <div className="mt-auto pt-7">
                 {plan.available ? (
-                  <a
-                    href={plan.href}
-                    className="interactive-lift block w-full rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white hover:bg-brand-600"
-                  >
+                  <a href={plan.href} className="interactive-lift block w-full rounded-md bg-ink px-4 py-3 text-center text-sm font-semibold text-white hover:bg-brand-600">
                     {plan.cta}
                   </a>
                 ) : (
-                  <Link
-                    href={plan.href}
-                    className={`interactive-lift block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold ${
-                      plan.plannedPrice
-                        ? "border border-white/12 bg-white text-ink hover:bg-brand-500 hover:text-white"
-                        : "border border-line-strong bg-white text-ink hover:border-brand-300 hover:text-brand-700"
-                    }`}
-                  >
+                  <Link href={plan.href} className={`block w-full rounded-md border px-4 py-3 text-center text-sm font-semibold transition-colors ${plan.plannedPrice ? "border-ink bg-white text-ink hover:bg-ink hover:text-white" : "border-line-strong bg-white text-ink hover:border-brand-300 hover:text-brand-700"}`}>
                     {plan.cta}
                   </Link>
                 )}
-                {plan.plannedPrice ? (
-                  <p className="mt-3 text-center text-[11px] leading-5 text-white/38">Preço planejado. Ainda não é possível contratar.</p>
-                ) : null}
+                {plan.plannedPrice ? <p className="mt-3 text-center text-[11px] leading-5 text-muted">Ainda não é possível contratar.</p> : null}
               </div>
             </article>
           ))}
@@ -188,23 +159,26 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section aria-labelledby="faq-titulo" className="container-page py-14 sm:py-20">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Dúvidas</p>
-          <h2 id="faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Perguntas frequentes</h2>
-          <p className="mt-3 text-[15px] leading-7 text-muted">Respostas rápidas sobre acesso, conta, dados e próximos planos.</p>
-        </div>
-        <div className="surface-premium overflow-hidden rounded-2xl">
-          {faqs.map((faq, index) => (
-            <details key={faq.question} className={`group px-5 py-5 sm:px-6 sm:py-6 ${index < faqs.length - 1 ? "border-b border-line" : ""}`}>
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-semibold text-ink">
-                {faq.question}
-                <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-full border border-line-strong bg-white text-muted transition-transform group-open:rotate-45">+</span>
-              </summary>
-              <p className="mt-3 max-w-3xl pr-10 text-sm leading-6 text-muted">{faq.answer}</p>
-            </details>
-          ))}
+    <section aria-labelledby="faq-titulo" className="bg-canvas">
+      <div className="container-page py-16 sm:py-20 lg:py-24">
+        <div className="grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-20">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Dúvidas</p>
+            <h2 id="faq-titulo" className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink">Perguntas frequentes</h2>
+            <p className="mt-4 text-sm leading-6 text-muted">Acesso, conta, dados e próximos planos.</p>
+          </div>
+
+          <div className="border-t border-line">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="group border-b border-line py-5 sm:py-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-[15px] font-semibold text-ink">
+                  {faq.question}
+                  <span aria-hidden="true" className="text-lg font-normal text-muted transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 max-w-3xl pr-8 text-sm leading-6 text-muted">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -214,53 +188,51 @@ export function FaqSection() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-white">
-      <div className="container-page py-10 sm:py-12">
-        <div className="flex flex-col gap-9 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-md">
+      <div className="container-page py-12 sm:py-14">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
+          <div className="max-w-sm">
             <Link href="/" className="inline-flex items-center gap-2.5" aria-label="AnunciaAI, página inicial">
-              <span className="grid size-9 place-items-center rounded-xl bg-ink text-sm font-bold text-white shadow-card">A</span>
-              <span className="text-[17px] font-semibold tracking-tight">Anuncia<span className="text-brand-600">AI</span></span>
+              <span className="relative grid size-8 place-items-center rounded-[9px] bg-ink text-[13px] font-bold text-white">
+                A
+                <span aria-hidden="true" className="absolute -right-0.5 -top-0.5 size-2 rounded-full border-2 border-white bg-brand-500" />
+              </span>
+              <span className="text-[17px] font-semibold tracking-[-0.035em] text-ink">Anuncia<span className="text-brand-600">AI</span></span>
             </Link>
             <p className="mt-4 text-sm leading-6 text-muted">
-              Workspace brasileiro para criar, organizar e reutilizar conteúdo de produtos sem complicar o processo.
+              Ferramentas para criar, organizar e reutilizar conteúdo de produtos em diferentes canais de venda.
             </p>
-            <Link href="/#ferramenta" className="interactive-lift mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600">
-              Criar anúncio grátis
-            </Link>
           </div>
 
-          <nav aria-label="Links do rodapé" className="grid gap-7 text-sm sm:grid-cols-3 sm:gap-10">
+          <nav aria-label="Links do rodapé" className="grid gap-8 text-sm sm:grid-cols-3 sm:gap-12">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Produto</p>
-              <div className="mt-3 grid gap-2.5 text-muted">
-                <Link href="/ferramentas" className="transition-colors hover:text-brand-600">Ferramentas</Link>
-                <Link href="/guias" className="transition-colors hover:text-brand-600">Guias</Link>
-                <Link href="/#precos" className="transition-colors hover:text-brand-600">Preços</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Produto</p>
+              <div className="mt-4 grid gap-2.5 text-ink-soft">
+                <Link href="/ferramentas" className="hover:text-brand-700">Ferramentas</Link>
+                <Link href="/guias" className="hover:text-brand-700">Guias</Link>
+                <Link href="/#precos" className="hover:text-brand-700">Preços</Link>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Acesso</p>
-              <div className="mt-3 grid gap-2.5 text-muted">
-                <Link href="/entrar" className="transition-colors hover:text-brand-600">Entrar ou criar conta</Link>
-                <Link href="/ferramentas" className="transition-colors hover:text-brand-600">Central do AnunciaAI</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Conta</p>
+              <div className="mt-4 grid gap-2.5 text-ink-soft">
+                <Link href="/entrar" className="hover:text-brand-700">Entrar</Link>
+                <Link href="/conta" className="hover:text-brand-700">Minha conta</Link>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Institucional</p>
-              <div className="mt-3 grid gap-2.5 text-muted">
-                <Link href="/sobre" className="transition-colors hover:text-brand-600">Sobre</Link>
-                <Link href="/privacidade" className="transition-colors hover:text-brand-600">Privacidade</Link>
-                <Link href="/termos" className="transition-colors hover:text-brand-600">Termos</Link>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">Empresa</p>
+              <div className="mt-4 grid gap-2.5 text-ink-soft">
+                <Link href="/sobre" className="hover:text-brand-700">Sobre</Link>
+                <Link href="/privacidade" className="hover:text-brand-700">Privacidade</Link>
+                <Link href="/termos" className="hover:text-brand-700">Termos</Link>
               </div>
             </div>
           </nav>
         </div>
-      </div>
 
-      <div className="border-t border-line bg-canvas/55">
-        <div className="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} AnunciaAI. Feito no Brasil para quem vende online.</p>
-          <p>Conteúdo gerado deve ser revisado antes da publicação.</p>
+        <div className="mt-10 flex flex-col gap-2 border-t border-line pt-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} AnunciaAI.</p>
+          <p>Revise o conteúdo antes de publicar.</p>
         </div>
       </div>
     </footer>
