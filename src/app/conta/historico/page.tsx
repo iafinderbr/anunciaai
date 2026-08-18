@@ -3,6 +3,7 @@ import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { AccountNav } from "@/components/account/account-nav";
 import { SavedHistoryList } from "@/components/account/saved-history-list";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
@@ -50,36 +51,36 @@ export default async function AccountHistoryPage() {
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main className="bg-canvas">
-        <section className="container-page py-10 sm:py-14 lg:py-16">
-          <div className="mx-auto max-w-5xl">
-            <nav aria-label="Trilha da conta" className="flex flex-wrap items-center gap-2 text-xs text-muted">
-              <Link href="/conta" className="font-medium transition-colors hover:text-brand-700">
-                Minha conta
-              </Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page" className="font-semibold text-ink-soft">Histórico</span>
-            </nav>
+      <main className="min-h-[70vh] bg-canvas">
+        <section className="container-page py-8 sm:py-10 lg:py-12">
+          <div className="mx-auto max-w-6xl">
+            <AccountNav active="history" />
 
-            <div className="mt-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="mt-6 flex flex-col gap-4 rounded-3xl border border-line bg-white p-5 shadow-card sm:flex-row sm:items-center sm:justify-between sm:p-6">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Histórico salvo</p>
-                <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                  Seus resultados, quando você decidir guardar
-                </h1>
-                <p className="mt-3 text-sm leading-6 text-muted sm:text-[15px]">
-                  Esta área mostra apenas anúncios que você salvou manualmente estando conectado. As gerações comuns continuam sem guardar o conteúdo do produto.
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-600">Histórico</p>
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Seus resultados salvos</h1>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  Só aparece aqui o que você escolheu salvar manualmente. Gerar um anúncio não adiciona conteúdo ao histórico automaticamente.
                 </p>
               </div>
-              <Link
-                href="/conta"
-                className="w-fit rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-700"
-              >
-                Voltar para Minha conta
-              </Link>
+              <div className="flex shrink-0 gap-2">
+                <Link
+                  href="/ferramentas"
+                  className="rounded-xl border border-line-strong bg-canvas px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700"
+                >
+                  Ferramentas
+                </Link>
+                <Link
+                  href="/#ferramenta"
+                  className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600"
+                >
+                  Criar novo
+                </Link>
+              </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-5">
               <SavedHistoryList initialItems={items} />
             </div>
           </div>
