@@ -22,7 +22,7 @@ export function AccountShellHeader({
     <header className="flex flex-col gap-5 border-b border-white/[0.09] pb-6 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Conta</p>
-        <h1 className="mt-2 truncate text-2xl font-semibold tracking-[-0.045em] text-white sm:text-[1.7rem]">{name}</h1>
+        <p className="mt-2 truncate text-2xl font-semibold tracking-[-0.045em] text-white sm:text-[1.7rem]">{name}</p>
         <p className="mt-1 truncate text-sm text-white/34">{email}</p>
       </div>
 
