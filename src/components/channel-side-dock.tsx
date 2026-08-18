@@ -59,7 +59,7 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
                 type="button"
                 aria-label={channel.action}
                 aria-expanded={expanded}
-                aria-controls={panelId}
+                aria-controls={expanded ? panelId : undefined}
                 onClick={() => setOpenId((current) => (current === channel.id ? null : channel.id))}
                 className={`group relative grid size-12 place-items-center rounded-[8px] outline-none transition-all focus-visible:ring-2 focus-visible:ring-brand-500/70 ${
                   active || expanded
