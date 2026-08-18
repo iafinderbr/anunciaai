@@ -71,9 +71,16 @@ async function createSchema() {
       subscription_status text not null default 'inactive',
       subscription_provider text,
       external_subscription_id text,
+      pro_access_until timestamp with time zone,
       created_at timestamp with time zone not null default now(),
       updated_at timestamp with time zone not null default now()
     )
+  `);
+
+  // Bancos criados antes do Pix precisam receber a coluna sem recriar usuário.
+  await db.execute(sql`
+    alter table "user"
+      add column if not exists pro_access_until timestamp with time zone
   `);
 
   await db.execute(sql`
@@ -83,8 +90,27 @@ async function createSchema() {
     create index if not exists user_plan_idx on "user" (plan)
   `);
   await db.execute(sql`
+    create index if not exists user_pro_access_until_idx on "user" (pro_access_until)
+  `);
+  await db.execute(sql`
     create unique index if not exists user_external_subscription_unique
       on "user" (external_subscription_id)
+  `);
+
+  // Registro mínimo para tornar a concessão de dias via Pix idempotente.
+  await db.execute(sql`
+    create table if not exists pro_access_grant (
+      checkout_session_id text primary key,
+      user_id text not null references "user"(id) on delete cascade,
+      provider text not null default 'stripe-pix',
+      access_days integer not null,
+      created_at timestamp with time zone not null default now()
+    )
+  `);
+
+  await db.execute(sql`
+    create index if not exists pro_access_grant_user_created_idx
+      on pro_access_grant (user_id, created_at)
   `);
 
   await db.execute(sql`
@@ -206,8 +232,7 @@ async function createSchema() {
 
 /**
  * Garante de forma idempotente a estrutura usada pelo contador, autenticação,
- * planos, histórico e biblioteca de produtos. A anonimização de registros
- * antigos é marcada como migração para não varrer a tabela a cada instância.
+ * planos, histórico, biblioteca de produtos e concessões Pix.
  */
 export function ensureDatabaseSchema(): Promise<void> {
   if (!schemaPromise) {
