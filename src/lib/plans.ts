@@ -14,9 +14,9 @@ export const FEATURE_KEYS = [
 ] as const;
 export type FeatureKey = (typeof FEATURE_KEYS)[number];
 
-export const PRO_FUTURE_MONTHLY_PRICE_CENTS = 1990;
-export const PRO_FUTURE_PRICE_LABEL = "R$ 19,90";
-export const PRO_EARLY_ACCESS_LABEL = "Acesso antecipado sem cobrança";
+export const PRO_MONTHLY_PRICE_CENTS = 1990;
+export const PRO_PRICE_LABEL = "R$ 19,90";
+export const PRO_BILLING_LABEL = "R$ 19,90/mês";
 
 export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: number; titleAlternatives: number }> = {
   free: { history: 100, savedProducts: 20, titleAlternatives: 1 },
@@ -25,10 +25,10 @@ export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: numbe
 };
 
 export const PRO_FEATURES = [
-  "Tudo do plano Grátis",
+  "Tudo do modo Grátis",
   "Laboratório com 3 versões do mesmo produto",
   "Mais opções de título para comparação",
-  "Acesso antecipado aos próximos recursos Pro",
+  "Acesso aos próximos recursos Pro enquanto a assinatura estiver ativa",
 ] as const;
 
 export const PREMIUM_PLANNED_FEATURES = [
@@ -56,14 +56,13 @@ export function normalizePlan(value: unknown): PlanId {
 }
 
 /**
- * Pro em acesso antecipado usa `trialing`: não representa cobrança e existe
- * apenas para liberar recursos reais do produto durante a fase de lançamento.
- * Assinaturas comerciais futuras continuam exigindo `active` confirmado pelo servidor.
+ * O plano pago só libera recursos quando o Stripe confirma status `active`.
+ * Estados locais antigos de acesso antecipado (`trialing`) não concedem mais Pro.
  */
 export function effectivePlan(plan: unknown, subscriptionStatus: unknown): PlanId {
   const normalized = normalizePlan(plan);
   if (normalized === "free") return "free";
-  return subscriptionStatus === "active" || subscriptionStatus === "trialing" ? normalized : "free";
+  return subscriptionStatus === "active" ? normalized : "free";
 }
 
 export function planAllows(plan: PlanId, feature: FeatureKey): boolean {
