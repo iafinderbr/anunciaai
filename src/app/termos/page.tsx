@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Termos de Uso",
-  description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas e limites do conteúdo gerado.",
+  description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas, histórico e limites do conteúdo gerado.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Termos de Uso | AnunciaAI",
-    description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas e limites do conteúdo gerado.",
+    description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas, histórico e limites do conteúdo gerado.",
   },
   robots: { index: true, follow: true },
 };
@@ -52,15 +52,19 @@ const sections = [
     text: "O uso das ferramentas gratuitas continua disponível sem conta. Quando o usuário optar por entrar com Google, ele é responsável por manter a própria Conta Google segura e por encerrar a sessão em dispositivos compartilhados. O acesso à área de conta depende de uma sessão válida e pode ser interrompido em caso de abuso, risco de segurança ou indisponibilidade técnica.",
   },
   {
-    title: "8. Disponibilidade",
+    title: "8. Histórico salvo",
+    text: "O histórico é um recurso opcional da conta. Um resultado só é adicionado quando o usuário autenticado escolhe salvá-lo. Nesta fase, cada conta pode manter até 100 itens e excluir individualmente os próprios registros. O serviço pode ajustar esse limite ou a forma de armazenamento conforme o produto evolui, preservando a informação adequada ao usuário.",
+  },
+  {
+    title: "9. Disponibilidade",
     text: "O serviço pode passar por manutenção, alterações, testes ou interrupções. Recursos gratuitos, limites e funcionalidades podem mudar conforme o produto evolui.",
   },
   {
-    title: "9. Planos futuros",
+    title: "10. Planos futuros",
     text: "Planos pagos exibidos como “Em breve” ou “Em preparação” são apenas uma indicação de recursos planejados. Valores, funcionalidades e condições podem mudar antes do lançamento e não representam uma contratação enquanto a compra não estiver disponível.",
   },
   {
-    title: "10. Alterações dos termos",
+    title: "11. Alterações dos termos",
     text: "Estes termos podem ser atualizados para acompanhar mudanças no produto, na legislação ou nas integrações utilizadas. A versão publicada nesta página é a versão vigente.",
   },
 ];
