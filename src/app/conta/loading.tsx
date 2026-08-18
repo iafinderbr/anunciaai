@@ -10,11 +10,10 @@ export default function AccountLoading() {
             <span className="h-px w-8 bg-brand-500" aria-hidden="true" />
             Carregando workspace
           </div>
-          <div className="mt-6 grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 xl:grid-cols-4">
-            <div className="h-36 animate-pulse bg-[#121316]" />
-            <div className="h-36 animate-pulse bg-[#121316]" />
-            <div className="h-36 animate-pulse bg-[#121316]" />
-            <div className="h-36 animate-pulse bg-[#121316]" />
+          <div className="mt-6 grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] sm:grid-cols-3">
+            <div className="h-32 animate-pulse bg-[#121316]" />
+            <div className="h-32 animate-pulse bg-[#121316]" />
+            <div className="h-32 animate-pulse bg-[#121316]" />
           </div>
           <p className="sr-only">Carregando sua conta AnunciaAI.</p>
         </div>
