@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { GeneratorAccessGate } from "@/components/auth/generator-access-gate";
 import { CopyButton } from "@/components/copy-button";
 
 type Target = "todos" | "google" | "loja" | "mercado-livre" | "shopee";
@@ -253,6 +254,14 @@ function KeywordCard({
 }
 
 export function ProductKeywordsTool() {
+  return (
+    <GeneratorAccessGate>
+      <ProductKeywordsToolContent />
+    </GeneratorAccessGate>
+  );
+}
+
+function ProductKeywordsToolContent() {
   const [input, setInput] = useState<KeywordInput>(EMPTY_INPUT);
   const [variation, setVariation] = useState(0);
   const [generated, setGenerated] = useState(false);
@@ -441,9 +450,9 @@ export function ProductKeywordsTool() {
         type="submit"
         className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-brand-600"
       >
-        Gerar sugestões grátis
+        Gerar sugestões
       </button>
-      <p className="mt-3 text-center text-xs text-muted">Sem cadastro e sem cartão de crédito.</p>
+      <p className="mt-3 text-center text-xs text-muted">Incluído no plano Grátis da sua conta.</p>
     </form>
   );
 }
