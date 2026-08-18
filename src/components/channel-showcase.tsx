@@ -122,7 +122,7 @@ export function ChannelIcon({ id, className = "size-5" }: { id: ChannelId; class
 
 export function ChannelCompactBar({ dark = false }: { dark?: boolean }) {
   return (
-    <nav aria-label="Canais de publicação" className="min-[1380px]:hidden">
+    <nav data-channel-compact aria-label="Canais de publicação" className="min-[1380px]:hidden">
       <div className={`flex items-center justify-between gap-3 border-y py-4 ${dark ? "border-white/[0.08]" : "border-line"}`}>
         <p className={`hidden text-[10px] font-semibold uppercase tracking-[0.15em] sm:block ${dark ? "text-white/28" : "text-muted"}`}>Canais</p>
         <div className="grid flex-1 grid-cols-6 gap-1 sm:max-w-[430px] sm:flex-none">
@@ -155,5 +155,10 @@ export function ChannelCompactBar({ dark = false }: { dark?: boolean }) {
  * Em telas amplas os canais agora vivem exclusivamente na dock lateral.
  */
 export function ChannelStrip({ dark = false }: { dark?: boolean }) {
-  return <ChannelCompactBar dark={dark} />;
+  return (
+    <>
+      <style>{`@media (min-width: 1380px){div:has(> [data-channel-compact]){display:none!important;}}`}</style>
+      <ChannelCompactBar dark={dark} />
+    </>
+  );
 }
