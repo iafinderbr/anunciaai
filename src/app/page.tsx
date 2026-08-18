@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChannelRail, ChannelStrip } from "@/components/channel-showcase";
 import { GeneratorTool } from "@/components/generator/generator-tool";
 import { LiveStats } from "@/components/live-stats";
 import { SiteHeader } from "@/components/site-header";
@@ -58,8 +59,6 @@ const previewBlocks = [
   },
 ] as const;
 
-const channelChips = ["Mercado Livre", "Shopee", "OLX", "Facebook", "Loja virtual"] as const;
-
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -115,14 +114,14 @@ export default function HomePage() {
             <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:48px_48px]" />
           </div>
 
-          <div className="container-page relative grid gap-14 pb-16 pt-14 lg:grid-cols-[minmax(0,0.92fr)_minmax(470px,1.08fr)] lg:items-center lg:gap-16 lg:pb-24 lg:pt-24">
+          <div className="container-page relative grid gap-12 pb-16 pt-14 lg:grid-cols-[minmax(0,0.86fr)_minmax(430px,1.04fr)] lg:items-center lg:gap-12 lg:pb-24 lg:pt-24 xl:grid-cols-[minmax(0,0.82fr)_minmax(400px,0.98fr)_220px] xl:gap-7">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold text-white/72 backdrop-blur-sm">
                 <span className="size-1.5 rounded-full bg-brand-500 shadow-[0_0_0_4px_rgba(241,102,42,.12)]" />
-                IA para conteúdo de produtos e marketplaces
+                Conteúdo de produto organizado por canal
               </div>
 
-              <h1 id="hero-titulo" className="mt-6 max-w-3xl text-[3rem] font-semibold leading-[0.94] tracking-[-0.065em] text-white sm:text-[4rem] lg:text-[5rem]">
+              <h1 id="hero-titulo" className="mt-6 max-w-3xl text-[3rem] font-semibold leading-[0.94] tracking-[-0.065em] text-white sm:text-[4rem] xl:text-[4.65rem]">
                 Do produto bruto a um anúncio pronto para revisar.
               </h1>
 
@@ -136,7 +135,7 @@ export default function HomePage() {
                   <span aria-hidden="true" className="ml-2">→</span>
                 </a>
                 <Link href="/ferramentas" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/14 bg-white/[0.04] px-5 text-sm font-semibold text-white/88 transition-colors hover:bg-white/[0.08] hover:text-white">
-                  Ver todas as ferramentas
+                  Escolher um canal
                 </Link>
               </div>
 
@@ -145,14 +144,6 @@ export default function HomePage() {
                 <span>Sem cartão</span>
                 <span>Login Google</span>
                 <span>Salvamento opcional</span>
-              </div>
-
-              <div className="mt-10 flex flex-wrap gap-2" aria-label="Canais atendidos">
-                {channelChips.map((channel) => (
-                  <span key={channel} className="rounded-md border border-white/[0.08] bg-white/[0.025] px-2.5 py-1.5 text-[11px] font-medium text-white/45">
-                    {channel}
-                  </span>
-                ))}
               </div>
             </div>
 
@@ -173,7 +164,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="grid sm:grid-cols-[148px_minmax(0,1fr)]">
+                <div className="grid sm:grid-cols-[138px_minmax(0,1fr)]">
                   <div className="hidden border-r border-white/[0.07] bg-[#141519] p-3 sm:block">
                     <p className="px-2 pb-2 pt-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/30">Seu fluxo</p>
                     {[
@@ -223,6 +214,12 @@ export default function HomePage() {
                 </div>
               </div>
             </aside>
+
+            <ChannelRail className="hidden xl:block" />
+
+            <div className="lg:col-span-2 xl:hidden">
+              <ChannelStrip dark />
+            </div>
           </div>
         </section>
 
