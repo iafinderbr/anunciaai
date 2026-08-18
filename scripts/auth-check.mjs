@@ -15,11 +15,13 @@ function requireText(source, text, message) {
 const packageJson = read("package.json");
 const envExample = read(".env.example");
 const schema = read("src/db/schema.ts");
+const ensureSchema = read("src/db/ensure-schema.ts");
 const authServer = read("src/lib/auth.ts");
 const authRoute = read("src/app/api/auth/[...all]/route.ts");
 const plans = read("src/lib/plans.ts");
 const stripe = read("src/lib/stripe.ts");
 const checkoutApi = read("src/app/api/stripe/checkout/route.ts");
+const pixApi = read("src/app/api/stripe/pix/route.ts");
 const portalApi = read("src/app/api/stripe/portal/route.ts");
 const webhookApi = read("src/app/api/stripe/webhook/route.ts");
 const planApi = read("src/app/api/account/plan/route.ts");
@@ -61,9 +63,11 @@ for (const forbidden of [
   if (envExample.includes(forbidden)) failures.push(`Segredo não pode ser exposto ao cliente: ${forbidden}.`);
 }
 
-for (const field of ["plan", "subscriptionStatus", "subscriptionProvider", "externalSubscriptionId"]) {
-  requireText(schema, field, `Campo de assinatura ausente no usuário: ${field}.`);
+for (const field of ["plan", "subscriptionStatus", "subscriptionProvider", "externalSubscriptionId", "proAccessUntil", "proAccessGrant"]) {
+  requireText(schema, field, `Campo/registro de billing ausente no schema: ${field}.`);
 }
+requireText(ensureSchema, "add column if not exists pro_access_until", "Migração idempotente do acesso temporário Pro está ausente.");
+requireText(ensureSchema, "create table if not exists pro_access_grant", "Tabela idempotente de concessões Pix está ausente.");
 
 for (const required of [
   'from "better-auth/minimal"',
@@ -71,6 +75,8 @@ for (const required of [
   'provider: "pg"',
   'baseURL: process.env.BETTER_AUTH_URL || SITE_URL',
   'encryptOAuthTokens: true',
+  'proAccessUntil:',
+  'type: "date"',
   'input: false',
 ]) {
   requireText(authServer, required, `Configuração do Better Auth incompleta: ${required}.`);
@@ -89,16 +95,22 @@ for (const [name, source] of [
 }
 
 requireText(accountPage, "auth.api.getSession", "Área da conta não valida sessão no servidor.");
+requireText(accountPage, "session.user.proAccessUntil", "Visão geral da conta não considera acesso Pro temporário via Pix.");
 requireText(planPage, "auth.api.getSession", "Outros modos não valida sessão no servidor.");
 requireText(planPage, 'redirect("/entrar")', "Outros modos não bloqueia visitantes.");
+requireText(planPage, "session.user.proAccessUntil", "Outros modos não considera validade do Pix.");
 requireText(proPage, "effectivePlan", "Área Pro não valida plano efetivo.");
+requireText(proPage, "session.user.proAccessUntil", "Área Pro não valida o prazo do acesso comprado via Pix.");
 requireText(proPage, 'redirect("/conta/plano")', "Área Pro precisa bloquear conta sem Pro ativo.");
 requireText(accountNav, 'label: "Outros modos"', "Navegação da conta deve chamar a área comercial de Outros modos.");
 
 for (const required of [
   'PRO_MONTHLY_PRICE_CENTS = 1990',
   'PRO_PRICE_LABEL = "R$ 19,90"',
+  'PRO_PIX_ACCESS_DAYS = 30',
+  'PRO_PIX_LABEL = "R$ 19,90 por 30 dias"',
   'subscriptionStatus === "active"',
+  "hasTimedProAccess",
   "PRO_FEATURES",
   "PREMIUM_PLANNED_FEATURES",
 ]) {
@@ -119,6 +131,11 @@ for (const required of [
   "subscriptionHasProPrice",
   'body.set("line_items[0][price]", stripeProPriceId())',
   'body.set("subscription_data[metadata][userId]", input.userId)',
+  'body.set("mode", "payment")',
+  'body.set("payment_method_types[0]", "pix")',
+  'String(PRO_MONTHLY_PRICE_CENTS)',
+  'body.set("metadata[purchaseType]", "pix_30d")',
+  'body.set("metadata[accessDays]", String(PRO_PIX_ACCESS_DAYS))',
 ]) {
   requireText(stripe, required, `Cliente Stripe perdeu proteção/configuração: ${required}.`);
 }
@@ -127,14 +144,28 @@ for (const required of [
   "isAllowedOrigin(request)",
   "auth.api.getSession",
   "stripeBillingConfigured()",
-  "effectivePlan(session.user.plan, session.user.subscriptionStatus)",
+  "effectivePlan(session.user.plan, session.user.subscriptionStatus, session.user.proAccessUntil)",
   'session.user.subscriptionProvider === "stripe"',
   "createProCheckoutSession",
 ]) {
-  requireText(checkoutApi, required, `Checkout Pro perdeu proteção: ${required}.`);
+  requireText(checkoutApi, required, `Checkout recorrente Pro perdeu proteção: ${required}.`);
 }
 if (/request\.json\(\)|priceId|price_id/.test(checkoutApi)) {
-  failures.push("Checkout não pode aceitar Price ID vindo do navegador.");
+  failures.push("Checkout recorrente não pode aceitar Price ID vindo do navegador.");
+}
+
+for (const required of [
+  "isAllowedOrigin(request)",
+  "auth.api.getSession",
+  "stripePixConfigured()",
+  "effectivePlan(session.user.plan, session.user.subscriptionStatus, session.user.proAccessUntil)",
+  "createProPixCheckoutSession",
+  'error: "manage_existing_subscription"',
+]) {
+  requireText(pixApi, required, `Checkout Pix perdeu proteção: ${required}.`);
+}
+if (/request\.json\(\)|priceId|price_id|unit_amount|amount\s*[:=]/.test(pixApi)) {
+  failures.push("Endpoint Pix não pode aceitar valor, amount ou Price ID vindo do navegador.");
 }
 
 for (const required of [
@@ -152,9 +183,16 @@ for (const required of [
   "verifyStripeWebhook",
   "subscriptionHasProPrice",
   'event.type === "checkout.session.completed"',
+  'event.type === "checkout.session.async_payment_succeeded"',
   'event.type === "customer.subscription.created"',
   'event.type === "customer.subscription.updated"',
   'event.type === "customer.subscription.deleted"',
+  'paymentStatus !== "paid"',
+  'purchaseType !== "pix_30d"',
+  "proAccessGrant",
+  ".onConflictDoNothing()",
+  "proAccessUntil",
+  'subscriptionProvider: "stripe-pix"',
   'subscriptionProvider: "stripe"',
   'status === "active"',
 ]) {
@@ -173,14 +211,18 @@ if (/\.update\(user\)|plan:\s*"pro"/.test(planApi)) {
 for (const required of [
   "ProBillingActions",
   "stripeBillingConfigured",
+  "stripePixConfigured",
   'status: "Planejado"',
   "PRO_PRICE_LABEL",
-  "Cartão e dados de pagamento ficam na Stripe",
+  "30 dias",
+  "não renova automaticamente",
 ]) {
   requireText(planPage, required, `Página Outros modos incompleta: ${required}.`);
 }
-requireText(billingActions, 'fetch("/api/stripe/checkout"', "CTA Pro precisa chamar checkout protegido.");
-requireText(billingActions, 'fetch("/api/stripe/portal"', "CTA Pro precisa abrir Customer Portal.");
+requireText(billingActions, '"/api/stripe/checkout"', "CTA Pro precisa chamar checkout protegido.");
+requireText(billingActions, '"/api/stripe/pix"', "CTA Pix precisa chamar checkout protegido.");
+requireText(billingActions, '"/api/stripe/portal"', "CTA Pro precisa abrir Customer Portal.");
+requireText(billingActions, "Pix é pagamento único por 30 dias", "UI precisa explicar que Pix não é recorrente.");
 
 requireText(pricing, "export function PricingSection() {\n  return null;", "Preços devem sair da página pública.");
 if (pricing.includes("R$ 19,90")) failures.push("Preço do Pro não deve aparecer na Home pública.");
@@ -201,4 +243,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: login obrigatório, Outros modos privado, Pro R$ 19,90/mês via Stripe Checkout, webhook assinado, preço server-side, Customer Portal e Premium planejado validados.");
+console.log("Contas OK: login obrigatório, Pro R$ 19,90/mês no cartão, Pix avulso de 30 dias, webhook assinado e idempotente, preço server-side, Customer Portal e Premium planejado validados.");
