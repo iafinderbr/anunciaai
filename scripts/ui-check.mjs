@@ -21,6 +21,7 @@ const globals = read("src/app/globals.css");
 const darkSystem = read("src/app/professional-dark.css");
 const darkPages = read("src/app/professional-dark-pages.css");
 const accountDark = read("src/app/account-dark.css");
+const generatorDark = read("src/app/generator-dark.css");
 const layout = read("src/app/layout.tsx");
 const guideHub = read("src/app/guias/page.tsx");
 const header = read("src/components/site-header.tsx");
@@ -68,7 +69,7 @@ requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial
 requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo base do hub de guias.");
 requireText(globals, "--color-canvas: #f7f7f5", "O sistema de superfícies claras/formulários perdeu sua paleta neutra de apoio.");
 
-for (const cssImport of ['./professional-dark.css', './professional-dark-pages.css', './account-dark.css']) {
+for (const cssImport of ['./professional-dark.css', './professional-dark-pages.css', './account-dark.css', './generator-dark.css']) {
   requireText(layout, cssImport, `Layout deixou de carregar ${cssImport}.`);
 }
 requireText(layout, 'themeColor: "#0c0d0f"', "Tema do navegador precisa acompanhar o shell grafite.");
@@ -99,6 +100,23 @@ for (const required of [
 ]) {
   requireText(accountDark, required, `Área autenticada perdeu o acabamento profissional: ${required}.`);
 }
+for (const required of [
+  "#ferramenta:not(main)",
+  "--generator-bg: #0d0e11",
+  "width: 100vw",
+  "background: var(--generator-bg)",
+  "background: #0b0c0f",
+  "--generator-orange: #f1662a",
+  "button.bg-ink",
+  "color-scheme: dark",
+]) {
+  requireText(generatorDark, required, `Fluxo de criação perdeu o tema grafite integral: ${required}.`);
+}
+requireText(
+  generatorDark,
+  "Guias editoriais também usam `main#ferramenta`",
+  "Tema do gerador precisa continuar explicitamente isolado dos guias editoriais.",
+);
 
 requireText(header, 'id="inicio-conteudo"', "O cabeçalho perdeu o alvo acessível do skip link.");
 requireText(header, "ChannelSideDock", "O shell público perdeu a navegação lateral por canal.");
@@ -145,5 +163,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, gates/login/workspace autenticado profissionais e navegação de 6 canais preservados.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, fluxo de criação integralmente escuro, gates/login/workspace autenticado profissionais e navegação de 6 canais preservados.`,
 );
