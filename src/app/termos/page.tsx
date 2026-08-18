@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Termos de Uso",
-  description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário e limites do conteúdo gerado.",
+  description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas e limites do conteúdo gerado.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Termos de Uso | AnunciaAI",
-    description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário e limites do conteúdo gerado.",
+    description: "Consulte as condições de uso do AnunciaAI, responsabilidades do usuário, contas e limites do conteúdo gerado.",
   },
   robots: { index: true, follow: true },
 };
@@ -48,15 +48,19 @@ const sections = [
     text: "A ferramenta deve ser usada para finalidades lícitas. Não é permitido utilizar o serviço para criar conteúdo fraudulento, enganoso, ilícito, que viole direitos de terceiros ou que tente contornar regras de plataformas.",
   },
   {
-    title: "7. Disponibilidade",
+    title: "7. Conta e autenticação",
+    text: "O uso das ferramentas gratuitas continua disponível sem conta. Quando o usuário optar por entrar com Google, ele é responsável por manter a própria Conta Google segura e por encerrar a sessão em dispositivos compartilhados. O acesso à área de conta depende de uma sessão válida e pode ser interrompido em caso de abuso, risco de segurança ou indisponibilidade técnica.",
+  },
+  {
+    title: "8. Disponibilidade",
     text: "O serviço pode passar por manutenção, alterações, testes ou interrupções. Recursos gratuitos, limites e funcionalidades podem mudar conforme o produto evolui.",
   },
   {
-    title: "8. Planos futuros",
-    text: "Planos pagos exibidos como “Em breve” são apenas uma indicação de recursos planejados. Valores, funcionalidades e condições podem mudar antes do lançamento e não representam uma contratação enquanto a compra não estiver disponível.",
+    title: "9. Planos futuros",
+    text: "Planos pagos exibidos como “Em breve” ou “Em preparação” são apenas uma indicação de recursos planejados. Valores, funcionalidades e condições podem mudar antes do lançamento e não representam uma contratação enquanto a compra não estiver disponível.",
   },
   {
-    title: "9. Alterações dos termos",
+    title: "10. Alterações dos termos",
     text: "Estes termos podem ser atualizados para acompanhar mudanças no produto, na legislação ou nas integrações utilizadas. A versão publicada nesta página é a versão vigente.",
   },
 ];
@@ -77,9 +81,9 @@ export default function TermosPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Uso responsável</p>
               <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">Termos de Uso</h1>
               <p className="mt-5 text-base leading-8 text-muted">
-                Estes termos explicam as condições básicas para utilizar as ferramentas e conteúdos do AnunciaAI.
+                Estes termos explicam as condições básicas para utilizar as ferramentas, a conta e os conteúdos do AnunciaAI.
               </p>
-              <p className="mt-3 text-sm text-muted">Última atualização: 16 de agosto de 2026.</p>
+              <p className="mt-3 text-sm text-muted">Última atualização: 17 de agosto de 2026.</p>
             </div>
           </div>
         </section>
