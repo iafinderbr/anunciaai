@@ -81,14 +81,14 @@ export default function HomePage() {
         <section aria-labelledby="hero-titulo" className="relative overflow-hidden border-b border-line bg-white">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-[560px] bg-[radial-gradient(55%_65%_at_74%_10%,rgba(255,92,26,0.11),transparent_72%)]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[560px] bg-[radial-gradient(55%_65%_at_74%_10%,rgba(255,92,26,0.09),transparent_72%)]"
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,#e8e9ee_1px,transparent_1px),linear-gradient(to_bottom,#e8e9ee_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_72%)]"
+            className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,#e8e9ee_1px,transparent_1px),linear-gradient(to_bottom,#e8e9ee_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent_68%)]"
           />
 
-          <div className="container-page relative grid gap-10 pb-12 pt-14 lg:grid-cols-[minmax(0,1.06fr)_minmax(360px,0.74fr)] lg:items-center lg:gap-16 lg:pb-16 lg:pt-20">
+          <div className="container-page relative grid gap-10 pb-12 pt-12 lg:grid-cols-[minmax(0,1.06fr)_minmax(360px,0.74fr)] lg:items-center lg:gap-16 lg:pb-16 lg:pt-18">
             <div className="max-w-3xl">
               <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-card backdrop-blur">
                 <span className="size-1.5 rounded-full bg-brand-500" />
@@ -109,13 +109,13 @@ export default function HomePage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#ferramenta"
-                  className="inline-flex min-h-12 items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-lift"
+                  className="interactive-lift inline-flex min-h-12 items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-white shadow-card hover:bg-brand-600"
                 >
                   Criar anúncio grátis
                 </a>
                 <Link
                   href="/ferramentas"
-                  className="inline-flex min-h-12 items-center justify-center rounded-xl border border-line-strong bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
+                  className="interactive-lift inline-flex min-h-12 items-center justify-center rounded-xl border border-line-strong bg-white px-6 py-3 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700"
                 >
                   Ver todas as ferramentas
                 </Link>
@@ -133,25 +133,25 @@ export default function HomePage() {
             </div>
 
             <aside className="relative mx-auto w-full max-w-lg lg:max-w-none" aria-label="Visão geral do fluxo do AnunciaAI">
-              <div className="absolute -inset-4 rounded-[2rem] bg-brand-50/60 blur-2xl" aria-hidden="true" />
-              <div className="relative overflow-hidden rounded-3xl border border-line bg-white shadow-[0_30px_80px_-46px_rgba(16,19,26,0.5)]">
-                <div className="flex items-center justify-between border-b border-line bg-canvas/80 px-5 py-4">
+              <div className="absolute -inset-4 rounded-[2rem] bg-brand-50/45 blur-2xl" aria-hidden="true" />
+              <div className="product-surface relative overflow-hidden rounded-2xl">
+                <div className="flex items-center justify-between border-b border-line bg-canvas/65 px-5 py-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-600">Seu fluxo</p>
-                    <p className="mt-0.5 text-sm font-semibold text-ink">Do produto ao conteúdo</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-600">Seu fluxo</p>
+                    <p className="mt-1 text-sm font-semibold text-ink">Do produto ao conteúdo</p>
                   </div>
                   <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-[10px] font-semibold text-muted">AnunciaAI</span>
                 </div>
 
-                <div className="space-y-2 p-4 sm:p-5">
+                <div className="divide-y divide-line px-5">
                   {[
                     ["01", "Informe o produto", "Nome, categoria e características reais."],
                     ["02", "Escolha o canal", "Marketplace, loja virtual ou rede social."],
                     ["03", "Gere a primeira versão", "Conteúdo organizado em blocos claros."],
                     ["04", "Salve e reutilize", "Histórico e produtos ficam na sua conta quando você quiser."],
                   ].map(([number, title, text]) => (
-                    <div key={number} className="flex gap-3 rounded-2xl border border-line bg-canvas/65 p-3.5">
-                      <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white text-[11px] font-bold text-ink shadow-card">{number}</span>
+                    <div key={number} className="grid grid-cols-[34px_1fr] gap-3 py-4">
+                      <span className="pt-0.5 text-[11px] font-bold tabular-nums text-brand-600">{number}</span>
                       <div>
                         <p className="text-sm font-semibold text-ink">{title}</p>
                         <p className="mt-0.5 text-xs leading-5 text-muted">{text}</p>
@@ -160,7 +160,7 @@ export default function HomePage() {
                   ))}
                 </div>
 
-                <div className="border-t border-line px-5 py-4">
+                <div className="border-t border-line bg-canvas/45 px-5 py-4">
                   <p className="text-xs leading-5 text-muted">Você mantém o controle: revise especificações, preço e regras do canal antes de publicar.</p>
                 </div>
               </div>
@@ -197,23 +197,26 @@ export default function HomePage() {
                   Em vez de espalhar dezenas de links pela página, o AnunciaAI concentra criação, conta e conteúdo em áreas próprias.
                 </p>
               </div>
-              <Link href="/ferramentas" className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-800">
+              <Link href="/ferramentas" className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-brand-700 transition-colors hover:text-brand-800">
                 Abrir central completa <span aria-hidden="true">→</span>
               </Link>
             </div>
 
-            <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            <div className="product-surface mt-8 overflow-hidden rounded-2xl lg:grid lg:grid-cols-3 lg:divide-x lg:divide-line">
               {workspaceCards.map((card) => (
                 <Link
                   key={card.href}
                   href={card.href}
-                  className="group flex min-h-56 flex-col rounded-2xl border border-line bg-canvas/65 p-5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-white hover:shadow-lift sm:p-6"
+                  className="group block border-b border-line p-5 transition-colors duration-200 last:border-b-0 hover:bg-canvas/70 sm:p-6 lg:border-b-0"
                 >
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-600">{card.eyebrow}</span>
-                  <h3 className="mt-3 text-lg font-semibold text-ink group-hover:text-brand-700">{card.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-muted">{card.text}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink-soft group-hover:text-brand-700">
-                    {card.action}<span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-600">{card.eyebrow}</span>
+                    <span aria-hidden="true" className="text-sm text-line-strong transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-600">→</span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-ink transition-colors group-hover:text-brand-700">{card.title}</h3>
+                  <p className="mt-2 min-h-18 text-sm leading-6 text-muted">{card.text}</p>
+                  <span className="mt-5 inline-flex items-center text-sm font-semibold text-ink-soft transition-colors group-hover:text-brand-700">
+                    {card.action}
                   </span>
                 </Link>
               ))}
@@ -227,7 +230,7 @@ export default function HomePage() {
 
         <section aria-labelledby="cta-final" className="border-t border-line bg-white">
           <div className="container-page py-14 sm:py-20">
-            <div className="overflow-hidden rounded-3xl bg-ink px-6 py-11 text-center shadow-lift sm:px-12 sm:py-14">
+            <div className="overflow-hidden rounded-2xl bg-ink px-6 py-11 text-center shadow-lift sm:px-12 sm:py-14">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Pronto para começar?</p>
               <h2 id="cta-final" className="mx-auto mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                 Crie a primeira versão do seu próximo anúncio em poucos passos.
@@ -237,7 +240,7 @@ export default function HomePage() {
               </p>
               <a
                 href="#ferramenta"
-                className="mt-7 inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
+                className="interactive-lift mt-7 inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink shadow-card hover:bg-brand-500 hover:text-white"
               >
                 Criar anúncio grátis
               </a>
