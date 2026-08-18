@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "billing_not_configured" }, { status: 503, headers: NO_STORE_HEADERS });
   }
 
-  if (effectivePlan(session.user.plan, session.user.subscriptionStatus) === "pro") {
+  if (effectivePlan(session.user.plan, session.user.subscriptionStatus, session.user.proAccessUntil) === "pro") {
     return Response.json({ ok: false, error: "already_active" }, { status: 409, headers: NO_STORE_HEADERS });
   }
 
