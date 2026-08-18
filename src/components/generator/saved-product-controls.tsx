@@ -168,7 +168,7 @@ export function SavedProductControls({
             disabled={saving}
             className="rounded-lg border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700 disabled:cursor-wait disabled:opacity-60"
           >
-            {saving ? "Salvando…" : "Salvar atual"}
+            {saving ? "Salvando…" : "Salvar produto atual"}
           </button>
         </div>
       </div>
