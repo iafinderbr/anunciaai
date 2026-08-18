@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { AccountNav } from "@/components/account/account-nav";
+import { AccountShellHeader } from "@/components/account/account-shell-header";
 import { ProBillingActions } from "@/components/account/pro-billing-actions";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
@@ -72,10 +73,11 @@ export default async function AccountPlanPage({
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main className="min-h-[70vh] bg-[#0d0e11]">
-        <section className="container-page py-8 sm:py-10 lg:py-12">
+      <main className="min-h-[70vh] bg-[#0d0e11] text-white">
+        <section className="container-page py-7 sm:py-9 lg:py-10">
           <div className="mx-auto max-w-6xl">
-            <AccountNav active="plan" />
+            <AccountShellHeader name={session.user.name} email={session.user.email} plan={currentPlan} />
+            <div className="mt-3"><AccountNav active="plan" /></div>
 
             {query.checkout === "success" ? (
               <div className="mt-6 border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm leading-6 text-emerald-800">
@@ -175,7 +177,7 @@ export default async function AccountPlanPage({
               </div>
               <div className="flex flex-wrap gap-2">
                 {proActive ? <Link href="/conta/pro" className="bg-ink px-4 py-3 text-sm font-semibold text-white hover:bg-brand-600">Abrir Pro</Link> : null}
-                <Link href="/ferramentas" className="border border-line-strong bg-white px-4 py-3 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">Ferramentas</Link>
+                <Link href="/conta/ferramentas" className="border border-line-strong bg-white px-4 py-3 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">Ferramentas</Link>
               </div>
             </div>
           </div>
