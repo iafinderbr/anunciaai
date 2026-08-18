@@ -73,7 +73,7 @@ export default function FerramentasPage() {
                   Ferramentas, histórico e conta em um só lugar
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted sm:text-[15px]">
-                  Acesse o gerador principal, seus resultados salvos e todos os geradores sem precisar procurar pela página inicial.
+                  Entre uma vez com Google e use os geradores gratuitos, histórico e produtos salvos a partir da mesma conta.
                 </p>
               </div>
 
@@ -99,7 +99,7 @@ export default function FerramentasPage() {
                   Escolha a ferramenta certa para cada tarefa
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted sm:text-[15px]">
-                  As ferramentas continuam gratuitas e podem ser usadas sem cadastro. A conta é necessária apenas para recursos pessoais, como o histórico.
+                  Todos os geradores atuais fazem parte do plano Grátis. O único passo de acesso é entrar com Google; não pedimos cartão para usar o modo gratuito.
                 </p>
               </div>
               <Link
