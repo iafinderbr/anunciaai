@@ -54,7 +54,7 @@ export default function PalavrasChaveMercadoLivrePage() {
   return (
     <>
       <SiteHeader ctaHref="/gerador-de-anuncios-mercado-livre#ferramenta" />
-      <main>
+      <main id="ferramenta">
         <article>
           <header className="relative overflow-hidden border-b border-line bg-white">
             <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(255,92,26,0.11),transparent_72%)]" />
