@@ -1,5 +1,6 @@
 name: Bootstrap Better Auth dependency
 
+# Mantém package.json e package-lock.json sincronizados após mudanças de autenticação.
 on:
   push:
     branches: [main]
