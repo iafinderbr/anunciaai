@@ -7,6 +7,8 @@ import { SITE_URL } from "@/lib/site";
 const secret = process.env.BETTER_AUTH_SECRET;
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
+const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
 
 if (!secret) {
   throw new Error("BETTER_AUTH_SECRET is required");
@@ -15,6 +17,22 @@ if (!secret) {
 if (!googleClientId || !googleClientSecret) {
   throw new Error("GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are required");
 }
+
+const socialProviders = {
+  google: {
+    clientId: googleClientId,
+    clientSecret: googleClientSecret,
+    scope: ["openid", "email", "profile"],
+  },
+  ...(facebookClientId && facebookClientSecret
+    ? {
+        facebook: {
+          clientId: facebookClientId,
+          clientSecret: facebookClientSecret,
+        },
+      }
+    : {}),
+};
 
 export const auth = betterAuth({
   appName: "AnunciaAI",
@@ -29,13 +47,7 @@ export const auth = betterAuth({
     // tokens reduz o impacto de uma eventual exposição isolada da base.
     encryptOAuthTokens: true,
   },
-  socialProviders: {
-    google: {
-      clientId: googleClientId,
-      clientSecret: googleClientSecret,
-      scope: ["openid", "email", "profile"],
-    },
-  },
+  socialProviders,
   user: {
     additionalFields: {
       plan: {

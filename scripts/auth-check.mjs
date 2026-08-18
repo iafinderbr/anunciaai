@@ -27,6 +27,7 @@ const historyPage = read("src/app/conta/historico/page.tsx");
 const productsPage = read("src/app/conta/produtos/page.tsx");
 const planPage = read("src/app/conta/plano/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
+const facebookButton = read("src/components/auth/facebook-sign-in-button.tsx");
 const generatorAccessGate = read("src/components/auth/generator-access-gate.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const siteHeader = read("src/components/site-header.tsx");
@@ -48,6 +49,8 @@ for (const variable of [
   "BETTER_AUTH_URL=https://anunciaai.vercel.app",
   "GOOGLE_CLIENT_ID=",
   "GOOGLE_CLIENT_SECRET=",
+  "FACEBOOK_CLIENT_ID=",
+  "FACEBOOK_CLIENT_SECRET=",
 ]) {
   requireText(envExample, variable, `.env.example não documenta ${variable.split("=")[0]}.`);
 }
@@ -55,6 +58,7 @@ for (const variable of [
 for (const forbidden of [
   "NEXT_PUBLIC_BETTER_AUTH_SECRET",
   "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET",
+  "NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET",
   "NEXT_PUBLIC_DATABASE_URL",
 ]) {
   if (envExample.includes(forbidden)) failures.push(`Segredo não pode ser exposto ao cliente: ${forbidden}.`);
@@ -95,6 +99,8 @@ for (const required of [
   'clientId: googleClientId',
   'clientSecret: googleClientSecret',
   'scope: ["openid", "email", "profile"]',
+  "facebookClientId && facebookClientSecret",
+  "socialProviders,",
   'input: false',
 ]) {
   requireText(authServer, required, `Configuração do Better Auth incompleta: ${required}.`);
@@ -117,8 +123,11 @@ for (const [name, source] of [
 }
 
 requireText(signInPage, "GoogleSignInButton", "Tela de login perdeu o CTA real do Google.");
+requireText(signInPage, "FacebookSignInButton", "Tela de login não está preparada para o provider Facebook.");
+requireText(signInPage, "facebookEnabled", "Facebook deve aparecer somente quando as credenciais existirem.");
+requireText(signInPage, "safeCallbackURL", "Tela de login precisa validar a URL interna de retorno.");
 requireText(signInPage, 'auth.api.getSession', "Tela de login não reconhece sessão existente.");
-requireText(signInPage, 'redirect("/conta")', "Usuário autenticado não é redirecionado para /conta.");
+requireText(signInPage, 'redirect(callbackURL)', "Usuário autenticado deve voltar para uma rota interna validada.");
 requireText(signInPage, "use tudo do Grátis", "Tela de login deve explicar que a conta libera o modo Grátis.");
 requireText(accountPage, 'auth.api.getSession', "Área /conta não valida sessão no servidor.");
 requireText(accountPage, 'redirect("/entrar")', "Área /conta não bloqueia visitante sem sessão.");
@@ -132,8 +141,12 @@ requireText(productsPage, 'redirect("/entrar")', "Produtos salvos não bloqueiam
 requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
 requireText(googleButton, 'callbackURL = "/conta"', "Login Google precisa manter /conta como retorno padrão.");
 requireText(googleButton, "callbackURL,", "Botão Google precisa aceitar retorno para a ferramenta de origem.");
+requireText(facebookButton, 'provider: "facebook"', "Botão Facebook não usa o provider correto.");
+requireText(facebookButton, 'callbackURL = "/conta"', "Login Facebook precisa manter /conta como retorno padrão.");
+requireText(facebookButton, "callbackURL,", "Botão Facebook precisa aceitar retorno para a ferramenta de origem.");
 requireText(generatorAccessGate, "authClient.useSession()", "Gate dos geradores não valida sessão.");
 requireText(generatorAccessGate, "GoogleSignInButton", "Gate dos geradores perdeu o login Google inline.");
+requireText(generatorAccessGate, "Ver outras formas de entrar", "Gate deve oferecer caminho para providers alternativos.");
 requireText(generatorAccessGate, "10 geradores grátis", "Gate deve explicar o acesso gratuito liberado pelo login.");
 for (const [name, source] of [
   ["gerador principal", generatorTool],
@@ -198,4 +211,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, login obrigatório nos geradores, modo Grátis, histórico e produtos opt-in, preço Pro planejado, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, Facebook opcional sem botão falso, retorno interno seguro, login obrigatório nos geradores, modo Grátis, histórico e produtos opt-in, preço Pro planejado, schema, variáveis e controle de plano validados.");
