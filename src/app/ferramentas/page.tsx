@@ -57,7 +57,7 @@ export default function FerramentasPage() {
       <SiteHeader ctaHref="/#ferramenta" />
       <main>
         <section className="border-b border-line bg-canvas">
-          <div className="container-page py-7 sm:py-9 lg:py-10">
+          <div className="container-page py-7 sm:py-9 lg:py-11">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
                 <nav aria-label="Trilha de navegação" className="text-xs text-muted">
@@ -69,7 +69,7 @@ export default function FerramentasPage() {
                 </nav>
 
                 <p className="mt-5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Central do AnunciaAI</p>
-                <h1 className="mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
+                <h1 className="mt-2 max-w-2xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-[2.5rem] lg:leading-[1.12]">
                   Ferramentas, histórico e conta em um só lugar
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted sm:text-[15px]">
@@ -79,7 +79,7 @@ export default function FerramentasPage() {
 
               <a
                 href="#geradores"
-                className="inline-flex w-fit items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
+                className="interactive-lift inline-flex w-fit items-center gap-2 rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink shadow-card hover:border-brand-300 hover:text-brand-700"
               >
                 Ver todos os geradores
                 <span aria-hidden="true">↓</span>
@@ -104,38 +104,38 @@ export default function FerramentasPage() {
               </div>
               <Link
                 href="/#ferramenta"
-                className="inline-flex w-fit items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+                className="interactive-lift inline-flex w-fit items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white shadow-card hover:bg-brand-600"
               >
                 Gerador completo
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
 
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {tools.map((tool) => (
                 <li key={tool.href}>
                   <Link
                     href={tool.href}
-                    className="group flex h-full min-h-48 flex-col rounded-2xl border border-line bg-canvas p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lift"
+                    className="interactive-lift group flex h-full min-h-44 flex-col rounded-2xl border border-line bg-white p-5 hover:border-brand-300"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <span
                         aria-hidden="true"
-                        className="grid h-9 min-w-9 place-items-center rounded-xl border border-line-strong bg-white px-2 text-[11px] font-bold text-ink-soft"
+                        className="grid h-8 min-w-8 place-items-center rounded-lg bg-canvas px-2 text-[10px] font-bold text-ink-soft ring-1 ring-inset ring-line-strong"
                       >
                         {tool.short}
                       </span>
-                      <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-muted">
+                      <span className="rounded-full bg-canvas px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.09em] text-muted ring-1 ring-inset ring-line">
                         {tool.eyebrow}
                       </span>
                     </div>
-                    <h3 className="mt-4 text-base font-semibold leading-snug text-ink transition-colors group-hover:text-brand-700 sm:text-lg">
+                    <h3 className="mt-4 text-base font-semibold leading-snug text-ink transition-colors group-hover:text-brand-700 sm:text-[17px]">
                       {tool.title}
                     </h3>
                     <p className="mt-2 flex-1 text-sm leading-6 text-muted">{tool.description}</p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-700">
+                    <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-sm font-semibold text-ink-soft transition-colors group-hover:text-brand-700">
                       Abrir ferramenta
-                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                      <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                     </span>
                   </Link>
                 </li>
