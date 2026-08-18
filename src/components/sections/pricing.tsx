@@ -41,7 +41,7 @@ const plans: Plan[] = [
       "Recursos de produtividade",
     ],
     cta: "Ver área de conta",
-    href: "/conta",
+    href: "/entrar",
     featured: true,
   },
   {
@@ -56,7 +56,7 @@ const plans: Plan[] = [
       "Recursos avançados de catálogo",
     ],
     cta: "Acompanhar preparação",
-    href: "/conta/plano",
+    href: "/entrar",
   },
 ];
 
