@@ -5,6 +5,10 @@ import { authClient } from "@/lib/auth-client";
 
 type QuickIcon = "spark" | "history" | "account" | "guide";
 
+type ToolsQuickActionsProps = {
+  variant?: "light" | "dark";
+};
+
 function QuickActionIcon({ icon }: { icon: QuickIcon }) {
   if (icon === "spark") {
     return (
@@ -42,8 +46,9 @@ function QuickActionIcon({ icon }: { icon: QuickIcon }) {
   );
 }
 
-export function ToolsQuickActions() {
+export function ToolsQuickActions({ variant = "light" }: ToolsQuickActionsProps) {
   const { data: session } = authClient.useSession();
+  const dark = variant === "dark";
 
   const quickActions = [
     {
@@ -81,28 +86,41 @@ export function ToolsQuickActions() {
   ] as const;
 
   return (
-    <div className="grid overflow-hidden rounded-xl border border-line bg-white sm:grid-cols-2 lg:grid-cols-4">
+    <div className={`grid overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-4 ${dark ? "border-white/[0.08] bg-white/[0.025]" : "border-line bg-white"}`}>
       {quickActions.map((item, index) => (
         <Link
           key={`${item.title}-${item.href}`}
           href={item.href}
-          className={`group relative flex min-h-[124px] flex-col justify-between gap-5 p-4 transition-colors hover:bg-canvas/70 sm:p-5 ${
-            index < quickActions.length - 1 ? "border-b border-line sm:border-b-0 lg:border-r" : ""
-          } ${index === 1 ? "sm:border-r" : ""} ${item.featured ? "bg-brand-50/45" : "bg-white"}`}
+          className={`group relative flex min-h-[132px] flex-col justify-between gap-5 p-4 transition-colors sm:p-5 ${
+            index < quickActions.length - 1 ? (dark ? "border-b border-white/[0.08] sm:border-b-0 lg:border-r" : "border-b border-line sm:border-b-0 lg:border-r") : ""
+          } ${index === 1 ? (dark ? "sm:border-r sm:border-white/[0.08]" : "sm:border-r sm:border-line") : ""} ${
+            dark ? "bg-transparent hover:bg-white/[0.045]" : item.featured ? "bg-brand-50/45 hover:bg-canvas/70" : "bg-white hover:bg-canvas/70"
+          }`}
         >
           <div className="flex items-center justify-between gap-4">
-            <span className={`grid size-8 place-items-center rounded-lg ${item.featured ? "bg-ink text-white" : "border border-line-strong bg-white text-ink-soft"}`} aria-hidden="true">
+            <span
+              className={`grid size-8 place-items-center rounded-lg ${
+                dark
+                  ? item.featured
+                    ? "bg-brand-500 text-white"
+                    : "border border-white/10 bg-white/[0.035] text-white/55"
+                  : item.featured
+                    ? "bg-ink text-white"
+                    : "border border-line-strong bg-white text-ink-soft"
+              }`}
+              aria-hidden="true"
+            >
               <QuickActionIcon icon={item.icon} />
             </span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">{item.eyebrow}</span>
+            <span className={`text-[10px] font-semibold uppercase tracking-[0.12em] ${dark ? "text-white/28" : "text-muted"}`}>{item.eyebrow}</span>
           </div>
 
           <div>
-            <span className="block text-sm font-semibold text-ink transition-colors group-hover:text-brand-700">{item.title}</span>
-            <span className="mt-1 block text-xs leading-5 text-muted">{item.description}</span>
+            <span className={`block text-sm font-semibold transition-colors ${dark ? "text-white/84 group-hover:text-white" : "text-ink group-hover:text-brand-700"}`}>{item.title}</span>
+            <span className={`mt-1 block text-xs leading-5 ${dark ? "text-white/34" : "text-muted"}`}>{item.description}</span>
           </div>
 
-          <span aria-hidden="true" className="absolute bottom-4 right-4 text-sm text-line-strong transition-all group-hover:translate-x-0.5 group-hover:text-brand-700">→</span>
+          <span aria-hidden="true" className={`absolute bottom-4 right-4 text-sm transition-all group-hover:translate-x-0.5 ${dark ? "text-white/20 group-hover:text-brand-300" : "text-line-strong group-hover:text-brand-700"}`}>→</span>
         </Link>
       ))}
     </div>
