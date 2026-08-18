@@ -60,12 +60,12 @@ export function CopyButton({
   }, [value]);
 
   const base =
-    "inline-flex shrink-0 items-center gap-1.5 rounded-lg font-medium transition-colors duration-150 disabled:opacity-50";
-  const sizing = size === "sm" ? "px-2.5 py-1.5 text-xs" : "px-3.5 py-2 text-sm";
+    "interactive-lift inline-flex shrink-0 items-center gap-1.5 rounded-xl font-semibold disabled:opacity-50";
+  const sizing = size === "sm" ? "min-h-8 px-2.5 py-1.5 text-xs" : "min-h-10 px-3.5 py-2 text-sm";
   const skin =
     variant === "solid"
-      ? "bg-ink text-white hover:bg-ink-soft"
-      : "border border-line-strong bg-white text-ink-soft hover:border-brand-500 hover:text-brand-600";
+      ? "border border-white/10 bg-white text-ink shadow-card hover:bg-brand-500 hover:text-white"
+      : "border border-line-strong bg-white text-ink-soft hover:border-brand-300 hover:bg-brand-50/45 hover:text-brand-700";
 
   return (
     <button
@@ -79,7 +79,7 @@ export function CopyButton({
           <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2.2">
             <path d="M4 10.5 8 14.5 16 6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Copiado!
+          Copiado
         </>
       ) : state === "error" ? (
         "Tente novamente"
