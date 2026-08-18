@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { authClient } from "@/lib/auth-client";
 import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
@@ -17,8 +17,6 @@ const TITLE_PREVIEW_TARGET: Record<Channel, number> = {
   "facebook-marketplace": 65,
   outro: 70,
 };
-
-type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 function Section({
   index,
@@ -76,19 +74,19 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
   const withinTarget = titleLength <= previewTarget;
   const fullText = buildFullText(result);
   const { data: session } = authClient.useSession();
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
-  const [saveMessage, setSaveMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    setSaveStatus("idle");
-    setSaveMessage(null);
-  }, [fullText]);
+  const [savingContent, setSavingContent] = useState<string | null>(null);
+  const [savedContent, setSavedContent] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<{ key: string; message: string } | null>(null);
+  const isSaving = savingContent === fullText;
+  const isSaved = savedContent === fullText;
+  const visibleError = saveError?.key === fullText ? saveError.message : null;
 
   async function handleSave() {
-    if (!session || saveStatus === "saving" || saveStatus === "saved") return;
+    if (!session || isSaving || isSaved) return;
 
-    setSaveStatus("saving");
-    setSaveMessage(null);
+    const contentKey = fullText;
+    setSavingContent(contentKey);
+    setSaveError(null);
 
     try {
       const response = await fetch("/api/account/history", {
@@ -98,28 +96,31 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
           productName: input.productName,
           channel: input.channel,
           title: result.title,
-          content: fullText,
+          content: contentKey,
         }),
       });
 
       const payload = (await response.json().catch(() => null)) as { error?: string } | null;
       if (response.ok) {
-        setSaveStatus("saved");
-        setSaveMessage("Resultado salvo na sua conta.");
+        setSavedContent(contentKey);
         return;
       }
 
-      setSaveStatus("error");
-      setSaveMessage(
-        payload?.error === "history_limit"
-          ? "Seu histórico chegou ao limite de 100 itens. Apague um item para salvar outro."
-          : response.status === 401
-            ? "Sua sessão expirou. Entre novamente para salvar."
-            : "Não foi possível salvar agora. Tente novamente.",
-      );
+      setSaveError({
+        key: contentKey,
+        message:
+          payload?.error === "history_limit"
+            ? "Seu histórico chegou ao limite de 100 itens. Apague um item para salvar outro."
+            : response.status === 401
+              ? "Sua sessão expirou. Entre novamente para salvar."
+              : response.status === 429
+                ? "Muitas alterações em pouco tempo. Aguarde um minuto e tente novamente."
+                : "Não foi possível salvar agora. Tente novamente.",
+      });
     } catch {
-      setSaveStatus("error");
-      setSaveMessage("Não foi possível salvar agora. Tente novamente.");
+      setSaveError({ key: contentKey, message: "Não foi possível salvar agora. Tente novamente." });
+    } finally {
+      setSavingContent((current) => (current === contentKey ? null : current));
     }
   }
 
@@ -143,7 +144,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
 
         <div className="mt-5 flex flex-wrap gap-2">
           {session ? (
-            saveStatus === "saved" ? (
+            isSaved ? (
               <Link
                 href="/conta/historico"
                 className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300"
@@ -154,10 +155,10 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
               <button
                 type="button"
                 onClick={handleSave}
-                disabled={saveStatus === "saving"}
+                disabled={isSaving}
                 className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400 disabled:cursor-wait disabled:opacity-70"
               >
-                {saveStatus === "saving" ? "Salvando..." : "Salvar no histórico"}
+                {isSaving ? "Salvando..." : "Salvar no histórico"}
               </button>
             )
           ) : (
@@ -193,12 +194,13 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
           </button>
         </div>
 
-        {saveMessage ? (
-          <p
-            role={saveStatus === "error" ? "alert" : "status"}
-            className={`mt-3 text-xs font-medium ${saveStatus === "error" ? "text-rose-700" : "text-emerald-700"}`}
-          >
-            {saveMessage}
+        {isSaved ? (
+          <p role="status" className="mt-3 text-xs font-medium text-emerald-700">
+            Resultado salvo na sua conta.
+          </p>
+        ) : visibleError ? (
+          <p role="alert" className="mt-3 text-xs font-medium text-rose-700">
+            {visibleError}
           </p>
         ) : null}
 
