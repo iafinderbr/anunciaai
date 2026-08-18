@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { eq, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
+import { db } from "@/db";
+import { ensureDatabaseSchema } from "@/db/ensure-schema";
+import { savedGeneration } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { effectivePlan } from "@/lib/plans";
 import { SITE_URL } from "@/lib/site";
 
 const PATH = "/conta";
 const TITLE = "Minha conta";
-const DESCRIPTION = "Área protegida da conta AnunciaAI para perfil, plano e recursos vinculados ao usuário.";
+const DESCRIPTION = "Área protegida da conta AnunciaAI para perfil, histórico, plano e recursos vinculados ao usuário.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -19,21 +23,6 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: false },
 };
-
-const areas = [
-  {
-    title: "Histórico",
-    text: "Aqui ficarão os trabalhos que você decidir salvar quando o histórico for liberado.",
-  },
-  {
-    title: "Produtos salvos",
-    text: "Esta área será usada para produtos e preferências que você quiser reutilizar.",
-  },
-  {
-    title: "Plano e assinatura",
-    text: "Seu plano é controlado no servidor. Pro e Premium só serão liberados depois da cobrança real estar pronta.",
-  },
-];
 
 const planNames = {
   free: "Grátis",
@@ -45,6 +34,14 @@ export default async function AccountPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/entrar");
 
+  await ensureDatabaseSchema();
+
+  const [historyCount] = await db
+    .select({ total: sql<number>`count(*)::int` })
+    .from(savedGeneration)
+    .where(eq(savedGeneration.userId, session.user.id));
+
+  const savedCount = historyCount?.total ?? 0;
   const currentPlan = effectivePlan(session.user.plan, session.user.subscriptionStatus);
   const initial = session.user.name.trim().charAt(0).toUpperCase() || "A";
 
@@ -83,34 +80,57 @@ export default async function AccountPage() {
               <div className="mt-8 rounded-2xl border border-line bg-canvas p-5">
                 <p className="text-sm font-semibold text-ink">Login com Google ativo.</p>
                 <p className="mt-1 text-sm leading-6 text-muted">
-                  Sua sessão é validada no servidor antes desta página ser exibida. O plano atual é {planNames[currentPlan]} e
-                  nenhuma assinatura paga é criada apenas por entrar na conta.
+                  Sua sessão é validada no servidor antes desta página ser exibida. O plano atual é {planNames[currentPlan]} e nenhuma assinatura paga é criada apenas por entrar na conta.
                 </p>
               </div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
-                {areas.map((area) => (
-                  <article key={area.title} className="rounded-2xl border border-line bg-canvas p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <h2 className="text-base font-semibold text-ink">{area.title}</h2>
-                      <span
-                        aria-hidden="true"
-                        className="grid size-8 place-items-center rounded-lg border border-line-strong bg-white text-muted"
-                      >
-                        •
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-muted">{area.text}</p>
-                    <p className="mt-5 text-xs font-semibold uppercase tracking-[0.08em] text-muted">Em preparação</p>
-                  </article>
-                ))}
+                <article className="rounded-2xl border border-brand-200 bg-brand-50/50 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="text-base font-semibold text-ink">Histórico</h2>
+                    <span className="rounded-full bg-white px-2.5 py-1 text-xs font-bold text-brand-700 shadow-sm">
+                      {savedCount}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-muted">
+                    Guarde apenas os resultados que você quiser reencontrar. Nada é salvo automaticamente.
+                  </p>
+                  <Link
+                    href="/conta/historico"
+                    className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.08em] text-brand-700 hover:text-brand-800"
+                  >
+                    Abrir histórico →
+                  </Link>
+                </article>
+
+                <article className="rounded-2xl border border-line bg-canvas p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="text-base font-semibold text-ink">Produtos salvos</h2>
+                    <span aria-hidden="true" className="grid size-8 place-items-center rounded-lg border border-line-strong bg-white text-muted">•</span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-muted">
+                    Esta área será usada para produtos e preferências que você quiser reutilizar.
+                  </p>
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.08em] text-muted">Em preparação</p>
+                </article>
+
+                <article className="rounded-2xl border border-line bg-canvas p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="text-base font-semibold text-ink">Plano e assinatura</h2>
+                    <span aria-hidden="true" className="grid size-8 place-items-center rounded-lg border border-line-strong bg-white text-muted">•</span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-muted">
+                    Seu plano é controlado no servidor. Pro e Premium só serão liberados depois da cobrança real estar pronta.
+                  </p>
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.08em] text-muted">Em preparação</p>
+                </article>
               </div>
 
               <div className="mt-8 flex flex-col gap-3 rounded-2xl border border-line bg-canvas p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-ink">As ferramentas grátis continuam disponíveis normalmente.</p>
                   <p className="mt-1 text-xs leading-5 text-muted">
-                    Entrar serve para recursos que precisam reconhecer sua conta entre diferentes acessos.
+                    A conta adiciona recursos pessoais sem tirar o acesso gratuito de quem prefere usar sem login.
                   </p>
                 </div>
                 <Link
