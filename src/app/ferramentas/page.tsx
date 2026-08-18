@@ -64,29 +64,28 @@ function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[numbe
   return (
     <Link
       href={tool.href}
-      className={`group relative grid h-full overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_22px_60px_-42px_rgba(23,23,20,.34)] ${
-        compact ? "min-h-[165px] grid-cols-[46px_minmax(0,1fr)] gap-4 p-5" : "min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 p-6 sm:p-7"
+      className={`group relative grid h-full overflow-hidden rounded-[10px] border border-line-strong bg-white transition-colors hover:border-brand-300 hover:bg-[#fcfcfa] ${
+        compact ? "min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 p-6" : "min-h-[240px] grid-cols-[60px_minmax(0,1fr)] gap-6 p-7 sm:p-8"
       }`}
     >
       <span
         aria-hidden="true"
-        className={`grid place-items-center self-start rounded-xl text-[10px] font-bold ${compact ? "size-10" : "size-11"} ${
-          index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f7f7f4] text-ink-soft"
+        className={`grid place-items-center self-start rounded-[8px] text-[11px] font-bold ${compact ? "size-11" : "size-12"} ${
+          index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f2f2ef] text-ink"
         }`}
       >
         {tool.short}
       </span>
 
-      <span className="min-w-0 pr-7">
-        <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-brand-700">{tool.eyebrow}</span>
-        <span className={`${compact ? "mt-2 text-base" : "mt-3 text-xl"} block font-semibold leading-snug tracking-[-0.035em] text-ink transition-colors group-hover:text-brand-700`}>
+      <span className="min-w-0 pr-9">
+        <span className="block text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">{tool.eyebrow}</span>
+        <span className={`${compact ? "mt-3 text-[19px]" : "mt-4 text-[1.45rem]"} block font-semibold leading-tight tracking-[-0.04em] text-ink transition-colors group-hover:text-brand-700`}>
           {tool.title}
         </span>
-        <span className={`${compact ? "mt-2 text-xs leading-5" : "mt-3 text-sm leading-6"} block max-w-xl text-muted`}>{tool.description}</span>
+        <span className={`${compact ? "mt-3 text-sm leading-6" : "mt-4 text-[15px] leading-7"} block max-w-xl text-muted`}>{tool.description}</span>
       </span>
 
-      <span aria-hidden="true" className="absolute right-5 top-5 grid size-8 place-items-center rounded-full border border-line text-sm text-muted transition-all group-hover:border-brand-200 group-hover:bg-brand-50 group-hover:text-brand-700">→</span>
-      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-brand-500 transition-transform duration-200 group-hover:scale-x-100" />
+      <span aria-hidden="true" className="absolute right-6 top-6 text-lg text-line-strong transition-all group-hover:translate-x-1 group-hover:text-brand-700">→</span>
     </Link>
   );
 }
@@ -95,129 +94,128 @@ export default function FerramentasPage() {
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main className="bg-[#f4f4f1]">
-        <section className="relative overflow-hidden border-b border-[#26272c] bg-[#111216] text-white">
+      <main className="bg-[#f1f1ee]">
+        <section className="relative overflow-hidden border-b border-[#25262a] bg-[#0e0f12] text-white">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-44 -top-56 size-[560px] rounded-full bg-brand-500/[0.09] blur-3xl" />
-            <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:52px_52px]" />
+            <div className="absolute -right-56 -top-72 size-[760px] rounded-full bg-brand-500/[0.07] blur-3xl" />
+            <div className="absolute inset-0 opacity-[0.02] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:64px_64px]" />
           </div>
 
-          <div className="container-page relative py-10 sm:py-12 lg:py-16">
-            <nav aria-label="Trilha de navegação" className="text-xs text-white/36">
+          <div className="container-page relative py-14 sm:py-16 lg:py-20 xl:py-24">
+            <nav aria-label="Trilha de navegação" className="text-xs text-white/34">
               <Link href="/" className="transition-colors hover:text-white">Início</Link>
               <span className="mx-2 text-white/18" aria-hidden="true">/</span>
-              <span aria-current="page" className="font-medium text-white/66">Ferramentas</span>
+              <span aria-current="page" className="font-medium text-white/62">Ferramentas</span>
             </nav>
 
-            <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-20">
-              <div className="max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/50">
-                  <span className="size-1.5 rounded-full bg-brand-500" /> Central de ferramentas
+            <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end lg:gap-20">
+              <div className="max-w-4xl">
+                <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/42">
+                  <span className="h-5 w-[2px] bg-brand-500" />
+                  Central de ferramentas
                 </div>
-                <h1 className="mt-5 max-w-3xl text-[2.8rem] font-semibold leading-[0.96] tracking-[-0.06em] text-white sm:text-[3.8rem] lg:text-[4.5rem]">
-                  Escolha o canal primeiro. O resto fica mais simples.
+                <h1 className="mt-7 max-w-4xl text-[3.6rem] font-semibold leading-[0.92] tracking-[-0.07em] text-white sm:text-[4.8rem] lg:text-[5.3rem]">
+                  Escolha o canal. Depois escolha o trabalho.
                 </h1>
-                <p className="mt-6 max-w-2xl text-base leading-7 text-white/52 sm:text-[17px] sm:leading-8">
-                  Comece pelo lugar onde você vai publicar ou escolha uma ferramenta específica para título, descrição, nome e palavras-chave.
+                <p className="mt-8 max-w-2xl text-[17px] leading-8 text-white/54 sm:text-[19px]">
+                  Comece pelo lugar onde você vai publicar ou use uma ferramenta específica para título, descrição, nome e palavras-chave.
                 </p>
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a href="#geradores" className="interactive-lift inline-flex min-h-12 items-center justify-center rounded-lg bg-brand-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                    Escolher ferramenta <span aria-hidden="true" className="ml-2">↓</span>
+                <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                  <a href="#geradores" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">
+                    Escolher ferramenta <span aria-hidden="true" className="ml-2.5">↓</span>
                   </a>
-                  <Link href="/#ferramenta" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/12 bg-white/[0.035] px-5 text-sm font-semibold text-white/82 transition-colors hover:bg-white/[0.07] hover:text-white">
+                  <Link href="/#ferramenta" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/14 bg-white/[0.025] px-6 text-[15px] font-semibold text-white/82 transition-colors hover:bg-white/[0.06] hover:text-white">
                     Criar anúncio completo
                   </Link>
                 </div>
               </div>
 
-              <aside className="rounded-2xl border border-white/[0.08] bg-white/[0.035] p-5 backdrop-blur-sm" aria-label="Resumo do plano Grátis">
-                <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+              <aside className="border-l border-white/[0.10] pl-7 sm:pl-8" aria-label="Resumo do plano Grátis">
+                <div className="flex items-end justify-between gap-4 border-b border-white/[0.08] pb-5">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-white/28">Disponível agora</p>
-                    <p className="mt-1.5 text-sm font-semibold text-white">Workspace Grátis</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/28">Disponível agora</p>
+                    <p className="mt-2 text-base font-semibold text-white">Workspace Grátis</p>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-300"><span className="size-1.5 rounded-full bg-emerald-400" />Ativo</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-300">Ativo</span>
                 </div>
-                <div className="mt-4 grid gap-1">
+                <div className="divide-y divide-white/[0.07]">
                   {workspaceInfo.map(([value, label]) => (
-                    <div key={label} className="flex items-center justify-between gap-5 rounded-lg px-1 py-3">
-                      <p className="text-lg font-semibold tracking-[-0.03em] text-white">{value}</p>
-                      <p className="text-right text-xs leading-5 text-white/36">{label}</p>
+                    <div key={label} className="flex items-center justify-between gap-6 py-5">
+                      <p className="text-2xl font-semibold tracking-[-0.045em] text-white">{value}</p>
+                      <p className="max-w-[150px] text-right text-xs leading-5 text-white/34">{label}</p>
                     </div>
                   ))}
                 </div>
               </aside>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-14 border-t border-white/[0.08] pt-8">
               <ChannelStrip dark />
             </div>
 
-            <div className="mt-6 border-t border-white/[0.08] pt-6">
-              <div className="mb-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/28">Workspace</p>
-                  <p className="mt-1 text-sm font-semibold text-white/78">Conta, histórico e guias em um só lugar.</p>
-                </div>
+            <div className="mt-8 border-t border-white/[0.08] pt-7">
+              <div className="mb-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/28">Workspace</p>
+                <p className="mt-2 text-sm font-semibold text-white/76">Conta, histórico e guias sem misturar com os geradores.</p>
               </div>
               <ToolsQuickActions variant="dark" />
             </div>
           </div>
         </section>
 
-        <section id="geradores" aria-labelledby="geradores-titulo" className="scroll-mt-20">
-          <div className="container-page py-16 sm:py-20 lg:py-24">
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16">
-              <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Biblioteca</p>
-                <h2 id="geradores-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-ink sm:text-[2.55rem]">
+        <section id="geradores" aria-labelledby="geradores-titulo" className="scroll-mt-24 bg-white">
+          <div className="container-page py-20 sm:py-24 lg:py-28">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-end lg:gap-20">
+              <div className="max-w-4xl">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Biblioteca</p>
+                <h2 id="geradores-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-ink sm:text-[3.45rem]">
                   Canais primeiro. Ferramentas de apoio depois.
                 </h2>
               </div>
               <div>
-                <p className="text-sm leading-7 text-muted">
+                <p className="text-[15px] leading-7 text-muted">
                   A biblioteca continua completa, mas a navegação prioriza as decisões que mais importam: onde publicar e o que criar.
                 </p>
-                <Link href="/guias" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-800">
+                <Link href="/guias" className="mt-4 inline-flex items-center gap-2 border-b border-brand-700 pb-1 text-sm font-semibold text-brand-700 hover:text-brand-800">
                   Ver guias relacionados <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>
 
-            <div className="mt-12 flex items-center justify-between gap-4 border-b border-line pb-4">
+            <div className="mt-16 flex items-end justify-between gap-6 border-b border-line pb-5">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-brand-700">Por canal</p>
-                <h3 className="mt-1.5 text-lg font-semibold tracking-[-0.03em] text-ink">Onde você vai publicar?</h3>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">Por canal</p>
+                <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-ink">Onde você vai publicar?</h3>
               </div>
               <span className="text-xs text-muted">{channelTools.length} opções</span>
             </div>
 
-            <ul className="mt-5 grid gap-4 lg:grid-cols-2">
+            <ul className="mt-7 grid gap-5 lg:grid-cols-2">
               {channelTools.map((tool, index) => (
                 <li key={tool.href}><ToolCard tool={tool} index={index} /></li>
               ))}
             </ul>
 
-            <div className="mt-14 flex items-center justify-between gap-4 border-b border-line pb-4">
+            <div className="mt-20 flex items-end justify-between gap-6 border-b border-line pb-5">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-brand-700">Por objetivo</p>
-                <h3 className="mt-1.5 text-lg font-semibold tracking-[-0.03em] text-ink">Refine uma parte do conteúdo.</h3>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">Por objetivo</p>
+                <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-ink">Refine uma parte do conteúdo.</h3>
               </div>
               <span className="text-xs text-muted">{contentTools.length} ferramentas</span>
             </div>
 
-            <ul className="mt-5 grid gap-4 md:grid-cols-2">
+            <ul className="mt-7 grid gap-5 md:grid-cols-2">
               {contentTools.map((tool, index) => (
                 <li key={tool.href}><ToolCard tool={tool} index={index + 2} compact /></li>
               ))}
             </ul>
 
-            <div className="mt-8 flex flex-col gap-3 rounded-2xl border border-line bg-white px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <div className="mt-12 flex flex-col gap-5 border-y border-line py-7 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm font-semibold text-ink">Ainda não sabe qual usar?</p>
-                <p className="mt-1 text-xs leading-5 text-muted">Comece pelo gerador completo e escolha um canal específico depois.</p>
+                <p className="text-base font-semibold text-ink">Ainda não sabe qual usar?</p>
+                <p className="mt-2 text-sm leading-6 text-muted">Comece pelo gerador completo e escolha um canal específico depois.</p>
               </div>
-              <Link href="/#ferramenta" className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-ink px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+              <Link href="/#ferramenta" className="inline-flex min-h-12 shrink-0 items-center gap-2 rounded-[8px] bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
                 Abrir gerador completo <span aria-hidden="true">→</span>
               </Link>
             </div>
