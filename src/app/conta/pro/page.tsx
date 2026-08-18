@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { AccountNav } from "@/components/account/account-nav";
+import { AccountShellHeader } from "@/components/account/account-shell-header";
 import { ProVariationsTool } from "@/components/account/pro-variations-tool";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
@@ -28,17 +29,18 @@ export default async function ProPage() {
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main className="min-h-[75vh] bg-[#f4f4f1]">
-        <section className="container-page py-8 sm:py-10 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <AccountNav active="pro" />
+      <main className="min-h-[75vh] bg-[#0d0e11] text-white">
+        <section className="container-page py-7 sm:py-9 lg:py-10">
+          <div className="mx-auto max-w-6xl">
+            <AccountShellHeader name={session.user.name} email={session.user.email} plan={plan} />
+            <div className="mt-3"><AccountNav active="pro" /></div>
 
-            <div className="mt-7 border border-[#28292e] bg-[#111216] px-6 py-8 text-white sm:px-8 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-16 lg:px-10 lg:py-10">
+            <div className="mt-7 grid gap-6 border-b border-white/[0.09] pb-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-14">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-300">AnunciaAI Pro</p>
-                <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.05em] text-white sm:text-[2.8rem]">Compare versões antes de decidir qual caminho publicar.</h1>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">AnunciaAI Pro</p>
+                <h1 className="mt-2 max-w-3xl text-2xl font-semibold tracking-[-0.045em] text-white sm:text-3xl">Compare versões antes de escolher o caminho final.</h1>
               </div>
-              <p className="mt-5 text-sm leading-7 text-white/52 lg:mt-0">O Pro gera três abordagens do mesmo produto para comparação. O acesso permanece disponível enquanto sua assinatura estiver ativa ou até o fim do período comprado via Pix.</p>
+              <p className="text-xs leading-6 text-white/34">Três abordagens do mesmo produto para comparação. O acesso permanece enquanto a assinatura estiver ativa ou até o fim do período comprado via Pix.</p>
             </div>
 
             <div className="mt-6">
