@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ChannelSideDock } from "@/components/channel-showcase";
 import { authClient } from "@/lib/auth-client";
 
 type DesktopMenu = "tools" | "guides" | null;
@@ -70,11 +72,13 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const desktopNavRef = useRef<HTMLDivElement>(null);
   const { data: session } = authClient.useSession();
+  const pathname = usePathname();
 
   const accountHref = session ? "/conta" : "/entrar";
   const accountLabel = session ? "Minha conta" : "Entrar";
   const historyHref = session ? "/conta/historico" : "/entrar";
   const productsHref = session ? "/conta/produtos" : "/entrar";
+  const showChannelDock = pathname.startsWith("/gerador-");
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -280,6 +284,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
           </nav>
         </div>
       </header>
+      {showChannelDock ? <ChannelSideDock activePath={pathname} /> : null}
       <span id="inicio-conteudo" tabIndex={-1} className="block h-0 scroll-mt-20" />
     </>
   );
