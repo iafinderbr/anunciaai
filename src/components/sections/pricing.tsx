@@ -38,8 +38,8 @@ const plans: Plan[] = [
     badge: "Preço planejado",
     summary: "Para quem cria conteúdo com frequência e quer mais velocidade, reutilização e espaço para trabalhar.",
     features: PRO_PLANNED_FEATURES,
-    cta: "Ver detalhes do Pro",
-    href: "/conta/plano",
+    cta: "Entrar para acompanhar",
+    href: "/entrar",
     plannedPrice: true,
   },
   {
@@ -53,8 +53,8 @@ const plans: Plan[] = [
       "Padrões e voz da marca",
       "Recursos avançados de catálogo",
     ],
-    cta: "Acompanhar pela conta",
-    href: "/conta/plano",
+    cta: "Entrar para acompanhar",
+    href: "/entrar",
   },
 ];
 
