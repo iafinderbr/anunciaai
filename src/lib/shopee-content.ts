@@ -132,7 +132,7 @@ export const SHOPEE_FAQ: FaqItem[] = [
   {
     question: "O gerador para Shopee é gratuito?",
     answer:
-      "Sim. A versão gratuita atual pode ser usada sem cadastro e sem cartão de crédito para começar.",
+      "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito.",
   },
   {
     question: "A ferramenta serve para outros canais também?",
