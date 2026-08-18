@@ -31,7 +31,7 @@ export function TrustSection() {
             </h2>
           </div>
           <p className="text-sm leading-7 text-muted">
-            A IA organiza a primeira versão. Você continua responsável pelos dados, pela revisão e pela publicação final.
+            A ferramenta organiza a primeira versão. Você continua responsável pelos dados, pela revisão e pela publicação final.
           </p>
         </div>
 
