@@ -1,0 +1,459 @@
+/*
+ * Direção visual pública V9: produto B2B/SaaS com grafite dominante,
+ * superfícies claras apenas quando melhoram leitura ou preenchimento e
+ * laranja reservado para ação, foco e estado.
+ *
+ * A área autenticada mantém o sistema próprio de conta/cobrança; este arquivo
+ * atua principalmente sobre Home, hubs, geradores, guias e institucionais.
+ */
+
+:root {
+  --public-black: #0b0c0e;
+  --public-ink: #0e0f12;
+  --public-panel: #131418;
+  --public-panel-2: #17181c;
+  --public-panel-3: #1c1d22;
+  --public-line: rgba(255, 255, 255, 0.085);
+  --public-line-strong: rgba(255, 255, 255, 0.14);
+  --public-text: #f3f3ef;
+  --public-text-soft: #c4c4bd;
+  --public-muted: #8e8f89;
+}
+
+body {
+  background: var(--public-black);
+}
+
+/* HOME */
+main[data-page="home"] {
+  background: var(--public-black);
+  color: var(--public-text);
+}
+
+main[data-page="home"] > section {
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="home"] > section[aria-label="Resumo do produto"] {
+  background: #101114 !important;
+}
+
+main[data-page="home"] > section[aria-label="Resumo do produto"] .text-ink,
+main[data-page="home"] > section[aria-label="Resumo do produto"] .text-ink-soft {
+  color: var(--public-text) !important;
+}
+
+main[data-page="home"] > section[aria-label="Resumo do produto"] .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main[data-page="home"] > section[aria-label="Resumo do produto"] .border-line,
+main[data-page="home"] > section[aria-label="Resumo do produto"] .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="home"] #ferramenta {
+  background: #121316 !important;
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child h2,
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child .text-ink,
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child .text-ink-soft {
+  color: var(--public-text) !important;
+}
+
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child .border-line,
+main[data-page="home"] #ferramenta > .container-page > .grid > div:first-child .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="home"] #ferramenta > .container-page > .grid > div:last-child {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 32px 90px -58px rgba(0, 0, 0, 0.95) !important;
+}
+
+main[data-page="home"] #ferramentas {
+  background: #0e0f12 !important;
+  color: var(--public-text);
+}
+
+main[data-page="home"] #ferramentas h2,
+main[data-page="home"] #ferramentas h3,
+main[data-page="home"] #ferramentas .text-ink,
+main[data-page="home"] #ferramentas .text-ink-soft {
+  color: var(--public-text) !important;
+}
+
+main[data-page="home"] #ferramentas .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main[data-page="home"] #ferramentas .border-line,
+main[data-page="home"] #ferramentas .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="home"] #ferramentas a.bg-white,
+main[data-page="home"] #ferramentas .bg-white {
+  background: #131418 !important;
+}
+
+main[data-page="home"] #ferramentas a:hover {
+  background: #18191d !important;
+}
+
+/* HUB DE FERRAMENTAS */
+main[data-page="tools"] {
+  background: var(--public-black) !important;
+  color: var(--public-text);
+}
+
+main[data-page="tools"] #geradores {
+  background: #101114 !important;
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="tools"] #geradores h2,
+main[data-page="tools"] #geradores h3,
+main[data-page="tools"] #geradores .text-ink,
+main[data-page="tools"] #geradores .text-ink-soft {
+  color: var(--public-text) !important;
+}
+
+main[data-page="tools"] #geradores .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main[data-page="tools"] #geradores .border-line,
+main[data-page="tools"] #geradores .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="tools"] #geradores a[class*="bg-white"] {
+  background: #15161a !important;
+  border-color: var(--public-line) !important;
+}
+
+main[data-page="tools"] #geradores a[class*="bg-white"]:hover {
+  background: #1a1b20 !important;
+  border-color: rgba(241, 102, 42, 0.42) !important;
+}
+
+main[data-page="tools"] #geradores a [class*="bg-[#f2f2ef]"] {
+  background: #202126 !important;
+  border-color: var(--public-line) !important;
+  color: var(--public-text-soft) !important;
+}
+
+/* LANDINGS DOS GERADORES */
+main#topo > section:first-child:has(#ferramenta) {
+  border-bottom-color: var(--public-line) !important;
+  background: var(--public-ink) !important;
+  color: var(--public-text);
+}
+
+main#topo > section:first-child:has(#ferramenta) > [aria-hidden="true"] {
+  opacity: 0.72 !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type nav,
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type nav .text-muted,
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type nav .text-ink-soft {
+  color: rgba(255, 255, 255, 0.42) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type nav a:hover {
+  color: var(--public-text) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type > div:last-child > p:first-child {
+  color: #ffae80 !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type h1 {
+  color: var(--public-text) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type h1 + p,
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type a.bg-ink {
+  background: var(--color-brand-500) !important;
+  color: #fff !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type a.bg-white {
+  border-color: var(--public-line-strong) !important;
+  background: transparent !important;
+  color: var(--public-text-soft) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) > .container-page:first-of-type ul > li {
+  color: rgba(255, 255, 255, 0.42) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) #ferramenta {
+  border-top: 1px solid var(--public-line);
+  background: #121316;
+}
+
+main#topo > section:first-child:has(#ferramenta) #ferramenta > div {
+  padding-top: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+main#topo > section:first-child:has(#ferramenta) #ferramenta form,
+main#topo > section:first-child:has(#ferramenta) #ferramenta .surface-premium,
+main#topo > section:first-child:has(#ferramenta) #ferramenta .product-surface {
+  border-color: #d8d8d2 !important;
+  background: #fbfbf8 !important;
+  color: var(--color-ink) !important;
+  box-shadow: 0 34px 90px -62px rgba(0, 0, 0, 0.95) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section {
+  border-color: var(--public-line) !important;
+  background: #101114 !important;
+  color: var(--public-text-soft);
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section:nth-of-type(even) {
+  background: #15161a !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section h2,
+main#topo > section:first-child:has(#ferramenta) ~ section h3,
+main#topo > section:first-child:has(#ferramenta) ~ section .text-ink {
+  color: var(--public-text) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .text-ink-soft {
+  color: var(--public-text-soft) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .border-line,
+main#topo > section:first-child:has(#ferramenta) ~ section .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .bg-canvas {
+  background: #111216 !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .bg-white {
+  background: #17181c !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section :is(a, button).bg-white {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  background: #f4f4f0 !important;
+  color: #171714 !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .bg-ink {
+  background: #090a0c !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section :is(.rounded-2xl, .rounded-3xl) {
+  border-color: var(--public-line) !important;
+  box-shadow: none !important;
+}
+
+/* GUIAS INDIVIDUAIS */
+main#ferramenta > article {
+  background: #101114 !important;
+  color: var(--public-text-soft);
+}
+
+main#ferramenta > article > header {
+  border-bottom-color: var(--public-line) !important;
+  background: var(--public-ink) !important;
+}
+
+main#ferramenta > article > header h1 {
+  color: var(--public-text) !important;
+}
+
+main#ferramenta > article > header .text-muted,
+main#ferramenta > article > header .text-ink-soft {
+  color: var(--public-muted) !important;
+}
+
+main#ferramenta > article > header nav,
+main#ferramenta > article > header nav a {
+  color: rgba(255, 255, 255, 0.42) !important;
+}
+
+main#ferramenta > article > header nav a:hover {
+  color: var(--public-text) !important;
+}
+
+main#ferramenta > article > header p.inline-flex {
+  color: #ffae80 !important;
+}
+
+main#ferramenta > article > header a.bg-ink {
+  background: var(--color-brand-500) !important;
+  color: #fff !important;
+}
+
+main#ferramenta > article > header a.bg-white {
+  border-color: var(--public-line-strong) !important;
+  background: transparent !important;
+  color: var(--public-text-soft) !important;
+}
+
+main#ferramenta > article > .container-page h2,
+main#ferramenta > article > .container-page h3,
+main#ferramenta > article > .container-page .text-ink {
+  color: var(--public-text) !important;
+}
+
+main#ferramenta > article > .container-page .text-ink-soft {
+  color: var(--public-text-soft) !important;
+}
+
+main#ferramenta > article > .container-page .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main#ferramenta > article .border-line,
+main#ferramenta > article .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main#ferramenta > article .bg-white,
+main#ferramenta > article .bg-canvas,
+main#ferramenta > article ol.space-y-5 > li,
+main#ferramenta > article ul.grid > li[class*="border"],
+main#ferramenta > article aside .sticky {
+  border-color: var(--public-line) !important;
+  background: #16171b !important;
+  box-shadow: none !important;
+}
+
+main#ferramenta > article a.bg-ink {
+  background: #202126 !important;
+}
+
+main#ferramenta > article a.bg-ink:hover {
+  background: var(--color-brand-600) !important;
+}
+
+/* HUB DE GUIAS */
+main#topo:has(#guias-titulo) {
+  background: var(--public-black) !important;
+  color: var(--public-text-soft);
+}
+
+main#topo:has(#guias-titulo) > section:first-child,
+main#topo:has(#guias-titulo) > section {
+  border-color: var(--public-line) !important;
+  background: #101114 !important;
+}
+
+main#topo:has(#guias-titulo) > section:first-child {
+  background: var(--public-ink) !important;
+}
+
+main#topo:has(#guias-titulo) #guias-titulo,
+main#topo:has(#guias-titulo) h2,
+main#topo:has(#guias-titulo) h3,
+main#topo:has(#guias-titulo) .text-ink {
+  color: var(--public-text) !important;
+}
+
+main#topo:has(#guias-titulo) .text-ink-soft {
+  color: var(--public-text-soft) !important;
+}
+
+main#topo:has(#guias-titulo) .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main#topo:has(#guias-titulo) .border-line,
+main#topo:has(#guias-titulo) .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a,
+main#topo:has(#guias-titulo) article.rounded-3xl,
+main#topo:has(#guias-titulo) .bg-white,
+main#topo:has(#guias-titulo) .bg-canvas {
+  border-color: var(--public-line) !important;
+  background: #16171b !important;
+  color: var(--public-text-soft) !important;
+}
+
+main#topo:has(#guias-titulo) article.rounded-3xl:hover,
+main#topo:has(#guias-titulo) nav[aria-label="Categorias de guias"] > a:hover {
+  border-color: rgba(241, 102, 42, 0.34) !important;
+  background: #1b1c21 !important;
+}
+
+/* INSTITUCIONAIS */
+main#ferramenta:not(:has(> article)) {
+  background: var(--public-black) !important;
+  color: var(--public-text-soft);
+}
+
+main#ferramenta:not(:has(> article)) > section:first-child,
+main#ferramenta:not(:has(> article)) > section:not(:first-child) {
+  border-color: var(--public-line) !important;
+  background: #101114 !important;
+}
+
+main#ferramenta:not(:has(> article)) > section:first-child {
+  background: var(--public-ink) !important;
+}
+
+main#ferramenta:not(:has(> article)) h1,
+main#ferramenta:not(:has(> article)) h2,
+main#ferramenta:not(:has(> article)) h3,
+main#ferramenta:not(:has(> article)) .text-ink {
+  color: var(--public-text) !important;
+}
+
+main#ferramenta:not(:has(> article)) .text-ink-soft {
+  color: var(--public-text-soft) !important;
+}
+
+main#ferramenta:not(:has(> article)) .text-muted {
+  color: var(--public-muted) !important;
+}
+
+main#ferramenta:not(:has(> article)) .border-line,
+main#ferramenta:not(:has(> article)) .border-line-strong {
+  border-color: var(--public-line) !important;
+}
+
+main#ferramenta:not(:has(> article)) .bg-white,
+main#ferramenta:not(:has(> article)) .bg-canvas {
+  border-color: var(--public-line) !important;
+  background: #16171b !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  main#topo > section:first-child:has(#ferramenta) ~ section :is(ul, ol).grid > li[class*="border"]:hover,
+  main#ferramenta > article ol.space-y-5 > li:hover,
+  main#ferramenta > article ul.grid > li[class*="border"]:hover {
+    border-color: rgba(241, 102, 42, 0.26) !important;
+    background: #1a1b20 !important;
+  }
+}
+
+@media (max-width: 1379px) {
+  body {
+    overflow-x: hidden;
+  }
+}
