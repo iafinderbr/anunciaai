@@ -43,14 +43,34 @@ export const user = pgTable(
     subscriptionStatus: text("subscription_status").notNull().default("inactive"),
     subscriptionProvider: text("subscription_provider"),
     externalSubscriptionId: text("external_subscription_id"),
+    proAccessUntil: timestamp("pro_access_until", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
     uniqueIndex("user_email_unique").on(table.email),
     index("user_plan_idx").on(table.plan),
+    index("user_pro_access_until_idx").on(table.proAccessUntil),
     uniqueIndex("user_external_subscription_unique").on(table.externalSubscriptionId),
   ],
+);
+
+/**
+ * Cada Checkout Pix pago pode conceder acesso uma única vez. O id da sessão é
+ * a chave primária para que reenvios do mesmo webhook nunca somem dias de novo.
+ */
+export const proAccessGrant = pgTable(
+  "pro_access_grant",
+  {
+    checkoutSessionId: text("checkout_session_id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull().default("stripe-pix"),
+    accessDays: integer("access_days").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("pro_access_grant_user_created_idx").on(table.userId, table.createdAt)],
 );
 
 export const session = pgTable(
@@ -165,6 +185,7 @@ export const savedProduct = pgTable(
 export type Generation = typeof generations.$inferSelect;
 export type NewGeneration = typeof generations.$inferInsert;
 export type User = typeof user.$inferSelect;
+export type ProAccessGrant = typeof proAccessGrant.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type Account = typeof account.$inferSelect;
 export type SavedGeneration = typeof savedGeneration.$inferSelect;
