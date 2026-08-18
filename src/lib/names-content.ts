@@ -22,7 +22,7 @@ export const NAMES_FEATURES = [
   { title: "Ideias ligadas ao produto", text: "Cada opção nasce da categoria, do público e dos diferenciais informados no formulário." },
   { title: "Explicação de cada escolha", text: "Entenda a ideia e a sensação transmitida por cada nome antes de decidir." },
   { title: "Variações para testar", text: "Gere novas rodadas mantendo o briefing até encontrar uma direção que combine com a marca." },
-  { title: "100% grátis", text: "Use quantas vezes precisar, sem cadastro e sem cartão de crédito." },
+  { title: "Incluído no Grátis", text: "Entre com Google e use o gerador sem cartão de crédito." },
 ];
 
 export const NAMES_DIFFERENCES = [
@@ -49,5 +49,5 @@ export const NAMES_FAQ = [
   { question: "Os nomes gerados estão disponíveis para registro?", answer: "A ferramenta cria ideias, mas não consulta automaticamente marcas, domínios ou redes sociais. Pesquise a disponibilidade antes de usar comercialmente." },
   { question: "Posso gerar nomes em português?", answer: "Sim. As sugestões misturam opções naturais em português, nomes compostos e palavras autorais fáceis de pronunciar." },
   { question: "Funciona para qualquer tipo de produto?", answer: "Sim. Quanto mais claro for o briefing sobre categoria, público e diferenciais, mais específicas ficam as sugestões." },
-  { question: "Preciso pagar ou criar uma conta?", answer: "Não. O gerador é gratuito, não exige cadastro e funciona diretamente nesta página." },
+  { question: "Preciso pagar para usar?", answer: "Não. O gerador faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito." },
 ];

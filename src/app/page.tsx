@@ -18,7 +18,7 @@ const workspaceCards = [
     href: "/entrar",
     eyebrow: "Organizar",
     title: "Sua área no AnunciaAI",
-    text: "Entre com Google para acessar histórico, produtos salvos e reutilizar informações sem preencher tudo novamente.",
+    text: "Entre com Google para liberar o modo Grátis, acessar histórico e reutilizar produtos sem preencher tudo novamente.",
     action: "Abrir minha conta",
   },
   {
@@ -103,7 +103,7 @@ export default function HomePage() {
               </h1>
 
               <p className="mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
-                Informe o produto uma vez. O AnunciaAI organiza título, descrição, benefícios, ficha técnica e SEO em uma primeira versão pronta para revisar.
+                Entre com Google, informe o produto uma vez e use os geradores gratuitos para organizar título, descrição, benefícios, ficha técnica e SEO.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -111,7 +111,7 @@ export default function HomePage() {
                   href="#ferramenta"
                   className="interactive-lift inline-flex min-h-12 items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-white shadow-card hover:bg-brand-600"
                 >
-                  Criar anúncio grátis
+                  Começar grátis
                 </a>
                 <Link
                   href="/ferramentas"
@@ -122,9 +122,9 @@ export default function HomePage() {
               </div>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-muted sm:text-sm">
-                <span className="inline-flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-500" />Grátis para começar</span>
+                <span className="inline-flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-500" />Plano Grátis</span>
                 <span>Sem cartão</span>
-                <span>Conta Google opcional</span>
+                <span>Login Google simples</span>
               </div>
 
               <div className="mt-7 max-w-xl">
@@ -138,17 +138,17 @@ export default function HomePage() {
                 <div className="flex items-center justify-between border-b border-line bg-canvas/65 px-5 py-4">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-600">Seu fluxo</p>
-                    <p className="mt-1 text-sm font-semibold text-ink">Do produto ao conteúdo</p>
+                    <p className="mt-1 text-sm font-semibold text-ink">Do login ao conteúdo</p>
                   </div>
                   <span className="rounded-full border border-line-strong bg-white px-2.5 py-1 text-[10px] font-semibold text-muted">AnunciaAI</span>
                 </div>
 
                 <div className="divide-y divide-line px-5">
                   {[
-                    ["01", "Informe o produto", "Nome, categoria e características reais."],
-                    ["02", "Escolha o canal", "Marketplace, loja virtual ou rede social."],
+                    ["01", "Entre com Google", "Um login simples libera o modo Grátis."],
+                    ["02", "Informe o produto", "Nome, categoria e características reais."],
                     ["03", "Gere a primeira versão", "Conteúdo organizado em blocos claros."],
-                    ["04", "Salve e reutilize", "Histórico e produtos ficam na sua conta quando você quiser."],
+                    ["04", "Salve e reutilize", "Histórico e produtos ficam vinculados à sua conta quando você quiser."],
                   ].map(([number, title, text]) => (
                     <div key={number} className="grid grid-cols-[34px_1fr] gap-3 py-4">
                       <span className="pt-0.5 text-[11px] font-bold tabular-nums text-brand-600">{number}</span>
@@ -176,7 +176,7 @@ export default function HomePage() {
                 Comece pelo seu produto
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted sm:text-[15px]">
-                Preencha apenas o necessário. Depois você pode salvar o produto, reutilizar os dados e escolher geradores específicos.
+                Faça o login uma vez. Depois o plano Grátis libera os geradores, histórico e produtos salvos sem pedir cartão.
               </p>
             </div>
             <div className="mx-auto max-w-3xl">
@@ -233,16 +233,16 @@ export default function HomePage() {
             <div className="overflow-hidden rounded-2xl bg-ink px-6 py-11 text-center shadow-lift sm:px-12 sm:py-14">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Pronto para começar?</p>
               <h2 id="cta-final" className="mx-auto mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Crie a primeira versão do seu próximo anúncio em poucos passos.
+                Entre com Google e libere os geradores gratuitos.
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] leading-7 text-white/65">
-                Sem cartão para começar. Use a conta apenas quando quiser guardar histórico e produtos.
+                Sem cartão e sem formulário longo. O login identifica sua conta e mantém seu trabalho organizado.
               </p>
               <a
                 href="#ferramenta"
                 className="interactive-lift mt-7 inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink shadow-card hover:bg-brand-500 hover:text-white"
               >
-                Criar anúncio grátis
+                Começar grátis
               </a>
             </div>
           </div>

@@ -14,6 +14,17 @@ export const FEATURE_KEYS = [
 ] as const;
 export type FeatureKey = (typeof FEATURE_KEYS)[number];
 
+export const PRO_PLANNED_MONTHLY_PRICE_CENTS = 1990;
+export const PRO_PLANNED_PRICE_LABEL = "R$ 19,90";
+
+export const PRO_PLANNED_FEATURES = [
+  "Tudo do plano Grátis",
+  "Biblioteca ampliada de produtos",
+  "Mais variações por criação",
+  "Atalhos e preferências de produtividade",
+  "Prioridade para novos recursos do AnunciaAI",
+] as const;
+
 const PLAN_FEATURES: Record<PlanId, ReadonlySet<FeatureKey>> = {
   free: new Set(["basic_generators", "history", "saved_products"]),
   pro: new Set(["basic_generators", "history", "saved_products", "extra_variations"]),

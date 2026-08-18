@@ -47,7 +47,7 @@ const structuredData = {
   ],
 };
 
-const highlights = ["Produto + categoria", "Características informadas", "Público informado", "Combinações por canal", "100% grátis"];
+const highlights = ["Produto + categoria", "Características informadas", "Público informado", "Combinações por canal", "Plano Grátis"];
 
 export default function PalavrasChaveParaProdutosPage() {
   return (
@@ -63,7 +63,7 @@ export default function PalavrasChaveParaProdutosPage() {
               <h1 id="keywords-hero" className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]">Gerador de palavras-chave para produtos</h1>
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">Monte combinações a partir do produto, categoria, público e características que você informar. A ferramenta não mede volume de busca, posição, CPC ou tendências.</p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"><a href="#ferramenta" className="w-full rounded-2xl bg-ink px-7 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-brand-600 sm:w-auto">Gerar sugestões grátis</a><a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">Ver como funciona</a></div>
-              <p className="mt-3 text-sm text-muted">Sem cadastro e sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-muted">Login Google simples. Sem cartão de crédito.</p>
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-2">{highlights.map((item) => <li key={item} className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft">{item}</li>)}</ul>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function PalavrasChaveParaProdutosPage() {
         <KeywordsFaq />
 
         <section aria-labelledby="keywords-cta-final" className="border-t border-line bg-canvas">
-          <div className="container-page py-14 sm:py-20"><div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12"><h2 id="keywords-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Explore combinações a partir dos dados do produto</h2><p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Gere sugestões, elimine o que não descreve o item e valide os termos com dados de busca quando isso for importante para sua estratégia.</p><a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar sugestões grátis</a><p className="mt-3 text-sm text-white/60">Sem cadastro e sem cartão de crédito.</p></div><p className="mt-8 text-center text-sm text-muted">Agora use os termos para <Link href="/gerador-de-titulos-para-produtos" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">criar o título do produto</Link>{" · "}<Link href="/gerador-de-descricao-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">gerar uma descrição</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">ver todos os geradores</Link>.</p></div>
+          <div className="container-page py-14 sm:py-20"><div className="rounded-3xl bg-ink px-6 py-12 text-center sm:px-12"><h2 id="keywords-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Explore combinações a partir dos dados do produto</h2><p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Gere sugestões, elimine o que não descreve o item e valide os termos com dados de busca quando isso for importante para sua estratégia.</p><a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar sugestões grátis</a><p className="mt-3 text-sm text-white/60">Login Google simples. Sem cartão de crédito.</p></div><p className="mt-8 text-center text-sm text-muted">Agora use os termos para <Link href="/gerador-de-titulos-para-produtos" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">criar o título do produto</Link>{" · "}<Link href="/gerador-de-descricao-de-produto" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">gerar uma descrição</Link>{" · "}<Link href="/" className="font-medium text-brand-600 underline underline-offset-4 hover:text-brand-700">ver todos os geradores</Link>.</p></div>
         </section>
       </main>
       <SiteFooter />

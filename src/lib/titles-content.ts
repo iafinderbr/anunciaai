@@ -155,7 +155,7 @@ export const TITLES_FAQ: FaqItem[] = [
   {
     question: "O gerador de títulos é gratuito?",
     answer:
-      "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito.",
+      "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito.",
   },
   {
     question: "Posso gerar mais de uma versão do título?",

@@ -49,7 +49,7 @@ const sections = [
   },
   {
     title: "7. Conta e autenticação",
-    text: "O uso das ferramentas gratuitas continua disponível sem conta. Quando o usuário optar por entrar com Google, ele é responsável por manter a própria Conta Google segura e por encerrar a sessão em dispositivos compartilhados. O acesso à área de conta depende de uma sessão válida e pode ser interrompido em caso de abuso, risco de segurança ou indisponibilidade técnica.",
+    text: "Uma conta autenticada é necessária para liberar os geradores gratuitos. O acesso é feito com Google, sem criação de uma senha própria no AnunciaAI e sem exigência de cartão para o plano Grátis. O usuário é responsável por manter a própria Conta Google segura e por encerrar a sessão em dispositivos compartilhados. O acesso pode ser interrompido em caso de abuso, risco de segurança ou indisponibilidade técnica.",
   },
   {
     title: "8. Histórico salvo",
@@ -61,7 +61,7 @@ const sections = [
   },
   {
     title: "10. Planos futuros",
-    text: "Planos pagos exibidos como “Em breve” ou “Em preparação” são apenas uma indicação de recursos planejados. Valores, funcionalidades e condições podem mudar antes do lançamento e não representam uma contratação enquanto a compra não estiver disponível.",
+    text: "Planos pagos exibidos como planejados, em estudo ou ainda não disponíveis são apenas uma indicação de proposta comercial e recursos futuros. Valores, funcionalidades e condições podem mudar antes do lançamento e não representam uma contratação enquanto a compra não estiver disponível. Nenhuma assinatura paga é iniciada apenas por entrar na conta ou usar o plano Grátis.",
   },
   {
     title: "11. Alterações dos termos",
@@ -87,7 +87,7 @@ export default function TermosPage() {
               <p className="mt-5 text-base leading-8 text-muted">
                 Estes termos explicam as condições básicas para utilizar as ferramentas, a conta e os conteúdos do AnunciaAI.
               </p>
-              <p className="mt-3 text-sm text-muted">Última atualização: 17 de agosto de 2026.</p>
+              <p className="mt-3 text-sm text-muted">Última atualização: 18 de agosto de 2026.</p>
             </div>
           </div>
         </section>

@@ -78,6 +78,6 @@ export const STORE_FAQ: FaqItem[] = [
   { question: "O que uma página de produto pode ter?", answer: "Título claro, imagens, descrição, benefícios sustentados pelas características, ficha técnica, preço, disponibilidade e demais informações relevantes para a compra." },
   { question: "Qual a diferença entre este gerador e o de descrição?", answer: "O gerador de descrição foca no texto descritivo. Esta página também organiza título, benefícios, ficha de características, versão de anúncio e sugestões de SEO." },
   { question: "O conteúdo garante resultado de SEO?", answer: "Não. A ferramenta cria sugestões de título, meta description e termos relacionados, mas não consulta volume, concorrência nem posição e não pode garantir resultado de busca." },
-  { question: "O gerador para loja virtual é gratuito?", answer: "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito." },
+  { question: "O gerador para loja virtual é gratuito?", answer: "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito." },
   { question: "Funciona com qualquer plataforma de e-commerce?", answer: "O conteúdo é texto neutro e pode ser adaptado a plataformas que ofereçam campos equivalentes. Confira sempre requisitos e limitações da plataforma escolhida." },
 ];

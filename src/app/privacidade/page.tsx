@@ -39,7 +39,7 @@ const sections = [
   {
     title: "3. Conta e login com Google",
     paragraphs: [
-      "Criar uma conta é opcional para usar as ferramentas gratuitas. Quando o usuário escolhe entrar com Google, o AnunciaAI recebe do fluxo de autenticação os dados necessários para reconhecer a conta, como identificador interno, nome, endereço de e-mail, indicação de e-mail verificado e, quando disponibilizada pelo Google, imagem de perfil.",
+      "Uma conta é necessária para liberar os geradores gratuitos. O acesso é feito com Google, sem criação de uma nova senha no AnunciaAI e sem cartão de crédito. O AnunciaAI recebe do fluxo de autenticação os dados necessários para reconhecer a conta, como identificador interno, nome, endereço de e-mail, indicação de e-mail verificado e, quando disponibilizada pelo Google, imagem de perfil.",
       "Também são mantidos registros técnicos necessários à autenticação, como identificador da conta no provedor, sessões, datas de criação e expiração e informações técnicas de sessão que podem incluir endereço IP e agente do navegador. Dados OAuth retornados pelo provedor, quando armazenados, ficam protegidos pela camada de criptografia configurada no sistema de autenticação.",
       "O AnunciaAI não recebe nem armazena a senha da Conta Google. O login é realizado no ambiente do Google e o usuário pode encerrar a sessão no AnunciaAI pelo botão de sair da conta.",
     ],
@@ -77,14 +77,14 @@ const sections = [
   {
     title: "8. Planos e pagamento",
     paragraphs: [
-      "Entrar na conta, salvar um resultado ou salvar um produto não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
-      "Quando pagamentos forem ativados, esta política será atualizada para explicar o provedor utilizado e os dados efetivamente processados. O AnunciaAI não pretende armazenar número completo de cartão ou código de segurança.",
+      "Entrar na conta, gerar conteúdo, salvar um resultado ou salvar um produto não inicia cobrança. O plano Grátis custa R$ 0 e não exige cartão. Enquanto os planos pagos não estiverem disponíveis para contratação, o AnunciaAI não realiza cobrança por eles no site.",
+      "Valores apresentados para planos ainda não disponíveis são propostas de lançamento e podem ser ajustados antes da abertura. Quando pagamentos forem ativados, esta política será atualizada para explicar o provedor utilizado e os dados efetivamente processados. O AnunciaAI não pretende armazenar número completo de cartão ou código de segurança.",
     ],
   },
   {
     title: "9. Finalidade e minimização",
     paragraphs: [
-      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, armazenar resultados e produtos quando o usuário escolhe salvá-los, medir o uso, exibir publicidade quando habilitada e melhorar a experiência.",
+      "Coletamos apenas o necessário para operar a ferramenta, manter a conta e as sessões necessárias ao acesso dos geradores, armazenar resultados e produtos quando o usuário escolhe salvá-los, medir o uso, exibir publicidade quando habilitada e melhorar a experiência.",
       "O conteúdo de produto não é adicionado ao histórico ou à biblioteca de forma automática. Sempre que uma informação deixa de ser necessária para as finalidades descritas, buscamos reduzir, anonimizar ou eliminar seu uso conforme aplicável.",
     ],
   },
@@ -128,7 +128,7 @@ export default function PrivacidadePage() {
               <p className="mt-5 text-base leading-8 text-muted">
                 Esta página explica de forma direta quais informações o AnunciaAI processa e quais dados são mantidos para o funcionamento do serviço.
               </p>
-              <p className="mt-3 text-sm text-muted">Última atualização: 17 de agosto de 2026.</p>
+              <p className="mt-3 text-sm text-muted">Última atualização: 18 de agosto de 2026.</p>
             </div>
           </div>
         </section>
@@ -165,7 +165,7 @@ export default function PrivacidadePage() {
 
             <div className="rounded-2xl border border-line bg-white p-6 shadow-card">
               <h2 className="text-lg font-semibold">Continue usando o AnunciaAI</h2>
-              <p className="mt-2 text-sm leading-6 text-muted">Volte para a ferramenta ou consulte os guias gratuitos antes de publicar seus produtos.</p>
+              <p className="mt-2 text-sm leading-6 text-muted">Volte para a ferramenta ou consulte os guias antes de publicar seus produtos.</p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/#ferramenta" className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600">Abrir gerador</Link>
                 <Link href="/guias" className="rounded-xl border border-line-strong px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">Ver guias</Link>

@@ -1,45 +1,50 @@
-# Contas, Pro e Premium
+# Contas, Grátis, Pro e Premium
 
-Este documento registra o estado atual e a direção de produto da área de contas do AnunciaAI. A ideia é manter a versão gratuita simples, preservar a privacidade por padrão e só ativar cobrança quando toda a autorização estiver pronta.
+Este documento registra o estado atual e a direção de produto da área de contas do AnunciaAI. A versão gratuita deve continuar simples, a privacidade deve permanecer por padrão e cobrança só pode ser ativada quando autorização e pagamentos estiverem prontos.
 
 ## Princípios
 
-- O uso básico continua disponível sem cadastro.
-- Login é opcional para o plano Grátis.
+- Os geradores atuais fazem parte do plano Grátis, mas exigem um login simples com Google.
+- O plano Grátis custa R$ 0 e não exige cartão de crédito.
+- O AnunciaAI não cria uma senha própria para o usuário; a autenticação é feita pelo Google.
 - Conteúdo de produto não deve ser armazenado apenas porque alguém gerou um anúncio.
-- Recursos pessoais que armazenam conteúdo devem depender de uma ação explícita do usuário.
-- Pro e Premium exigirão uma conta autenticada.
-- Nenhuma cobrança deve ser ativada antes de autenticação, autorização e webhooks de pagamento estarem testados.
+- Histórico e biblioteca continuam opt-in: só recebem conteúdo quando o usuário escolhe salvar.
+- Pro e Premium exigem uma conta autenticada e autorização de plano no servidor.
+- Nenhuma cobrança deve ser ativada antes de checkout, autorização e webhooks de pagamento estarem testados.
 - O AnunciaAI não deve armazenar número completo de cartão, CVV ou outros dados completos de pagamento.
-- Preços pagos só devem aparecer como valores contratáveis quando o checkout real estiver pronto.
+- Um preço planejado pode ser exibido com transparência, mas nunca como contratação disponível antes do checkout real.
 
 ## Planos
 
 ### Grátis
 
-Disponível agora.
+Disponível agora por **R$ 0/mês**.
 
-- Geradores atuais sem cadastro.
-- Login opcional com Google.
+- Login Google simples.
+- 10 geradores atuais.
 - Área Minha conta.
-- Histórico opt-in de resultados salvos.
-- Títulos, descrições, benefícios e ficha técnica.
-- Ferramentas para diferentes canais.
+- Histórico opt-in de até 100 resultados salvos.
+- Biblioteca opt-in de até 20 produtos salvos.
+- Títulos, descrições, benefícios, ficha técnica e ferramentas para diferentes canais.
+- Sem cartão de crédito.
 
 ### Pro
 
-Em preparação.
+Pacote preparado, ainda sem contratação.
+
+**Preço planejado: R$ 19,90/mês.** O valor pode ser ajustado antes da abertura.
 
 Direção planejada:
 
-- Mais recursos de histórico e organização.
-- Salvar produtos e preferências reutilizáveis.
-- Mais variações e atalhos.
-- Recursos de produtividade.
+- Tudo do plano Grátis.
+- Biblioteca ampliada de produtos.
+- Mais variações por criação.
+- Atalhos e preferências de produtividade.
+- Prioridade para novos recursos do AnunciaAI.
 
 ### Premium
 
-Em preparação.
+Em estudo.
 
 Direção planejada:
 
@@ -52,22 +57,22 @@ Os itens planejados são direção de produto, não promessa de disponibilidade 
 
 ## Autenticação — ativa em produção
 
-A implementação atual usa **Better Auth + Google OAuth + PostgreSQL/Drizzle**.
+A implementação usa **Better Auth + Google OAuth + PostgreSQL/Drizzle**.
 
-Fluxo em produção:
+Fluxo atual:
 
-1. usuário abre `/entrar`;
-2. escolhe “Continuar com Google”;
+1. visitante abre um gerador;
+2. se não houver sessão, o gerador mostra o acesso com Google;
 3. o Google autentica a identidade;
 4. o callback retorna para `/api/auth/callback/google`;
-5. Better Auth cria/recupera usuário e sessão;
-6. `/conta` valida a sessão no servidor antes de exibir dados pessoais.
+5. Better Auth cria ou recupera usuário e sessão;
+6. o usuário volta à ferramenta de origem ou à área de conta;
+7. os geradores do plano Grátis ficam disponíveis enquanto a sessão for válida.
 
-Configuração atual:
+Configuração:
 
 - handler: `/api/auth/[...all]`;
 - callback Google: `https://anunciaai.vercel.app/api/auth/callback/google`;
-- cliente OAuth configurado no Google Auth Platform;
 - credenciais mantidas somente nas variáveis seguras da Vercel;
 - tokens OAuth armazenados pela camada de autenticação com criptografia habilitada;
 - escopos Google limitados a `openid`, `email` e `profile`;
@@ -86,70 +91,38 @@ Nenhuma dessas variáveis privadas deve receber prefixo `NEXT_PUBLIC_`.
 
 ## Estrutura de banco
 
-A base de autenticação possui:
+A base de autenticação possui `user`, `session`, `account` e `verification`. O usuário possui campos internos de plano, status da assinatura, provedor e identificador externo da assinatura. Esses campos são controlados no servidor e não podem ser escolhidos livremente pelo navegador.
 
-- `user`;
-- `session`;
-- `account`;
-- `verification`.
+## Histórico e produtos salvos
 
-O usuário possui campos internos para:
+O contador público de gerações continua separado e recebe somente canal e horário. Nome do produto, características e texto gerado não são armazenados automaticamente por causa do login.
 
-- plano (`free`, `pro`, `premium`);
-- status da assinatura;
-- provedor de assinatura;
-- identificador externo da assinatura.
+Quando um usuário autenticado escolhe **Salvar no histórico**, o servidor armazena o resultado em `saved_generation`, vinculado ao proprietário. O limite atual é 100 itens por conta.
 
-Esses campos são controlados no servidor e não podem ser escolhidos livremente pelo navegador.
+Quando escolhe **Salvar produto**, o servidor armazena os dados informados em `saved_product`, também vinculado ao proprietário. O limite atual do Grátis é 20 produtos.
 
-## Histórico salvo — primeira funcionalidade pessoal
-
-O histórico foi desenhado como **opt-in**.
-
-O contador público de gerações continua separado e recebe somente canal e horário. Nome do produto, características e texto gerado não passam a ser armazenados automaticamente por causa do login.
-
-Quando um usuário autenticado clica em **Salvar no histórico**, o servidor armazena na tabela `saved_generation`:
-
-- usuário proprietário;
-- nome do produto;
-- canal;
-- título;
-- conteúdo completo salvo;
-- data do salvamento.
-
-Proteções:
-
-- sessão obrigatória;
-- origem da requisição validada;
-- JSON e tamanho limitados;
-- campos inesperados rejeitados;
-- canal validado;
-- limite de 100 itens por conta;
-- limite de mutações por usuário;
-- exclusão sempre combina `id` do item com `userId`, impedindo apagar item de outra conta;
-- histórico e API usam `no-store`/noindex conforme o tipo de rota.
-
-O usuário pode copiar ou excluir individualmente os itens em `/conta/historico`.
+As APIs validam sessão, origem, tamanho do corpo, campos permitidos, limites e propriedade do registro antes de mutações.
 
 ## Modelo de acesso
 
-O plano nunca deve ser confiado apenas ao navegador. Recursos pagos precisam ser autorizados pelo servidor.
-
-A autorização está centralizada em `src/lib/plans.ts`:
+O plano nunca deve ser confiado apenas ao navegador. A autorização está centralizada em `src/lib/plans.ts`:
 
 - planos possíveis: `free`, `pro`, `premium`;
-- recursos são associados ao plano no servidor;
+- recursos são associados ao plano;
 - Pro/Premium só viram plano efetivo quando `subscriptionStatus` está `active`;
-- qualquer estado pago inválido, cancelado ou inativo volta para `free` na autorização.
+- qualquer estado pago inválido, cancelado ou inativo volta para `free` na autorização;
+- preço planejado e recursos planejados do Pro ficam centralizados no mesmo catálogo.
+
+O gate visual dos geradores exige sessão para a experiência normal do produto. Histórico, produtos e qualquer futuro recurso pago continuam protegidos no servidor.
 
 ## Pagamentos — ainda não ativos
 
-A cobrança recorrente só será conectada depois que a área de conta estiver estável.
+Não existe checkout, assinatura paga ou cobrança ativa.
 
-Fluxo esperado:
+Fluxo esperado quando pagamentos forem implementados:
 
 1. usuário autenticado escolhe um plano;
-2. backend cria/inicia o checkout no provedor;
+2. backend cria ou inicia o checkout no provedor;
 3. usuário conclui o pagamento no ambiente do provedor;
 4. webhook assinado confirma o estado da assinatura;
 5. backend atualiza o plano do usuário;
@@ -161,25 +134,24 @@ Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de 
 ## Estado da implementação
 
 1. Interface Grátis / Pro / Premium: **concluída**.
-2. Better Auth + Google OAuth: **concluído**.
-3. Credenciais OAuth e variáveis seguras na Vercel: **concluído**.
-4. Login real com Google: **concluído e testado em produção**.
-5. `/conta` protegida por sessão: **concluído**.
-6. Logout: **concluído**.
-7. Navegação autenticada no cabeçalho: **concluída**.
-8. Política de Privacidade/Termos para contas: **concluídos**.
-9. Histórico opt-in: **em implantação**.
-10. Produtos salvos: **planejado**.
-11. Checkout em modo de teste: **próxima fase de monetização**.
-12. Webhooks e sincronização de assinatura: **pendente**.
-13. Testes de cancelamento, falha e renovação: **pendentes**.
-14. Preços contratáveis e cobrança real: **pendentes**.
+2. Better Auth + Google OAuth: **concluído e testado em produção**.
+3. `/conta`, histórico e produtos protegidos: **concluídos**.
+4. Logout e navegação autenticada: **concluídos**.
+5. Histórico opt-in: **concluído**.
+6. Produtos salvos opt-in: **concluído**.
+7. Login obrigatório na interface dos geradores: **implementado nesta etapa**.
+8. Pacote Pro e preço planejado de R$ 19,90/mês: **preparados, sem venda ativa**.
+9. Checkout em modo de teste: **pendente**.
+10. Webhooks e sincronização de assinatura: **pendentes**.
+11. Testes de cancelamento, falha e renovação: **pendentes**.
+12. Preços contratáveis e cobrança real: **pendentes**.
 
 ## Regras para o CI
 
 - `/entrar`, `/conta` e rotas pessoais devem permanecer fora do sitemap e `noindex`.
 - A interface não pode mostrar “Assinar agora” antes da cobrança estar configurada.
+- Os três motores de geração devem manter o gate de sessão.
 - Rotas protegidas devem validar sessão no servidor.
 - Ações que alteram dados pessoais devem validar propriedade e origem.
 - Segredos de OAuth e pagamento nunca podem ser versionados nem usar prefixo `NEXT_PUBLIC_`.
-- O teste `auth:check` deve continuar validando contas, histórico, privacidade e autorização durante o `typecheck`.
+- O teste `auth:check` deve continuar validando contas, gate dos geradores, histórico, produtos, privacidade, preço planejado e autorização durante o `typecheck`.

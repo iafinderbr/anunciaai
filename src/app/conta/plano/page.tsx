@@ -6,7 +6,7 @@ import { AccountNav } from "@/components/account/account-nav";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
 import { auth } from "@/lib/auth";
-import { effectivePlan } from "@/lib/plans";
+import { effectivePlan, PRO_PLANNED_FEATURES, PRO_PLANNED_PRICE_LABEL } from "@/lib/plans";
 import { SITE_URL } from "@/lib/site";
 
 const PATH = "/conta/plano";
@@ -28,19 +28,22 @@ const plannedPlans = [
   {
     name: "Grátis",
     status: "Disponível agora",
-    description: "Para criar anúncios e manter uma conta com histórico e biblioteca de produtos salvos manualmente.",
-    features: ["10 geradores", "Conta Google", "Histórico salvo", "Até 20 produtos salvos"],
+    price: "R$ 0/mês",
+    description: "Para usar os geradores atuais com uma conta simples e manter histórico e produtos organizados.",
+    features: ["10 geradores", "Login Google", "Histórico salvo", "Até 20 produtos salvos"],
   },
   {
     name: "Pro",
-    status: "Em preparação",
-    description: "Para quem usa o AnunciaAI com frequência e quer mais produtividade e reutilização.",
-    features: ["Tudo do Grátis", "Biblioteca ampliada", "Mais variações", "Atalhos e preferências"],
+    status: "Pacote preparado",
+    price: `${PRO_PLANNED_PRICE_LABEL}/mês`,
+    description: "Para quem usa o AnunciaAI com frequência e quer mais velocidade, reutilização e espaço para trabalhar.",
+    features: PRO_PLANNED_FEATURES,
   },
   {
     name: "Premium",
-    status: "Em preparação",
-    description: "Para catálogos maiores e fluxos que precisam de escala e padronização.",
+    status: "Em estudo",
+    price: "Preço ainda não definido",
+    description: "Uma camada futura para catálogos maiores e fluxos que precisem de escala e padronização.",
     features: ["Tudo do Pro", "Fluxos em lote", "Voz da marca", "Recursos avançados de catálogo"],
   },
 ] as const;
@@ -67,7 +70,7 @@ export default async function AccountPlanPage() {
                     Seu plano atual é {planNames[currentPlan]}
                   </h1>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-                    Hoje não existe cobrança Pro ou Premium ativa. Quando o checkout estiver pronto, preço e condições aparecerão aqui antes de qualquer assinatura.
+                    O Grátis já está ativo. O Pro foi preparado com preço planejado de {PRO_PLANNED_PRICE_LABEL} por mês, mas checkout, cobrança e ativação paga continuam desligados.
                   </p>
                 </div>
                 <span className="w-fit rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700">
@@ -79,20 +82,28 @@ export default async function AccountPlanPage() {
             <div className="mt-5 grid gap-4 lg:grid-cols-3">
               {plannedPlans.map((plan) => {
                 const isCurrent = plan.name === planNames[currentPlan];
+                const isPro = plan.name === "Pro";
                 return (
                   <article
                     key={plan.name}
                     className={`rounded-3xl border p-5 shadow-card sm:p-6 ${
-                      isCurrent ? "border-brand-300 bg-brand-50/55" : "border-line bg-white"
+                      isCurrent
+                        ? "border-brand-300 bg-brand-50/55"
+                        : isPro
+                          ? "border-brand-200 bg-white"
+                          : "border-line bg-white"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted">{plan.status}</p>
                         <h2 className="mt-1 text-xl font-semibold text-ink">{plan.name}</h2>
+                        <p className="mt-1 text-sm font-semibold text-brand-700">{plan.price}</p>
                       </div>
                       {isCurrent ? (
                         <span className="rounded-full bg-ink px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-white">Seu plano</span>
+                      ) : isPro ? (
+                        <span className="rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-700">Planejado</span>
                       ) : null}
                     </div>
                     <p className="mt-4 min-h-12 text-sm leading-6 text-muted">{plan.description}</p>
@@ -104,6 +115,11 @@ export default async function AccountPlanPage() {
                         </li>
                       ))}
                     </ul>
+                    {isPro ? (
+                      <p className="mt-5 border-t border-line pt-4 text-xs leading-5 text-muted">
+                        Ainda não é possível contratar. Este pacote serve como base para a abertura futura do Pro.
+                      </p>
+                    ) : null}
                   </article>
                 );
               })}
@@ -112,7 +128,7 @@ export default async function AccountPlanPage() {
             <div className="mt-5 flex flex-col gap-3 rounded-3xl border border-line bg-white p-5 shadow-card sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-ink">Quer continuar usando agora?</p>
-                <p className="mt-1 text-xs leading-5 text-muted">A versão Grátis continua disponível enquanto preparamos os recursos pagos.</p>
+                <p className="mt-1 text-xs leading-5 text-muted">O plano Grátis fica liberado após o login e não exige cartão.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Link href="/conta/produtos" className="rounded-xl border border-line-strong bg-canvas px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700">

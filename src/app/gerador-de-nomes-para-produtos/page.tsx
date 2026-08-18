@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 const structuredData = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Início", item: `${SITE_URL}/` }, { "@type": "ListItem", position: 2, name: "Gerador de nomes para produtos", item: ABSOLUTE_URL }] };
-const highlights = ["8 ideias por vez", "Vários estilos", "Explicação de cada opção", "Novas variações", "100% grátis"];
+const highlights = ["8 ideias por vez", "Vários estilos", "Explicação de cada opção", "Novas variações", "Plano Grátis"];
 
 export default function NomesParaProdutosPage() {
   return (
@@ -39,7 +39,7 @@ export default function NomesParaProdutosPage() {
               <h1 id="names-hero-titulo" className="mt-6 text-[2.15rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]">Gerador de nomes para produtos</h1>
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">Use a ideia, a categoria, o público e os diferenciais informados para explorar nomes em estilos diferentes e comparar direções antes de escolher.</p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><a href="#ferramenta" className="rounded-2xl bg-ink px-7 py-4 font-semibold text-white hover:bg-brand-600">Gerar nomes grátis</a><a href="#como-funciona" className="rounded-2xl border border-line-strong bg-white px-7 py-4 font-semibold hover:border-brand-500 hover:text-brand-600">Ver como funciona</a></div>
-              <p className="mt-3 text-sm text-muted">Sem cadastro e sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-muted">Login Google simples. Sem cartão de crédito.</p>
               <ul className="mt-8 flex flex-wrap justify-center gap-2">{highlights.map((item) => <li key={item} className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium">{item}</li>)}</ul>
             </div>
           </div>

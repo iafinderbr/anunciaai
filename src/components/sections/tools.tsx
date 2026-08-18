@@ -99,8 +99,7 @@ export function ToolsSection() {
               Escolha o que você precisa criar
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-muted">
-              Use um gerador específico para cada canal ou etapa do anúncio. As ferramentas atuais funcionam sem
-              cadastro e sem cartão de crédito.
+              Use um gerador específico para cada canal ou etapa do anúncio. O plano Grátis libera as ferramentas atuais após um login simples com Google e não exige cartão de crédito.
             </p>
           </div>
 

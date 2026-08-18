@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PRO_PLANNED_FEATURES, PRO_PLANNED_PRICE_LABEL } from "@/lib/plans";
 
 interface Plan {
   name: string;
@@ -6,10 +7,11 @@ interface Plan {
   period?: string;
   badge: string;
   summary: string;
-  features: string[];
+  features: readonly string[];
   cta: string;
   href: string;
   available?: boolean;
+  plannedPrice?: boolean;
 }
 
 const plans: Plan[] = [
@@ -18,10 +20,10 @@ const plans: Plan[] = [
     price: "R$ 0",
     period: "/mês",
     badge: "Disponível agora",
-    summary: "Para criar conteúdo de produtos e guardar o que você quiser na sua conta.",
+    summary: "Para usar todos os geradores atuais e manter seu trabalho organizado em uma conta simples.",
     features: [
-      "10 geradores atuais sem cadastro",
-      "Conta Google opcional",
+      "10 geradores com login Google",
+      "Sem cartão de crédito",
       "Histórico salvo manualmente",
       "Até 20 produtos salvos",
     ],
@@ -31,30 +33,27 @@ const plans: Plan[] = [
   },
   {
     name: "Pro",
-    price: "Em breve",
-    badge: "Em preparação",
-    summary: "Para quem cria conteúdo com frequência e quer ganhar mais velocidade no dia a dia.",
-    features: [
-      "Tudo do Grátis",
-      "Biblioteca ampliada de produtos",
-      "Mais variações e atalhos",
-      "Preferências de produtividade",
-    ],
-    cta: "Ver minha conta",
+    price: PRO_PLANNED_PRICE_LABEL,
+    period: "/mês",
+    badge: "Preço planejado",
+    summary: "Para quem cria conteúdo com frequência e quer mais velocidade, reutilização e espaço para trabalhar.",
+    features: PRO_PLANNED_FEATURES,
+    cta: "Entrar para acompanhar",
     href: "/entrar",
+    plannedPrice: true,
   },
   {
     name: "Premium",
-    price: "Em breve",
-    badge: "Em preparação",
-    summary: "Para catálogos maiores e fluxos que precisam de mais padronização e escala.",
+    price: "Depois",
+    badge: "Em estudo",
+    summary: "Uma camada futura para catálogos maiores e fluxos que precisem de escala e padronização.",
     features: [
       "Tudo do Pro",
       "Fluxos em lote planejados",
       "Padrões e voz da marca",
       "Recursos avançados de catálogo",
     ],
-    cta: "Ver minha conta",
+    cta: "Entrar para acompanhar",
     href: "/entrar",
   },
 ];
@@ -67,14 +66,14 @@ export function PricingSection() {
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Planos</p>
             <h2 id="precos-titulo" className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-              Comece com o que já funciona hoje.
+              Entre grátis. Evolua só quando fizer sentido.
             </h2>
             <p className="mt-3 text-[15px] leading-7 text-muted">
-              O plano gratuito já inclui os geradores, login com Google, histórico e produtos salvos. Pro e Premium só serão abertos quando cobrança e controle de acesso estiverem prontos.
+              O plano Grátis libera todos os geradores atuais após um login simples com Google. O Pro já tem pacote e preço planejados, mas ainda não existe checkout nem cobrança ativa.
             </p>
           </div>
           <div className="rounded-2xl border border-line bg-canvas px-4 py-3.5 text-sm leading-6 text-muted lg:text-right">
-            <span className="font-semibold text-ink-soft">Sem cobrança ativa.</span> Os preços pagos serão publicados antes do lançamento.
+            <span className="font-semibold text-ink-soft">Sem cobrança ativa.</span> O valor do Pro é uma proposta de lançamento e pode ser ajustado antes da abertura.
           </div>
         </div>
 
@@ -83,14 +82,22 @@ export function PricingSection() {
             <article
               key={plan.name}
               className={`flex min-h-[360px] flex-col rounded-2xl border p-5 sm:p-6 ${
-                plan.available ? "border-ink bg-ink text-white shadow-lift" : "border-line bg-canvas/70"
+                plan.available
+                  ? "border-ink bg-ink text-white shadow-lift"
+                  : plan.plannedPrice
+                    ? "border-brand-200 bg-brand-50/35 shadow-card"
+                    : "border-line bg-canvas/70"
               }`}
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className={`text-lg font-semibold tracking-tight ${plan.available ? "text-white" : "text-ink"}`}>{plan.name}</h3>
                 <span
                   className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
-                    plan.available ? "bg-white/10 text-white/75" : "border border-line-strong bg-white text-muted"
+                    plan.available
+                      ? "bg-white/10 text-white/75"
+                      : plan.plannedPrice
+                        ? "border border-brand-200 bg-white text-brand-700"
+                        : "border border-line-strong bg-white text-muted"
                   }`}
                 >
                   {plan.badge}
@@ -118,18 +125,21 @@ export function PricingSection() {
               {plan.available ? (
                 <a
                   href={plan.href}
-                  className="mt-7 w-full rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white"
+                  className="interactive-lift mt-7 w-full rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink hover:bg-brand-500 hover:text-white"
                 >
                   {plan.cta}
                 </a>
               ) : (
                 <Link
                   href={plan.href}
-                  className="mt-7 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
+                  className="interactive-lift mt-7 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-center text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700"
                 >
                   {plan.cta}
                 </Link>
               )}
+              {plan.plannedPrice ? (
+                <p className="mt-3 text-center text-[11px] leading-5 text-muted">Preço planejado. Ainda não é possível contratar.</p>
+              ) : null}
             </article>
           ))}
         </div>
@@ -141,19 +151,19 @@ export function PricingSection() {
 const faqs = [
   {
     question: "Preciso pagar para usar?",
-    answer: "Não. A versão gratuita atual pode ser usada sem cadastro e não pede cartão de crédito para começar. Criar uma conta Google é opcional e permite usar histórico e produtos salvos.",
+    answer: "Não. O plano Grátis custa R$ 0 e libera os geradores atuais depois de um login simples com Google. Não pedimos cartão de crédito para usar o modo gratuito.",
   },
   {
-    question: "Pro e Premium já estão disponíveis?",
-    answer: "Ainda não. Login, histórico e biblioteca de produtos já estão ativos, mas Pro e Premium só serão liberados depois que cobrança e controle de acesso pago estiverem prontos e testados. Os preços serão mostrados antes do lançamento das assinaturas.",
+    question: "Por que preciso entrar com Google?",
+    answer: "Para manter o acesso simples e vincular histórico e produtos salvos à mesma conta. O login não inicia assinatura, não gera cobrança e o AnunciaAI não recebe sua senha do Google.",
+  },
+  {
+    question: "O Pro já está disponível?",
+    answer: `Ainda não. O pacote Pro está sendo preparado com preço planejado de ${PRO_PLANNED_PRICE_LABEL} por mês, mas checkout, cobrança e liberação de recursos pagos continuam desativados até o lançamento.`,
   },
   {
     question: "O conteúdo serve para Mercado Livre e Shopee?",
     answer: "Sim. Você escolhe o canal e recebe uma estrutura adaptada como primeira versão. Revise sempre os dados do produto e as regras atuais da plataforma antes de publicar.",
-  },
-  {
-    question: "Posso editar o texto depois?",
-    answer: "Sim. Cada bloco foi feito para ser revisado e adaptado. Confira especificações, preço, condição, estoque e qualquer informação comercial antes de usar o texto.",
   },
   {
     question: "Meus dados de produto ficam salvos?",
@@ -168,7 +178,7 @@ export function FaqSection() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-600">Dúvidas</p>
           <h2 id="faq-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Perguntas frequentes</h2>
-          <p className="mt-3 text-[15px] leading-7 text-muted">Respostas rápidas sobre uso, conta, dados e próximos planos.</p>
+          <p className="mt-3 text-[15px] leading-7 text-muted">Respostas rápidas sobre acesso, conta, dados e próximos planos.</p>
         </div>
         <div className="divide-y divide-line border-y border-line">
           {faqs.map((faq) => (
@@ -199,7 +209,7 @@ export function SiteFooter() {
             <p className="mt-3 text-sm leading-6 text-muted">
               Ferramentas simples para criar, organizar e reutilizar conteúdo de produtos sem complicar o processo.
             </p>
-            <Link href="/#ferramenta" className="mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
+            <Link href="/#ferramenta" className="interactive-lift mt-5 inline-flex rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600">
               Criar anúncio grátis
             </Link>
           </div>

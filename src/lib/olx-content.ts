@@ -69,6 +69,6 @@ export const OLX_FAQ: FaqItem[] = [
   { question: "Preciso informar o estado de conservação?", answer: "É recomendável. A ferramenta só destaca a condição quando encontra termos como novo, seminovo, pouco uso ou usado nos dados fornecidos." },
   { question: "Como conferir o tamanho permitido do título?", answer: "Use o contador e as orientações exibidas pela OLX no momento da publicação. Regras de plataforma podem mudar, então o preview do AnunciaAI é apenas uma referência editorial." },
   { question: "O que colocar na descrição?", answer: "Inclua estado de conservação, características, medidas, itens incluídos e defeitos relevantes quando essas informações existirem." },
-  { question: "O gerador para OLX é gratuito?", answer: "Sim. A versão atual pode ser usada gratuitamente durante o período de testes, sem cadastro e sem cartão de crédito." },
+  { question: "O gerador para OLX é gratuito?", answer: "Sim. Ele faz parte do plano Grátis. Basta entrar com Google e não pedimos cartão de crédito." },
   { question: "A ferramenta serve para outros canais?", answer: "Sim. Existem geradores dedicados a Mercado Livre, Shopee, Facebook Marketplace, loja virtual e Instagram, cada um com uma estrutura diferente para revisar." },
 ];

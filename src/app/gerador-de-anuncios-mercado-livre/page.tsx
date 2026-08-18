@@ -12,7 +12,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 const TITLE = "Gerador de Anúncios para Mercado Livre | Grátis";
 const DESCRIPTION =
-  "Crie uma primeira versão de título, descrição e ficha técnica para Mercado Livre. Grátis, sem cadastro e feita para revisar antes de publicar.";
+  "Crie uma primeira versão de título, descrição e ficha técnica para Mercado Livre. Grátis com login Google simples e feita para revisar antes de publicar.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -58,7 +58,7 @@ const structuredData = {
   ],
 };
 
-const highlights = ["Título claro e objetivo", "Ficha técnica organizada", "Sugestões de palavras-chave", "100% grátis"];
+const highlights = ["Título claro e objetivo", "Ficha técnica organizada", "Sugestões de palavras-chave", "Plano Grátis"];
 
 export default function MercadoLivrePage() {
   return (
@@ -100,7 +100,7 @@ export default function MercadoLivrePage() {
                 <a href="#como-funciona" className="w-full rounded-2xl border border-line-strong bg-white px-7 py-4 text-center text-base font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-600 sm:w-auto">Ver como funciona</a>
               </div>
 
-              <p className="mt-3 text-sm text-muted">Sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-muted">Login Google simples. Sem cartão de crédito.</p>
               <ul className="mt-8 flex flex-wrap items-center justify-center gap-2">
                 {highlights.map((item) => <li key={item} className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft">{item}</li>)}
               </ul>
@@ -160,7 +160,7 @@ export default function MercadoLivrePage() {
               <h2 id="ml-cta-final" className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Prepare seu próximo anúncio para Mercado Livre</h2>
               <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/70">Cole as informações do produto, gere uma primeira versão e revise tudo de acordo com a categoria e as condições reais da venda.</p>
               <a href="#ferramenta" className="mt-7 inline-flex rounded-2xl bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:bg-brand-500 hover:text-white">Gerar meu anúncio grátis</a>
-              <p className="mt-3 text-sm text-white/60">Sem cartão de crédito.</p>
+              <p className="mt-3 text-sm text-white/60">Login Google simples. Sem cartão de crédito.</p>
             </div>
 
             <p className="mt-8 text-center text-sm text-muted">
