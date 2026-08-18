@@ -53,6 +53,19 @@
     text-wrap: pretty;
   }
 
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
   ::selection {
     background-color: var(--color-brand-100);
     color: var(--color-brand-700);
@@ -85,12 +98,13 @@
     background-color: #fff;
     padding: 0.78rem 0.9rem;
     font-size: 0.95rem;
+    line-height: 1.45;
     color: var(--color-ink);
     box-shadow: inset 0 1px 0 rgba(17, 19, 24, 0.015);
     transition:
-      border-color 140ms ease,
-      box-shadow 140ms ease,
-      background-color 140ms ease;
+      border-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 160ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .field::placeholder {
@@ -111,6 +125,40 @@
     border-color: #e11d48;
     box-shadow: 0 0 0 3px #fee2e2;
   }
+
+  .product-surface {
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-card);
+  }
+
+  .interactive-lift {
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .interactive-lift:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
 }
 
 @keyframes fade-up {
@@ -125,7 +173,23 @@
 }
 
 .animate-fade-up {
-  animation: fade-up 320ms ease-out both;
+  animation: fade-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-menu-in {
+  transform-origin: top center;
+  animation: menu-in 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes shimmer-bar {
@@ -152,7 +216,12 @@
   }
 
   .animate-fade-up,
+  .animate-menu-in,
   .loading-bar::after {
     animation: none;
+  }
+
+  .interactive-lift {
+    transition-duration: 0ms;
   }
 }
