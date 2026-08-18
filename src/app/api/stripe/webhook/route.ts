@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
-import { user } from "@/db/schema";
+import { proAccessGrant, user } from "@/db/schema";
+import { PRO_PIX_ACCESS_DAYS } from "@/lib/plans";
 import {
   localSubscriptionStatus,
   stripeBillingConfigured,
@@ -16,11 +17,19 @@ export const runtime = "nodejs";
 
 const MAX_WEBHOOK_BYTES = 1024 * 1024;
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 function stringId(value: unknown): string | null {
   if (typeof value === "string" && value) return value;
   if (value && typeof value === "object" && "id" in value && typeof value.id === "string") return value.id;
   return null;
+}
+
+function metadataValue(object: Record<string, unknown>, key: string): string | null {
+  const metadata = object.metadata;
+  if (!metadata || typeof metadata !== "object") return null;
+  const value = (metadata as Record<string, unknown>)[key];
+  return typeof value === "string" ? value : null;
 }
 
 async function attachCheckoutToUser(object: Record<string, unknown>) {
@@ -34,9 +43,62 @@ async function attachCheckoutToUser(object: Record<string, unknown>) {
       plan: "pro",
       subscriptionProvider: "stripe",
       externalSubscriptionId: subscriptionId,
+      proAccessUntil: null,
       updatedAt: new Date(),
     })
     .where(eq(user.id, userId));
+}
+
+async function grantPaidPixAccess(object: Record<string, unknown>) {
+  const checkoutSessionId = typeof object.id === "string" ? object.id : null;
+  const userId = typeof object.client_reference_id === "string" ? object.client_reference_id : null;
+  const paymentStatus = typeof object.payment_status === "string" ? object.payment_status : null;
+  const purchaseType = metadataValue(object, "purchaseType");
+
+  if (!checkoutSessionId || !userId || paymentStatus !== "paid" || purchaseType !== "pix_30d") return;
+
+  await db.transaction(async (tx) => {
+    const inserted = await tx
+      .insert(proAccessGrant)
+      .values({
+        checkoutSessionId,
+        userId,
+        provider: "stripe-pix",
+        accessDays: PRO_PIX_ACCESS_DAYS,
+      })
+      .onConflictDoNothing()
+      .returning({ checkoutSessionId: proAccessGrant.checkoutSessionId });
+
+    // A mesma sessão pode aparecer em checkout.session.completed e depois em
+    // async_payment_succeeded. Apenas a primeira confirmação paga concede dias.
+    if (inserted.length === 0) return;
+
+    const [current] = await tx
+      .select({ proAccessUntil: user.proAccessUntil })
+      .from(user)
+      .where(eq(user.id, userId))
+      .limit(1);
+
+    if (!current) throw new Error("Pix checkout references an unknown user");
+
+    const now = new Date();
+    const base = current.proAccessUntil && current.proAccessUntil.getTime() > now.getTime()
+      ? current.proAccessUntil
+      : now;
+    const proAccessUntil = new Date(base.getTime() + PRO_PIX_ACCESS_DAYS * DAY_MS);
+
+    await tx
+      .update(user)
+      .set({
+        plan: "pro",
+        subscriptionStatus: "inactive",
+        subscriptionProvider: "stripe-pix",
+        externalSubscriptionId: null,
+        proAccessUntil,
+        updatedAt: now,
+      })
+      .where(eq(user.id, userId));
+  });
 }
 
 async function syncSubscription(subscription: StripeSubscription) {
@@ -51,6 +113,7 @@ async function syncSubscription(subscription: StripeSubscription) {
     subscriptionStatus: validProPrice ? status : "inactive",
     subscriptionProvider: "stripe",
     externalSubscriptionId: canceled ? null : subscription.id,
+    proAccessUntil: null,
     updatedAt: new Date(),
   };
 
@@ -96,6 +159,11 @@ export async function POST(request: Request) {
 
     if (event.type === "checkout.session.completed") {
       await attachCheckoutToUser(event.data.object);
+      await grantPaidPixAccess(event.data.object);
+    }
+
+    if (event.type === "checkout.session.async_payment_succeeded") {
+      await grantPaidPixAccess(event.data.object);
     }
 
     if (
