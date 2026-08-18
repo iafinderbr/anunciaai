@@ -21,11 +21,15 @@ const authClient = read("src/lib/auth-client.ts");
 const authRoute = read("src/app/api/auth/[...all]/route.ts");
 const historyApi = read("src/app/api/account/history/route.ts");
 const productsApi = read("src/app/api/account/products/route.ts");
+const planApi = read("src/app/api/account/plan/route.ts");
 const signInPage = read("src/app/entrar/page.tsx");
 const accountPage = read("src/app/conta/page.tsx");
 const historyPage = read("src/app/conta/historico/page.tsx");
 const productsPage = read("src/app/conta/produtos/page.tsx");
 const planPage = read("src/app/conta/plano/page.tsx");
+const proPage = read("src/app/conta/pro/page.tsx");
+const proButton = read("src/components/account/pro-early-access-button.tsx");
+const proVariations = read("src/components/account/pro-variations-tool.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
 const facebookButton = read("src/components/auth/facebook-sign-in-button.tsx");
 const generatorAccessGate = read("src/components/auth/generator-access-gate.tsx");
@@ -116,6 +120,7 @@ for (const [name, source] of [
   ["/conta/historico", historyPage],
   ["/conta/produtos", productsPage],
   ["/conta/plano", planPage],
+  ["/conta/pro", proPage],
 ]) {
   if (!/robots\s*:\s*\{[^}]*index\s*:\s*false[^}]*follow\s*:\s*false/s.test(source)) {
     failures.push(`${name} deve continuar noindex/nofollow.`);
@@ -194,15 +199,47 @@ requireText(privacyPage, "Histórico salvo pelo usuário", "Política de privaci
 requireText(privacyPage, "Biblioteca de produtos salvos", "Política de privacidade não explica a biblioteca de produtos.");
 requireText(privacyPage, "não é adicionado ao histórico ou à biblioteca de forma automática", "Política deve informar que dados pessoais não são salvos automaticamente.");
 
-requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
-requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
-requireText(plans, 'free: new Set(["basic_generators", "history", "saved_products"])', "Plano Grátis deve refletir histórico e produtos salvos atualmente disponíveis.");
-requireText(plans, 'PRO_PLANNED_PRICE_LABEL = "R$ 19,90"', "Preço planejado do Pro precisa ficar centralizado no catálogo de planos.");
-requireText(pricing, "Preço planejado", "Seção de preços deve marcar o valor do Pro como planejado.");
-requireText(pricing, "Ainda não é possível contratar", "Seção de preços deve deixar claro que o Pro não está à venda.");
+for (const required of [
+  '"trialing"',
+  'subscriptionStatus === "active" || subscriptionStatus === "trialing"',
+  'free: new Set(["basic_generators", "history", "saved_products"])',
+  'PRO_FUTURE_PRICE_LABEL = "R$ 19,90"',
+  "PRO_FEATURES",
+  "PREMIUM_PLANNED_FEATURES",
+]) {
+  requireText(plans, required, `Catálogo de planos incompleto para o Pro ativo: ${required}.`);
+}
 
-if (/Assinar agora/i.test(pricing)) {
-  failures.push("A interface não pode mostrar 'Assinar agora' antes do checkout real estar ativo.");
+for (const required of [
+  "isAllowedOrigin(request)",
+  "auth.api.getSession",
+  'plan: "pro"',
+  'subscriptionStatus: "trialing"',
+  'subscriptionProvider: "early-access"',
+  "billing: false",
+  'plan: "free"',
+  'subscriptionStatus: "inactive"',
+]) {
+  requireText(planApi, required, `API de ativação do Pro perdeu proteção/estado esperado: ${required}.`);
+}
+
+requireText(planPage, "ProEarlyAccessButton", "Página de plano precisa permitir ativação explícita do Pro antecipado.");
+requireText(planPage, "R$ 0 durante o acesso antecipado", "Página de plano deve deixar claro que o Pro antecipado não cobra.");
+requireText(planPage, "Premium", "Página de plano perdeu a camada Premium.");
+requireText(planPage, "Planejado", "Premium deve continuar marcado como planejado.");
+requireText(proButton, 'fetch("/api/account/plan"', "Controle de ativação Pro não chama a API protegida.");
+requireText(proButton, "Ativar Pro em acesso antecipado", "CTA de ativação do Pro está ausente.");
+requireText(proPage, "effectivePlan", "Área Pro não valida o plano efetivo no servidor.");
+requireText(proPage, 'redirect("/conta/plano")', "Área Pro precisa bloquear contas sem acesso.");
+requireText(proPage, "ProVariationsTool", "Área Pro perdeu o recurso exclusivo de variações.");
+requireText(proVariations, "[0, 1, 2]", "Laboratório Pro deve gerar três abordagens do mesmo produto.");
+requireText(proVariations, "generateAd(input, variant)", "Laboratório Pro deve gerar variações reais pelo motor existente.");
+requireText(pricing, "Pro já em jogo", "Seção pública deve apresentar o Pro como disponível.");
+requireText(pricing, "acesso antecipado sem cobrança", "Seção pública deve explicar o modelo de acesso antecipado.");
+requireText(pricing, "Premium continua planejado", "Seção pública deve manter Premium como planejado.");
+
+if (/Assinar agora/i.test(pricing) || /checkout disponível/i.test(pricing)) {
+  failures.push("A interface não pode apresentar cobrança/checkout antes da integração real estar ativa.");
 }
 
 if (failures.length) {
@@ -211,4 +248,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, Facebook opcional sem botão falso, retorno interno seguro, login obrigatório nos geradores, modo Grátis, histórico e produtos opt-in, preço Pro planejado, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: OAuth social, retorno seguro, login obrigatório, histórico/produtos opt-in, Pro em acesso antecipado sem cobrança, área Pro protegida, Premium planejado e autorização server-side validados.");

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PRO_PLANNED_FEATURES, PRO_PLANNED_PRICE_LABEL } from "@/lib/plans";
+import { PREMIUM_PLANNED_FEATURES, PRO_FEATURES, PRO_FUTURE_PRICE_LABEL } from "@/lib/plans";
 
 interface Plan {
   name: string;
@@ -10,8 +10,8 @@ interface Plan {
   features: readonly string[];
   cta: string;
   href: string;
-  available?: boolean;
-  plannedPrice?: boolean;
+  featured?: boolean;
+  planned?: boolean;
 }
 
 const plans: Plan[] = [
@@ -19,42 +19,32 @@ const plans: Plan[] = [
     name: "Grátis",
     price: "R$ 0",
     period: "/mês",
-    badge: "Disponível agora",
-    summary: "Para começar a criar, organizar e reutilizar conteúdo de produtos sem cartão de crédito.",
-    features: [
-      "10 geradores com login Google",
-      "Sem cartão de crédito",
-      "Histórico salvo manualmente",
-      "Até 20 produtos salvos",
-    ],
+    badge: "Disponível",
+    summary: "Para criar e organizar conteúdo de produtos com os geradores atuais.",
+    features: ["10 geradores", "Login Google", "Histórico opt-in", "Até 20 produtos salvos"],
     cta: "Começar grátis",
     href: "#ferramenta",
-    available: true,
   },
   {
     name: "Pro",
-    price: PRO_PLANNED_PRICE_LABEL,
-    period: "/mês",
-    badge: "Próximo passo",
-    summary: "Para quem cria conteúdo com frequência e quer mais espaço, velocidade e reutilização no fluxo de trabalho.",
-    features: PRO_PLANNED_FEATURES,
-    cta: "Acompanhar lançamento",
-    href: "/entrar",
-    plannedPrice: true,
+    price: "R$ 0",
+    period: "no acesso antecipado",
+    badge: "Disponível agora",
+    summary: "Para comparar mais abordagens do mesmo produto e testar primeiro os novos recursos Pro.",
+    features: PRO_FEATURES,
+    cta: "Ativar acesso Pro",
+    href: "/entrar?callbackURL=/conta/plano",
+    featured: true,
   },
   {
     name: "Premium",
-    price: "Depois",
-    badge: "Em estudo",
-    summary: "Uma camada futura para catálogos maiores, padronização de marca e operações com mais escala.",
-    features: [
-      "Tudo do Pro",
-      "Fluxos em lote planejados",
-      "Padrões e voz da marca",
-      "Recursos avançados de catálogo",
-    ],
-    cta: "Acompanhar novidades",
-    href: "/entrar",
+    price: "Planejado",
+    badge: "Próxima camada",
+    summary: "Para operações maiores que precisem de escala, catálogo e padronização de marca.",
+    features: PREMIUM_PLANNED_FEATURES,
+    cta: "Ver planos",
+    href: "/entrar?callbackURL=/conta/plano",
+    planned: true,
   },
 ];
 
@@ -70,23 +60,21 @@ export function PricingSection() {
           <div className="max-w-4xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Planos</p>
             <h2 id="precos-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-ink sm:text-[3.4rem]">
-              Comece com o que já existe. Evolua quando o fluxo exigir.
+              Grátis para começar. Pro já em jogo.
             </h2>
           </div>
           <p className="text-[15px] leading-7 text-muted">
-            O plano Grátis libera os geradores atuais. Os próximos planos aparecem com transparência enquanto ainda estão em preparação.
+            O Pro está disponível em acesso antecipado sem cobrança. O Premium continua planejado para uma etapa posterior.
           </p>
         </div>
 
         <div className="mt-14 grid border-y border-line lg:grid-cols-3">
           {plans.map((plan, index) => {
-            const featured = Boolean(plan.plannedPrice);
+            const featured = Boolean(plan.featured);
             return (
               <article
                 key={plan.name}
-                className={`relative flex min-h-[520px] flex-col px-7 py-9 sm:px-8 ${
-                  featured ? "bg-[#0f1013] text-white" : "bg-white text-ink"
-                } ${index < plans.length - 1 ? "border-b border-line lg:border-b-0 lg:border-r" : ""}`}
+                className={`relative flex min-h-[520px] flex-col px-7 py-9 sm:px-8 ${featured ? "bg-[#0f1013] text-white" : "bg-white text-ink"} ${index < plans.length - 1 ? "border-b border-line lg:border-b-0 lg:border-r" : ""}`}
               >
                 {featured ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px] bg-brand-500" /> : null}
 
@@ -95,11 +83,11 @@ export function PricingSection() {
                     <p className={`text-[10px] font-semibold uppercase tracking-[0.15em] ${featured ? "text-brand-300" : "text-brand-700"}`}>{plan.badge}</p>
                     <h3 className={`mt-3 text-[1.45rem] font-semibold tracking-[-0.04em] ${featured ? "text-white" : "text-ink"}`}>{plan.name}</h3>
                   </div>
-                  {plan.available ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-emerald-700">Ativo</span> : featured ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-white/34">Planejado</span> : null}
+                  {featured ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-emerald-300">Disponível</span> : plan.planned ? <span className="text-[10px] font-semibold uppercase tracking-[0.13em] text-muted">Planejado</span> : null}
                 </div>
 
                 <div className="mt-10">
-                  <p className="flex items-baseline gap-2">
+                  <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                     <span className={`text-[3.1rem] font-semibold leading-none tracking-[-0.07em] ${featured ? "text-white" : "text-ink"}`}>{plan.price}</span>
                     {plan.period ? <span className={`text-sm ${featured ? "text-white/38" : "text-muted"}`}>{plan.period}</span> : null}
                   </p>
@@ -119,7 +107,7 @@ export function PricingSection() {
                 </div>
 
                 <div className="mt-auto pt-9">
-                  {plan.available ? (
+                  {plan.name === "Grátis" ? (
                     <a href={plan.href} className="interactive-lift flex min-h-12 w-full items-center justify-center rounded-[8px] bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
                       {plan.cta} <span aria-hidden="true" className="ml-2">→</span>
                     </a>
@@ -128,7 +116,8 @@ export function PricingSection() {
                       {plan.cta}
                     </Link>
                   )}
-                  {plan.plannedPrice ? <p className="mt-4 text-center text-[10px] leading-5 text-white/30">Preço planejado. Ainda não é possível contratar.</p> : null}
+                  {featured ? <p className="mt-4 text-center text-[10px] leading-5 text-white/30">Sem cartão. Preço comercial de referência futuro: {PRO_FUTURE_PRICE_LABEL}/mês.</p> : null}
+                  {plan.planned ? <p className="mt-4 text-center text-[10px] leading-5 text-muted">Recursos e preço ainda não estão disponíveis.</p> : null}
                 </div>
               </article>
             );
@@ -137,16 +126,16 @@ export function PricingSection() {
 
         <div className="mt-8 grid border-y border-line bg-white text-xs leading-5 text-muted sm:grid-cols-3">
           <div className="px-6 py-5 sm:border-r sm:border-line">
-            <p className="font-semibold text-ink">Sem cobrança ativa</p>
-            <p className="mt-1">O modo Grátis não pede cartão.</p>
+            <p className="font-semibold text-ink">Pro sem cobrança agora</p>
+            <p className="mt-1">O acesso antecipado pode ser ativado pela conta.</p>
           </div>
           <div className="border-t border-line px-6 py-5 sm:border-r sm:border-t-0 sm:border-line">
-            <p className="font-semibold text-ink">Preço Pro planejado</p>
-            <p className="mt-1">Pode mudar antes do lançamento.</p>
+            <p className="font-semibold text-ink">Cobrança futura separada</p>
+            <p className="mt-1">Nenhum cartão ou assinatura paga é criado nesta fase.</p>
           </div>
           <div className="border-t border-line px-6 py-5 sm:border-t-0">
-            <p className="font-semibold text-ink">Você continua no controle</p>
-            <p className="mt-1">Nenhuma assinatura é iniciada pelo login.</p>
+            <p className="font-semibold text-ink">Premium continua planejado</p>
+            <p className="mt-1">Sem prometer data, preço ou contratação antes da implementação.</p>
           </div>
         </div>
       </div>
@@ -157,15 +146,15 @@ export function PricingSection() {
 const faqs = [
   {
     question: "Preciso pagar para usar?",
-    answer: "Não. O plano Grátis custa R$ 0 e libera os geradores atuais depois de um login simples com Google. Não pedimos cartão de crédito para usar o modo gratuito.",
-  },
-  {
-    question: "Por que preciso entrar com Google?",
-    answer: "Para manter o acesso simples e vincular histórico e produtos salvos à mesma conta. O login não inicia assinatura, não gera cobrança e o AnunciaAI não recebe sua senha do Google.",
+    answer: "Não. O plano Grátis custa R$ 0. O Pro também está sem cobrança durante o acesso antecipado e pode ser ativado pela área de plano da conta.",
   },
   {
     question: "O Pro já está disponível?",
-    answer: `Ainda não. O pacote Pro está sendo preparado com preço planejado de ${PRO_PLANNED_PRICE_LABEL} por mês, mas checkout, cobrança e liberação de recursos pagos continuam desativados até o lançamento.`,
+    answer: `Sim. O Pro está disponível em acesso antecipado sem cobrança e já possui um laboratório exclusivo para comparar três versões do mesmo produto. O preço comercial de referência futuro é ${PRO_FUTURE_PRICE_LABEL}/mês, mas checkout e cobrança continuam desligados.`,
+  },
+  {
+    question: "E o Premium?",
+    answer: "O Premium continua planejado. Fluxos em lote, voz da marca e recursos avançados de catálogo ainda não são apresentados como disponíveis.",
   },
   {
     question: "O conteúdo serve para Mercado Livre e Shopee?",
@@ -173,7 +162,7 @@ const faqs = [
   },
   {
     question: "Meus dados de produto ficam salvos?",
-    answer: "Por padrão, não. O conteúdo usado para gerar um anúncio não é salvo no banco de gerações; para o contador público guardamos apenas canal e horário. Quando você está conectado, só armazenamos conteúdo ou dados do produto se você clicar explicitamente em “Salvar no histórico” ou “Salvar produto”.",
+    answer: "Por padrão, não. Quando você está conectado, conteúdo ou dados do produto só são armazenados se você clicar explicitamente em salvar no histórico ou salvar produto.",
   },
 ];
 
@@ -185,7 +174,7 @@ export function FaqSection() {
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Dúvidas</p>
             <h2 id="faq-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-ink">Antes de começar.</h2>
-            <p className="mt-6 max-w-xs text-[15px] leading-7 text-muted">Respostas diretas sobre acesso, conta, dados e os próximos planos do AnunciaAI.</p>
+            <p className="mt-6 max-w-xs text-[15px] leading-7 text-muted">Respostas diretas sobre acesso, planos e dados do AnunciaAI.</p>
           </div>
 
           <div className="border-y border-line">
@@ -220,57 +209,31 @@ export function SiteFooter() {
               Comece pelo produto
             </div>
             <h2 className="mt-6 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-white sm:text-[3.5rem]">Transforme as informações do produto em uma primeira versão organizada.</h2>
-            <p className="mt-6 max-w-2xl text-[15px] leading-7 text-white/42">Use o gerador completo gratuitamente, revise cada bloco e adapte o que fizer sentido para o seu canal.</p>
+            <p className="mt-6 max-w-2xl text-[15px] leading-7 text-white/42">Use o gerador completo, revise cada bloco e escolha o canal onde o conteúdo será usado.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">
-              Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span>
-            </Link>
-            <Link href="/ferramentas" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">
-              Explorar ferramentas
-            </Link>
+            <Link href="/#ferramenta" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">Criar anúncio grátis <span aria-hidden="true" className="ml-2.5">→</span></Link>
+            <Link href="/entrar?callbackURL=/conta/plano" className="inline-flex min-h-14 items-center justify-center rounded-[8px] border border-white/12 bg-white/[0.02] px-6 text-[15px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white">Ver planos</Link>
           </div>
         </div>
 
         <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24">
           <div className="max-w-lg">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="AnunciaAI, página inicial">
-              <span className="relative grid size-10 place-items-center overflow-hidden rounded-[8px] bg-white text-[15px] font-extrabold text-[#151619]">
-                A
-                <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-brand-500" />
-              </span>
+              <span className="relative grid size-10 place-items-center overflow-hidden rounded-[8px] bg-white text-[15px] font-extrabold text-[#151619]">A<span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-brand-500" /></span>
               <span className="text-[20px] font-semibold tracking-[-0.05em] text-white">Anuncia<span className="text-brand-300">AI</span></span>
             </Link>
-            <p className="mt-6 max-w-md text-[15px] leading-7 text-white/42">Crie, organize e reutilize conteúdo de produtos para diferentes canais de venda em um fluxo objetivo.</p>
+            <p className="mt-6 max-w-md text-[15px] leading-7 text-white/42">Crie, organize e compare conteúdo de produtos para diferentes canais de venda.</p>
           </div>
 
           <nav aria-label="Links do rodapé" className="grid gap-10 text-sm sm:grid-cols-3 sm:gap-16">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Produto</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/ferramentas" className="transition-colors hover:text-white">Ferramentas</Link>
-                <Link href="/guias" className="transition-colors hover:text-white">Guias</Link>
-                <Link href="/#precos" className="transition-colors hover:text-white">Preços</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/entrar" className="transition-colors hover:text-white">Entrar ou acessar conta</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Empresa</p>
-              <div className="mt-5 grid gap-4 text-white/56">
-                <Link href="/sobre" className="transition-colors hover:text-white">Sobre</Link>
-                <Link href="/privacidade" className="transition-colors hover:text-white">Privacidade</Link>
-                <Link href="/termos" className="transition-colors hover:text-white">Termos</Link>
-              </div>
-            </div>
+            <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Produto</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/ferramentas" className="hover:text-white">Ferramentas</Link><Link href="/guias" className="hover:text-white">Guias</Link><Link href="/#precos" className="hover:text-white">Preços</Link></div></div>
+            <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/entrar" className="hover:text-white">Entrar</Link><Link href="/entrar?callbackURL=/conta/plano" className="hover:text-white">Plano</Link></div></div>
+            <div><p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Empresa</p><div className="mt-5 grid gap-4 text-white/56"><Link href="/sobre" className="hover:text-white">Sobre</Link><Link href="/privacidade" className="hover:text-white">Privacidade</Link><Link href="/termos" className="hover:text-white">Termos</Link></div></div>
           </nav>
         </div>
 
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/[0.09] pt-7 text-xs text-white/26 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-white/[0.09] pt-7 text-xs text-white/25 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} AnunciaAI.</p>
           <p>Revise o conteúdo antes de publicar.</p>
         </div>
