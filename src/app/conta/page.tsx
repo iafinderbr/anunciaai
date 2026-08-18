@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
-import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { auth } from "@/lib/auth";
 import { effectivePlan } from "@/lib/plans";
 import { SITE_URL } from "@/lib/site";
@@ -43,8 +42,6 @@ const planNames = {
 } as const;
 
 export default async function AccountPage() {
-  await ensureDatabaseSchema();
-
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/entrar");
 
