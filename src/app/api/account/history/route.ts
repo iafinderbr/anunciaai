@@ -19,6 +19,15 @@ const CHANNELS = new Set([
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
 const MAX_BODY_BYTES = 32_768;
 const MAX_HISTORY_ITEMS = 100;
+const MUTATION_WINDOW_MS = 60_000;
+const MUTATION_MAX = 30;
+
+type MutationEntry = { count: number; resetAt: number };
+const globalForHistoryRate = globalThis as typeof globalThis & {
+  __anunciaAiHistoryMutationRate?: Map<string, MutationEntry>;
+};
+const mutationRate = globalForHistoryRate.__anunciaAiHistoryMutationRate ?? new Map<string, MutationEntry>();
+globalForHistoryRate.__anunciaAiHistoryMutationRate = mutationRate;
 
 function hasUnexpectedQuery(request: Request): boolean {
   try {
@@ -39,8 +48,38 @@ function isAllowedOrigin(request: Request): boolean {
   }
 }
 
-function text(value: unknown, max: number): string {
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
+function boundedText(value: unknown, min: number, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  if (normalized.length < min || normalized.length > max) return null;
+  return normalized;
+}
+
+function isMutationRateLimited(userId: string): boolean {
+  const now = Date.now();
+
+  if (mutationRate.size > 5_000) {
+    for (const [key, entry] of mutationRate) {
+      if (entry.resetAt <= now) mutationRate.delete(key);
+    }
+    if (mutationRate.size > 10_000) mutationRate.clear();
+  }
+
+  const current = mutationRate.get(userId);
+  if (!current || current.resetAt <= now) {
+    mutationRate.set(userId, { count: 1, resetAt: now + MUTATION_WINDOW_MS });
+    return false;
+  }
+
+  current.count += 1;
+  return current.count > MUTATION_MAX;
+}
+
+function rateLimitedResponse() {
+  return Response.json(
+    { ok: false, error: "rate_limited" },
+    { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
+  );
 }
 
 async function readJsonObject(request: Request): Promise<
@@ -161,6 +200,7 @@ export async function POST(request: Request) {
       { status: 401, headers: NO_STORE_HEADERS },
     );
   }
+  if (isMutationRateLimited(userId)) return rateLimitedResponse();
 
   const parsed = await readJsonObject(request);
   if (!parsed.ok) return parsed.response;
@@ -174,12 +214,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const productName = text(parsed.value.productName, 120);
-  const channel = text(parsed.value.channel, 40);
-  const title = text(parsed.value.title, 220);
-  const content = text(parsed.value.content, 24_000);
+  const productName = boundedText(parsed.value.productName, 2, 120);
+  const channel = boundedText(parsed.value.channel, 2, 40);
+  const title = boundedText(parsed.value.title, 2, 220);
+  const content = boundedText(parsed.value.content, 20, 24_000);
 
-  if (productName.length < 2 || !CHANNELS.has(channel) || title.length < 2 || content.length < 20) {
+  if (!productName || !channel || !CHANNELS.has(channel) || !title || !content) {
     return Response.json(
       { ok: false, error: "invalid_payload" },
       { status: 400, headers: NO_STORE_HEADERS },
@@ -227,6 +267,7 @@ export async function DELETE(request: Request) {
       { status: 401, headers: NO_STORE_HEADERS },
     );
   }
+  if (isMutationRateLimited(userId)) return rateLimitedResponse();
 
   const parsed = await readJsonObject(request);
   if (!parsed.ok) return parsed.response;
@@ -239,8 +280,8 @@ export async function DELETE(request: Request) {
     );
   }
 
-  const id = text(parsed.value.id, 64);
-  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+  const id = boundedText(parsed.value.id, 36, 36);
+  if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
     return Response.json(
       { ok: false, error: "invalid_id" },
       { status: 400, headers: NO_STORE_HEADERS },
