@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ChannelSideDock } from "@/components/channel-side-dock";
 import { authClient } from "@/lib/auth-client";
 
@@ -17,14 +17,23 @@ function BrandMark() {
 
 export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const [open, setOpen] = useState(false);
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!sessionPending && session && pathname === "/") {
+      router.replace("/conta");
+    }
+  }, [pathname, router, session, sessionPending]);
 
   const accountHref = session ? "/conta" : "/entrar";
   const accountLabel = session ? "Minha conta" : "Entrar";
   const historyHref = session ? "/conta/historico" : "/entrar?voltar=/conta/historico";
   const productsHref = session ? "/conta/produtos" : "/entrar?voltar=/conta/produtos";
   const modesHref = session ? "/conta/plano" : "/entrar?voltar=/conta/plano";
+  const toolsHref = session ? "/conta/ferramentas" : "/ferramentas";
+  const homeHref = session ? "/conta" : "/";
   const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
   const navItem = "group relative inline-flex min-h-11 items-center px-1 text-[13px] font-medium text-white/58 transition-colors hover:text-white";
 
@@ -32,7 +41,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
     <>
       <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#0c0d0f]/95 text-white shadow-[0_16px_46px_-38px_rgba(0,0,0,.95)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#0c0d0f]/90">
         <div className="container-page flex h-[72px] items-center justify-between gap-7">
-          <Link href="/" className="group flex shrink-0 items-center gap-3" aria-label="AnunciaAI, página inicial">
+          <Link href={homeHref} className="group flex shrink-0 items-center gap-3" aria-label="AnunciaAI, página inicial">
             <BrandMark />
             <span className="text-[19px] font-semibold tracking-[-0.05em] text-white">
               Anuncia<span className="text-brand-300">AI</span>
@@ -40,7 +49,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
           </Link>
 
           <nav aria-label="Navegação principal" className="hidden flex-1 items-center justify-center gap-9 md:flex">
-            <Link href="/ferramentas" className={navItem}>
+            <Link href={toolsHref} className={navItem}>
               Ferramentas
               <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
             </Link>
@@ -63,9 +72,11 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               ) : null}
               {accountLabel}
             </Link>
-            <Link href={ctaHref} className="interactive-lift hidden min-h-11 items-center bg-brand-500 px-5 text-[13px] font-semibold text-white shadow-[0_14px_32px_-22px_rgba(241,102,42,.82)] transition-colors hover:bg-brand-600 sm:inline-flex">
-              Começar grátis <span aria-hidden="true" className="ml-2">→</span>
-            </Link>
+            {!session ? (
+              <Link href={ctaHref} className="interactive-lift hidden min-h-11 items-center bg-brand-500 px-5 text-[13px] font-semibold text-white shadow-[0_14px_32px_-22px_rgba(241,102,42,.82)] transition-colors hover:bg-brand-600 sm:inline-flex">
+                Começar grátis <span aria-hidden="true" className="ml-2">→</span>
+              </Link>
+            ) : null}
             <button
               type="button"
               onClick={() => setOpen((value) => !value)}
@@ -83,16 +94,18 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
         <div id="menu-mobile" hidden={!open} className="border-t border-white/[0.08] bg-[#0f1013] md:hidden">
           <nav aria-label="Navegação mobile" className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-5">
-            <Link href={ctaHref} onClick={() => setOpen(false)} className="mb-5 flex min-h-14 items-center justify-between border border-brand-500/35 bg-brand-500 px-5 text-sm font-semibold text-white">
-              <span>
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-white/72">Começar</span>
-                <span className="mt-1 block">Criar anúncio grátis</span>
-              </span>
-              <span aria-hidden="true" className="text-white/70">→</span>
-            </Link>
+            {!session ? (
+              <Link href={ctaHref} onClick={() => setOpen(false)} className="mb-5 flex min-h-14 items-center justify-between border border-brand-500/35 bg-brand-500 px-5 text-sm font-semibold text-white">
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-white/72">Começar</span>
+                  <span className="mt-1 block">Criar anúncio grátis</span>
+                </span>
+                <span aria-hidden="true" className="text-white/70">→</span>
+              </Link>
+            ) : null}
 
             <div className="grid divide-y divide-white/[0.08] border-y border-white/[0.08]">
-              <Link href="/ferramentas" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Ferramentas</Link>
+              <Link href={toolsHref} onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Ferramentas</Link>
               <Link href="/guias" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Guias</Link>
               <Link href="/sobre" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Sobre</Link>
             </div>
