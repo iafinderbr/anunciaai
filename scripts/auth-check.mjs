@@ -23,6 +23,7 @@ const signInPage = read("src/app/entrar/page.tsx");
 const accountPage = read("src/app/conta/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
+const siteHeader = read("src/components/site-header.tsx");
 const plans = read("src/lib/plans.ts");
 const pricing = read("src/components/sections/pricing.tsx");
 
@@ -94,6 +95,9 @@ requireText(accountPage, "effectivePlan", "Área /conta não calcula o plano efe
 requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
 requireText(googleButton, 'callbackURL: "/conta"', "Login Google não retorna para /conta.");
 requireText(signOutButton, "authClient.signOut", "Logout da conta não está implementado.");
+requireText(siteHeader, "authClient.useSession()", "Cabeçalho não acompanha a sessão autenticada.");
+requireText(siteHeader, 'session ? "/conta" : "/entrar"', "Cabeçalho não alterna entre login e Minha conta.");
+requireText(siteHeader, 'session ? "Minha conta" : "Entrar"', "Cabeçalho não identifica o usuário autenticado.");
 requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
 requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
 
@@ -107,4 +111,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, tokens criptografados, sessão protegida, logout, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, tokens criptografados, sessão protegida, navegação autenticada, logout, schema, variáveis e controle de plano validados.");

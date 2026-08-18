@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const links = [
   { href: "/#ferramentas", label: "Ferramentas" },
@@ -14,6 +15,11 @@ const links = [
 export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const { data: session } = authClient.useSession();
+
+  const accountHref = session ? "/conta" : "/entrar";
+  const accountLabel = session ? "Minha conta" : "Entrar";
+  const mobileAccountLabel = session ? "Minha conta" : "Entrar na conta";
 
   useEffect(() => {
     if (!open) return;
@@ -56,10 +62,15 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
           <div className="flex items-center gap-2">
             <Link
-              href="/entrar"
-              className="hidden rounded-xl px-3 py-2.5 text-sm font-semibold text-ink-soft transition-colors hover:bg-white hover:text-brand-700 sm:inline-flex"
+              href={accountHref}
+              className="hidden items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink-soft transition-colors hover:bg-white hover:text-brand-700 sm:inline-flex"
             >
-              Entrar
+              {session ? (
+                <span aria-hidden="true" className="grid size-6 place-items-center rounded-full bg-ink text-[10px] font-bold text-white">
+                  {session.user.name.trim().charAt(0).toUpperCase() || "A"}
+                </span>
+              ) : null}
+              {accountLabel}
             </Link>
             <Link
               href={ctaHref}
@@ -100,11 +111,11 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               </Link>
             ))}
             <Link
-              href="/entrar"
+              href={accountHref}
               onClick={() => setOpen(false)}
               className="rounded-lg px-1 py-3 text-sm font-semibold text-ink"
             >
-              Entrar na conta
+              {mobileAccountLabel}
             </Link>
             <Link
               href={ctaHref}
