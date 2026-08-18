@@ -9,7 +9,7 @@ const items: ReadonlyArray<{
 }> = [
   { href: "/conta", label: "Início", activeKeys: ["overview"] },
   { href: "/conta/historico", label: "Biblioteca", activeKeys: ["history", "products"] },
-  { href: "/conta/plano", label: "Planos", activeKeys: ["plan", "pro"] },
+  { href: "/conta/plano", label: "Outros modos", activeKeys: ["plan", "pro"] },
   { href: "/ferramentas", label: "Ferramentas", activeKeys: ["tools"] },
 ];
 
