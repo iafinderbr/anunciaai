@@ -11,9 +11,8 @@ import {
 
 /**
  * Registro mínimo de cada geração usado pelo contador público e pela faixa de
- * atividade recente. Na versão atual, somente canal e horário carregam dados
- * úteis; as demais colunas são legadas e recebem valores neutros para manter
- * compatibilidade com o banco existente sem armazenar o conteúdo do produto.
+ * atividade recente. Somente canal e horário carregam dados úteis; as demais
+ * colunas são legadas e recebem valores neutros para não armazenar conteúdo.
  */
 export const generations = pgTable(
   "generations",
@@ -32,12 +31,6 @@ export const generations = pgTable(
   (table) => [index("generations_created_at_idx").on(table.createdAt)],
 );
 
-/**
- * Estrutura preparada para Better Auth. A autenticação ainda só será ativada
- * quando as credenciais OAuth estiverem configuradas no ambiente seguro.
- * Campos de plano são controlados pelo servidor; nunca devem ser aceitos como
- * escolha livre do navegador durante login/cadastro.
- */
 export const user = pgTable(
   "user",
   {
@@ -119,8 +112,33 @@ export const verification = pgTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+/**
+ * Histórico opt-in. Diferente do contador anônimo, esta tabela só recebe
+ * conteúdo quando um usuário autenticado clica explicitamente em salvar.
+ */
+export const savedGeneration = pgTable(
+  "saved_generation",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    productName: text("product_name").notNull(),
+    channel: text("channel").notNull(),
+    title: text("title").notNull(),
+    content: text("content").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("saved_generation_user_created_idx").on(table.userId, table.createdAt),
+    index("saved_generation_user_idx").on(table.userId),
+  ],
+);
+
 export type Generation = typeof generations.$inferSelect;
 export type NewGeneration = typeof generations.$inferInsert;
 export type User = typeof user.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type Account = typeof account.$inferSelect;
+export type SavedGeneration = typeof savedGeneration.$inferSelect;
+export type NewSavedGeneration = typeof savedGeneration.$inferInsert;
