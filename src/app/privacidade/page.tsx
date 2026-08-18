@@ -9,7 +9,7 @@ const ABSOLUTE_URL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
-  description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, histórico, métricas e publicidade são utilizados.",
+  description: "Entenda quais dados o AnunciaAI processa e como login, histórico, produtos salvos, métricas e publicidade são utilizados.",
   alternates: { canonical: ABSOLUTE_URL },
   openGraph: {
     type: "website",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: ABSOLUTE_URL,
     siteName: "AnunciaAI",
     title: "Política de Privacidade | AnunciaAI",
-    description: "Entenda quais dados o AnunciaAI processa, o que é armazenado e como login, histórico, métricas e publicidade são utilizados.",
+    description: "Entenda quais dados o AnunciaAI processa e como login, histórico, produtos salvos, métricas e publicidade são utilizados.",
   },
   robots: { index: true, follow: true },
 };
@@ -53,13 +53,21 @@ const sections = [
     ],
   },
   {
-    title: "5. Métricas de navegação",
+    title: "5. Biblioteca de produtos salvos",
+    paragraphs: [
+      "Quando uma pessoa autenticada clica explicitamente em “Salvar produto”, o AnunciaAI armazena na biblioteca privada da conta os dados preenchidos para aquele produto, incluindo nome, categoria, preço quando informado, público, características, canal e tom escolhidos.",
+      "Salvar um produto é opcional e separado de salvar um resultado no histórico. Nesta fase, cada conta pode manter até 20 produtos na biblioteca e excluir itens individualmente pela área Produtos salvos.",
+      "O objetivo dessa biblioteca é permitir reutilização futura dos dados do produto sem exigir novo preenchimento manual em cada gerador.",
+    ],
+  },
+  {
+    title: "6. Métricas de navegação",
     paragraphs: [
       "O AnunciaAI utiliza o Vercel Web Analytics para entender, de forma agregada, o uso do site e melhorar desempenho, páginas e recursos. Essas métricas podem incluir informações técnicas e de navegação disponibilizadas pelo serviço de analytics.",
     ],
   },
   {
-    title: "6. Publicidade e Google AdSense",
+    title: "7. Publicidade e Google AdSense",
     paragraphs: [
       "O AnunciaAI pode utilizar o Google AdSense para exibir publicidade. Terceiros, incluindo o Google, podem usar cookies, beacons da Web, endereços IP e outros identificadores para veicular, medir e personalizar anúncios conforme as configurações do usuário e as regras aplicáveis.",
       "O uso de cookies de publicidade permite ao Google e aos parceiros dele exibir anúncios com base em visitas anteriores do usuário a este site e/ou a outros sites. O usuário pode gerenciar ou desativar a personalização de anúncios nas Configurações de anúncios do Google.",
@@ -67,35 +75,35 @@ const sections = [
     ],
   },
   {
-    title: "7. Planos e pagamento",
+    title: "8. Planos e pagamento",
     paragraphs: [
-      "Entrar na conta ou salvar um resultado não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
+      "Entrar na conta, salvar um resultado ou salvar um produto não inicia cobrança. Enquanto Pro e Premium estiverem marcados como “Em preparação” ou “Em breve”, o AnunciaAI não realiza cobrança por esses planos no site e não solicita dados de cartão para autenticação.",
       "Quando pagamentos forem ativados, esta política será atualizada para explicar o provedor utilizado e os dados efetivamente processados. O AnunciaAI não pretende armazenar número completo de cartão ou código de segurança.",
     ],
   },
   {
-    title: "8. Finalidade e minimização",
+    title: "9. Finalidade e minimização",
     paragraphs: [
-      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, armazenar resultados quando o usuário escolhe salvá-los, medir o uso, exibir publicidade quando habilitada e melhorar a experiência.",
-      "O conteúdo de produto não é adicionado ao histórico de forma automática. Sempre que uma informação deixa de ser necessária para as finalidades descritas, buscamos reduzir, anonimizar ou eliminar seu uso conforme aplicável.",
+      "Coletamos apenas o necessário para operar a ferramenta, manter contas e sessões quando o usuário opta pelo login, armazenar resultados e produtos quando o usuário escolhe salvá-los, medir o uso, exibir publicidade quando habilitada e melhorar a experiência.",
+      "O conteúdo de produto não é adicionado ao histórico ou à biblioteca de forma automática. Sempre que uma informação deixa de ser necessária para as finalidades descritas, buscamos reduzir, anonimizar ou eliminar seu uso conforme aplicável.",
     ],
   },
   {
-    title: "9. Segurança e terceiros",
+    title: "10. Segurança e terceiros",
     paragraphs: [
-      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido, incluindo segredos fora do código público, validação de sessão no servidor, separação entre telemetria anônima e histórico pessoal e criptografia dos tokens OAuth armazenados pela camada de autenticação.",
+      "Adotamos medidas técnicas compatíveis com o estágio atual do serviço para reduzir riscos de acesso indevido, incluindo segredos fora do código público, validação de sessão no servidor, separação entre telemetria anônima e dados pessoais salvos e criptografia dos tokens OAuth armazenados pela camada de autenticação.",
       "Serviços de infraestrutura, autenticação, métricas e publicidade, como Vercel e Google, podem processar dados técnicos necessários para hospedar, autenticar, medir e monetizar o site segundo as próprias políticas desses fornecedores.",
     ],
   },
   {
-    title: "10. Direitos e controle do usuário",
+    title: "11. Direitos e controle do usuário",
     paragraphs: [
       "Nos termos da legislação aplicável, inclusive a LGPD quando pertinente, o usuário pode solicitar informações sobre o tratamento de dados e exercer os direitos previstos em lei.",
-      "Contas autenticadas possuem dados vinculáveis ao usuário. O histórico oferece exclusão individual dos resultados salvos, e pedidos relacionados a acesso, correção ou eliminação de outros dados serão tratados conforme a finalidade, as obrigações aplicáveis e as capacidades disponíveis no serviço.",
+      "Contas autenticadas possuem dados vinculáveis ao usuário. Histórico e biblioteca de produtos oferecem exclusão individual dos itens salvos, e pedidos relacionados a acesso, correção ou eliminação de outros dados serão tratados conforme a finalidade, as obrigações aplicáveis e as capacidades disponíveis no serviço.",
     ],
   },
   {
-    title: "11. Alterações desta política",
+    title: "12. Alterações desta política",
     paragraphs: [
       "Esta política pode ser atualizada quando o produto ganhar novas funcionalidades, integrações, contas, publicidade ou formas de pagamento. A versão publicada nesta página é a versão vigente.",
     ],
@@ -146,20 +154,10 @@ export default function PrivacidadePage() {
                 Você pode revisar as preferências de anúncios diretamente nas configurações da sua Conta Google.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <a
-                  href="https://adssettings.google.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600"
-                >
+                <a href="https://adssettings.google.com/" target="_blank" rel="noreferrer" className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600">
                   Configurações de anúncios
                 </a>
-                <a
-                  href="https://policies.google.com/technologies/partner-sites?hl=pt-BR"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl border border-line-strong px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600"
-                >
+                <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR" target="_blank" rel="noreferrer" className="rounded-xl border border-line-strong px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">
                   Como o Google usa dados
                 </a>
               </div>
