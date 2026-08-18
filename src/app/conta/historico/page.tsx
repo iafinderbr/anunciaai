@@ -51,36 +51,36 @@ export default async function AccountHistoryPage() {
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
-      <main className="min-h-[70vh] bg-canvas">
+      <main className="min-h-[70vh] bg-[#0d0e11]">
         <section className="container-page py-8 sm:py-10 lg:py-12">
           <div className="mx-auto max-w-6xl">
             <AccountNav active="history" />
 
-            <div className="mt-6 flex flex-col gap-4 rounded-3xl border border-line bg-white p-5 shadow-card sm:flex-row sm:items-center sm:justify-between sm:p-6">
-              <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-600">Histórico</p>
-                <h1 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">Seus resultados salvos</h1>
-                <p className="mt-2 text-sm leading-6 text-muted">
+            <div className="mt-7 flex flex-col gap-5 border-b border-white/[0.09] pb-7 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-2xl border-l-2 border-brand-500 pl-5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Histórico</p>
+                <h1 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">Seus resultados salvos</h1>
+                <p className="mt-2 text-sm leading-6 text-white/42">
                   Só aparece aqui o que você escolheu salvar manualmente. Gerar um anúncio não adiciona conteúdo ao histórico automaticamente.
                 </p>
               </div>
               <div className="flex shrink-0 gap-2">
                 <Link
                   href="/ferramentas"
-                  className="rounded-xl border border-line-strong bg-canvas px-4 py-2.5 text-sm font-semibold text-ink hover:border-brand-300 hover:text-brand-700"
+                  className="border border-white/[0.11] bg-transparent px-4 py-2.5 text-sm font-semibold text-white/62 transition-colors hover:border-brand-400/40 hover:text-white"
                 >
                   Ferramentas
                 </Link>
                 <Link
                   href="/#ferramenta"
-                  className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600"
+                  className="bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                 >
                   Criar novo
                 </Link>
               </div>
             </div>
 
-            <div className="mt-5">
+            <div className="mt-6">
               <SavedHistoryList initialItems={items} />
             </div>
           </div>
