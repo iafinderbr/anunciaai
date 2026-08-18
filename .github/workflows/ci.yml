@@ -39,12 +39,14 @@ jobs:
           cache: npm
 
       - name: Sincronizar lockfile para validação
-        run: |
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          echo 'PACKAGE_LOCK_GZIP_BASE64_BEGIN'
-          gzip -c package-lock.json | base64 -w0
-          echo
-          echo 'PACKAGE_LOCK_GZIP_BASE64_END'
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Publicar lockfile regenerado
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: generated-package-lock
+          path: package-lock.json
+          retention-days: 1
 
       - name: Instalar dependências
         run: npm ci --no-audit --no-fund
