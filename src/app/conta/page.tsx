@@ -75,8 +75,11 @@ export default async function AccountPage() {
 
   const savedCount = historyCount?.total ?? 0;
   const productsCount = productCount?.total ?? 0;
-  const currentPlan = effectivePlan(session.user.plan, session.user.subscriptionStatus);
+  const currentPlan = effectivePlan(session.user.plan, session.user.subscriptionStatus, session.user.proAccessUntil);
   const initial = session.user.name.trim().charAt(0).toUpperCase() || "A";
+  const proSourceLabel = session.user.subscriptionProvider === "stripe-pix"
+    ? "Pix · acesso por 30 dias"
+    : "assinatura ativa";
 
   const metrics = [
     {
@@ -97,8 +100,8 @@ export default async function AccountPage() {
       href: "/conta/plano",
       eyebrow: "Plano atual",
       value: planNames[currentPlan],
-      label: currentPlan === "free" ? "R$ 0 por mês" : "assinatura ativa",
-      action: "Ver plano",
+      label: currentPlan === "free" ? "R$ 0 por mês" : proSourceLabel,
+      action: "Ver modo",
     },
     {
       href: "/ferramentas",
@@ -236,11 +239,11 @@ export default async function AccountPage() {
 
                 <Link href="/conta/plano" className="surface-premium block rounded-[1.4rem] p-5 transition-all hover:-translate-y-0.5 hover:border-brand-200">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-semibold text-ink">Seu plano</p>
+                    <p className="text-sm font-semibold text-ink">Seu modo</p>
                     <span className="rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-bold text-brand-700">{planNames[currentPlan]}</span>
                   </div>
-                  <p className="mt-2 text-xs leading-5 text-muted">O plano Grátis continua em R$ 0. O Pro está preparado como próxima etapa, sem cobrança ativa por enquanto.</p>
-                  <p className="mt-4 text-xs font-semibold text-brand-700">Ver detalhes do plano →</p>
+                  <p className="mt-2 text-xs leading-5 text-muted">O Grátis continua em R$ 0. O Pro pode ser contratado por R$ 19,90/mês no cartão ou por 30 dias via Pix.</p>
+                  <p className="mt-4 text-xs font-semibold text-brand-700">Ver outros modos →</p>
                 </Link>
               </aside>
             </div>
