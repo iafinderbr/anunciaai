@@ -24,10 +24,16 @@ export const auth = betterAuth({
     provider: "pg",
     schema: { user, session, account, verification },
   }),
+  account: {
+    // O Better Auth armazena dados de conta OAuth no banco. Criptografar os
+    // tokens reduz o impacto de uma eventual exposição isolada da base.
+    encryptOAuthTokens: true,
+  },
   socialProviders: {
     google: {
       clientId: googleClientId,
       clientSecret: googleClientSecret,
+      scope: ["openid", "email", "profile"],
     },
   },
   user: {
