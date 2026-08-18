@@ -8,6 +8,16 @@ html {
   scrollbar-color: #34353a #0b0c0e;
 }
 
+/* O shell usa linhas e contraste; sombras grandes ficam restritas a overlays. */
+header.sticky[class*="shadow"] {
+  box-shadow: none !important;
+}
+
+main#topo > section:first-child .interactive-lift,
+main:has(> section#geradores) > section:first-child .interactive-lift {
+  box-shadow: none !important;
+}
+
 /* A antiga regra clara das landings nunca deve voltar a ganhar do tema do gerador. */
 main#topo > section:first-child:has(#ferramenta) #ferramenta form,
 main#topo > section:first-child:has(#ferramenta) #ferramenta .surface-premium,
