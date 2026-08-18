@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/site";
 
 const paths = [
   "",
+  "/ferramentas",
   "/gerador-de-anuncios-mercado-livre",
   "/gerador-de-descricao-de-produto",
   "/gerador-de-titulos-para-produtos",

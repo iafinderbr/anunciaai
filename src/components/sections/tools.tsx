@@ -9,7 +9,7 @@ interface ToolCard {
   featured?: boolean;
 }
 
-const tools: ToolCard[] = [
+export const tools: ToolCard[] = [
   {
     href: "/gerador-de-anuncios-mercado-livre",
     short: "ML",
