@@ -103,7 +103,6 @@ export function SiteFooter() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/26">Conta</p>
               <div className="mt-5 grid gap-4 text-white/56">
                 <Link href="/entrar" className="hover:text-white">Entrar</Link>
-                <Link href="/conta" className="hover:text-white">Minha conta</Link>
               </div>
             </div>
             <div>
