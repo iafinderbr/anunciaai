@@ -18,6 +18,9 @@ function requireText(source, text, message) {
 
 const sitemap = read("src/app/sitemap.ts");
 const globals = read("src/app/globals.css");
+const darkSystem = read("src/app/professional-dark.css");
+const darkPages = read("src/app/professional-dark-pages.css");
+const layout = read("src/app/layout.tsx");
 const guideHub = read("src/app/guias/page.tsx");
 const header = read("src/components/site-header.tsx");
 const toolsHub = read("src/app/ferramentas/page.tsx");
@@ -55,17 +58,48 @@ for (const route of guidePaths) {
 }
 
 requireText(guideHub, 'id="guias-titulo"', "/guias perdeu o identificador principal usado pelo acabamento editorial.");
-requireText(globals, "main#topo > section:first-child:has(#ferramenta)", "CSS perdeu o escopo profissional das landing pages dos geradores.");
-requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial dos guias.");
-requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo visual do hub de guias.");
-requireText(globals, "--color-canvas: #f7f7f5", "O sistema visual perdeu a paleta neutra definida para o produto.");
+requireText(globals, "main#topo > section:first-child:has(#ferramenta)", "CSS perdeu o escopo base das landing pages dos geradores.");
+requireText(globals, "main#ferramenta > article", "CSS perdeu o escopo editorial base dos guias.");
+requireText(globals, "main#topo:has(#guias-titulo)", "CSS perdeu o escopo base do hub de guias.");
+requireText(globals, "--color-canvas: #f7f7f5", "O sistema de superfícies claras/formulários perdeu sua paleta neutra de apoio.");
+
+for (const cssImport of ['./professional-dark.css', './professional-dark-pages.css']) {
+  requireText(layout, cssImport, `Layout deixou de carregar ${cssImport}.`);
+}
+requireText(layout, 'themeColor: "#0c0d0f"', "Tema do navegador precisa acompanhar o shell grafite.");
+
+for (const required of [
+  "--public-black: #0b0c0e",
+  "--public-panel: #131418",
+  "main#topo > section:first-child:has(#ferramenta)",
+  "main#ferramenta > article",
+  "main#topo:has(#guias-titulo)",
+  "main#ferramenta:not(:has(> article))",
+  "background: #101114",
+]) {
+  requireText(darkSystem, required, `Sistema visual escuro incompleto: ${required}.`);
+}
+for (const required of [
+  "main#topo:has(> section#ferramenta)",
+  "main:has(> section#geradores)",
+  "background: #0b0c0e",
+]) {
+  requireText(darkPages, required, `Home/Ferramentas perderam o tratamento grafite: ${required}.`);
+}
+
 requireText(header, 'id="inicio-conteudo"', "O cabeçalho perdeu o alvo acessível do skip link.");
 requireText(header, "ChannelSideDock", "O shell público perdeu a navegação lateral por canal.");
 requireText(header, 'pathname === "/"', "A Home precisa exibir a navegação lateral por canal.");
 requireText(header, 'pathname === "/ferramentas"', "A biblioteca precisa manter a navegação lateral por canal.");
+requireText(header, 'bg-[#0c0d0f]/95', "Cabeçalho público voltou a uma superfície clara/menos corporativa.");
+requireText(header, "bg-brand-500", "Cabeçalho precisa reservar laranja para a ação principal.");
+
 requireText(toolsHub, 'id="geradores"', "/ferramentas perdeu a biblioteca de geradores.");
-requireText(channelDock, "data-channel-side-dock", "A dock lateral precisa manter um marcador estável para auditoria visual.");
-requireText(channelDock, "Abrir gerador", "A dock lateral precisa abrir contexto antes de navegar para o canal.");
+requireText(channelDock, "data-channel-side-dock", "A navegação lateral precisa manter um marcador estável para auditoria visual.");
+requireText(channelDock, 'bottom-0 left-0 top-[72px]', "Canais deixaram de usar a rail lateral integrada ao produto.");
+requireText(channelDock, 'w-[58px]', "Rail lateral perdeu a largura compacta definida.");
+requireText(channelDock, "Abrir gerador", "A rail lateral precisa abrir contexto antes de navegar para o canal.");
+requireText(channelDock, "bg-brand-500", "Canal ativo precisa manter um marcador laranja discreto.");
 requireText(channelShowcase, "ChannelCompactBar", "Telas menores perderam o fallback compacto de canais.");
 
 for (const href of [
@@ -86,5 +120,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, navegação lateral de 6 canais, /guias e /ferramentas preservam o sistema visual compartilhado.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, rail lateral de 6 canais, /guias e /ferramentas preservam o sistema profissional compartilhado.`,
 );
