@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function GlobalErrorState({ reset }: { reset: () => void }) {
   return (
     <main className="min-h-screen bg-[#0d0e11] text-white">
@@ -22,9 +24,9 @@ export default function GlobalErrorState({ reset }: { reset: () => void }) {
             >
               Tentar novamente
             </button>
-            <a href="/" className="border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white/68 transition-colors hover:border-brand-400/40 hover:text-white">
+            <Link href="/" className="border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white/68 transition-colors hover:border-brand-400/40 hover:text-white">
               Voltar ao início
-            </a>
+            </Link>
           </div>
         </section>
       </div>
