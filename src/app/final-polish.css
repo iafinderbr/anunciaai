@@ -37,9 +37,18 @@ main:has(> section#geradores) :is(a, button)[class*="rounded-[8px]"] {
   border-radius: 4px !important;
 }
 
-main#topo :is(.rounded-[12px]),
-main:has(> section#geradores) :is(.rounded-[12px]) {
+main#topo [class*="rounded-[10px]"],
+main:has(> section#geradores) [class*="rounded-[10px]"] {
+  border-radius: 5px !important;
+}
+
+main#topo [class*="rounded-[12px]"],
+main:has(> section#geradores) [class*="rounded-[12px]"] {
   border-radius: 6px !important;
+}
+
+main:has(> section#geradores) #geradores [class*="rounded-[8px]"] {
+  border-radius: 4px !important;
 }
 
 /* Conteúdo abaixo dos geradores: menos cards, menos branco e menos raio. */
