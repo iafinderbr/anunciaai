@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/sections/pricing";
+import { auth } from "@/lib/auth";
 import { SITE_URL } from "@/lib/site";
 
 const PATH = "/entrar";
 const TITLE = "Entrar na sua conta";
-const DESCRIPTION =
-  "Área de acesso do AnunciaAI. O login com Google será liberado junto dos recursos de conta, Pro e Premium.";
+const DESCRIPTION = "Entre no AnunciaAI com Google para acessar sua área de conta e os recursos vinculados ao seu perfil.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -19,19 +22,22 @@ export const metadata: Metadata = {
 const accountBenefits = [
   {
     title: "Salvar seu trabalho",
-    description: "A conta vai permitir guardar produtos, preferências e materiais que você quiser manter para depois.",
+    description: "A conta será a base para guardar produtos, preferências e materiais que você decidir manter para depois.",
   },
   {
     title: "Histórico organizado",
-    description: "Planejamos uma área para reencontrar gerações importantes sem depender de copiar tudo manualmente.",
+    description: "Estamos preparando uma área para reencontrar trabalhos importantes sem depender de copiar tudo manualmente.",
   },
   {
     title: "Planos Pro e Premium",
-    description: "Quando os planos pagos forem liberados, a conta será usada para reconhecer e liberar os recursos contratados.",
+    description: "Quando os planos pagos forem liberados, sua conta será usada para reconhecer e liberar os recursos contratados.",
   },
 ];
 
-export default function SignInPage() {
+export default async function SignInPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (session) redirect("/conta");
+
   return (
     <>
       <SiteHeader ctaHref="/#ferramenta" />
@@ -46,49 +52,26 @@ export default function SignInPage() {
               </div>
 
               <h1 className="mt-5 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                Seu espaço no AnunciaAI está chegando
+                Entre com sua conta Google
               </h1>
               <p className="mt-4 text-[15px] leading-relaxed text-muted">
-                Estamos preparando o acesso com Google antes de ativar histórico, recursos de conta e os planos pagos.
-                O gerador gratuito continua disponível sem cadastro.
+                O login é opcional para continuar usando as ferramentas gratuitas. Ele serve para identificar sua área de
+                conta e, depois, liberar histórico, itens salvos e planos avançados.
               </p>
 
               <div className="mt-8 rounded-2xl border border-line bg-canvas p-4">
-                <button
-                  type="button"
-                  disabled
-                  className="flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border border-line-strong bg-white px-4 py-3.5 text-sm font-semibold text-ink opacity-70"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="grid size-6 place-items-center rounded-full border border-line-strong text-xs font-bold"
-                  >
-                    G
-                  </span>
-                  Continuar com Google
-                  <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-brand-700">
-                    Em breve
-                  </span>
-                </button>
+                <GoogleSignInButton />
                 <p className="mt-3 text-center text-xs leading-relaxed text-muted">
-                  Ainda não pedimos email, senha nem dados de pagamento nesta tela.
+                  O AnunciaAI não recebe sua senha do Google e não pede dados de pagamento para entrar.
                 </p>
               </div>
 
-              <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                <Link
-                  href="/#ferramenta"
-                  className="inline-flex items-center justify-center rounded-xl bg-ink px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-                >
-                  Continuar usando grátis
-                </Link>
-                <Link
-                  href="/conta"
-                  className="inline-flex items-center justify-center rounded-xl border border-line-strong bg-white px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-brand-500 hover:text-brand-700"
-                >
-                  Ver estrutura da conta
-                </Link>
-              </div>
+              <Link
+                href="/#ferramenta"
+                className="mt-5 inline-flex items-center justify-center rounded-xl bg-ink px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              >
+                Continuar usando grátis sem conta
+              </Link>
 
               <p className="mt-5 text-center text-xs text-muted">
                 Nenhum plano pago está sendo cobrado neste momento.
@@ -98,11 +81,11 @@ export default function SignInPage() {
             <div className="border-t border-line bg-ink p-6 text-white sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-300">O que a conta vai liberar</p>
               <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                Uma base pronta para o AnunciaAI crescer sem atrapalhar quem usa grátis
+                Uma área pessoal sem tirar o acesso de quem prefere usar grátis
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-white/65">
-                O acesso será opcional para as ferramentas gratuitas. A conta passa a fazer sentido quando você quiser
-                salvar trabalho, manter preferências ou usar recursos avançados.
+                Entrar não muda o acesso às ferramentas gratuitas. A conta passa a fazer sentido quando você quiser manter
+                dados entre acessos ou usar recursos vinculados a um plano.
               </p>
 
               <div className="mt-8 space-y-4">
@@ -125,10 +108,9 @@ export default function SignInPage() {
               </div>
 
               <div className="mt-8 rounded-2xl border border-brand-400/30 bg-brand-500/10 p-5">
-                <p className="text-sm font-semibold text-white">Primeiro segurança, depois cobrança.</p>
+                <p className="text-sm font-semibold text-white">Login primeiro, cobrança depois.</p>
                 <p className="mt-2 text-xs leading-relaxed text-white/65">
-                  O login só será ativado quando autenticação, sessão e proteção de conta estiverem testadas. Depois disso,
-                  conectamos Pro e Premium ao pagamento.
+                  Pro e Premium continuam em preparação. O login não inicia assinatura nem gera cobrança automática.
                 </p>
               </div>
             </div>

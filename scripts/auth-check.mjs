@@ -12,13 +12,23 @@ function requireText(source, text, message) {
   if (!source.includes(text)) failures.push(message);
 }
 
+const packageJson = read("package.json");
 const envExample = read(".env.example");
 const schema = read("src/db/schema.ts");
 const ensureSchema = read("src/db/ensure-schema.ts");
+const authServer = read("src/lib/auth.ts");
+const authClient = read("src/lib/auth-client.ts");
+const authRoute = read("src/app/api/auth/[...all]/route.ts");
 const signInPage = read("src/app/entrar/page.tsx");
 const accountPage = read("src/app/conta/page.tsx");
+const googleButton = read("src/components/auth/google-sign-in-button.tsx");
+const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const plans = read("src/lib/plans.ts");
 const pricing = read("src/components/sections/pricing.tsx");
+
+for (const dependency of ['"better-auth": "1.6.25"', '"@better-auth/drizzle-adapter": "1.6.25"']) {
+  requireText(packageJson, dependency, `Dependência de autenticação ausente: ${dependency}.`);
+}
 
 for (const variable of [
   "BETTER_AUTH_SECRET=",
@@ -49,6 +59,23 @@ for (const table of ['create table if not exists "user"', 'create table if not e
   requireText(ensureSchema, table, `Criação idempotente ausente: ${table}.`);
 }
 
+for (const required of [
+  'drizzleAdapter(db,',
+  'provider: "pg"',
+  'baseURL: process.env.BETTER_AUTH_URL || SITE_URL',
+  'encryptOAuthTokens: true',
+  'clientId: googleClientId',
+  'clientSecret: googleClientSecret',
+  'scope: ["openid", "email", "profile"]',
+  'input: false',
+]) {
+  requireText(authServer, required, `Configuração do Better Auth incompleta: ${required}.`);
+}
+
+requireText(authClient, 'createAuthClient()', "Cliente React do Better Auth não está configurado.");
+requireText(authRoute, 'toNextJsHandler(auth)', "Handler do Better Auth não está montado no App Router.");
+requireText(authRoute, 'await ensureDatabaseSchema()', "Rota de auth precisa garantir o schema antes do acesso ao banco.");
+
 for (const [name, source] of [
   ["/entrar", signInPage],
   ["/conta", accountPage],
@@ -58,8 +85,15 @@ for (const [name, source] of [
   }
 }
 
-requireText(signInPage, "Continuar com Google", "Tela de login perdeu o CTA do Google.");
-requireText(signInPage, "disabled", "CTA do Google não pode ser ativado antes da integração real.");
+requireText(signInPage, "GoogleSignInButton", "Tela de login perdeu o CTA real do Google.");
+requireText(signInPage, 'auth.api.getSession', "Tela de login não reconhece sessão existente.");
+requireText(signInPage, 'redirect("/conta")', "Usuário autenticado não é redirecionado para /conta.");
+requireText(accountPage, 'auth.api.getSession', "Área /conta não valida sessão no servidor.");
+requireText(accountPage, 'redirect("/entrar")', "Área /conta não bloqueia visitante sem sessão.");
+requireText(accountPage, "effectivePlan", "Área /conta não calcula o plano efetivo no servidor.");
+requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
+requireText(googleButton, 'callbackURL: "/conta"', "Login Google não retorna para /conta.");
+requireText(signOutButton, "authClient.signOut", "Logout da conta não está implementado.");
 requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
 requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
 
@@ -73,4 +107,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: schema, rotas utilitárias, variáveis, plano efetivo e bloqueio de cobrança prematura validados.");
+console.log("Contas OK: Google OAuth, tokens criptografados, sessão protegida, logout, schema, variáveis e controle de plano validados.");
