@@ -35,7 +35,7 @@ const plans: Plan[] = [
     name: "Pro",
     price: PRO_PLANNED_PRICE_LABEL,
     period: "/mês",
-    badge: "Planejado",
+    badge: "Preço planejado",
     summary: "Para quem cria conteúdo com frequência e quer mais espaço, velocidade e reutilização no fluxo de trabalho.",
     features: PRO_PLANNED_FEATURES,
     cta: "Acompanhar lançamento",
@@ -124,7 +124,7 @@ export function PricingSection() {
                     {plan.cta}
                   </Link>
                 )}
-                {plan.plannedPrice ? <p className="mt-3 text-center text-[11px] leading-5 text-muted">Ainda não é possível contratar.</p> : null}
+                {plan.plannedPrice ? <p className="mt-3 text-center text-[11px] leading-5 text-muted">Preço planejado. Ainda não é possível contratar.</p> : null}
               </div>
             </article>
           ))}
