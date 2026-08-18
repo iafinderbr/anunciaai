@@ -24,7 +24,11 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   useEffect(() => {
     if (sessionPending || !session) return;
 
-    if (pathname === "/" && window.location.hash !== "#ferramenta") {
+    if (
+      pathname === "/" &&
+      window.location.hash !== "#ferramenta" &&
+      window.location.hash !== "#topo"
+    ) {
       router.replace("/conta");
       return;
     }
@@ -40,7 +44,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const productsHref = session ? "/conta/produtos" : "/entrar?voltar=/conta/produtos";
   const modesHref = session ? "/conta/plano" : "/entrar?voltar=/conta/plano";
   const toolsHref = session ? "/conta/ferramentas" : "/ferramentas";
-  const homeHref = session ? "/conta" : "/";
+  const homeHref = session ? "/#topo" : "/";
   const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
   const navItem = "group relative inline-flex min-h-11 items-center px-1 text-[13px] font-medium text-white/58 transition-colors hover:text-white";
 
