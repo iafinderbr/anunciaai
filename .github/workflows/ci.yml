@@ -18,6 +18,13 @@ jobs:
     name: Segurança, Produto, SEO, Acessibilidade, Lint, TypeScript e Build
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    env:
+      # Valores deliberadamente fictícios para validar a integração sem expor
+      # as credenciais reais da Vercel no GitHub Actions.
+      BETTER_AUTH_SECRET: ci-only-better-auth-secret-not-used-in-production-2026
+      BETTER_AUTH_URL: http://127.0.0.1:3000
+      GOOGLE_CLIENT_ID: ci-client.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: ci-google-client-secret-not-real
 
     steps:
       - name: Baixar repositório
