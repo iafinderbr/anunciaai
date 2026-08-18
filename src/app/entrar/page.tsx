@@ -139,15 +139,9 @@ export default async function SignInPage({
                     ))}
                   </div>
 
-                  <div className="mt-7 border border-white/[0.10] bg-white/[0.025] p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-xs font-semibold text-white">Modo Grátis</p>
-                      <span className="text-sm font-semibold text-brand-300">R$ 0</span>
-                    </div>
-                    <p className="mt-2 text-xs leading-5 text-white/42">
-                      O Pro é contratado separadamente dentro da conta. O login por si só nunca ativa cobrança.
-                    </p>
-                  </div>
+                  <p className="mt-6 border-l-2 border-brand-500/70 pl-4 text-xs leading-5 text-white/36">
+                    O login libera o modo Grátis. Pro e outros modos só são contratados por uma ação explícita dentro da conta.
+                  </p>
                 </div>
               </aside>
             </div>
