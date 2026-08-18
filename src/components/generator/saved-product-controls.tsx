@@ -121,10 +121,10 @@ export function SavedProductControls({
 
   if (!session) {
     return (
-      <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-canvas px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-5 flex flex-col gap-3 rounded-xl border border-line bg-canvas/75 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-semibold text-ink">Quer reutilizar este produto depois?</p>
-          <p className="mt-0.5 text-xs text-muted">Entre com Google para criar sua biblioteca privada de produtos.</p>
+          <p className="text-sm font-semibold text-ink">Já tem produtos que usa sempre?</p>
+          <p className="mt-0.5 text-xs leading-5 text-muted">Entre com Google para guardar dados e preencher futuros anúncios mais rápido.</p>
         </div>
         <Link href="/entrar" className="shrink-0 text-sm font-semibold text-brand-700 hover:text-brand-800">Entrar →</Link>
       </div>
@@ -132,48 +132,48 @@ export function SavedProductControls({
   }
 
   return (
-    <div className="mt-5 rounded-2xl border border-brand-200 bg-brand-50/45 p-4">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div className="min-w-0 flex-1">
-          <label htmlFor="saved-product" className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-700">
-            Produtos salvos
-          </label>
-          <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-            <select
-              id="saved-product"
-              value={selectedId}
-              onChange={(event) => setSelectedId(event.target.value)}
-              disabled={loading || items.length === 0}
-              className="field min-w-0 flex-1 py-2.5 text-sm"
-            >
-              <option value="">{loading ? "Carregando…" : items.length ? "Escolha um produto" : "Nenhum produto salvo"}</option>
-              {items.map((item) => <option key={item.id} value={item.id}>{item.productName}</option>)}
-            </select>
-            <button
-              type="button"
-              onClick={applySelected}
-              disabled={!selectedId}
-              className="rounded-xl border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-400 hover:text-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Usar produto
-            </button>
+    <div className="mt-5 rounded-xl border border-line bg-canvas/75 p-4">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-brand-600">Biblioteca</p>
+            <p className="mt-1 text-sm font-semibold text-ink">Reutilize um produto salvo</p>
           </div>
+          <Link href="/conta/produtos" className="text-xs font-semibold text-brand-700 hover:text-brand-800">Ver biblioteca →</Link>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <select
+            id="saved-product"
+            aria-label="Produto salvo"
+            value={selectedId}
+            onChange={(event) => setSelectedId(event.target.value)}
+            disabled={loading || items.length === 0}
+            className="field min-w-0 flex-1 py-2.5 text-sm"
+          >
+            <option value="">{loading ? "Carregando…" : items.length ? "Escolha um produto salvo" : "Nenhum produto salvo"}</option>
+            {items.map((item) => <option key={item.id} value={item.id}>{item.productName}</option>)}
+          </select>
+          <button
+            type="button"
+            onClick={applySelected}
+            disabled={!selectedId}
+            className="rounded-lg border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Usar produto
+          </button>
           <button
             type="button"
             onClick={() => void saveCurrent()}
             disabled={saving}
-            className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:cursor-wait disabled:opacity-60"
+            className="rounded-lg border border-line-strong bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700 disabled:cursor-wait disabled:opacity-60"
           >
             {saving ? "Salvando…" : "Salvar produto atual"}
           </button>
-          <Link href="/conta/produtos" className="rounded-xl px-2 py-2.5 text-sm font-semibold text-brand-700 hover:text-brand-800">Biblioteca →</Link>
         </div>
       </div>
       {message ? <p className="mt-3 text-xs font-medium text-ink-soft" role="status">{message}</p> : null}
-      <p className="mt-2 text-[11px] leading-5 text-muted">Nada é salvo automaticamente: seus dados só entram na biblioteca quando você usa “Salvar produto atual”.</p>
+      <p className="mt-2 text-[11px] leading-5 text-muted">Nada é salvo automaticamente. A biblioteca só recebe dados quando você escolhe salvar.</p>
     </div>
   );
 }
