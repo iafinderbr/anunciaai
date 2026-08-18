@@ -1,14 +1,16 @@
 # Contas, Pro e Premium
 
-Este documento registra a direção de produto para a próxima fase do AnunciaAI. O objetivo é evitar decisões duplicadas e manter a versão gratuita simples enquanto login e cobrança são adicionados com segurança.
+Este documento registra o estado atual e a direção de produto da área de contas do AnunciaAI. A ideia é manter a versão gratuita simples, preservar a privacidade por padrão e só ativar cobrança quando toda a autorização estiver pronta.
 
 ## Princípios
 
 - O uso básico continua disponível sem cadastro.
 - Login é opcional para o plano Grátis.
+- Conteúdo de produto não deve ser armazenado apenas porque alguém gerou um anúncio.
+- Recursos pessoais que armazenam conteúdo devem depender de uma ação explícita do usuário.
 - Pro e Premium exigirão uma conta autenticada.
-- Nenhuma cobrança deve ser ativada antes de autenticação, sessão, autorização e webhooks de pagamento estarem testados.
-- O AnunciaAI não deve armazenar número de cartão, CVV ou outros dados completos de pagamento.
+- Nenhuma cobrança deve ser ativada antes de autenticação, autorização e webhooks de pagamento estarem testados.
+- O AnunciaAI não deve armazenar número completo de cartão, CVV ou outros dados completos de pagamento.
 - Preços pagos só devem aparecer como valores contratáveis quando o checkout real estiver pronto.
 
 ## Planos
@@ -18,8 +20,10 @@ Este documento registra a direção de produto para a próxima fase do AnunciaAI
 Disponível agora.
 
 - Geradores atuais sem cadastro.
-- Títulos e descrições.
-- Benefícios e ficha técnica.
+- Login opcional com Google.
+- Área Minha conta.
+- Histórico opt-in de resultados salvos.
+- Títulos, descrições, benefícios e ficha técnica.
 - Ferramentas para diferentes canais.
 
 ### Pro
@@ -28,8 +32,8 @@ Em preparação.
 
 Direção planejada:
 
-- Conta e histórico de trabalho.
-- Salvar produtos e preferências.
+- Mais recursos de histórico e organização.
+- Salvar produtos e preferências reutilizáveis.
 - Mais variações e atalhos.
 - Recursos de produtividade.
 
@@ -44,120 +48,138 @@ Direção planejada:
 - Padrões e voz da marca.
 - Recursos avançados para catálogos.
 
-Os itens acima são direção de produto, não promessa de disponibilidade imediata.
+Os itens planejados são direção de produto, não promessa de disponibilidade imediata.
 
-## Autenticação
+## Autenticação — ativa em produção
 
-### Base técnica escolhida
+A implementação atual usa **Better Auth + Google OAuth + PostgreSQL/Drizzle**.
 
-Direção escolhida para a implementação: **Better Auth + Google OAuth + PostgreSQL/Drizzle já existentes no projeto**.
+Fluxo em produção:
 
-A integração atual do Better Auth com Drizzle usa o adapter oficial `@better-auth/drizzle-adapter`. O handler do Next.js ficará em `/api/auth/[...all]` quando as dependências forem instaladas e as credenciais OAuth estiverem disponíveis.
+1. usuário abre `/entrar`;
+2. escolhe “Continuar com Google”;
+3. o Google autentica a identidade;
+4. o callback retorna para `/api/auth/callback/google`;
+5. Better Auth cria/recupera usuário e sessão;
+6. `/conta` valida a sessão no servidor antes de exibir dados pessoais.
 
-Motivos principais:
+Configuração atual:
 
-- integração com Next.js App Router;
-- compatibilidade com Next.js 16;
-- login social com Google;
-- adapter para Drizzle/PostgreSQL;
-- sessão pode ser validada no servidor antes de liberar páginas ou ações protegidas;
-- evita criar um sistema próprio de senha.
+- handler: `/api/auth/[...all]`;
+- callback Google: `https://anunciaai.vercel.app/api/auth/callback/google`;
+- cliente OAuth configurado no Google Auth Platform;
+- credenciais mantidas somente nas variáveis seguras da Vercel;
+- tokens OAuth armazenados pela camada de autenticação com criptografia habilitada;
+- escopos Google limitados a `openid`, `email` e `profile`;
+- logout disponível na área de conta;
+- cabeçalho acompanha a sessão e mostra “Minha conta” para usuário conectado.
 
-A dependência ainda não deve ser ligada à produção até termos o lockfile atualizado e as credenciais OAuth configuradas. O site continua funcionando normalmente sem ela.
-
-Callback planejado de produção:
-
-`https://anunciaai.vercel.app/api/auth/callback/google`
-
-Variáveis futuras devem existir somente no ambiente seguro da Vercel/desenvolvimento local, nunca no Git:
+Variáveis privadas necessárias:
 
 - `BETTER_AUTH_SECRET`
 - `BETTER_AUTH_URL`
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
+- `DATABASE_URL`
 
-Antes da ativação em produção, a implementação precisa ter:
+Nenhuma dessas variáveis privadas deve receber prefixo `NEXT_PUBLIC_`.
 
-1. OAuth configurado com redirect URI de produção.
-2. Segredo de autenticação somente em variáveis de ambiente.
-3. Sessões validadas no servidor para qualquer rota ou ação protegida.
-4. Persistência de usuário e sessão no banco.
-5. Logout e expiração de sessão testados.
-6. Conta protegida contra associação indevida de identidades.
-7. Política de privacidade atualizada com os dados realmente coletados.
+## Estrutura de banco
 
-As rotas `/entrar` e `/conta` já existem como interfaces de preparação. Ambas são `noindex` e ficam fora do sitemap editorial. `/conta` ainda não é uma área autenticada: a proteção real será ativada junto do backend de autenticação.
-
-## Estrutura de banco já preparada
-
-O schema Drizzle e a criação idempotente do banco já possuem a base para:
+A base de autenticação possui:
 
 - `user`;
 - `session`;
 - `account`;
 - `verification`.
 
-O usuário também já possui campos internos para plano e estado da assinatura. Nenhum desses campos deve ser controlado livremente pelo navegador.
+O usuário possui campos internos para:
+
+- plano (`free`, `pro`, `premium`);
+- status da assinatura;
+- provedor de assinatura;
+- identificador externo da assinatura.
+
+Esses campos são controlados no servidor e não podem ser escolhidos livremente pelo navegador.
+
+## Histórico salvo — primeira funcionalidade pessoal
+
+O histórico foi desenhado como **opt-in**.
+
+O contador público de gerações continua separado e recebe somente canal e horário. Nome do produto, características e texto gerado não passam a ser armazenados automaticamente por causa do login.
+
+Quando um usuário autenticado clica em **Salvar no histórico**, o servidor armazena na tabela `saved_generation`:
+
+- usuário proprietário;
+- nome do produto;
+- canal;
+- título;
+- conteúdo completo salvo;
+- data do salvamento.
+
+Proteções:
+
+- sessão obrigatória;
+- origem da requisição validada;
+- JSON e tamanho limitados;
+- campos inesperados rejeitados;
+- canal validado;
+- limite de 100 itens por conta;
+- limite de mutações por usuário;
+- exclusão sempre combina `id` do item com `userId`, impedindo apagar item de outra conta;
+- histórico e API usam `no-store`/noindex conforme o tipo de rota.
+
+O usuário pode copiar ou excluir individualmente os itens em `/conta/historico`.
 
 ## Modelo de acesso
 
 O plano nunca deve ser confiado apenas ao navegador. Recursos pagos precisam ser autorizados pelo servidor.
 
-A base de autorização já está centralizada em `src/lib/plans.ts`:
+A autorização está centralizada em `src/lib/plans.ts`:
 
 - planos possíveis: `free`, `pro`, `premium`;
 - recursos são associados ao plano no servidor;
 - Pro/Premium só viram plano efetivo quando `subscriptionStatus` está `active`;
 - qualquer estado pago inválido, cancelado ou inativo volta para `free` na autorização.
 
-Estado mínimo esperado para um usuário:
+## Pagamentos — ainda não ativos
 
-- identificador interno;
-- nome;
-- email verificado pelo provedor de autenticação;
-- imagem opcional;
-- plano atual: `free`, `pro` ou `premium`;
-- status da assinatura;
-- identificador externo da assinatura quando existir;
-- datas de criação e atualização.
-
-## Pagamentos
-
-A cobrança recorrente será conectada apenas depois do login estar estável.
+A cobrança recorrente só será conectada depois que a área de conta estiver estável.
 
 Fluxo esperado:
 
 1. usuário autenticado escolhe um plano;
-2. backend cria/inicia o checkout no provedor de pagamento;
+2. backend cria/inicia o checkout no provedor;
 3. usuário conclui o pagamento no ambiente do provedor;
 4. webhook assinado confirma o estado da assinatura;
 5. backend atualiza o plano do usuário;
 6. recursos pagos são liberados pelo servidor;
 7. cancelamento, falha ou expiração atualizam o acesso automaticamente.
 
-Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de pagamento. O webhook/estado verificado no servidor deve ser a fonte de verdade.
+Nunca liberar Pro/Premium somente porque o navegador retornou de uma página de pagamento. O webhook e o estado verificado no servidor devem ser a fonte de verdade.
 
-## Ordem de implementação
+## Estado da implementação
 
-1. Interface de login e posicionamento dos planos. **Concluído.**
-2. Escolha da camada de autenticação. **Concluído: Better Auth + Google OAuth.**
-3. Base do schema de usuário, sessão, conta OAuth e verificação. **Concluído.**
-4. Modelo inicial de plano e autorização no servidor. **Concluído.**
-5. Shell visual de `/conta`. **Concluído; proteção por sessão ainda pendente.**
-6. Instalar `better-auth` + adapter Drizzle e atualizar o lockfile. **Pendente.**
-7. Criar credenciais OAuth do Google e adicioná-las ao ambiente seguro. **Pendente; exige acesso à conta Google Cloud.**
-8. Criar handler `/api/auth/[...all]`, cliente de autenticação e login real com Google.
-9. Proteger `/conta` com sessão validada no servidor e implementar logout.
-10. Atualizar Política de Privacidade com os dados realmente coletados pela conta.
-11. Integrar o provedor de pagamento em modo de teste.
-12. Implementar webhooks e sincronização de assinatura.
-13. Testar acesso, cancelamento, falha e renovação.
-14. Publicar preços e ativar a cobrança real.
+1. Interface Grátis / Pro / Premium: **concluída**.
+2. Better Auth + Google OAuth: **concluído**.
+3. Credenciais OAuth e variáveis seguras na Vercel: **concluído**.
+4. Login real com Google: **concluído e testado em produção**.
+5. `/conta` protegida por sessão: **concluído**.
+6. Logout: **concluído**.
+7. Navegação autenticada no cabeçalho: **concluída**.
+8. Política de Privacidade/Termos para contas: **concluídos**.
+9. Histórico opt-in: **em implantação**.
+10. Produtos salvos: **planejado**.
+11. Checkout em modo de teste: **próxima fase de monetização**.
+12. Webhooks e sincronização de assinatura: **pendente**.
+13. Testes de cancelamento, falha e renovação: **pendentes**.
+14. Preços contratáveis e cobrança real: **pendentes**.
 
 ## Regras para o CI
 
-- `/entrar` e `/conta` devem continuar `noindex` enquanto forem rotas utilitárias.
+- `/entrar`, `/conta` e rotas pessoais devem permanecer fora do sitemap e `noindex`.
 - A interface não pode mostrar “Assinar agora” antes da cobrança estar configurada.
-- Rotas protegidas futuras devem validar sessão no servidor.
+- Rotas protegidas devem validar sessão no servidor.
+- Ações que alteram dados pessoais devem validar propriedade e origem.
 - Segredos de OAuth e pagamento nunca podem ser versionados nem usar prefixo `NEXT_PUBLIC_`.
-- O teste `auth:check` deve continuar validando a base de contas durante o `typecheck`.
+- O teste `auth:check` deve continuar validando contas, histórico, privacidade e autorização durante o `typecheck`.

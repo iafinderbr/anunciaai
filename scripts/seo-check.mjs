@@ -17,7 +17,7 @@ const FOOTER_FILE = path.join(ROOT, "src", "components", "sections", "pricing.ts
 
 // Rotas de conta/login são úteis para pessoas, mas não devem disputar espaço no
 // índice de busca nem entrar no sitemap editorial.
-const NON_INDEXABLE_ROUTES = new Set(["/entrar", "/conta"]);
+const NON_INDEXABLE_ROUTES = new Set(["/entrar", "/conta", "/conta/historico"]);
 
 const failures = [];
 const warnings = [];

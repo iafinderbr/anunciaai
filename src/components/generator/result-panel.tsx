@@ -1,7 +1,9 @@
 "use client";
 
-import type { ReactNode } from "react";
+import Link from "next/link";
+import { useState, type ReactNode } from "react";
 import { CopyButton } from "@/components/copy-button";
+import { authClient } from "@/lib/auth-client";
 import type { Channel, GeneratedAd, GeneratorInput } from "@/lib/types";
 
 // Metas editoriais usadas pelo próprio gerador para manter títulos legíveis.
@@ -70,6 +72,57 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
   const previewTarget = TITLE_PREVIEW_TARGET[input.channel];
   const titleLength = result.title.length;
   const withinTarget = titleLength <= previewTarget;
+  const fullText = buildFullText(result);
+  const { data: session } = authClient.useSession();
+  const [savingContent, setSavingContent] = useState<string | null>(null);
+  const [savedContent, setSavedContent] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<{ key: string; message: string } | null>(null);
+  const isSaving = savingContent === fullText;
+  const isSaved = savedContent === fullText;
+  const visibleError = saveError?.key === fullText ? saveError.message : null;
+
+  async function handleSave() {
+    if (!session || isSaving || isSaved) return;
+
+    const contentKey = fullText;
+    setSavingContent(contentKey);
+    setSaveError(null);
+
+    try {
+      const response = await fetch("/api/account/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productName: input.productName,
+          channel: input.channel,
+          title: result.title,
+          content: contentKey,
+        }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (response.ok) {
+        setSavedContent(contentKey);
+        return;
+      }
+
+      setSaveError({
+        key: contentKey,
+        message:
+          payload?.error === "history_limit"
+            ? "Seu histórico chegou ao limite de 100 itens. Apague um item para salvar outro."
+            : response.status === 401
+              ? "Sua sessão expirou. Entre novamente para salvar."
+              : response.status === 429
+                ? "Muitas alterações em pouco tempo. Aguarde um minuto e tente novamente."
+                : "Não foi possível salvar agora. Tente novamente.",
+      });
+    } catch {
+      setSaveError({ key: contentKey, message: "Não foi possível salvar agora. Tente novamente." });
+    } finally {
+      setSavingContent((current) => (current === contentKey ? null : current));
+    }
+  }
 
   return (
     <div className="animate-fade-up space-y-4">
@@ -86,10 +139,37 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
               <strong className="font-medium text-ink-soft">{result.toneLabel.toLowerCase()}</strong>. Revise as informações e copie seção por seção ou tudo de uma vez.
             </p>
           </div>
-          <CopyButton value={buildFullText(result)} label="Copiar tudo" size="md" variant="solid" />
+          <CopyButton value={fullText} label="Copiar tudo" size="md" variant="solid" />
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
+          {session ? (
+            isSaved ? (
+              <Link
+                href="/conta/historico"
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300"
+              >
+                ✓ Salvo no histórico
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSave}
+                disabled={isSaving}
+                className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400 disabled:cursor-wait disabled:opacity-70"
+              >
+                {isSaving ? "Salvando..." : "Salvar no histórico"}
+              </button>
+            )
+          ) : (
+            <Link
+              href="/entrar"
+              className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400"
+            >
+              Entrar para salvar
+            </Link>
+          )}
+
           <button
             type="button"
             onClick={onRegenerate}
@@ -113,6 +193,20 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
             Editar informações
           </button>
         </div>
+
+        {isSaved ? (
+          <p role="status" className="mt-3 text-xs font-medium text-emerald-700">
+            Resultado salvo na sua conta.
+          </p>
+        ) : visibleError ? (
+          <p role="alert" className="mt-3 text-xs font-medium text-rose-700">
+            {visibleError}
+          </p>
+        ) : null}
+
+        <p className="mt-3 text-xs leading-5 text-muted">
+          Salvar é opcional. O conteúdo do produto só é enviado ao servidor quando você usa este botão estando conectado.
+        </p>
       </div>
 
       <Section

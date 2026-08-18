@@ -19,11 +19,15 @@ const ensureSchema = read("src/db/ensure-schema.ts");
 const authServer = read("src/lib/auth.ts");
 const authClient = read("src/lib/auth-client.ts");
 const authRoute = read("src/app/api/auth/[...all]/route.ts");
+const historyApi = read("src/app/api/account/history/route.ts");
 const signInPage = read("src/app/entrar/page.tsx");
 const accountPage = read("src/app/conta/page.tsx");
+const historyPage = read("src/app/conta/historico/page.tsx");
 const googleButton = read("src/components/auth/google-sign-in-button.tsx");
 const signOutButton = read("src/components/auth/sign-out-button.tsx");
 const siteHeader = read("src/components/site-header.tsx");
+const resultPanel = read("src/components/generator/result-panel.tsx");
+const privacyPage = read("src/app/privacidade/page.tsx");
 const plans = read("src/lib/plans.ts");
 const pricing = read("src/components/sections/pricing.tsx");
 
@@ -48,18 +52,31 @@ for (const forbidden of [
   if (envExample.includes(forbidden)) failures.push(`Segredo não pode ser exposto ao cliente: ${forbidden}.`);
 }
 
-for (const table of ['pgTable(\n  "user"', 'pgTable(\n  "session"', 'pgTable(\n  "account"', 'pgTable(\n  "verification"']) {
-  requireText(schema, table, `Schema de autenticação incompleto: ${table}.`);
+for (const table of [
+  'pgTable(\n  "user"',
+  'pgTable(\n  "session"',
+  'pgTable(\n  "account"',
+  'pgTable(\n  "verification"',
+  'pgTable(\n  "saved_generation"',
+]) {
+  requireText(schema, table, `Schema de autenticação/conta incompleto: ${table}.`);
 }
 
 for (const field of ["plan", "subscriptionStatus", "subscriptionProvider", "externalSubscriptionId"]) {
   requireText(schema, field, `Campo de assinatura ausente no usuário: ${field}.`);
 }
 
-for (const table of ['create table if not exists "user"', 'create table if not exists "session"', 'create table if not exists "account"', "create table if not exists verification"]) {
+for (const table of [
+  'create table if not exists "user"',
+  'create table if not exists "session"',
+  'create table if not exists "account"',
+  "create table if not exists verification",
+  "create table if not exists saved_generation",
+]) {
   requireText(ensureSchema, table, `Criação idempotente ausente: ${table}.`);
 }
 
+requireText(authServer, 'from "better-auth/minimal"', "Servidor deve continuar usando a entrada minimal do Better Auth.");
 for (const required of [
   'drizzleAdapter(db,',
   'provider: "pg"',
@@ -80,6 +97,7 @@ requireText(authRoute, 'await ensureDatabaseSchema()', "Rota de auth precisa gar
 for (const [name, source] of [
   ["/entrar", signInPage],
   ["/conta", accountPage],
+  ["/conta/historico", historyPage],
 ]) {
   if (!/robots\s*:\s*\{[^}]*index\s*:\s*false[^}]*follow\s*:\s*false/s.test(source)) {
     failures.push(`${name} deve continuar noindex/nofollow.`);
@@ -92,12 +110,31 @@ requireText(signInPage, 'redirect("/conta")', "Usuário autenticado não é redi
 requireText(accountPage, 'auth.api.getSession', "Área /conta não valida sessão no servidor.");
 requireText(accountPage, 'redirect("/entrar")', "Área /conta não bloqueia visitante sem sessão.");
 requireText(accountPage, "effectivePlan", "Área /conta não calcula o plano efetivo no servidor.");
+requireText(accountPage, 'href="/conta/historico"', "Minha conta não oferece acesso ao histórico.");
+requireText(historyPage, 'auth.api.getSession', "Histórico não valida sessão no servidor.");
+requireText(historyPage, 'redirect("/entrar")', "Histórico não bloqueia visitante sem sessão.");
 requireText(googleButton, 'provider: "google"', "Botão de login não usa o provider Google.");
 requireText(googleButton, 'callbackURL: "/conta"', "Login Google não retorna para /conta.");
 requireText(signOutButton, "authClient.signOut", "Logout da conta não está implementado.");
 requireText(siteHeader, "authClient.useSession()", "Cabeçalho não acompanha a sessão autenticada.");
 requireText(siteHeader, 'session ? "/conta" : "/entrar"', "Cabeçalho não alterna entre login e Minha conta.");
 requireText(siteHeader, 'session ? "Minha conta" : "Entrar"', "Cabeçalho não identifica o usuário autenticado.");
+
+for (const required of [
+  "auth.api.getSession",
+  "isAllowedOrigin(request)",
+  "MAX_BODY_BYTES",
+  "MAX_HISTORY_ITEMS = 100",
+  "eq(savedGeneration.userId, userId)",
+]) {
+  requireText(historyApi, required, `API do histórico perdeu proteção: ${required}.`);
+}
+requireText(historyApi, "unexpected_fields", "API do histórico deve rejeitar campos inesperados.");
+requireText(resultPanel, "Salvar no histórico", "Resultado perdeu o salvamento explícito no histórico.");
+requireText(resultPanel, "O conteúdo do produto só é enviado ao servidor quando você usa este botão", "Interface deve deixar claro que o histórico é opt-in.");
+requireText(privacyPage, "Histórico salvo pelo usuário", "Política de privacidade não explica o histórico salvo.");
+requireText(privacyPage, "não acontece apenas por gerar um anúncio", "Política deve informar que o histórico não é automático.");
+
 requireText(plans, 'subscriptionStatus === "active"', "Plano pago precisa exigir assinatura ativa no servidor.");
 requireText(plans, 'return subscriptionStatus === "active" ? normalized : "free"', "Fallback de plano pago para free foi removido.");
 
@@ -111,4 +148,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: Google OAuth, tokens criptografados, sessão protegida, navegação autenticada, logout, schema, variáveis e controle de plano validados.");
+console.log("Contas OK: Google OAuth, sessão protegida, histórico opt-in, exclusão, navegação autenticada, schema, variáveis e controle de plano validados.");
