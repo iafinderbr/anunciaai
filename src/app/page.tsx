@@ -185,7 +185,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section aria-labelledby="workspace-titulo" className="bg-white">
+        <section id="ferramentas" aria-labelledby="workspace-titulo" className="scroll-mt-20 bg-white">
           <div className="container-page py-14 sm:py-20">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
