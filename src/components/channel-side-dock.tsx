@@ -70,6 +70,14 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
                 {active ? <span aria-hidden="true" className="absolute -left-1.5 h-5 w-[2px] rounded-full bg-brand-500" /> : null}
                 <ChannelIcon id={channel.id} className="size-[22px]" />
                 <span aria-hidden="true" className={`absolute bottom-1.5 size-1 rounded-full transition-opacity ${expanded ? "bg-brand-500 opacity-100" : "opacity-0"}`} />
+                {!expanded ? (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-[calc(100%+10px)] top-1/2 z-10 -translate-y-1/2 translate-x-1 whitespace-nowrap rounded-[7px] border border-white/[0.09] bg-[#111216] px-3 py-2 text-[11px] font-semibold tracking-[-0.01em] text-white/78 opacity-0 shadow-[0_14px_38px_-22px_rgba(0,0,0,.9)] transition-all duration-150 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
+                  >
+                    {channel.label}
+                  </span>
+                ) : null}
               </button>
 
               {expanded ? (
