@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChannelStrip } from "@/components/channel-showcase";
 import { SiteFooter } from "@/components/sections/pricing";
 import { tools } from "@/components/sections/tools";
 import { SiteHeader } from "@/components/site-header";
@@ -47,6 +48,49 @@ const workspaceInfo = [
   ["Google", "acesso à conta"],
 ] as const;
 
+const channelToolHrefs = new Set([
+  "/gerador-de-anuncios-mercado-livre",
+  "/gerador-de-anuncios-shopee",
+  "/gerador-de-anuncios-olx",
+  "/gerador-de-anuncios-facebook-marketplace",
+  "/gerador-de-anuncios-para-loja-virtual",
+  "/gerador-de-legendas-para-instagram",
+]);
+
+const channelTools = tools.filter((tool) => channelToolHrefs.has(tool.href));
+const contentTools = tools.filter((tool) => !channelToolHrefs.has(tool.href));
+
+function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[number]; index: number; compact?: boolean }) {
+  return (
+    <Link
+      href={tool.href}
+      className={`group relative grid h-full overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_22px_60px_-42px_rgba(23,23,20,.34)] ${
+        compact ? "min-h-[165px] grid-cols-[46px_minmax(0,1fr)] gap-4 p-5" : "min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 p-6 sm:p-7"
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className={`grid place-items-center self-start rounded-xl text-[10px] font-bold ${compact ? "size-10" : "size-11"} ${
+          index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f7f7f4] text-ink-soft"
+        }`}
+      >
+        {tool.short}
+      </span>
+
+      <span className="min-w-0 pr-7">
+        <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-brand-700">{tool.eyebrow}</span>
+        <span className={`${compact ? "mt-2 text-base" : "mt-3 text-xl"} block font-semibold leading-snug tracking-[-0.035em] text-ink transition-colors group-hover:text-brand-700`}>
+          {tool.title}
+        </span>
+        <span className={`${compact ? "mt-2 text-xs leading-5" : "mt-3 text-sm leading-6"} block max-w-xl text-muted`}>{tool.description}</span>
+      </span>
+
+      <span aria-hidden="true" className="absolute right-5 top-5 grid size-8 place-items-center rounded-full border border-line text-sm text-muted transition-all group-hover:border-brand-200 group-hover:bg-brand-50 group-hover:text-brand-700">→</span>
+      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-brand-500 transition-transform duration-200 group-hover:scale-x-100" />
+    </Link>
+  );
+}
+
 export default function FerramentasPage() {
   return (
     <>
@@ -71,14 +115,14 @@ export default function FerramentasPage() {
                   <span className="size-1.5 rounded-full bg-brand-500" /> Central de ferramentas
                 </div>
                 <h1 className="mt-5 max-w-3xl text-[2.8rem] font-semibold leading-[0.96] tracking-[-0.06em] text-white sm:text-[3.8rem] lg:text-[4.5rem]">
-                  Escolha o que precisa criar. O fluxo já vem organizado.
+                  Escolha o canal primeiro. O resto fica mais simples.
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-white/52 sm:text-[17px] sm:leading-8">
-                  Título, descrição, anúncio completo e ferramentas específicas por canal em uma biblioteca feita para ir direto ao ponto.
+                  Comece pelo lugar onde você vai publicar ou escolha uma ferramenta específica para título, descrição, nome e palavras-chave.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <a href="#geradores" className="interactive-lift inline-flex min-h-12 items-center justify-center rounded-lg bg-brand-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
-                    Explorar geradores <span aria-hidden="true" className="ml-2">↓</span>
+                    Escolher ferramenta <span aria-hidden="true" className="ml-2">↓</span>
                   </a>
                   <Link href="/#ferramenta" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/12 bg-white/[0.035] px-5 text-sm font-semibold text-white/82 transition-colors hover:bg-white/[0.07] hover:text-white">
                     Criar anúncio completo
@@ -105,11 +149,15 @@ export default function FerramentasPage() {
               </aside>
             </div>
 
-            <div className="mt-12 border-t border-white/[0.08] pt-6">
+            <div className="mt-10">
+              <ChannelStrip dark />
+            </div>
+
+            <div className="mt-6 border-t border-white/[0.08] pt-6">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/28">Acesso rápido</p>
-                  <p className="mt-1 text-sm font-semibold text-white/78">Continue do ponto certo.</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/28">Workspace</p>
+                  <p className="mt-1 text-sm font-semibold text-white/78">Conta, histórico e guias em um só lugar.</p>
                 </div>
               </div>
               <ToolsQuickActions variant="dark" />
@@ -123,12 +171,12 @@ export default function FerramentasPage() {
               <div className="max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.13em] text-brand-700">Biblioteca</p>
                 <h2 id="geradores-titulo" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-ink sm:text-[2.55rem]">
-                  Dez ferramentas. Uma função clara para cada uma.
+                  Canais primeiro. Ferramentas de apoio depois.
                 </h2>
               </div>
               <div>
                 <p className="text-sm leading-7 text-muted">
-                  Escolha pelo canal de venda ou pelo tipo de conteúdo. Todas as ferramentas atuais fazem parte do modo Grátis.
+                  A biblioteca continua completa, mas a navegação prioriza as decisões que mais importam: onde publicar e o que criar.
                 </p>
                 <Link href="/guias" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-800">
                   Ver guias relacionados <span aria-hidden="true">→</span>
@@ -136,39 +184,38 @@ export default function FerramentasPage() {
               </div>
             </div>
 
-            <ul className="mt-10 grid gap-4 lg:grid-cols-2">
-              {tools.map((tool, index) => (
-                <li key={tool.href}>
-                  <Link
-                    href={tool.href}
-                    className="group relative grid h-full min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 overflow-hidden rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_22px_60px_-42px_rgba(23,23,20,.34)] sm:p-7"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`grid size-11 place-items-center rounded-xl text-[10px] font-bold ${index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f7f7f4] text-ink-soft"}`}
-                    >
-                      {tool.short}
-                    </span>
+            <div className="mt-12 flex items-center justify-between gap-4 border-b border-line pb-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-brand-700">Por canal</p>
+                <h3 className="mt-1.5 text-lg font-semibold tracking-[-0.03em] text-ink">Onde você vai publicar?</h3>
+              </div>
+              <span className="text-xs text-muted">{channelTools.length} opções</span>
+            </div>
 
-                    <span className="min-w-0 pr-7">
-                      <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-700">{tool.eyebrow}</span>
-                      <span className="mt-3 block text-xl font-semibold leading-snug tracking-[-0.035em] text-ink transition-colors group-hover:text-brand-700">
-                        {tool.title}
-                      </span>
-                      <span className="mt-3 block max-w-xl text-sm leading-6 text-muted">{tool.description}</span>
-                    </span>
+            <ul className="mt-5 grid gap-4 lg:grid-cols-2">
+              {channelTools.map((tool, index) => (
+                <li key={tool.href}><ToolCard tool={tool} index={index} /></li>
+              ))}
+            </ul>
 
-                    <span aria-hidden="true" className="absolute right-6 top-6 grid size-8 place-items-center rounded-full border border-line text-sm text-muted transition-all group-hover:border-brand-200 group-hover:bg-brand-50 group-hover:text-brand-700">→</span>
-                    <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-brand-500 transition-transform duration-200 group-hover:scale-x-100" />
-                  </Link>
-                </li>
+            <div className="mt-14 flex items-center justify-between gap-4 border-b border-line pb-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-brand-700">Por objetivo</p>
+                <h3 className="mt-1.5 text-lg font-semibold tracking-[-0.03em] text-ink">Refine uma parte do conteúdo.</h3>
+              </div>
+              <span className="text-xs text-muted">{contentTools.length} ferramentas</span>
+            </div>
+
+            <ul className="mt-5 grid gap-4 md:grid-cols-2">
+              {contentTools.map((tool, index) => (
+                <li key={tool.href}><ToolCard tool={tool} index={index + 2} compact /></li>
               ))}
             </ul>
 
             <div className="mt-8 flex flex-col gap-3 rounded-2xl border border-line bg-white px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <div>
-                <p className="text-sm font-semibold text-ink">Não sabe qual usar primeiro?</p>
-                <p className="mt-1 text-xs leading-5 text-muted">Comece pelo gerador completo e refine depois com uma ferramenta específica.</p>
+                <p className="text-sm font-semibold text-ink">Ainda não sabe qual usar?</p>
+                <p className="mt-1 text-xs leading-5 text-muted">Comece pelo gerador completo e escolha um canal específico depois.</p>
               </div>
               <Link href="/#ferramenta" className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-ink px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
                 Abrir gerador completo <span aria-hidden="true">→</span>
