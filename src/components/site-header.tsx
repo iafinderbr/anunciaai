@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
 const links = [
-  { href: "/#ferramentas", label: "Ferramentas" },
+  { href: "/ferramentas", label: "Ferramentas" },
   { href: "/#como-funciona", label: "Como funciona" },
   { href: "/#recursos", label: "Recursos" },
   { href: "/guias", label: "Guias" },
