@@ -20,15 +20,15 @@ export const PRO_EARLY_ACCESS_LABEL = "Acesso antecipado sem cobrança";
 
 export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: number; titleAlternatives: number }> = {
   free: { history: 100, savedProducts: 20, titleAlternatives: 1 },
-  pro: { history: 500, savedProducts: 100, titleAlternatives: 2 },
-  premium: { history: 1000, savedProducts: 250, titleAlternatives: 2 },
+  pro: { history: 100, savedProducts: 20, titleAlternatives: 2 },
+  premium: { history: 100, savedProducts: 20, titleAlternatives: 2 },
 };
 
 export const PRO_FEATURES = [
   "Tudo do plano Grátis",
-  "Até 100 produtos salvos",
-  "Até 500 resultados no histórico",
   "Mais variações de título por criação",
+  "Acesso antecipado aos próximos recursos Pro",
+  "Ativação sem cobrança durante o acesso antecipado",
 ] as const;
 
 export const PREMIUM_PLANNED_FEATURES = [
