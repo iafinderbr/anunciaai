@@ -170,7 +170,7 @@ export default async function AccountPlanPage({
 
             <div className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-5 text-xs leading-5 text-white/34 sm:flex-row sm:items-center sm:justify-between">
               <p>
-                Cobrança Pro gerenciada pela Stripe. {pixReady ? "Pix libera 30 dias sem renovação automática." : "Pix permanece em ativação até a conta Stripe ser habilitada."}
+                Cobrança Pro gerenciada pela Stripe. {pixReady ? "O Pix libera 30 dias e não renova automaticamente." : "Pix permanece em ativação até a conta Stripe ser habilitada."}
               </p>
               <Link href="/conta/ferramentas" className="shrink-0 font-semibold text-brand-300 transition-colors hover:text-white">Voltar às ferramentas →</Link>
             </div>
