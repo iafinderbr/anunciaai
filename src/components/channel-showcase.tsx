@@ -123,26 +123,26 @@ export function ChannelIcon({ id, className = "size-5" }: { id: ChannelId; class
 export function ChannelCompactBar({ dark = false }: { dark?: boolean }) {
   return (
     <nav data-channel-compact aria-label="Canais de publicação" className="min-[1380px]:hidden">
-      <div className={`flex items-center justify-between gap-3 border-y py-4 ${dark ? "border-white/[0.08]" : "border-line"}`}>
-        <p className={`hidden text-[10px] font-semibold uppercase tracking-[0.15em] sm:block ${dark ? "text-white/28" : "text-muted"}`}>Canais</p>
-        <div className="grid flex-1 grid-cols-6 gap-1 sm:max-w-[430px] sm:flex-none">
+      <div className={`flex items-center gap-3 border-y py-3 ${dark ? "border-white/[0.08]" : "border-line"}`}>
+        <p className={`hidden shrink-0 text-[10px] font-semibold uppercase tracking-[0.15em] sm:block ${dark ? "text-white/28" : "text-muted"}`}>Canais</p>
+        <div className={`grid flex-1 grid-cols-6 divide-x ${dark ? "divide-white/[0.08]" : "divide-line"}`}>
           {featuredChannels.map((channel) => (
             <Link
               key={channel.id}
               href={channel.href}
               aria-label={channel.action}
               title={channel.label}
-              className={`grid min-h-11 place-items-center rounded-[8px] transition-colors ${
+              className={`grid min-h-11 place-items-center transition-colors ${
                 dark
-                  ? "text-white/46 hover:bg-white/[0.06] hover:text-brand-300"
+                  ? "text-white/42 hover:bg-white/[0.045] hover:text-brand-300"
                   : "text-ink-soft hover:bg-[#f2f2ef] hover:text-brand-700"
               }`}
             >
-              <ChannelIcon id={channel.id} className="size-[21px]" />
+              <ChannelIcon id={channel.id} className="size-[20px]" />
             </Link>
           ))}
         </div>
-        <Link href="/ferramentas" className={`hidden text-xs font-semibold sm:inline-flex ${dark ? "text-white/42 hover:text-white" : "text-brand-700 hover:text-brand-800"}`}>
+        <Link href="/ferramentas" className={`hidden shrink-0 text-xs font-semibold sm:inline-flex ${dark ? "text-white/42 hover:text-white" : "text-brand-700 hover:text-brand-800"}`}>
           Biblioteca →
         </Link>
       </div>
@@ -150,15 +150,6 @@ export function ChannelCompactBar({ dark = false }: { dark?: boolean }) {
   );
 }
 
-/**
- * Compatibilidade visual para páginas que ainda renderizam a antiga faixa.
- * Em telas amplas os canais agora vivem exclusivamente na dock lateral.
- */
 export function ChannelStrip({ dark = false }: { dark?: boolean }) {
-  return (
-    <>
-      <style>{`@media (min-width: 1380px){div:has(> [data-channel-compact]){display:none!important;}}`}</style>
-      <ChannelCompactBar dark={dark} />
-    </>
-  );
+  return <ChannelCompactBar dark={dark} />;
 }
