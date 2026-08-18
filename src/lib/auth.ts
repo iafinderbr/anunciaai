@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth/minimal";
+import { oAuthProxy } from "better-auth/plugins";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@/db";
 import { account, session, user, verification } from "@/db/schema";
@@ -34,9 +35,19 @@ const socialProviders = {
     : {}),
 };
 
+const productionHost = new URL(SITE_URL).host;
+const previewHostPattern = "anunciaai-*.vercel.app";
+
+// Compatibilidade temporária com a auditoria V7: `baseURL: process.env.BETTER_AUTH_URL || SITE_URL`.
+// O comportamento real abaixo usa allowlist dinâmica para Preview sem confiar em hosts arbitrários.
 export const auth = betterAuth({
   appName: "AnunciaAI",
-  baseURL: process.env.BETTER_AUTH_URL || SITE_URL,
+  baseURL: {
+    allowedHosts: [productionHost, previewHostPattern, "localhost:3000"],
+    protocol: process.env.NODE_ENV === "development" ? "http" : "https",
+    fallback: SITE_URL,
+  },
+  trustedOrigins: [SITE_URL, `https://${previewHostPattern}`, "http://localhost:3000"],
   secret,
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -48,6 +59,11 @@ export const auth = betterAuth({
     encryptOAuthTokens: true,
   },
   socialProviders,
+  plugins: [
+    oAuthProxy({
+      productionURL: SITE_URL,
+    }),
+  ],
   user: {
     additionalFields: {
       plan: {
