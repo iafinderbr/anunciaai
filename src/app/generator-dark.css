@@ -1,0 +1,177 @@
+/*
+ * Fluxo de criação: o gerador e o documento de resultado usam a mesma
+ * linguagem grafite do workspace. Branco fica restrito à tipografia e a
+ * pequenos contrastes; laranja indica foco, seleção e ação principal.
+ * O escopo em #ferramenta evita alterar cobrança e conteúdo editorial.
+ */
+
+#ferramenta .surface-premium {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  border-radius: 6px !important;
+  background: #111216 !important;
+  box-shadow: none !important;
+  color: #f3f3ef;
+}
+
+#ferramenta .bg-white {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: #131418 !important;
+}
+
+#ferramenta .bg-canvas,
+#ferramenta [class*="bg-canvas/"] {
+  background: #0f1013 !important;
+}
+
+#ferramenta .bg-ink {
+  background: #f1662a !important;
+  color: #fff !important;
+}
+
+#ferramenta .text-ink {
+  color: #f3f3ef !important;
+}
+
+#ferramenta .text-ink-soft {
+  color: rgba(243, 243, 239, 0.7) !important;
+}
+
+#ferramenta .text-muted {
+  color: rgba(243, 243, 239, 0.42) !important;
+}
+
+#ferramenta .text-brand-600,
+#ferramenta .text-brand-700,
+#ferramenta .text-brand-800 {
+  color: #ff9b67 !important;
+}
+
+#ferramenta .border-line,
+#ferramenta .border-line-strong {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+#ferramenta .shadow-card,
+#ferramenta .shadow-lift {
+  box-shadow: none !important;
+}
+
+#ferramenta .field {
+  border-color: rgba(255, 255, 255, 0.11) !important;
+  border-radius: 4px !important;
+  background: #0d0e11 !important;
+  color: #f3f3ef !important;
+  box-shadow: none !important;
+}
+
+#ferramenta .field::placeholder {
+  color: rgba(243, 243, 239, 0.25) !important;
+}
+
+#ferramenta .field:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+#ferramenta .field:focus {
+  border-color: #f1662a !important;
+  outline: 2px solid rgba(241, 102, 42, 0.16) !important;
+  outline-offset: 1px;
+}
+
+#ferramenta .field[aria-invalid="true"] {
+  border-color: rgba(251, 113, 133, 0.62) !important;
+}
+
+#ferramenta :is(button, a, label).rounded-xl,
+#ferramenta :is(button, a, label).rounded-2xl,
+#ferramenta div.rounded-xl,
+#ferramenta ul.rounded-xl {
+  border-radius: 4px !important;
+}
+
+#ferramenta .rounded-full {
+  border-radius: 3px !important;
+}
+
+#ferramenta label.bg-white,
+#ferramenta button.bg-white,
+#ferramenta a.bg-white {
+  background: #15161a !important;
+  color: rgba(243, 243, 239, 0.72) !important;
+}
+
+#ferramenta label.bg-white:hover,
+#ferramenta button.bg-white:hover,
+#ferramenta a.bg-white:hover {
+  border-color: rgba(241, 102, 42, 0.48) !important;
+  background: #1a1b1f !important;
+  color: #fff !important;
+}
+
+#ferramenta label.bg-ink,
+#ferramenta button.bg-ink,
+#ferramenta a.bg-ink {
+  border-color: #f1662a !important;
+  background: #f1662a !important;
+  color: #fff !important;
+}
+
+#ferramenta label.bg-ink:hover,
+#ferramenta button.bg-ink:hover,
+#ferramenta a.bg-ink:hover {
+  background: #d9551e !important;
+}
+
+#ferramenta .bg-brand-50,
+#ferramenta [class*="bg-brand-50/"] {
+  background: rgba(241, 102, 42, 0.08) !important;
+}
+
+#ferramenta .border-brand-200,
+#ferramenta .border-brand-300,
+#ferramenta .border-brand-400 {
+  border-color: rgba(241, 102, 42, 0.34) !important;
+}
+
+#ferramenta .bg-emerald-50 {
+  background: rgba(52, 211, 153, 0.06) !important;
+}
+
+#ferramenta .border-emerald-200,
+#ferramenta .border-emerald-300 {
+  border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+#ferramenta .text-emerald-700,
+#ferramenta .text-emerald-800 {
+  color: #8fe3be !important;
+}
+
+#ferramenta .bg-rose-50 {
+  background: rgba(251, 113, 133, 0.06) !important;
+}
+
+#ferramenta .border-rose-200 {
+  border-color: rgba(251, 113, 133, 0.22) !important;
+}
+
+#ferramenta .text-rose-600,
+#ferramenta .text-rose-700 {
+  color: #fda4af !important;
+}
+
+#ferramenta section.border-t,
+#ferramenta [class*="divide-y"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#ferramenta input[type="radio"]:focus-visible + *,
+#ferramenta input[type="checkbox"]:focus-visible + * {
+  outline-color: #f1662a;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #ferramenta .surface-premium :is(button, a, label):hover {
+    transition-duration: 140ms;
+  }
+}
