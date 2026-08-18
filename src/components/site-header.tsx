@@ -111,7 +111,6 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
                 type="button"
                 onClick={() => setDesktopMenu((current) => (current === "tools" ? null : "tools"))}
                 aria-expanded={desktopMenu === "tools"}
-                aria-controls="ferramentas-menu"
                 className={`${navItem} ${desktopMenu === "tools" ? "bg-canvas text-ink" : ""}`}
               >
                 Ferramentas
@@ -121,7 +120,6 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
                 type="button"
                 onClick={() => setDesktopMenu((current) => (current === "guides" ? null : "guides"))}
                 aria-expanded={desktopMenu === "guides"}
-                aria-controls="guias-menu"
                 className={`${navItem} ${desktopMenu === "guides" ? "bg-canvas text-ink" : ""}`}
               >
                 Guias
