@@ -82,6 +82,8 @@ export function stripeBillingConfigured(): boolean {
 }
 
 export function stripePixConfigured(): boolean {
+  if (process.env.STRIPE_PIX_ENABLED !== "true") return false;
+
   try {
     stripeSecretKey();
     return true;
