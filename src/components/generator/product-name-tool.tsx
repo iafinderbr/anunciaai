@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { GeneratorAccessGate } from "@/components/auth/generator-access-gate";
 import { CopyButton } from "@/components/copy-button";
 import { NAMES_EXAMPLE_INPUT } from "@/lib/names-content";
 import type { GeneratorInput, Tone } from "@/lib/types";
@@ -53,6 +54,14 @@ function generateNames(input: GeneratorInput, round: number) {
 }
 
 export function ProductNameTool() {
+  return (
+    <GeneratorAccessGate>
+      <ProductNameToolContent />
+    </GeneratorAccessGate>
+  );
+}
+
+function ProductNameToolContent() {
   const [input, setInput] = useState(NAMES_EXAMPLE_INPUT);
   const [round, setRound] = useState(0);
   const [generated, setGenerated] = useState(false);
@@ -103,6 +112,6 @@ export function ProductNameTool() {
     </div>
     <fieldset className="mt-6"><legend className="mb-2.5 text-sm font-medium">Estilo dos nomes</legend><div className="grid gap-2 sm:grid-cols-4">{TONES.map((tone) => <label key={tone.value} className={`cursor-pointer rounded-xl border px-3.5 py-3 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-500 ${input.tone === tone.value ? "border-brand-500 bg-brand-50" : "border-line-strong"}`}><input type="radio" name="name-tone" value={tone.value} className="sr-only" checked={input.tone === tone.value} onChange={() => update("tone", tone.value)} /><span className="block text-sm font-semibold">{tone.label}</span><span className="text-xs text-muted">{tone.hint}</span></label>)}</div></fieldset>
     {error ? <p id="name-tool-error" role="alert" className="mt-5 text-sm font-medium text-rose-600">{error}</p> : null}
-    <button type="submit" className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 font-semibold text-white hover:bg-brand-600">✨ Gerar nomes grátis</button><p className="mt-3 text-center text-xs text-muted">Sem cadastro e sem cartão de crédito.</p>
+    <button type="submit" className="mt-8 w-full rounded-2xl bg-ink px-6 py-4 font-semibold text-white hover:bg-brand-600">Gerar nomes</button><p className="mt-3 text-center text-xs text-muted">Incluído no plano Grátis da sua conta.</p>
   </form>;
 }
