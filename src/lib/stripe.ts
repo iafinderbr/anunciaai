@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { PRO_MONTHLY_PRICE_CENTS, PRO_PIX_ACCESS_DAYS } from "@/lib/plans";
 import { SITE_URL } from "@/lib/site";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
@@ -23,8 +24,10 @@ export type StripeCheckoutSession = {
   id: string;
   url: string | null;
   mode?: string | null;
+  payment_status?: string | null;
   client_reference_id?: string | null;
   subscription?: string | { id: string } | null;
+  metadata?: Record<string, string> | null;
 };
 
 export type StripeSubscription = {
@@ -78,6 +81,15 @@ export function stripeBillingConfigured(): boolean {
   }
 }
 
+export function stripePixConfigured(): boolean {
+  try {
+    stripeSecretKey();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function stripeRequest<T>(path: string, options: { method?: "GET" | "POST"; body?: URLSearchParams } = {}): Promise<T> {
   const method = options.method ?? "GET";
   const response = await fetch(`${STRIPE_API_BASE}${path}`, {
@@ -112,10 +124,42 @@ export async function createProCheckoutSession(input: {
   body.set("customer_email", input.email);
   body.set("metadata[userId]", input.userId);
   body.set("metadata[plan]", "pro");
+  body.set("metadata[purchaseType]", "subscription");
   body.set("subscription_data[metadata][userId]", input.userId);
   body.set("subscription_data[metadata][plan]", "pro");
   body.set("locale", "auto");
   body.set("billing_address_collection", "auto");
+
+  return stripeRequest<StripeCheckoutSession>("/checkout/sessions", { method: "POST", body });
+}
+
+/**
+ * Pix não é recorrente na Stripe. Este Checkout vende exatamente 30 dias de
+ * acesso Pro como pagamento único, com preço fixado no servidor.
+ */
+export async function createProPixCheckoutSession(input: {
+  userId: string;
+  email: string;
+}): Promise<StripeCheckoutSession> {
+  const body = new URLSearchParams();
+  body.set("mode", "payment");
+  body.set("success_url", `${SITE_URL}/conta/plano?checkout=pix-pending`);
+  body.set("cancel_url", `${SITE_URL}/conta/plano?checkout=canceled`);
+  body.set("payment_method_types[0]", "pix");
+  body.set("line_items[0][price_data][currency]", "brl");
+  body.set("line_items[0][price_data][unit_amount]", String(PRO_MONTHLY_PRICE_CENTS));
+  body.set("line_items[0][price_data][product_data][name]", `AnunciaAI Pro — ${PRO_PIX_ACCESS_DAYS} dias`);
+  body.set("line_items[0][price_data][product_data][description]", "Acesso Pro avulso, sem renovação automática.");
+  body.set("line_items[0][quantity]", "1");
+  body.set("client_reference_id", input.userId);
+  body.set("customer_email", input.email);
+  body.set("metadata[userId]", input.userId);
+  body.set("metadata[plan]", "pro");
+  body.set("metadata[purchaseType]", "pix_30d");
+  body.set("metadata[accessDays]", String(PRO_PIX_ACCESS_DAYS));
+  body.set("payment_intent_data[metadata][userId]", input.userId);
+  body.set("payment_intent_data[metadata][purchaseType]", "pix_30d");
+  body.set("locale", "pt-BR");
 
   return stripeRequest<StripeCheckoutSession>("/checkout/sessions", { method: "POST", body });
 }
