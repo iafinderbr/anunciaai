@@ -235,7 +235,7 @@ export function ResultPanel({ result, input, onRegenerate, onEdit }: ResultPanel
           ) : null}
 
           <p className="mt-3 text-[11px] leading-5 text-muted">
-            Salvar é opcional. Conteúdo e dados do produto só são enviados ao servidor quando você escolhe salvar estando conectado.
+            Salvar é opcional. O conteúdo e os dados do produto só são enviados ao servidor quando você usa um dos botões de salvar estando conectado.
           </p>
         </div>
       </div>
