@@ -7,6 +7,7 @@ import "./professional-dark.css";
 import "./professional-dark-pages.css";
 import "./account-dark.css";
 import "./generator-dark.css";
+import "./final-polish.css";
 
 const ADSENSE_CLIENT = "ca-pub-2381421388873161";
 
