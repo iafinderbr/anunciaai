@@ -28,6 +28,7 @@ const toolsHub = read("src/app/ferramentas/page.tsx");
 const loginPage = read("src/app/entrar/page.tsx");
 const accountOverview = read("src/app/conta/page.tsx");
 const accountNav = read("src/components/account/account-nav.tsx");
+const generatorGate = read("src/components/auth/generator-access-gate.tsx");
 const channelShowcase = read("src/components/channel-showcase.tsx");
 const channelDock = read("src/components/channel-side-dock.tsx");
 
@@ -113,6 +114,9 @@ requireText(accountOverview, 'bg-[#0d0e11]', "Visão geral da conta voltou para 
 requireText(accountOverview, 'grid gap-px overflow-hidden border border-white/[0.08]', "Métricas da conta perderam a grade reta definida.");
 requireText(accountNav, 'border-y border-white/[0.09]', "Navegação da conta voltou a usar um cartão arredondado.");
 requireText(accountNav, 'h-[2px] bg-brand-500', "Navegação da conta perdeu o marcador ativo discreto.");
+requireText(generatorGate, 'bg-[#121316] text-white', "Gate de acesso dos geradores voltou a uma superfície clara.");
+requireText(generatorGate, "Entre para usar este gerador.", "Gate dos geradores perdeu a linguagem objetiva definida.");
+requireText(generatorGate, 'divide-y divide-white/[0.08]', "Gate dos geradores voltou a listar benefícios como pills/cards.");
 
 requireText(toolsHub, 'id="geradores"', "/ferramentas perdeu a biblioteca de geradores.");
 requireText(channelDock, "data-channel-side-dock", "A navegação lateral precisa manter um marcador estável para auditoria visual.");
@@ -141,5 +145,5 @@ if (failures.length) {
 }
 
 console.log(
-  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, login/workspace autenticado profissional e navegação de 6 canais preservados.`,
+  `UI OK: ${generatorPaths.length} landings, ${guidePaths.length} guias, shell grafite, gates/login/workspace autenticado profissionais e navegação de 6 canais preservados.`,
 );
