@@ -32,18 +32,34 @@ function metadataValue(object: Record<string, unknown>, key: string): string | n
   return typeof value === "string" ? value : null;
 }
 
+/**
+ * checkout.session.completed apenas vincula a assinatura criada pela nossa
+ * sessão de Checkout ao usuário. O acesso Pro só é concedido por
+ * syncSubscription depois que a Stripe confirma status `active` e o Price
+ * esperado do Pro.
+ */
 async function attachCheckoutToUser(object: Record<string, unknown>) {
   const userId = typeof object.client_reference_id === "string" ? object.client_reference_id : null;
   const subscriptionId = stringId(object.subscription);
-  if (!userId || !subscriptionId) return;
+  const mode = typeof object.mode === "string" ? object.mode : null;
+  const purchaseType = metadataValue(object, "purchaseType");
+  const plan = metadataValue(object, "plan");
+
+  if (
+    !userId ||
+    !subscriptionId ||
+    mode !== "subscription" ||
+    purchaseType !== "subscription" ||
+    plan !== "pro"
+  ) {
+    return;
+  }
 
   await db
     .update(user)
     .set({
-      plan: "pro",
       subscriptionProvider: "stripe",
       externalSubscriptionId: subscriptionId,
-      proAccessUntil: null,
       updatedAt: new Date(),
     })
     .where(eq(user.id, userId));
