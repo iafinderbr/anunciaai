@@ -18,7 +18,11 @@ export async function GET(request: Request) {
   return Response.json(
     {
       ok: true,
-      plan: effectivePlan(session.user.plan, session.user.subscriptionStatus),
+      plan: effectivePlan(
+        session.user.plan,
+        session.user.subscriptionStatus,
+        session.user.proAccessUntil,
+      ),
       subscriptionStatus: session.user.subscriptionStatus,
       subscriptionProvider: session.user.subscriptionProvider,
       hasSubscription: Boolean(session.user.externalSubscriptionId),
