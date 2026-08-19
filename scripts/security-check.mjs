@@ -28,6 +28,9 @@ const SECRET_PATTERNS = [
   ["GitHub fine-grained token", /\bgithub_pat_[A-Za-z0-9_]{30,}\b/],
   ["OpenAI secret key", /\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}\b/],
   ["Stripe live secret key", /\bsk_live_[A-Za-z0-9]{16,}\b/],
+  ["Stripe test secret key", /\bsk_test_[A-Za-z0-9]{16,}\b/],
+  ["Stripe webhook secret", /\bwhsec_[A-Za-z0-9]{16,}\b/],
+  ["Stripe restricted key", /\brk_(?:live|test)_[A-Za-z0-9]{16,}\b/],
   ["AWS access key", /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/],
   ["Google API key", /\bAIza[0-9A-Za-z_-]{30,}\b/],
 ];
@@ -152,4 +155,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Segurança OK: sem segredos conhecidos, sem secrets no bundle cliente, Actions fixadas em SHA, runner versionado e checkout sem credencial persistida.");
+console.log("Segurança OK: sem segredos conhecidos, incluindo chaves Stripe de teste/webhook, sem secrets no bundle cliente, Actions fixadas em SHA, runner versionado e checkout sem credencial persistida.");
