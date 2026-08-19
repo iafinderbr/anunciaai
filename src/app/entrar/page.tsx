@@ -31,12 +31,16 @@ function safeCallbackURL(value?: string) {
   }
 }
 
-function socialErrorMessage(error?: string) {
+function socialErrorMessage(error: string | undefined, isRegister: boolean) {
   if (error === "google") {
-    return "O Google não conseguiu concluir o acesso. Escolha outra conta e tente novamente.";
+    return isRegister
+      ? "O Google não conseguiu concluir o cadastro. Escolha uma conta e tente novamente."
+      : "Não foi possível entrar com essa conta Google. Se ela ainda não estiver cadastrada, use Registrar-se.";
   }
   if (error === "facebook") {
-    return "O Facebook não conseguiu concluir o acesso. Tente novamente ou use o Google.";
+    return isRegister
+      ? "O Facebook não conseguiu concluir o cadastro. Tente novamente ou use o Google."
+      : "Não foi possível entrar com essa conta Facebook. Se ela ainda não estiver cadastrada, use Registrar-se.";
   }
   return null;
 }
@@ -62,7 +66,7 @@ export default async function SignInPage({
   const callbackURL = safeCallbackURL(voltar);
   const mode = modo === "registrar" ? "registrar" : "entrar";
   const isRegister = mode === "registrar";
-  const errorMessage = socialErrorMessage(erro);
+  const errorMessage = socialErrorMessage(erro, isRegister);
   const facebookEnabled = Boolean(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET);
 
   if (session) redirect(callbackURL);
@@ -114,7 +118,7 @@ export default async function SignInPage({
                 <p className="mt-4 text-sm leading-6 text-white/44">
                   {isRegister
                     ? "Use Google pessoal ou Google Workspace. Você começa no modo Grátis e não precisa informar cartão."
-                    : "Entre com a conta Google que você usa no AnunciaAI para continuar de onde parou."}
+                    : "Entre com a conta Google que você já usa no AnunciaAI para continuar de onde parou."}
                 </p>
 
                 {errorMessage ? (
@@ -128,12 +132,14 @@ export default async function SignInPage({
                     callbackURL={callbackURL}
                     label={isRegister ? "Registrar-se com Google" : "Entrar com Google"}
                     errorCallbackURL={googleErrorURL}
+                    requestSignUp={isRegister}
                   />
                   {facebookEnabled ? (
                     <FacebookSignInButton
                       callbackURL={callbackURL}
                       label={isRegister ? "Registrar-se com Facebook" : "Entrar com Facebook"}
                       errorCallbackURL={facebookErrorURL}
+                      requestSignUp={isRegister}
                     />
                   ) : null}
                 </div>
@@ -151,7 +157,7 @@ export default async function SignInPage({
                 </div>
 
                 <p className="mt-6 text-[11px] leading-5 text-white/28">
-                  O AnunciaAI não recebe sua senha do Google. Se a conta já estiver vinculada a um perfil existente, você será conectado a ele. Ao continuar, você concorda com nossos{" "}
+                  O AnunciaAI não recebe sua senha do Google. Ao continuar, você concorda com nossos{" "}
                   <Link href="/termos" className="text-white/48 hover:text-white">Termos</Link> e{" "}
                   <Link href="/privacidade" className="text-white/48 hover:text-white">Privacidade</Link>.
                 </p>
