@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ChannelIcon, featuredChannels, type ChannelId } from "@/components/channel-showcase";
+import { ChannelBrandMark, ChannelIcon, featuredChannels, type ChannelId } from "@/components/channel-showcase";
 
 function LibraryIcon() {
   return (
@@ -61,14 +61,14 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
                 aria-controls={expanded ? panelId : undefined}
                 title={channel.label}
                 onClick={() => setOpenId((current) => (current === channel.id ? null : channel.id))}
-                className={`group relative grid h-[52px] w-full place-items-center border-y border-transparent outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-500/70 ${
+                className={`group relative grid h-[54px] w-full place-items-center border-y border-transparent outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-500/70 ${
                   active || expanded
                     ? "bg-white/[0.075] text-white"
-                    : "text-white/36 hover:bg-white/[0.045] hover:text-white/82"
+                    : "text-white/38 hover:bg-white/[0.045] hover:text-white/88"
                 }`}
               >
                 {active ? <span aria-hidden="true" className="absolute inset-y-3 left-0 w-[2px] bg-brand-500" /> : null}
-                <ChannelIcon id={channel.id} className="size-[20px]" />
+                <ChannelIcon id={channel.id} className="size-[23px] transition-transform duration-200 group-hover:scale-[1.06]" />
                 {!expanded ? (
                   <span className="pointer-events-none absolute left-[calc(100%+10px)] top-1/2 z-50 -translate-y-1/2 whitespace-nowrap border border-white/[0.09] bg-[#111216] px-3 py-2 text-[11px] font-medium text-white/72 opacity-0 shadow-[0_18px_50px_-30px_rgba(0,0,0,.9)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                     {channel.label}
@@ -77,29 +77,20 @@ export function ChannelSideDock({ activePath }: { activePath?: string }) {
               </button>
 
               {expanded ? (
-                <div
-                  id={panelId}
-                  className="absolute left-[calc(100%+1px)] top-0 w-[330px] border border-white/[0.10] bg-[#111216] text-white shadow-[0_28px_90px_-34px_rgba(0,0,0,.95)]"
-                >
+                <div id={panelId} className="absolute left-[calc(100%+1px)] top-0 w-[330px] border border-white/[0.10] bg-[#111216] text-white shadow-[0_28px_90px_-34px_rgba(0,0,0,.95)]">
                   <div className="border-b border-white/[0.08] px-6 py-5">
                     <div className="flex items-start justify-between gap-5">
                       <div>
                         <p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-brand-300">{channel.category}</p>
                         <p className="mt-2 text-[18px] font-semibold tracking-[-0.035em] text-white">{channel.label}</p>
                       </div>
-                      <span className="grid size-9 shrink-0 place-items-center border border-white/[0.10] text-white/56">
-                        <ChannelIcon id={channel.id} className="size-[18px]" />
-                      </span>
+                      <ChannelBrandMark id={channel.id} compact />
                     </div>
                     <p className="mt-4 text-[12px] leading-6 text-white/42">{channel.description}</p>
                   </div>
 
                   <div className="grid grid-cols-[1fr_auto] border-t border-white/[0.02]">
-                    <Link
-                      href={channel.href}
-                      onClick={() => setOpenId(null)}
-                      className="flex min-h-12 items-center px-5 text-[12px] font-semibold text-white transition-colors hover:bg-white/[0.045] hover:text-brand-300"
-                    >
+                    <Link href={channel.href} onClick={() => setOpenId(null)} className="flex min-h-12 items-center px-5 text-[12px] font-semibold text-white transition-colors hover:bg-white/[0.045] hover:text-brand-300">
                       Abrir gerador
                     </Link>
                     <span aria-hidden="true" className="grid w-12 place-items-center border-l border-white/[0.08] text-brand-300">→</span>
