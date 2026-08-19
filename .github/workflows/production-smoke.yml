@@ -1,6 +1,9 @@
 name: Produção
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "17 9 * * *"
   workflow_dispatch:
@@ -31,15 +34,89 @@ jobs:
 
       - name: Verificar APIs públicas e banco
         run: |
-          HEALTH=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/health)
+          set -euo pipefail
+          BASE_URL='https://anunciaai.vercel.app'
+
+          HEALTH=$(curl --fail --silent --show-error --max-time 20 --retry 5 --retry-all-errors --retry-delay 3 "$BASE_URL/api/health")
           printf '%s' "$HEALTH" | grep -Fq '"ok":true'
 
-          STATS=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/generations)
+          STATS=$(curl --fail --silent --show-error --max-time 20 --retry 5 --retry-all-errors --retry-delay 3 "$BASE_URL/api/generations")
           printf '%s' "$STATS" | grep -Fq '"total":'
           printf '%s' "$STATS" | grep -Fq '"recent":'
 
-          CAPABILITY=$(curl --fail --silent --show-error --retry 3 --retry-delay 2 https://anunciaai.vercel.app/api/generate)
+          CAPABILITY=$(curl --fail --silent --show-error --max-time 20 --retry 5 --retry-all-errors --retry-delay 3 "$BASE_URL/api/generate")
           printf '%s' "$CAPABILITY" | grep -Fq '"enabled":false'
+
+          HEADERS=$(curl --silent --show-error --max-time 20 --dump-header - --output /dev/null "$BASE_URL/api/health" | tr -d '\r' | tr '[:upper:]' '[:lower:]')
+          printf '%s' "$HEADERS" | grep -Fq 'x-robots-tag: noindex, nofollow'
+
+      - name: Testar fronteiras de segurança das APIs
+        run: |
+          set -euo pipefail
+          BASE_URL='https://anunciaai.vercel.app'
+
+          expect_status() {
+            expected="$1"
+            shift
+            actual=$(curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' "$@")
+            if [ "$actual" != "$expected" ]; then
+              echo "Status inesperado: esperado $expected, recebido $actual para curl $*"
+              exit 1
+            fi
+          }
+
+          # Consultas privadas nunca podem vazar dados sem sessão.
+          expect_status 401 "$BASE_URL/api/account/plan"
+          expect_status 401 "$BASE_URL/api/account/history"
+          expect_status 401 "$BASE_URL/api/account/products"
+
+          # A API legada de plano não pode promover ou remover plano localmente.
+          expect_status 405 -X POST "$BASE_URL/api/account/plan"
+          expect_status 405 -X DELETE "$BASE_URL/api/account/plan"
+
+          # Checkout, Pix e Portal só aceitam mutações iniciadas pelo próprio site.
+          expect_status 403 -X POST "$BASE_URL/api/stripe/checkout"
+          expect_status 403 -X POST "$BASE_URL/api/stripe/pix"
+          expect_status 403 -X POST "$BASE_URL/api/stripe/portal"
+
+          # O contador recusa chamadas sem Origin, de outra origem e sem sessão.
+          expect_status 403 \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            --data '{"channel":"olx"}' \
+            "$BASE_URL/api/generations"
+
+          expect_status 403 \
+            -X POST \
+            -H 'Origin: https://example.org' \
+            -H 'Content-Type: application/json' \
+            --data '{"channel":"olx"}' \
+            "$BASE_URL/api/generations"
+
+          expect_status 401 \
+            -X POST \
+            -H "Origin: $BASE_URL" \
+            -H 'Content-Type: application/json' \
+            --data '{"channel":"olx"}' \
+            "$BASE_URL/api/generations"
+
+          # Endpoints sem parâmetros rejeitam cache-busting/query arbitrária.
+          expect_status 400 "$BASE_URL/api/health?probe=1"
+          expect_status 400 "$BASE_URL/api/generations?probe=1"
+
+          # O backend externo continua desligado; nenhum payload consome quota.
+          expect_status 503 \
+            -X POST \
+            -H "Origin: $BASE_URL" \
+            -H 'Content-Type: application/json' \
+            --data '{}' \
+            "$BASE_URL/api/generate"
+
+          # Histórico e biblioteca também rejeitam mutação cross-site antes da sessão.
+          expect_status 403 -X POST -H 'Origin: https://example.org' "$BASE_URL/api/account/history"
+          expect_status 403 -X DELETE -H 'Origin: https://example.org' "$BASE_URL/api/account/history"
+          expect_status 403 -X POST -H 'Origin: https://example.org' "$BASE_URL/api/account/products"
+          expect_status 403 -X DELETE -H 'Origin: https://example.org' "$BASE_URL/api/account/products"
 
       - name: Auditar HTML, SEO e segurança em produção
         env:

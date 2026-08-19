@@ -1,11 +1,13 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { proAccessGrant, user } from "@/db/schema";
-import { PRO_PIX_ACCESS_DAYS } from "@/lib/plans";
+import { PRO_MONTHLY_PRICE_CENTS, PRO_PIX_ACCESS_DAYS } from "@/lib/plans";
 import {
   localSubscriptionStatus,
-  stripeBillingConfigured,
+  retrieveSubscription,
+  stripeExpectedLivemode,
+  stripeWebhookConfigured,
   stripeWebhookSecret,
   subscriptionHasProPrice,
   verifyStripeWebhook,
@@ -17,7 +19,6 @@ export const runtime = "nodejs";
 
 const MAX_WEBHOOK_BYTES = 1024 * 1024;
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
-const DAY_MS = 24 * 60 * 60 * 1000;
 
 function stringId(value: unknown): string | null {
   if (typeof value === "string" && value) return value;
@@ -38,7 +39,7 @@ function metadataValue(object: Record<string, unknown>, key: string): string | n
  * syncSubscription depois que a Stripe confirma status `active` e o Price
  * esperado do Pro.
  */
-async function attachCheckoutToUser(object: Record<string, unknown>) {
+async function attachCheckoutToUser(object: Record<string, unknown>): Promise<string | null> {
   const userId = typeof object.client_reference_id === "string" ? object.client_reference_id : null;
   const subscriptionId = stringId(object.subscription);
   const mode = typeof object.mode === "string" ? object.mode : null;
@@ -52,7 +53,7 @@ async function attachCheckoutToUser(object: Record<string, unknown>) {
     purchaseType !== "subscription" ||
     plan !== "pro"
   ) {
-    return;
+    return null;
   }
 
   await db
@@ -63,15 +64,34 @@ async function attachCheckoutToUser(object: Record<string, unknown>) {
       updatedAt: new Date(),
     })
     .where(eq(user.id, userId));
+
+  return subscriptionId;
 }
 
 async function grantPaidPixAccess(object: Record<string, unknown>) {
   const checkoutSessionId = typeof object.id === "string" ? object.id : null;
   const userId = typeof object.client_reference_id === "string" ? object.client_reference_id : null;
   const paymentStatus = typeof object.payment_status === "string" ? object.payment_status : null;
+  const mode = typeof object.mode === "string" ? object.mode : null;
+  const amountTotal = typeof object.amount_total === "number" ? object.amount_total : null;
+  const currency = typeof object.currency === "string" ? object.currency.toLowerCase() : null;
   const purchaseType = metadataValue(object, "purchaseType");
+  const plan = metadataValue(object, "plan");
+  const accessDays = metadataValue(object, "accessDays");
 
-  if (!checkoutSessionId || !userId || paymentStatus !== "paid" || purchaseType !== "pix_30d") return;
+  if (
+    !checkoutSessionId ||
+    !userId ||
+    paymentStatus !== "paid" ||
+    mode !== "payment" ||
+    amountTotal !== PRO_MONTHLY_PRICE_CENTS ||
+    currency !== "brl" ||
+    purchaseType !== "pix_30d" ||
+    plan !== "pro" ||
+    accessDays !== String(PRO_PIX_ACCESS_DAYS)
+  ) {
+    return;
+  }
 
   await db.transaction(async (tx) => {
     const inserted = await tx
@@ -89,31 +109,22 @@ async function grantPaidPixAccess(object: Record<string, unknown>) {
     // async_payment_succeeded. Apenas a primeira confirmação paga concede dias.
     if (inserted.length === 0) return;
 
-    const [current] = await tx
-      .select({ proAccessUntil: user.proAccessUntil })
-      .from(user)
-      .where(eq(user.id, userId))
-      .limit(1);
-
-    if (!current) throw new Error("Pix checkout references an unknown user");
-
-    const now = new Date();
-    const base = current.proAccessUntil && current.proAccessUntil.getTime() > now.getTime()
-      ? current.proAccessUntil
-      : now;
-    const proAccessUntil = new Date(base.getTime() + PRO_PIX_ACCESS_DAYS * DAY_MS);
-
-    await tx
+    const [updated] = await tx
       .update(user)
       .set({
         plan: "pro",
         subscriptionStatus: "inactive",
         subscriptionProvider: "stripe-pix",
         externalSubscriptionId: null,
-        proAccessUntil,
-        updatedAt: now,
+        // A atualização é atômica no PostgreSQL: duas compras Pix diferentes
+        // confirmadas ao mesmo tempo somam 30 dias cada, sem perder crédito.
+        proAccessUntil: sql`greatest(coalesce(${user.proAccessUntil}, now()), now()) + (${PRO_PIX_ACCESS_DAYS} * interval '1 day')`,
+        updatedAt: new Date(),
       })
-      .where(eq(user.id, userId));
+      .where(eq(user.id, userId))
+      .returning({ id: user.id });
+
+    if (!updated) throw new Error("Pix checkout references an unknown user");
   });
 }
 
@@ -141,14 +152,25 @@ async function syncSubscription(subscription: StripeSubscription) {
   await db.update(user).set(values).where(eq(user.externalSubscriptionId, subscription.id));
 }
 
+async function syncCurrentSubscription(object: Record<string, unknown>) {
+  const subscriptionId = typeof object.id === "string" ? object.id : null;
+  if (!subscriptionId) throw new Error("Stripe subscription event is missing an id");
+
+  // A Stripe não garante ordem de entrega de webhooks. Recuperar o objeto atual
+  // evita que um evento antigo entregue atrasado reative ou cancele um plano com
+  // base em um snapshot obsoleto.
+  const currentSubscription = await retrieveSubscription(subscriptionId);
+  await syncSubscription(currentSubscription);
+}
+
 export async function POST(request: Request) {
   const contentLength = Number(request.headers.get("content-length") || "0");
   if (Number.isFinite(contentLength) && contentLength > MAX_WEBHOOK_BYTES) {
     return Response.json({ ok: false, error: "payload_too_large" }, { status: 413, headers: NO_STORE_HEADERS });
   }
 
-  if (!stripeBillingConfigured()) {
-    return Response.json({ ok: false, error: "billing_not_configured" }, { status: 503, headers: NO_STORE_HEADERS });
+  if (!stripeWebhookConfigured()) {
+    return Response.json({ ok: false, error: "webhook_not_configured" }, { status: 503, headers: NO_STORE_HEADERS });
   }
 
   try {
@@ -170,11 +192,21 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "invalid_signature" }, { status: 400, headers: NO_STORE_HEADERS });
   }
 
+  const expectedLivemode = stripeExpectedLivemode();
+  if (expectedLivemode !== null && event.livemode !== expectedLivemode) {
+    console.warn("stripe_webhook_rejected", "event_mode_mismatch");
+    return Response.json({ ok: false, error: "event_mode_mismatch" }, { status: 400, headers: NO_STORE_HEADERS });
+  }
+
   try {
     await ensureDatabaseSchema();
 
     if (event.type === "checkout.session.completed") {
-      await attachCheckoutToUser(event.data.object);
+      const subscriptionId = await attachCheckoutToUser(event.data.object);
+      if (subscriptionId) {
+        const currentSubscription = await retrieveSubscription(subscriptionId);
+        await syncSubscription(currentSubscription);
+      }
       await grantPaidPixAccess(event.data.object);
     }
 
@@ -187,7 +219,7 @@ export async function POST(request: Request) {
       event.type === "customer.subscription.updated" ||
       event.type === "customer.subscription.deleted"
     ) {
-      await syncSubscription(event.data.object as unknown as StripeSubscription);
+      await syncCurrentSubscription(event.data.object);
     }
 
     return Response.json({ received: true }, { headers: NO_STORE_HEADERS });

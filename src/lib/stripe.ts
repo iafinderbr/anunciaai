@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/site";
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
 const TEST_PRO_PRICE_ID = "price_1U5ofhBw7MQYFAhHe43J3ERq";
 const WEBHOOK_TOLERANCE_SECONDS = 300;
+const STRIPE_REQUEST_TIMEOUT_MS = 10_000;
 
 export type StripeSubscriptionStatus =
   | "inactive"
@@ -12,6 +13,8 @@ export type StripeSubscriptionStatus =
   | "active"
   | "past_due"
   | "canceled";
+
+type StripeKeyMode = "test" | "live" | "unknown";
 
 type StripeErrorResponse = {
   error?: {
@@ -25,6 +28,8 @@ export type StripeCheckoutSession = {
   url: string | null;
   mode?: string | null;
   payment_status?: string | null;
+  amount_total?: number | null;
+  currency?: string | null;
   client_reference_id?: string | null;
   subscription?: string | { id: string } | null;
   metadata?: Record<string, string> | null;
@@ -55,6 +60,37 @@ function stripeSecretKey(): string {
   return key;
 }
 
+function stripeKeyModeFromValue(key: string): StripeKeyMode {
+  if (key.startsWith("sk_test_") || key.startsWith("rk_test_")) return "test";
+  if (key.startsWith("sk_live_") || key.startsWith("rk_live_")) return "live";
+  return "unknown";
+}
+
+function stripeKeyMode(): StripeKeyMode {
+  return stripeKeyModeFromValue(stripeSecretKey());
+}
+
+/**
+ * Em Vercel, Preview só pode usar sandbox e Production só pode usar live.
+ * Fora da Vercel (CI/local), não forçamos um modo para não quebrar testes e
+ * desenvolvimento isolado.
+ */
+function stripeEnvironmentMatchesKey(): boolean {
+  const environment = process.env.VERCEL_ENV;
+  const mode = stripeKeyMode();
+
+  if (environment === "production") return mode === "live";
+  if (environment === "preview") return mode === "test";
+  return true;
+}
+
+export function stripeExpectedLivemode(): boolean | null {
+  const mode = stripeKeyMode();
+  if (mode === "live") return true;
+  if (mode === "test") return false;
+  return null;
+}
+
 export function stripeWebhookSecret(): string {
   const secret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
   if (!secret) throw new Error("STRIPE_WEBHOOK_SECRET is not configured");
@@ -66,16 +102,37 @@ export function stripeProPriceId(): string {
   if (configured) return configured;
 
   const key = stripeSecretKey();
-  if (key.includes("_test_")) return TEST_PRO_PRICE_ID;
+  if (stripeKeyModeFromValue(key) === "test") return TEST_PRO_PRICE_ID;
 
   throw new Error("STRIPE_PRO_PRICE_ID is required when using a live Stripe key");
+}
+
+export function stripeApiConfigured(): boolean {
+  try {
+    stripeSecretKey();
+    return stripeEnvironmentMatchesKey();
+  } catch {
+    return false;
+  }
+}
+
+export function stripeWebhookConfigured(): boolean {
+  try {
+    stripeSecretKey();
+    stripeProPriceId();
+    stripeWebhookSecret();
+    return stripeEnvironmentMatchesKey();
+  } catch {
+    return false;
+  }
 }
 
 export function stripeBillingConfigured(): boolean {
   try {
     stripeSecretKey();
     stripeProPriceId();
-    return true;
+    stripeWebhookSecret();
+    return stripeEnvironmentMatchesKey();
   } catch {
     return false;
   }
@@ -86,7 +143,9 @@ export function stripePixConfigured(): boolean {
 
   try {
     stripeSecretKey();
-    return true;
+    stripeProPriceId();
+    stripeWebhookSecret();
+    return stripeEnvironmentMatchesKey();
   } catch {
     return false;
   }
@@ -102,6 +161,7 @@ async function stripeRequest<T>(path: string, options: { method?: "GET" | "POST"
     },
     body: options.body,
     cache: "no-store",
+    signal: AbortSignal.timeout(STRIPE_REQUEST_TIMEOUT_MS),
   });
 
   const payload = (await response.json()) as T & StripeErrorResponse;
