@@ -2,6 +2,7 @@ import { desc, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { ensureDatabaseSchema } from "@/db/ensure-schema";
 import { generations } from "@/db/schema";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -45,11 +46,6 @@ function str(value: unknown, max: number): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
-function requestKey(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || "unknown";
-}
-
 function pruneRateLimit(now: number) {
   if (rateLimit.size < RATE_LIMIT_PRUNE_AT) return;
 
@@ -61,15 +57,14 @@ function pruneRateLimit(now: number) {
   if (rateLimit.size > RATE_LIMIT_HARD_CAP) rateLimit.clear();
 }
 
-function isRateLimited(request: Request): boolean {
+function isRateLimited(userId: string): boolean {
   const now = Date.now();
   pruneRateLimit(now);
 
-  const key = requestKey(request);
-  const current = rateLimit.get(key);
+  const current = rateLimit.get(userId);
 
   if (!current || current.resetAt <= now) {
-    rateLimit.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    rateLimit.set(userId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return false;
   }
 
@@ -144,7 +139,15 @@ export async function POST(request: Request) {
       );
     }
 
-    if (isRateLimited(request)) {
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session) {
+      return Response.json(
+        { ok: false, error: "unauthorized" },
+        { status: 401, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    if (isRateLimited(session.user.id)) {
       return Response.json(
         { ok: false, error: "rate_limited" },
         { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
