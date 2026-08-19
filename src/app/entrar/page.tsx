@@ -37,7 +37,15 @@ const accountBenefits = [
 
 function safeCallbackURL(value?: string) {
   if (!value || !value.startsWith("/") || value.startsWith("//")) return "/conta";
-  return value;
+
+  try {
+    const base = new URL(SITE_URL);
+    const target = new URL(value, base);
+    if (target.origin !== base.origin) return "/conta";
+    return `${target.pathname}${target.search}${target.hash}`;
+  } catch {
+    return "/conta";
+  }
 }
 
 function socialErrorMessage(error?: string) {
