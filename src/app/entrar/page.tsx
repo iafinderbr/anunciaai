@@ -76,7 +76,7 @@ export default async function SignInPage({
   const facebookErrorURL = `/entrar?modo=${mode}&erro=facebook&voltar=${encodedReturn}`;
 
   return (
-    <main className="min-h-screen bg-[#10110f] text-white">
+    <main className="min-h-screen bg-[#0d0e11] text-white">
       <div className="mx-auto flex min-h-screen w-full max-w-[1480px] flex-col px-5 sm:px-8 lg:px-12">
         <header className="flex h-[76px] items-center justify-between border-b border-white/[0.07]">
           <Wordmark />
@@ -96,6 +96,7 @@ export default async function SignInPage({
               </div>
 
               <div className="border-t border-[#171714]/12 pt-7">
+                <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#171714]/38">Entre no seu workspace.</p>
                 <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
                   {["Informe o produto", "Escolha o destino", "Revise antes de usar"].map((item, index) => (
                     <div key={item} className="flex items-center gap-4">
@@ -109,12 +110,14 @@ export default async function SignInPage({
 
             <div className="flex min-h-[540px] items-center p-6 sm:p-10 lg:p-12">
               <div className="mx-auto w-full max-w-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-brand-300">
-                  {isRegister ? "Criar conta" : "Acessar conta"}
-                </p>
-                <h1 className="mt-4 text-[2.45rem] font-semibold leading-[1] tracking-[-0.055em] text-white sm:text-[2.8rem]">
-                  {isRegister ? "Crie sua conta gratuita." : "Bem-vindo de volta."}
-                </h1>
+                <div className="border-l-2 border-brand-500 pl-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-brand-300">
+                    {isRegister ? "Criar conta" : "Acessar conta"}
+                  </p>
+                  <h1 className="mt-4 text-[2.45rem] font-semibold leading-[1] tracking-[-0.055em] text-white sm:text-[2.8rem]">
+                    {isRegister ? "Crie sua conta gratuita." : "Bem-vindo de volta."}
+                  </h1>
+                </div>
                 <p className="mt-4 text-sm leading-6 text-white/44">
                   {isRegister
                     ? "Use Google pessoal ou Google Workspace. Você começa no modo Grátis e não precisa informar cartão."
