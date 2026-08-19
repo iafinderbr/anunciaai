@@ -1,0 +1,130 @@
+/*
+ * Acabamento final do sistema visual: remove vestígios claros e arredondados
+ * da versão anterior sem alterar a estrutura da cobrança autenticada.
+ */
+
+html {
+  color-scheme: dark;
+  scrollbar-color: #34353a #0b0c0e;
+}
+
+/* O shell usa linhas e contraste; sombras grandes ficam restritas a overlays. */
+header.sticky[class*="shadow"] {
+  box-shadow: none !important;
+}
+
+main#topo > section:first-child .interactive-lift,
+main:has(> section#geradores) > section:first-child .interactive-lift {
+  box-shadow: none !important;
+}
+
+/* A antiga regra clara das landings nunca deve voltar a ganhar do tema do gerador. */
+main#topo > section:first-child:has(#ferramenta) #ferramenta form,
+main#topo > section:first-child:has(#ferramenta) #ferramenta .surface-premium,
+main#topo > section:first-child:has(#ferramenta) #ferramenta .product-surface {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  background: #111216 !important;
+  color: #ededE8 !important;
+  box-shadow: none !important;
+}
+
+/* Home: prévia do produto sem os últimos elementos brancos da linguagem antiga. */
+aside[aria-label="Prévia do workspace AnunciaAI"] > div:last-child {
+  border-radius: 6px !important;
+}
+
+aside[aria-label="Prévia do workspace AnunciaAI"] span.bg-white.font-extrabold {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 3px !important;
+  background: #15161a !important;
+  color: #f3f3ef !important;
+}
+
+aside[aria-label="Prévia do workspace AnunciaAI"] span.bg-white.font-bold {
+  border-radius: 3px !important;
+  background: #f1662a !important;
+  color: #fff !important;
+}
+
+/* Ações públicas ficam mais retas e coerentes com o workspace. */
+main#topo :is(a, button)[class*="rounded-[8px]"],
+main:has(> section#geradores) :is(a, button)[class*="rounded-[8px]"] {
+  border-radius: 4px !important;
+}
+
+main#topo [class*="rounded-[10px]"],
+main:has(> section#geradores) [class*="rounded-[10px]"] {
+  border-radius: 5px !important;
+}
+
+main#topo [class*="rounded-[12px]"],
+main:has(> section#geradores) [class*="rounded-[12px]"] {
+  border-radius: 6px !important;
+}
+
+main:has(> section#geradores) #geradores [class*="rounded-[8px]"] {
+  border-radius: 4px !important;
+}
+
+/* Conteúdo abaixo dos geradores: menos cards, menos branco e menos raio. */
+main#topo > section:first-child:has(#ferramenta) ~ section :is(.rounded-xl, .rounded-2xl, .rounded-3xl),
+main#ferramenta > article :is(.rounded-xl, .rounded-2xl, .rounded-3xl),
+main#topo:has(#guias-titulo) :is(.rounded-xl, .rounded-2xl, .rounded-3xl),
+main#ferramenta:not(:has(> article)) :is(.rounded-xl, .rounded-2xl, .rounded-3xl),
+main:has(> section#geradores) #geradores :is(.rounded-xl, .rounded-2xl, .rounded-3xl) {
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section .rounded-full,
+main#ferramenta > article .rounded-full,
+main#topo:has(#guias-titulo) .rounded-full,
+main#ferramenta:not(:has(> article)) .rounded-full,
+main:has(> section#geradores) #geradores .rounded-full {
+  border-radius: 3px !important;
+}
+
+/* Branco deixa de ser a ação secundária padrão em páginas públicas escuras. */
+main#topo > section:first-child:has(#ferramenta) ~ section :is(a, button).bg-white,
+main#ferramenta > article :is(a, button).bg-white,
+main#topo:has(#guias-titulo) :is(a, button).bg-white,
+main#ferramenta:not(:has(> article)) :is(a, button).bg-white,
+main:has(> section#geradores) #geradores :is(a, button).bg-white {
+  border-color: rgba(255, 255, 255, 0.13) !important;
+  background: #17181c !important;
+  color: rgba(243, 243, 239, 0.78) !important;
+  box-shadow: none !important;
+}
+
+main#topo > section:first-child:has(#ferramenta) ~ section :is(a, button).bg-white:hover,
+main#ferramenta > article :is(a, button).bg-white:hover,
+main#topo:has(#guias-titulo) :is(a, button).bg-white:hover,
+main#ferramenta:not(:has(> article)) :is(a, button).bg-white:hover,
+main:has(> section#geradores) #geradores :is(a, button).bg-white:hover {
+  border-color: rgba(241, 102, 42, 0.45) !important;
+  background: #1c1d22 !important;
+  color: #fff !important;
+}
+
+/* Hub de ferramentas: cartões trabalham como grade editorial, não como cards flutuantes. */
+main:has(> section#geradores) #geradores :is(article, li > a)[class*="shadow"] {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+main:has(> section#geradores) #geradores :is(article, li > a):hover {
+  transform: none !important;
+}
+
+/* Guias e institucionais usam linhas/superfícies; o laranja marca estado, não decoração excessiva. */
+main#ferramenta > article :is(.shadow-card, .shadow-lift),
+main#topo:has(#guias-titulo) :is(.shadow-card, .shadow-lift),
+main#ferramenta:not(:has(> article)) :is(.shadow-card, .shadow-lift) {
+  box-shadow: none !important;
+}
+
+/* Mantém foco de teclado visível e coerente em todo o shell escuro. */
+main#topo :is(a, button, input, select, textarea):focus-visible,
+main#ferramenta :is(a, button, input, select, textarea):focus-visible {
+  outline-color: #f1662a;
+}

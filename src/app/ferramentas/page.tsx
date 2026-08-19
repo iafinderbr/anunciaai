@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChannelStrip } from "@/components/channel-showcase";
 import { SiteFooter } from "@/components/sections/pricing";
-import { tools } from "@/components/sections/tools";
+import { tools, ToolVisual } from "@/components/sections/tools";
 import { SiteHeader } from "@/components/site-header";
 import { ToolsQuickActions } from "@/components/tools/tools-quick-actions";
 import { SITE_URL } from "@/lib/site";
@@ -60,7 +60,7 @@ const channelToolHrefs = new Set([
 const channelTools = tools.filter((tool) => channelToolHrefs.has(tool.href));
 const contentTools = tools.filter((tool) => !channelToolHrefs.has(tool.href));
 
-function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[number]; index: number; compact?: boolean }) {
+function ToolCard({ tool, compact = false }: { tool: (typeof tools)[number]; compact?: boolean }) {
   return (
     <Link
       href={tool.href}
@@ -68,14 +68,7 @@ function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[numbe
         compact ? "min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 p-6" : "min-h-[240px] grid-cols-[60px_minmax(0,1fr)] gap-6 p-7 sm:p-8"
       }`}
     >
-      <span
-        aria-hidden="true"
-        className={`grid place-items-center self-start rounded-[8px] text-[11px] font-bold ${compact ? "size-11" : "size-12"} ${
-          index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f2f2ef] text-ink"
-        }`}
-      >
-        {tool.short}
-      </span>
+      <ToolVisual icon={tool.icon} compact={compact} />
 
       <span className="min-w-0 pr-9">
         <span className="block text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">{tool.eyebrow}</span>
@@ -115,10 +108,10 @@ export default function FerramentasPage() {
                   Central de ferramentas
                 </div>
                 <h1 className="mt-7 max-w-4xl text-[3.6rem] font-semibold leading-[0.92] tracking-[-0.07em] text-white sm:text-[4.8rem] lg:text-[5.3rem]">
-                  Escolha o canal. Depois escolha o trabalho.
+                  Canal na lateral. Trabalho no centro.
                 </h1>
                 <p className="mt-8 max-w-2xl text-[17px] leading-8 text-white/54 sm:text-[19px]">
-                  Comece pelo lugar onde você vai publicar ou use uma ferramenta específica para título, descrição, nome e palavras-chave.
+                  Escolha onde publicar pela navegação lateral e mantenha a biblioteca central focada nas tarefas de conteúdo que você quer resolver.
                 </p>
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                   <a href="#geradores" className="interactive-lift inline-flex min-h-14 items-center justify-center rounded-[8px] bg-brand-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand-600">
@@ -169,12 +162,12 @@ export default function FerramentasPage() {
               <div className="max-w-4xl">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Biblioteca</p>
                 <h2 id="geradores-titulo" className="mt-5 text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.055em] text-ink sm:text-[3.45rem]">
-                  Canais primeiro. Ferramentas de apoio depois.
+                  Ferramentas para cada parte do conteúdo.
                 </h2>
               </div>
               <div>
                 <p className="text-[15px] leading-7 text-muted">
-                  A biblioteca continua completa, mas a navegação prioriza as decisões que mais importam: onde publicar e o que criar.
+                  Em telas amplas, os canais permanecem acessíveis pela dock lateral. Aqui ficam as ferramentas de apoio para trabalhar uma parte específica do anúncio.
                 </p>
                 <Link href="/guias" className="mt-4 inline-flex items-center gap-2 border-b border-brand-700 pb-1 text-sm font-semibold text-brand-700 hover:text-brand-800">
                   Ver guias relacionados <span aria-hidden="true">→</span>
@@ -182,21 +175,23 @@ export default function FerramentasPage() {
               </div>
             </div>
 
-            <div className="mt-16 flex items-end justify-between gap-6 border-b border-line pb-5">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">Por canal</p>
-                <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-ink">Onde você vai publicar?</h3>
+            <div className="min-[1380px]:hidden">
+              <div className="mt-16 flex items-end justify-between gap-6 border-b border-line pb-5">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">Por canal</p>
+                  <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-ink">Onde você vai publicar?</h3>
+                </div>
+                <span className="text-xs text-muted">{channelTools.length} opções</span>
               </div>
-              <span className="text-xs text-muted">{channelTools.length} opções</span>
+
+              <ul className="mt-7 grid gap-5 lg:grid-cols-2">
+                {channelTools.map((tool) => (
+                  <li key={tool.href}><ToolCard tool={tool} /></li>
+                ))}
+              </ul>
             </div>
 
-            <ul className="mt-7 grid gap-5 lg:grid-cols-2">
-              {channelTools.map((tool, index) => (
-                <li key={tool.href}><ToolCard tool={tool} index={index} /></li>
-              ))}
-            </ul>
-
-            <div className="mt-20 flex items-end justify-between gap-6 border-b border-line pb-5">
+            <div className="mt-16 min-[1380px]:mt-20 flex items-end justify-between gap-6 border-b border-line pb-5">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">Por objetivo</p>
                 <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-ink">Refine uma parte do conteúdo.</h3>
@@ -205,15 +200,15 @@ export default function FerramentasPage() {
             </div>
 
             <ul className="mt-7 grid gap-5 md:grid-cols-2">
-              {contentTools.map((tool, index) => (
-                <li key={tool.href}><ToolCard tool={tool} index={index + 2} compact /></li>
+              {contentTools.map((tool) => (
+                <li key={tool.href}><ToolCard tool={tool} compact /></li>
               ))}
             </ul>
 
             <div className="mt-12 flex flex-col gap-5 border-y border-line py-7 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-base font-semibold text-ink">Ainda não sabe qual usar?</p>
-                <p className="mt-2 text-sm leading-6 text-muted">Comece pelo gerador completo e escolha um canal específico depois.</p>
+                <p className="mt-2 text-sm leading-6 text-muted">Comece pelo gerador completo e escolha um canal específico pela lateral quando precisar.</p>
               </div>
               <Link href="/#ferramenta" className="inline-flex min-h-12 shrink-0 items-center gap-2 rounded-[8px] bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600">
                 Abrir gerador completo <span aria-hidden="true">→</span>

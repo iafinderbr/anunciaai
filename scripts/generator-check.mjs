@@ -7,12 +7,14 @@ const dataFile = path.join(ROOT, "src", "lib", "generator-data.ts");
 const generatorToolFile = path.join(ROOT, "src", "components", "generator", "generator-tool.tsx");
 const keywordsToolFile = path.join(ROOT, "src", "components", "generator", "product-keywords-tool.tsx");
 const statsApiFile = path.join(ROOT, "src", "app", "api", "generations", "route.ts");
+const advancedApiFile = path.join(ROOT, "src", "app", "api", "generate", "route.ts");
 
 const generator = fs.readFileSync(generatorFile, "utf8");
 const data = fs.readFileSync(dataFile, "utf8");
 const generatorTool = fs.readFileSync(generatorToolFile, "utf8");
 const keywordsTool = fs.readFileSync(keywordsToolFile, "utf8");
 const statsApi = fs.readFileSync(statsApiFile, "utf8");
+const advancedApi = fs.readFileSync(advancedApiFile, "utf8");
 const source = `${generator}\n${data}`;
 const failures = [];
 
@@ -111,6 +113,16 @@ const requiredPrivacyPatterns = [
     statsApi,
   ],
   [
+    "POST do contador exige sessão autenticada",
+    "auth.api.getSession({ headers: request.headers })",
+    statsApi,
+  ],
+  [
+    "rate limit do contador usa usuário autenticado",
+    "isRateLimited(session.user.id)",
+    statsApi,
+  ],
+  [
     "API rejeita payload com campos além de channel",
     'if (keys.length !== 1 || keys[0] !== "channel")',
     statsApi,
@@ -138,6 +150,17 @@ if (/fetch\s*\(\s*["']\/api\/generate["']/.test(generatorTool)) {
   failures.push("Privacidade: o gerador principal passou a enviar conteúdo para /api/generate.");
 }
 
+for (const [label, pattern] of [
+  ["API generativa opcional exige sessão", "auth.api.getSession({ headers: request.headers })"],
+  ["API generativa opcional exige plano efetivo", "effectivePlan("],
+  ["API generativa opcional considera validade Pix", "session.user.proAccessUntil"],
+  ["API generativa opcional bloqueia contas sem Pro", 'error: "pro_required"'],
+  ["API generativa opcional limita por usuário", "isRateLimited(session.user.id)"],
+  ["API generativa opcional continua same-origin", "sameOrigin(request)"],
+]) {
+  if (!advancedApi.includes(pattern)) failures.push(`Proteção da API generativa ausente: ${label}`);
+}
+
 if (/\bid\s*:\s*generations\.id\b/.test(statsApi)) {
   failures.push("Privacidade: a API pública de estatísticas voltou a expor o id interno das gerações.");
 }
@@ -156,5 +179,5 @@ if (failures.length) {
 }
 
 console.log(
-  "Gerador OK: proteções contra promessas, inferência insegura de condição, destinos de palavras-chave e exposição indevida de dados estão presentes.",
+  "Gerador OK: proteções contra promessas, inferência insegura de condição, destinos de palavras-chave, APIs autenticadas e exposição indevida de dados estão presentes.",
 );

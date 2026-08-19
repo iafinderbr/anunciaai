@@ -1,16 +1,17 @@
 # Contas, Grátis, Pro e Premium
 
-Este documento registra o estado atual da área de contas e planos do AnunciaAI. Privacidade continua sendo padrão, recursos pagos nunca são liberados apenas pelo navegador e cobrança só poderá entrar quando checkout, webhooks e estados de assinatura estiverem implementados e testados.
+Este documento registra o estado atual da área de contas, modos e cobrança do AnunciaAI. Privacidade continua sendo padrão, recursos pagos nunca são liberados apenas pelo navegador e a Stripe é a fonte de verdade para o estado comercial do Pro.
 
 ## Princípios
 
-- Os geradores atuais fazem parte do plano Grátis e exigem conta autenticada.
+- Os geradores atuais fazem parte do modo Grátis e exigem conta autenticada.
 - O Grátis custa R$ 0 e não exige cartão.
 - Histórico e biblioteca de produtos são opt-in: conteúdo só é salvo quando o usuário escolhe salvar.
 - Google continua como provider principal; Facebook permanece condicional às credenciais da Meta.
 - O plano efetivo é calculado no servidor.
-- Nenhuma tela pode apresentar checkout, cartão ou assinatura paga como disponíveis antes da integração real.
-- O AnunciaAI não deve armazenar número completo de cartão ou CVV.
+- A Home pública não exibe tabela de preços; contratação e gerenciamento ficam dentro da conta em **Outros modos**.
+- O navegador nunca escolhe o Price ID nem promove a própria conta para Pro.
+- O AnunciaAI não armazena número completo de cartão ou CVV; o pagamento ocorre no Checkout hospedado pela Stripe.
 
 ## Grátis
 
@@ -22,32 +23,40 @@ Disponível por **R$ 0/mês**.
 - Biblioteca opt-in de até 20 produtos.
 - Sem cartão de crédito.
 
-## Pro — acesso antecipado
+## Pro — assinatura mensal
 
-O Pro está disponível como **acesso antecipado sem cobrança**.
+O Pro custa **R$ 19,90/mês** por conta.
 
-A ativação é explícita na área `/conta/plano`. O servidor grava:
+A contratação começa somente depois do login, em `/conta/plano`, apresentado na interface como **Outros modos**.
 
-- `plan = pro`;
-- `subscriptionStatus = trialing`;
-- `subscriptionProvider = early-access`;
-- nenhum identificador de assinatura externa;
-- nenhuma cobrança.
+Fluxo:
 
-O usuário pode voltar ao Grátis pela mesma área. O status `trialing` representa somente acesso antecipado e não deve ser confundido com uma assinatura comercial.
+1. usuário autenticado escolhe Pro;
+2. `/api/stripe/checkout` valida sessão e mesma origem;
+3. o servidor cria uma sessão de Stripe Checkout em modo `subscription` usando o Price ID configurado no servidor;
+4. a pessoa paga na página hospedada pela Stripe;
+5. o retorno do navegador é apenas informativo e não libera recursos;
+6. `/api/stripe/webhook` valida a assinatura criptográfica do evento e sincroniza a assinatura no banco;
+7. o Pro só fica efetivo quando a assinatura correta estiver com status `active` e contiver o preço esperado;
+8. cancelamento ou mudança de status no Stripe atualiza o acesso pelo webhook.
+
+Campos persistidos no usuário:
+
+- `plan`;
+- `subscriptionStatus`;
+- `subscriptionProvider`;
+- `externalSubscriptionId`.
+
+O provider comercial é `stripe`. A antiga ativação manual de acesso antecipado foi bloqueada.
 
 ### Recursos ativos do Pro
 
-- Tudo do plano Grátis.
+- Tudo do modo Grátis.
 - Laboratório em `/conta/pro` para gerar e comparar 3 versões do mesmo produto.
 - Mais opções de título para comparação.
-- Acesso antecipado aos próximos recursos Pro que forem realmente implementados.
+- Acesso aos recursos Pro que estiverem realmente implementados.
 
 O laboratório usa o motor existente do AnunciaAI e trabalha apenas com os dados informados pelo usuário. A revisão final continua obrigatória.
-
-### Preço comercial futuro
-
-A referência de produto continua em **R$ 19,90/mês**, mas esse valor **não é cobrado hoje**. Ele só poderá virar preço contratável quando existir checkout real, confirmação server-side e fluxo de assinatura testado.
 
 ## Premium — planejado
 
@@ -58,7 +67,7 @@ O Premium continua planejado. Direção de produto, ainda não disponível:
 - Padrões e voz da marca.
 - Recursos avançados para catálogos.
 
-Esses itens não devem ser apresentados como funcionalidades atuais nem como promessa de data.
+Esses itens não devem ser apresentados como funcionalidades atuais nem como promessa de data ou preço.
 
 ## Autenticação
 
@@ -87,22 +96,56 @@ A autorização fica centralizada em `src/lib/plans.ts`.
 
 - planos: `free`, `pro`, `premium`;
 - `free` é o fallback seguro;
-- `trialing` libera o Pro somente para acesso antecipado;
-- `active` fica preparado para uma assinatura comercial confirmada no futuro;
-- `past_due`, `canceled`, `inactive` ou valores inválidos não devem conceder acesso pago;
+- somente `subscriptionStatus = active` concede acesso a um plano pago;
+- `past_due`, `canceled`, `inactive`, `trialing` ou valores inválidos não concedem Pro;
 - Premium não possui mecanismo público de ativação.
 
 A área `/conta/pro` valida sessão e plano efetivo no servidor. Usuário sem Pro/Premium é redirecionado para `/conta/plano`.
 
-## API de acesso antecipado
+## Endpoints de cobrança
 
-`/api/account/plan`:
+### `/api/stripe/checkout`
 
+- aceita somente `POST`;
 - exige sessão;
-- exige mesma origem para mutações;
-- `POST` ativa Pro em `trialing` com provider `early-access`;
-- `DELETE` restaura Grátis/inactive;
-- respostas deixam explícito `billing: false`.
+- exige mesma origem;
+- não recebe Price ID do cliente;
+- usa somente o preço configurado no servidor;
+- cria Checkout hospedado da Stripe em modo assinatura.
+
+### `/api/stripe/webhook`
+
+- recebe o corpo bruto da requisição;
+- valida `Stripe-Signature` usando HMAC SHA-256 e comparação timing-safe;
+- aplica tolerância temporal;
+- processa apenas os eventos necessários de checkout e assinatura;
+- valida que a assinatura usa o preço esperado antes de liberar Pro;
+- é a fonte de verdade para ativação, cancelamento e mudanças de status.
+
+### `/api/stripe/portal`
+
+- exige sessão e mesma origem;
+- só abre portal para uma assinatura Stripe pertencente à conta autenticada;
+- permite que o cliente gerencie pagamento e assinatura no Customer Portal da Stripe.
+
+### `/api/account/plan`
+
+A rota antiga de ativação manual permanece apenas como compatibilidade defensiva. Mutações de plano agora retornam bloqueio e orientam o fluxo para a Stripe; ela não pode mais conceder Pro diretamente.
+
+## Configuração Stripe
+
+Segredos obrigatórios no ambiente do servidor/Vercel:
+
+- `STRIPE_SECRET_KEY`;
+- `STRIPE_WEBHOOK_SECRET`.
+
+Configuração de preço:
+
+- `STRIPE_PRO_PRICE_ID` pode definir o Price ID do ambiente;
+- nunca usar prefixo `NEXT_PUBLIC_` para segredos;
+- sandbox e produção usam IDs e chaves diferentes.
+
+O Price ID jamais deve ser aceito em JSON ou formulário enviado pelo navegador.
 
 ## Histórico e produtos
 
@@ -110,45 +153,36 @@ O contador público de gerações continua separado e recebe somente dados míni
 
 - Histórico: até 100 itens na implementação atual.
 - Produtos salvos: até 20 itens na implementação atual.
-- O Pro **não anuncia limites maiores enquanto as APIs ainda não implementarem esses limites**.
+- O Pro não anuncia limites maiores enquanto as APIs ainda não implementarem esses limites.
 
-## Pagamentos — ainda não ativos
-
-Não existe checkout, assinatura paga ou cobrança ativa.
-
-Fluxo obrigatório antes de abrir cobrança:
-
-1. usuário autenticado escolhe um plano;
-2. backend cria checkout no provedor;
-3. usuário conclui o pagamento no ambiente do provedor;
-4. webhook assinado confirma o estado;
-5. backend atualiza plano e assinatura;
-6. recursos comerciais são liberados pelo servidor;
-7. falha, cancelamento e renovação atualizam acesso automaticamente.
-
-Nunca liberar assinatura paga apenas porque o navegador retornou de uma página externa.
-
-## Estado da implementação
+## Estado da implementação V8
 
 1. Grátis: **ativo**.
 2. Google OAuth: **ativo**.
 3. Facebook OAuth: **código preparado, dependente de credenciais**.
 4. Histórico opt-in: **ativo**.
 5. Produtos salvos opt-in: **ativo**.
-6. Pro em acesso antecipado: **ativo sem cobrança**.
+6. Pro: **R$ 19,90/mês, fluxo Stripe implementado no código**.
 7. Área `/conta/pro`: **ativa e protegida**.
 8. Laboratório Pro com 3 versões: **ativo**.
 9. Premium: **planejado**.
-10. Checkout pago: **pendente**.
-11. Webhooks de assinatura: **pendentes**.
-12. Testes de cobrança, renovação, falha e cancelamento: **pendentes**.
+10. Stripe Checkout: **implementado**.
+11. Webhook de assinatura: **implementado e deve permanecer com segredo apenas no ambiente**.
+12. Customer Portal: **implementado**.
+13. Produção real: **depende de credenciais/Price ID live e validação final do fluxo em ambiente de produção**.
+
+## Validação sandbox
+
+Antes do merge para `main`, a branch V8 deve ser reimplantada como **Preview** com as variáveis Stripe de teste configuradas somente nesse ambiente. O webhook sandbox deve apontar para o domínio desse Preview durante os testes de checkout, ativação e cancelamento.
 
 ## Regras de CI
 
 - `/entrar`, `/conta`, `/conta/historico`, `/conta/produtos`, `/conta/plano` e `/conta/pro` devem permanecer `noindex`.
-- O Pro antecipado precisa manter `billing: false` e ativação server-side.
+- A área comercial pública não deve voltar a exibir tabela de preços.
+- Checkout precisa exigir sessão, mesma origem e preço server-side.
+- Webhook precisa validar assinatura e preço antes de liberar Pro.
+- A API antiga de plano não pode promover a conta manualmente.
 - Premium deve continuar identificado como planejado.
-- A interface não pode mostrar `Assinar agora` ou checkout disponível antes da integração real.
 - Rotas pessoais devem validar sessão e propriedade dos dados.
 - Segredos nunca podem ser versionados ou usar prefixo `NEXT_PUBLIC_`.
-- O `auth:check` deve validar autenticação, privacidade, acesso antecipado Pro e separação entre acesso antecipado e futura cobrança comercial.
+- O `auth:check` deve validar autenticação, privacidade, cobrança Stripe, Customer Portal e autorização server-side.

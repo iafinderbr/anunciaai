@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/sections/pricing";
 import { SiteHeader } from "@/components/site-header";
-import { PRO_FUTURE_PRICE_LABEL } from "@/lib/plans";
 import { SITE_URL } from "@/lib/site";
 
 const PATH = "/sobre";
@@ -77,11 +76,11 @@ export default function SobrePage() {
         <section aria-labelledby="transparencia-titulo" className="container-page py-14 sm:py-20">
           <div className="mx-auto max-w-5xl border border-line bg-white p-7 sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">Transparência</p>
-            <h2 id="transparencia-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Grátis disponível. Pro em acesso antecipado.</h2>
-            <p className="mt-4 text-[15px] leading-7 text-muted">Os geradores atuais fazem parte do plano Grátis. O Pro também está disponível em acesso antecipado sem cobrança e já inclui um laboratório exclusivo para comparar três versões do mesmo produto. Não há checkout, cartão ou assinatura paga nesta fase. O preço comercial de referência futuro é {PRO_FUTURE_PRICE_LABEL}/mês e só será usado quando a cobrança real estiver implementada e testada. O Premium continua planejado.</p>
+            <h2 id="transparencia-titulo" className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Comece pelo modo Grátis. Outros modos ficam na sua conta.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-muted">Os geradores atuais podem ser usados após o login no modo Grátis. Contas autenticadas também podem consultar outros modos e recursos adicionais dentro da própria área da conta. Assim, detalhes comerciais e gerenciamento de assinatura ficam separados das páginas públicas do produto. O Premium continua planejado.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link href="/#ferramenta" className="bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Usar o AnunciaAI grátis</Link>
-              <Link href="/entrar?callbackURL=/conta/plano" className="bg-brand-500 px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Ver acesso Pro</Link>
+              <Link href="/entrar" className="bg-brand-500 px-6 py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-600">Entrar na minha conta</Link>
               <Link href="/guias" className="border border-line-strong bg-white px-6 py-3.5 text-center text-sm font-semibold text-ink hover:border-brand-500 hover:text-brand-600">Explorar os guias</Link>
             </div>
           </div>

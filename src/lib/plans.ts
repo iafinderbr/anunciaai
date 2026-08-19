@@ -14,9 +14,11 @@ export const FEATURE_KEYS = [
 ] as const;
 export type FeatureKey = (typeof FEATURE_KEYS)[number];
 
-export const PRO_FUTURE_MONTHLY_PRICE_CENTS = 1990;
-export const PRO_FUTURE_PRICE_LABEL = "R$ 19,90";
-export const PRO_EARLY_ACCESS_LABEL = "Acesso antecipado sem cobrança";
+export const PRO_MONTHLY_PRICE_CENTS = 1990;
+export const PRO_PRICE_LABEL = "R$ 19,90";
+export const PRO_BILLING_LABEL = "R$ 19,90/mês";
+export const PRO_PIX_ACCESS_DAYS = 30;
+export const PRO_PIX_LABEL = "R$ 19,90 por 30 dias";
 
 export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: number; titleAlternatives: number }> = {
   free: { history: 100, savedProducts: 20, titleAlternatives: 1 },
@@ -25,10 +27,10 @@ export const PLAN_LIMITS: Record<PlanId, { history: number; savedProducts: numbe
 };
 
 export const PRO_FEATURES = [
-  "Tudo do plano Grátis",
+  "Tudo do modo Grátis",
   "Laboratório com 3 versões do mesmo produto",
   "Mais opções de título para comparação",
-  "Acesso antecipado aos próximos recursos Pro",
+  "Acesso aos próximos recursos Pro enquanto o acesso estiver válido",
 ] as const;
 
 export const PREMIUM_PLANNED_FEATURES = [
@@ -55,15 +57,23 @@ export function normalizePlan(value: unknown): PlanId {
   return typeof value === "string" && PLAN_IDS.includes(value as PlanId) ? (value as PlanId) : "free";
 }
 
+function hasTimedProAccess(value: unknown): boolean {
+  if (!value) return false;
+  const date = value instanceof Date ? value : new Date(typeof value === "string" || typeof value === "number" ? value : "");
+  return Number.isFinite(date.getTime()) && date.getTime() > Date.now();
+}
+
 /**
- * Pro em acesso antecipado usa `trialing`: não representa cobrança e existe
- * apenas para liberar recursos reais do produto durante a fase de lançamento.
- * Assinaturas comerciais futuras continuam exigindo `active` confirmado pelo servidor.
+ * Assinaturas liberam Pro somente quando a Stripe confirma `active`.
+ * Pix não é recorrente: ele usa uma validade server-side separada e concede
+ * Pro apenas enquanto `proAccessUntil` estiver no futuro.
  */
-export function effectivePlan(plan: unknown, subscriptionStatus: unknown): PlanId {
+export function effectivePlan(plan: unknown, subscriptionStatus: unknown, proAccessUntil?: unknown): PlanId {
   const normalized = normalizePlan(plan);
   if (normalized === "free") return "free";
-  return subscriptionStatus === "active" || subscriptionStatus === "trialing" ? normalized : "free";
+  if (subscriptionStatus === "active") return normalized;
+  if (normalized === "pro" && hasTimedProAccess(proAccessUntil)) return "pro";
+  return "free";
 }
 
 export function planAllows(plan: PlanId, feature: FeatureKey): boolean {

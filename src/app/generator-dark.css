@@ -1,0 +1,252 @@
+/*
+ * Fluxo de criação: formulário e documento de saída usam a mesma linguagem
+ * grafite do workspace. O fundo claro não participa do gerador; branco fica
+ * quase só na tipografia e laranja marca foco, seleção e ações principais.
+ *
+ * Guias editoriais também usam `main#ferramenta`, então o `:not(main)` mantém
+ * este tema restrito ao fluxo de criação da Home e das páginas de geradores.
+ */
+
+#ferramenta:not(main) {
+  --generator-bg: #0d0e11;
+  --generator-panel: #111216;
+  --generator-panel-soft: #141519;
+  --generator-line: rgba(255, 255, 255, 0.09);
+  --generator-text: #ededE8;
+  --generator-muted: rgba(237, 237, 232, 0.43);
+  --generator-orange: #f1662a;
+
+  position: relative;
+  isolation: isolate;
+  border-color: var(--generator-line) !important;
+  background:
+    radial-gradient(70% 220px at 50% 0%, rgba(241, 102, 42, 0.045), transparent 72%),
+    var(--generator-bg) !important;
+  color: var(--generator-text);
+  color-scheme: dark;
+}
+
+/*
+ * Em várias páginas #ferramenta é um .container-page. Este plano de fundo
+ * estende o grafite até as bordas da viewport e elimina a faixa branca que
+ * aparecia atrás do formulário sem alterar o conteúdo editorial ao redor.
+ */
+#ferramenta:not(main)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--generator-bg);
+  pointer-events: none;
+}
+
+#ferramenta:not(main) .surface-premium {
+  border-color: var(--generator-line) !important;
+  border-radius: 5px !important;
+  background: var(--generator-panel) !important;
+  box-shadow: none !important;
+  color: var(--generator-text);
+}
+
+#ferramenta:not(main) .bg-white {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: #131418 !important;
+}
+
+#ferramenta:not(main) .bg-canvas,
+#ferramenta:not(main) [class*="bg-canvas/"] {
+  background: #0f1013 !important;
+}
+
+#ferramenta:not(main) .bg-ink {
+  background: #0a0b0d !important;
+  color: #f4f4ef !important;
+}
+
+#ferramenta:not(main) .text-white {
+  color: #f2f2ed !important;
+}
+
+#ferramenta:not(main) .text-ink {
+  color: var(--generator-text) !important;
+}
+
+#ferramenta:not(main) .text-ink-soft {
+  color: rgba(237, 237, 232, 0.69) !important;
+}
+
+#ferramenta:not(main) .text-muted {
+  color: var(--generator-muted) !important;
+}
+
+#ferramenta:not(main) .text-brand-600,
+#ferramenta:not(main) .text-brand-700,
+#ferramenta:not(main) .text-brand-800 {
+  color: #ff9b67 !important;
+}
+
+#ferramenta:not(main) .border-line,
+#ferramenta:not(main) .border-line-strong {
+  border-color: var(--generator-line) !important;
+}
+
+#ferramenta:not(main) .shadow-card,
+#ferramenta:not(main) .shadow-lift {
+  box-shadow: none !important;
+}
+
+#ferramenta:not(main) .field,
+#ferramenta:not(main) select {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 4px !important;
+  background: #0b0c0f !important;
+  color: #e9e9e4 !important;
+  box-shadow: none !important;
+}
+
+#ferramenta:not(main) .field::placeholder {
+  color: rgba(237, 237, 232, 0.24) !important;
+}
+
+#ferramenta:not(main) .field:hover,
+#ferramenta:not(main) select:hover {
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+#ferramenta:not(main) .field:focus,
+#ferramenta:not(main) select:focus {
+  border-color: var(--generator-orange) !important;
+  outline: 2px solid rgba(241, 102, 42, 0.16) !important;
+  outline-offset: 1px;
+}
+
+#ferramenta:not(main) .field[aria-invalid="true"] {
+  border-color: rgba(251, 113, 133, 0.62) !important;
+}
+
+#ferramenta:not(main) select option {
+  background: #0b0c0f;
+  color: #ededE8;
+}
+
+#ferramenta:not(main) input:-webkit-autofill,
+#ferramenta:not(main) input:-webkit-autofill:hover,
+#ferramenta:not(main) input:-webkit-autofill:focus,
+#ferramenta:not(main) textarea:-webkit-autofill,
+#ferramenta:not(main) textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e9e9e4 !important;
+  caret-color: #e9e9e4;
+  box-shadow: 0 0 0 1000px #0b0c0f inset !important;
+  transition: background-color 9999s ease-out 0s;
+}
+
+#ferramenta:not(main) :is(button, a, label).rounded-xl,
+#ferramenta:not(main) :is(button, a, label).rounded-2xl,
+#ferramenta:not(main) div.rounded-xl,
+#ferramenta:not(main) ul.rounded-xl {
+  border-radius: 4px !important;
+}
+
+#ferramenta:not(main) .rounded-full {
+  border-radius: 3px !important;
+}
+
+#ferramenta:not(main) label.bg-white,
+#ferramenta:not(main) button.bg-white,
+#ferramenta:not(main) a.bg-white {
+  background: #15161a !important;
+  color: rgba(237, 237, 232, 0.72) !important;
+}
+
+#ferramenta:not(main) label.bg-white:hover,
+#ferramenta:not(main) button.bg-white:hover,
+#ferramenta:not(main) a.bg-white:hover {
+  border-color: rgba(241, 102, 42, 0.48) !important;
+  background: #1a1b1f !important;
+  color: #f5f5f0 !important;
+}
+
+/* Ações selecionadas/primárias ficam laranja; superfícies continuam grafite. */
+#ferramenta:not(main) label.bg-ink,
+#ferramenta:not(main) button.bg-ink,
+#ferramenta:not(main) a.bg-ink {
+  border-color: var(--generator-orange) !important;
+  background: var(--generator-orange) !important;
+  color: #fff !important;
+}
+
+#ferramenta:not(main) label.bg-ink:hover,
+#ferramenta:not(main) button.bg-ink:hover,
+#ferramenta:not(main) a.bg-ink:hover {
+  background: #d9551e !important;
+}
+
+/* O botão sólido de copiar o anúncio completo também é uma ação principal. */
+#ferramenta:not(main) button.bg-white[class*="border-white/10"] {
+  border-color: rgba(241, 102, 42, 0.72) !important;
+  background: var(--generator-orange) !important;
+  color: #fff !important;
+}
+
+#ferramenta:not(main) button.bg-white[class*="border-white/10"]:hover {
+  background: #d9551e !important;
+}
+
+#ferramenta:not(main) .bg-brand-50,
+#ferramenta:not(main) [class*="bg-brand-50/"] {
+  background: rgba(241, 102, 42, 0.075) !important;
+}
+
+#ferramenta:not(main) .border-brand-200,
+#ferramenta:not(main) .border-brand-300,
+#ferramenta:not(main) .border-brand-400 {
+  border-color: rgba(241, 102, 42, 0.34) !important;
+}
+
+/* Verde/vermelho só permanecem em feedback funcional de sucesso/erro. */
+#ferramenta:not(main) .bg-emerald-50 {
+  background: rgba(52, 211, 153, 0.05) !important;
+}
+
+#ferramenta:not(main) .border-emerald-200,
+#ferramenta:not(main) .border-emerald-300 {
+  border-color: rgba(52, 211, 153, 0.2) !important;
+}
+
+#ferramenta:not(main) .text-emerald-700,
+#ferramenta:not(main) .text-emerald-800 {
+  color: #8fe3be !important;
+}
+
+#ferramenta:not(main) .bg-rose-50 {
+  background: rgba(251, 113, 133, 0.05) !important;
+}
+
+#ferramenta:not(main) .border-rose-200 {
+  border-color: rgba(251, 113, 133, 0.2) !important;
+}
+
+#ferramenta:not(main) .text-rose-600,
+#ferramenta:not(main) .text-rose-700 {
+  color: #fda4af !important;
+}
+
+#ferramenta:not(main) section.border-t,
+#ferramenta:not(main) [class*="divide-y"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#ferramenta:not(main) input[type="radio"]:focus-visible + *,
+#ferramenta:not(main) input[type="checkbox"]:focus-visible + * {
+  outline-color: var(--generator-orange);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #ferramenta:not(main) .surface-premium :is(button, a, label):hover {
+    transition-duration: 140ms;
+  }
+}

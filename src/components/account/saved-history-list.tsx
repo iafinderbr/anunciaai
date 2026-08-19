@@ -68,17 +68,17 @@ export function SavedHistoryList({ initialItems }: { initialItems: SavedHistoryI
 
   if (items.length === 0) {
     return (
-      <div className="rounded-3xl border border-dashed border-line-strong bg-white p-8 text-center shadow-card sm:p-12">
-        <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-brand-50 text-xl" aria-hidden="true">
+      <div className="border border-dashed border-white/[0.12] bg-[#121316] p-8 text-center sm:p-12">
+        <div className="mx-auto grid size-11 place-items-center border border-white/[0.10] bg-[#18191d] text-lg text-brand-300" aria-hidden="true">
           ☆
         </div>
-        <h2 className="mt-4 text-xl font-semibold tracking-tight text-ink">Seu histórico está vazio</h2>
-        <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-muted">
+        <h2 className="mt-4 text-xl font-semibold tracking-[-0.035em] text-white">Seu histórico está vazio</h2>
+        <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-white/42">
           Gere um anúncio enquanto estiver conectado e clique em “Salvar no histórico”. Nada é salvo automaticamente.
         </p>
         <Link
           href="/#ferramenta"
-          className="mt-6 inline-flex rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+          className="mt-6 inline-flex bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
         >
           Criar um anúncio
         </Link>
@@ -88,58 +88,58 @@ export function SavedHistoryList({ initialItems }: { initialItems: SavedHistoryI
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
+        <p className="text-sm text-white/38">
           {items.length} item{items.length === 1 ? "" : "s"} salvo{items.length === 1 ? "" : "s"} · limite de 100 por conta
         </p>
         <Link
           href="/#ferramenta"
-          className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+          className="bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
         >
           Criar novo anúncio
         </Link>
       </div>
 
       {errorMessage ? (
-        <p role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+        <p role="alert" className="mb-4 border border-rose-300/20 bg-rose-400/[0.06] px-4 py-3 text-sm font-medium text-rose-200">
           {errorMessage}
         </p>
       ) : null}
 
-      <div className="space-y-4">
+      <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
         {items.map((item) => (
-          <article key={item.id} className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
+          <article key={item.id} className="bg-[#121316] px-5 py-5 sm:px-6 sm:py-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                  <span className="rounded-full bg-brand-50 px-2.5 py-1 font-semibold text-brand-700">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-white/35">
+                  <span className="border-l-2 border-brand-500 pl-2 font-semibold text-brand-300">
                     {channelLabel(item.channel)}
                   </span>
                   <span>{formatDate(item.createdAt)}</span>
                 </div>
-                <h2 className="mt-3 break-words text-lg font-semibold leading-snug text-ink">{item.title}</h2>
-                <p className="mt-1 text-sm text-muted">Produto: {item.productName}</p>
+                <h2 className="mt-3 break-words text-lg font-semibold leading-snug text-white">{item.title}</h2>
+                <p className="mt-1 text-sm text-white/38">Produto: {item.productName}</p>
               </div>
 
-              <div className="flex shrink-0 flex-wrap gap-2">
+              <div className="flex shrink-0 flex-wrap gap-2 [&_button]:rounded-none">
                 <CopyButton value={item.content} label="Copiar" />
                 <button
                   type="button"
                   onClick={() => void removeItem(item)}
                   disabled={deletingId === item.id}
-                  className="rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-50 disabled:cursor-wait disabled:opacity-60"
+                  className="border border-rose-300/20 bg-transparent px-3 py-2 text-xs font-semibold text-rose-200 transition-colors hover:bg-rose-400/[0.06] disabled:cursor-wait disabled:opacity-60"
                 >
                   {deletingId === item.id ? "Excluindo..." : "Excluir"}
                 </button>
               </div>
             </div>
 
-            <details className="mt-5 rounded-xl border border-line bg-canvas">
-              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-ink-soft">
+            <details className="mt-5 border border-white/[0.08] bg-[#0f1013]">
+              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-white/62">
                 Ver conteúdo salvo
               </summary>
-              <div className="border-t border-line px-4 py-4">
-                <pre className="max-h-[32rem] overflow-auto whitespace-pre-wrap break-words font-sans text-sm leading-6 text-ink-soft">
+              <div className="border-t border-white/[0.08] px-4 py-4">
+                <pre className="max-h-[32rem] overflow-auto whitespace-pre-wrap break-words font-sans text-sm leading-6 text-white/58">
                   {item.content}
                 </pre>
               </div>
