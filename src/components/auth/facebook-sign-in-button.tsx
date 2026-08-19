@@ -3,7 +3,15 @@
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
-export function FacebookSignInButton({ callbackURL = "/conta" }: { callbackURL?: string }) {
+export function FacebookSignInButton({
+  callbackURL = "/conta",
+  label = "Continuar com Facebook",
+  errorCallbackURL = "/entrar?erro=facebook",
+}: {
+  callbackURL?: string;
+  label?: string;
+  errorCallbackURL?: string;
+}) {
   const [pending, setPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -16,15 +24,15 @@ export function FacebookSignInButton({ callbackURL = "/conta" }: { callbackURL?:
       const result = await authClient.signIn.social({
         provider: "facebook",
         callbackURL,
-        errorCallbackURL: "/entrar?erro=facebook",
+        errorCallbackURL,
       });
 
       if (result.error) {
-        setErrorMessage("Não foi possível iniciar o login com Facebook. Tente novamente.");
+        setErrorMessage("Não foi possível iniciar o acesso com Facebook. Tente novamente.");
         setPending(false);
       }
     } catch {
-      setErrorMessage("Não foi possível iniciar o login com Facebook. Tente novamente.");
+      setErrorMessage("Não foi possível iniciar o acesso com Facebook. Tente novamente.");
       setPending(false);
     }
   }
@@ -40,7 +48,7 @@ export function FacebookSignInButton({ callbackURL = "/conta" }: { callbackURL?:
         <span aria-hidden="true" className="grid size-6 place-items-center rounded-full bg-[#1877f2] text-xs font-bold text-white">
           f
         </span>
-        {pending ? "Abrindo Facebook..." : "Continuar com Facebook"}
+        {pending ? "Abrindo Facebook..." : label}
       </button>
       {errorMessage ? (
         <p role="alert" className="mt-3 text-center text-xs font-medium text-red-700">
