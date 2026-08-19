@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChannelStrip } from "@/components/channel-showcase";
 import { SiteFooter } from "@/components/sections/pricing";
-import { tools } from "@/components/sections/tools";
+import { tools, ToolVisual } from "@/components/sections/tools";
 import { SiteHeader } from "@/components/site-header";
 import { ToolsQuickActions } from "@/components/tools/tools-quick-actions";
 import { SITE_URL } from "@/lib/site";
@@ -60,7 +60,7 @@ const channelToolHrefs = new Set([
 const channelTools = tools.filter((tool) => channelToolHrefs.has(tool.href));
 const contentTools = tools.filter((tool) => !channelToolHrefs.has(tool.href));
 
-function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[number]; index: number; compact?: boolean }) {
+function ToolCard({ tool, compact = false }: { tool: (typeof tools)[number]; compact?: boolean }) {
   return (
     <Link
       href={tool.href}
@@ -68,14 +68,7 @@ function ToolCard({ tool, index, compact = false }: { tool: (typeof tools)[numbe
         compact ? "min-h-[190px] grid-cols-[52px_minmax(0,1fr)] gap-5 p-6" : "min-h-[240px] grid-cols-[60px_minmax(0,1fr)] gap-6 p-7 sm:p-8"
       }`}
     >
-      <span
-        aria-hidden="true"
-        className={`grid place-items-center self-start rounded-[8px] text-[11px] font-bold ${compact ? "size-11" : "size-12"} ${
-          index < 2 ? "bg-[#111216] text-white" : "border border-line-strong bg-[#f2f2ef] text-ink"
-        }`}
-      >
-        {tool.short}
-      </span>
+      <ToolVisual icon={tool.icon} compact={compact} />
 
       <span className="min-w-0 pr-9">
         <span className="block text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-700">{tool.eyebrow}</span>
@@ -192,8 +185,8 @@ export default function FerramentasPage() {
               </div>
 
               <ul className="mt-7 grid gap-5 lg:grid-cols-2">
-                {channelTools.map((tool, index) => (
-                  <li key={tool.href}><ToolCard tool={tool} index={index} /></li>
+                {channelTools.map((tool) => (
+                  <li key={tool.href}><ToolCard tool={tool} /></li>
                 ))}
               </ul>
             </div>
@@ -207,8 +200,8 @@ export default function FerramentasPage() {
             </div>
 
             <ul className="mt-7 grid gap-5 md:grid-cols-2">
-              {contentTools.map((tool, index) => (
-                <li key={tool.href}><ToolCard tool={tool} index={index + 2} compact /></li>
+              {contentTools.map((tool) => (
+                <li key={tool.href}><ToolCard tool={tool} compact /></li>
               ))}
             </ul>
 
