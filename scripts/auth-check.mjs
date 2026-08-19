@@ -202,8 +202,23 @@ if (webhookApi.includes("isAllowedOrigin(request)")) {
   failures.push("Webhook Stripe não deve depender de Origin; autenticidade vem da assinatura Stripe-Signature.");
 }
 
+const attachStart = webhookApi.indexOf("async function attachCheckoutToUser");
+const attachEnd = webhookApi.indexOf("async function grantPaidPixAccess");
+if (attachStart < 0 || attachEnd <= attachStart) {
+  failures.push("Webhook perdeu a etapa explícita de vínculo seguro do Checkout recorrente.");
+} else {
+  const attachBlock = webhookApi.slice(attachStart, attachEnd);
+  requireText(attachBlock, 'mode !== "subscription"', "Checkout concluído precisa validar mode=subscription antes de vincular a assinatura.");
+  requireText(attachBlock, 'purchaseType !== "subscription"', "Checkout concluído precisa validar metadata purchaseType=subscription.");
+  requireText(attachBlock, 'plan !== "pro"', "Checkout concluído precisa validar metadata plan=pro.");
+  if (/plan\s*:\s*"pro"/.test(attachBlock)) {
+    failures.push("checkout.session.completed não pode conceder Pro; somente subscription active + Price esperado libera acesso.");
+  }
+}
+
 requireText(planApi, 'error: "billing_managed_by_stripe"', "API antiga de plano deve bloquear mutação local.");
 requireText(planApi, 'status: 405', "API antiga de plano deve retornar 405 para mutações.");
+requireText(planApi, "session.user.proAccessUntil", "API de plano precisa considerar acesso temporário Pro comprado por Pix.");
 if (/\.update\(user\)|plan:\s*"pro"/.test(planApi)) {
   failures.push("API /api/account/plan não pode mais promover usuário para Pro.");
 }
@@ -236,6 +251,8 @@ for (const [name, source] of [["histórico", historyApi], ["produtos", productsA
   requireText(source, "auth.api.getSession", `API de ${name} perdeu autenticação.`);
   requireText(source, "isAllowedOrigin(request)", `API de ${name} perdeu proteção de origem.`);
 }
+requireText(productsApi, 'request.headers.get("content-length")', "API de produtos precisa rejeitar payload declarado grande antes de ler o corpo.");
+requireText(productsApi, "MUTATION_RATE_HARD_CAP", "API de produtos precisa limitar crescimento do mapa de rate limit em memória.");
 
 if (failures.length) {
   console.error("\nFalhas na auditoria de autenticação/billing:");
@@ -243,4 +260,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: login obrigatório, Pro R$ 19,90/mês no cartão, Pix avulso de 30 dias, webhook assinado e idempotente, preço server-side, Customer Portal e Premium planejado validados.");
+console.log("Contas OK: login obrigatório, Pro R$ 19,90/mês no cartão, Pix avulso de 30 dias, webhook assinado e idempotente, ativação Pro só por assinatura ativa validada, preço server-side, Customer Portal e Premium planejado validados.");
