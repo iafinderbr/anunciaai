@@ -7,10 +7,12 @@ export function FacebookSignInButton({
   callbackURL = "/conta",
   label = "Continuar com Facebook",
   errorCallbackURL = "/entrar?erro=facebook",
+  requestSignUp = false,
 }: {
   callbackURL?: string;
   label?: string;
   errorCallbackURL?: string;
+  requestSignUp?: boolean;
 }) {
   const [pending, setPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,14 +27,23 @@ export function FacebookSignInButton({
         provider: "facebook",
         callbackURL,
         errorCallbackURL,
+        requestSignUp,
       });
 
       if (result.error) {
-        setErrorMessage("Não foi possível iniciar o acesso com Facebook. Tente novamente.");
+        setErrorMessage(
+          requestSignUp
+            ? "Não foi possível criar a conta com Facebook. Tente novamente."
+            : "Não foi possível entrar com Facebook. Se você ainda não tem conta, use Registrar-se.",
+        );
         setPending(false);
       }
     } catch {
-      setErrorMessage("Não foi possível iniciar o acesso com Facebook. Tente novamente.");
+      setErrorMessage(
+        requestSignUp
+          ? "Não foi possível criar a conta com Facebook. Tente novamente."
+          : "Não foi possível entrar com Facebook. Se você ainda não tem conta, use Registrar-se.",
+      );
       setPending(false);
     }
   }
