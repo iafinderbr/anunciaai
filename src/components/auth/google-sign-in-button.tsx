@@ -7,10 +7,12 @@ export function GoogleSignInButton({
   callbackURL = "/conta",
   label = "Continuar com Google",
   errorCallbackURL = "/entrar?erro=google",
+  requestSignUp = false,
 }: {
   callbackURL?: string;
   label?: string;
   errorCallbackURL?: string;
+  requestSignUp?: boolean;
 }) {
   const [pending, setPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,14 +27,23 @@ export function GoogleSignInButton({
         provider: "google",
         callbackURL,
         errorCallbackURL,
+        requestSignUp,
       });
 
       if (result.error) {
-        setErrorMessage("Não foi possível iniciar o acesso com Google. Tente novamente.");
+        setErrorMessage(
+          requestSignUp
+            ? "Não foi possível criar a conta com Google. Tente novamente."
+            : "Não foi possível entrar com Google. Se você ainda não tem conta, use Registrar-se.",
+        );
         setPending(false);
       }
     } catch {
-      setErrorMessage("Não foi possível iniciar o acesso com Google. Tente novamente.");
+      setErrorMessage(
+        requestSignUp
+          ? "Não foi possível criar a conta com Google. Tente novamente."
+          : "Não foi possível entrar com Google. Se você ainda não tem conta, use Registrar-se.",
+      );
       setPending(false);
     }
   }
