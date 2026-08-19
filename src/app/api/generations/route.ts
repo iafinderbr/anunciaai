@@ -139,21 +139,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) {
-      return Response.json(
-        { ok: false, error: "unauthorized" },
-        { status: 401, headers: NO_STORE_HEADERS },
-      );
-    }
-
-    if (isRateLimited(session.user.id)) {
-      return Response.json(
-        { ok: false, error: "rate_limited" },
-        { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
-      );
-    }
-
     const contentType = request.headers.get("content-type") ?? "";
     if (!contentType.toLowerCase().startsWith("application/json")) {
       return Response.json(
@@ -209,6 +194,22 @@ export async function POST(request: Request) {
       return Response.json(
         { ok: false, error: "invalid_channel" },
         { status: 400, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    // Só um payload estruturalmente válido pode chegar à autenticação e ao banco.
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session) {
+      return Response.json(
+        { ok: false, error: "unauthorized" },
+        { status: 401, headers: NO_STORE_HEADERS },
+      );
+    }
+
+    if (isRateLimited(session.user.id)) {
+      return Response.json(
+        { ok: false, error: "rate_limited" },
+        { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
       );
     }
 
