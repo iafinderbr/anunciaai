@@ -25,15 +25,6 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   useEffect(() => {
     if (sessionPending || !session) return;
 
-    if (
-      pathname === "/" &&
-      window.location.hash !== "#ferramenta" &&
-      window.location.hash !== "#topo"
-    ) {
-      router.replace("/conta");
-      return;
-    }
-
     if (pathname === "/ferramentas") {
       router.replace("/conta/ferramentas");
     }
