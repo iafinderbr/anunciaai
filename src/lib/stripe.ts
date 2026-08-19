@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/site";
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
 const TEST_PRO_PRICE_ID = "price_1U5ofhBw7MQYFAhHe43J3ERq";
 const WEBHOOK_TOLERANCE_SECONDS = 300;
+const STRIPE_REQUEST_TIMEOUT_MS = 10_000;
 
 export type StripeSubscriptionStatus =
   | "inactive"
@@ -118,6 +119,7 @@ export function stripeApiConfigured(): boolean {
 export function stripeWebhookConfigured(): boolean {
   try {
     stripeSecretKey();
+    stripeProPriceId();
     stripeWebhookSecret();
     return stripeEnvironmentMatchesKey();
   } catch {
@@ -141,6 +143,7 @@ export function stripePixConfigured(): boolean {
 
   try {
     stripeSecretKey();
+    stripeProPriceId();
     stripeWebhookSecret();
     return stripeEnvironmentMatchesKey();
   } catch {
@@ -158,6 +161,7 @@ async function stripeRequest<T>(path: string, options: { method?: "GET" | "POST"
     },
     body: options.body,
     cache: "no-store",
+    signal: AbortSignal.timeout(STRIPE_REQUEST_TIMEOUT_MS),
   });
 
   const payload = (await response.json()) as T & StripeErrorResponse;
