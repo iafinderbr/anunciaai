@@ -9,14 +9,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "node scripts/auth-check.mjs && node scripts/ui-check.mjs && tsc --noEmit",
+    "typecheck": "node scripts/auth-check.mjs && node scripts/auth-rate-limit-check.mjs && node scripts/ui-check.mjs && tsc --noEmit",
     "security:check": "node scripts/security-check.mjs",
     "seo:check": "node scripts/seo-check.mjs",
     "runtime:check": "node scripts/runtime-check.mjs",
     "a11y:check": "node scripts/accessibility-check.mjs",
     "generator:check": "node scripts/generator-check.mjs",
     "claims:check": "node scripts/claims-check.mjs",
-    "auth:check": "node scripts/auth-check.mjs",
+    "auth:check": "node scripts/auth-check.mjs && node scripts/auth-rate-limit-check.mjs",
     "ui:check": "node scripts/ui-check.mjs"
   },
   "dependencies": {

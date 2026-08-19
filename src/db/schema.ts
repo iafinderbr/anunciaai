@@ -1,4 +1,5 @@
 import {
+  bigint,
   boolean,
   index,
   integer,
@@ -133,6 +134,21 @@ export const verification = pgTable(
 );
 
 /**
+ * Rate limit do Better Auth persistido no PostgreSQL. Em ambiente serverless,
+ * isso mantém o contador consistente entre instâncias diferentes da aplicação.
+ */
+export const rateLimit = pgTable(
+  "rate_limit",
+  {
+    id: text("id").primaryKey(),
+    key: text("key").notNull(),
+    count: integer("count").notNull(),
+    lastRequest: bigint("last_request", { mode: "number" }).notNull(),
+  },
+  (table) => [index("rate_limit_key_idx").on(table.key)],
+);
+
+/**
  * Histórico opt-in. Diferente do contador anônimo, esta tabela só recebe
  * conteúdo quando um usuário autenticado clica explicitamente em salvar.
  */
@@ -188,6 +204,7 @@ export type User = typeof user.$inferSelect;
 export type ProAccessGrant = typeof proAccessGrant.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type Account = typeof account.$inferSelect;
+export type RateLimit = typeof rateLimit.$inferSelect;
 export type SavedGeneration = typeof savedGeneration.$inferSelect;
 export type NewSavedGeneration = typeof savedGeneration.$inferInsert;
 export type SavedProduct = typeof savedProduct.$inferSelect;

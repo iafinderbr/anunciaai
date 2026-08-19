@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth/minimal";
 import { oAuthProxy } from "better-auth/plugins";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@/db";
-import { account, session, user, verification } from "@/db/schema";
+import { account, rateLimit, session, user, verification } from "@/db/schema";
 import { SITE_URL } from "@/lib/site";
 
 const secret = process.env.BETTER_AUTH_SECRET;
@@ -67,8 +67,25 @@ export const auth = betterAuth({
   secret,
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema: { user, session, account, verification },
+    schema: { user, session, account, verification, rateLimit },
   }),
+  // Better Auth aplica rate limit apenas às requisições iniciadas pelo cliente.
+  // Persistir o contador no PostgreSQL evita que instâncias serverless diferentes
+  // mantenham limites independentes em memória.
+  rateLimit: {
+    enabled: true,
+    storage: "database",
+    modelName: "rateLimit",
+    window: 60,
+    max: 100,
+  },
+  advanced: {
+    // Na Vercel este header é gerado pela plataforma a partir do IP público do
+    // cliente e é mais explícito para o rate limit do que aceitar headers livres.
+    ipAddress: {
+      ipAddressHeaders: ["x-vercel-forwarded-for"],
+    },
+  },
   account: {
     // O Better Auth armazena dados de conta OAuth no banco. Criptografar os
     // tokens reduz o impacto de uma eventual exposição isolada da base.

@@ -177,6 +177,20 @@ async function createSchema() {
     create index if not exists verification_identifier_idx on verification (identifier)
   `);
 
+  // Rate limit compartilhado entre instâncias do Better Auth na Vercel.
+  await db.execute(sql`
+    create table if not exists rate_limit (
+      id text primary key,
+      key text not null,
+      count integer not null,
+      last_request bigint not null
+    )
+  `);
+
+  await db.execute(sql`
+    create index if not exists rate_limit_key_idx on rate_limit (key)
+  `);
+
   // Histórico opt-in: conteúdo só entra aqui depois de uma ação explícita de
   // um usuário autenticado. O contador anônimo continua separado e minimizado.
   await db.execute(sql`
@@ -232,7 +246,7 @@ async function createSchema() {
 
 /**
  * Garante de forma idempotente a estrutura usada pelo contador, autenticação,
- * planos, histórico, biblioteca de produtos e concessões Pix.
+ * rate limit, planos, histórico, biblioteca de produtos e concessões Pix.
  */
 export function ensureDatabaseSchema(): Promise<void> {
   if (!schemaPromise) {
