@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ChannelIcon, featuredChannels } from "@/components/channel-showcase";
 import { ChannelSideDock } from "@/components/channel-side-dock";
 import { authClient } from "@/lib/auth-client";
 
@@ -46,18 +47,28 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const toolsHref = session ? "/conta/ferramentas" : "/ferramentas";
   const homeHref = session ? "/#topo" : "/";
   const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
+  const activeChannel = featuredChannels.find((channel) => channel.href === pathname);
   const navItem = "group relative inline-flex min-h-11 items-center px-1 text-[13px] font-medium text-white/58 transition-colors hover:text-white";
 
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#0c0d0f]/95 text-white shadow-[0_16px_46px_-38px_rgba(0,0,0,.95)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#0c0d0f]/90">
         <div className="container-page flex h-[72px] items-center justify-between gap-7">
-          <Link href={homeHref} className="group flex shrink-0 items-center gap-3" aria-label="AnunciaAI, página inicial">
-            <BrandMark />
-            <span className="text-[19px] font-semibold tracking-[-0.05em] text-white">
-              Anuncia<span className="text-brand-300">AI</span>
-            </span>
-          </Link>
+          <div className="flex min-w-0 shrink-0 items-center gap-3">
+            <Link href={homeHref} className="group flex shrink-0 items-center gap-3" aria-label="AnunciaAI, página inicial">
+              <BrandMark />
+              <span className="text-[19px] font-semibold tracking-[-0.05em] text-white">
+                Anuncia<span className="text-brand-300">AI</span>
+              </span>
+            </Link>
+
+            {activeChannel ? (
+              <span className="hidden min-w-0 items-center gap-2.5 border-l border-white/[0.10] pl-3 text-white/42 lg:inline-flex" aria-label={`Canal atual: ${activeChannel.label}`}>
+                <ChannelIcon id={activeChannel.id} className="size-[21px] shrink-0 text-white/70" />
+                <span className="max-w-[138px] truncate text-[11px] font-medium">{activeChannel.shortLabel}</span>
+              </span>
+            ) : null}
+          </div>
 
           <nav aria-label="Navegação principal" className="hidden flex-1 items-center justify-center gap-9 md:flex">
             <Link href={toolsHref} className={navItem}>
@@ -105,6 +116,13 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
         <div id="menu-mobile" hidden={!open} className="border-t border-white/[0.08] bg-[#0f1013] md:hidden">
           <nav aria-label="Navegação mobile" className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-5">
+            {activeChannel ? (
+              <div className="mb-4 flex items-center gap-3 border-y border-white/[0.08] py-3 text-white/58">
+                <ChannelIcon id={activeChannel.id} className="size-[22px] text-white/76" />
+                <span className="text-xs font-semibold">{activeChannel.label}</span>
+              </div>
+            ) : null}
+
             {!session ? (
               <Link href={ctaHref} onClick={() => setOpen(false)} className="mb-5 flex min-h-14 items-center justify-between border border-brand-500/35 bg-brand-500 px-5 text-sm font-semibold text-white">
                 <span>
