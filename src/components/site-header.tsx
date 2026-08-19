@@ -7,15 +7,6 @@ import { ChannelIcon, featuredChannels } from "@/components/channel-showcase";
 import { ChannelSideDock } from "@/components/channel-side-dock";
 import { authClient } from "@/lib/auth-client";
 
-function BrandMark() {
-  return (
-    <span className="relative grid size-9 place-items-center overflow-hidden border border-white/[0.14] bg-[#17181c] text-[14px] font-extrabold text-white">
-      A
-      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" />
-    </span>
-  );
-}
-
 export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
   const [open, setOpen] = useState(false);
   const { data: session, isPending: sessionPending } = authClient.useSession();
@@ -30,24 +21,24 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
     }
   }, [pathname, router, session, sessionPending]);
 
-  const accountHref = session ? "/conta" : "/entrar";
+  const accountHref = session ? "/conta" : "/entrar?modo=entrar";
   const accountLabel = session ? "Minha conta" : "Entrar";
-  const historyHref = session ? "/conta/historico" : "/entrar?voltar=/conta/historico";
-  const productsHref = session ? "/conta/produtos" : "/entrar?voltar=/conta/produtos";
-  const modesHref = session ? "/conta/plano" : "/entrar?voltar=/conta/plano";
+  const historyHref = session ? "/conta/historico" : "/entrar?modo=entrar&voltar=/conta/historico";
+  const productsHref = session ? "/conta/produtos" : "/entrar?modo=entrar&voltar=/conta/produtos";
+  const modesHref = session ? "/conta/plano" : "/entrar?modo=entrar&voltar=/conta/plano";
   const toolsHref = session ? "/conta/ferramentas" : "/ferramentas";
-  const homeHref = session ? "/#topo" : "/";
+  const homeHref = "/#topo";
   const showChannelDock = pathname === "/" || pathname === "/ferramentas" || pathname.startsWith("/gerador-");
   const activeChannel = featuredChannels.find((channel) => channel.href === pathname);
   const navItem = "group relative inline-flex min-h-11 items-center px-1 text-[13px] font-medium text-white/58 transition-colors hover:text-white";
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#0c0d0f]/95 text-white shadow-[0_16px_46px_-38px_rgba(0,0,0,.95)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#0c0d0f]/90">
+      <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#0c0d0f]/95 text-white backdrop-blur-xl supports-[backdrop-filter]:bg-[#0c0d0f]/90">
         <div className="container-page flex h-[72px] items-center justify-between gap-7">
           <div className="flex min-w-0 shrink-0 items-center gap-3">
             <Link href={homeHref} className="group flex shrink-0 items-center gap-3" aria-label="AnunciaAI, página inicial">
-              <BrandMark />
+              <span aria-hidden="true" className="h-7 w-[3px] bg-brand-500" />
               <span className="text-[19px] font-semibold tracking-[-0.05em] text-white">
                 Anuncia<span className="text-brand-300">AI</span>
               </span>
@@ -66,14 +57,22 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               Ferramentas
               <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
             </Link>
+            {session ? (
+              <Link href="/conta/produtos" className={navItem}>
+                Biblioteca
+                <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
+              </Link>
+            ) : null}
             <Link href="/guias" className={navItem}>
               Guias
               <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
             </Link>
-            <Link href="/sobre" className={navItem}>
-              Sobre
-              <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
-            </Link>
+            {!session ? (
+              <Link href="/sobre" className={navItem}>
+                Sobre
+                <span aria-hidden="true" className="absolute inset-x-1 bottom-1 h-px origin-left scale-x-0 bg-brand-500 transition-transform group-hover:scale-x-100" />
+              </Link>
+            ) : null}
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
@@ -86,8 +85,8 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               {accountLabel}
             </Link>
             {!session ? (
-              <Link href={ctaHref} className="interactive-lift hidden min-h-11 items-center bg-brand-500 px-5 text-[13px] font-semibold text-white shadow-[0_14px_32px_-22px_rgba(241,102,42,.82)] transition-colors hover:bg-brand-600 sm:inline-flex">
-                Começar grátis <span aria-hidden="true" className="ml-2">→</span>
+              <Link href={ctaHref} className="interactive-lift hidden min-h-11 items-center bg-brand-500 px-5 text-[13px] font-semibold text-white transition-colors hover:bg-brand-600 sm:inline-flex">
+                Registrar-se <span aria-hidden="true" className="ml-2">→</span>
               </Link>
             ) : null}
             <button
@@ -118,7 +117,7 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
               <Link href={ctaHref} onClick={() => setOpen(false)} className="mb-5 flex min-h-14 items-center justify-between border border-brand-500/35 bg-brand-500 px-5 text-sm font-semibold text-white">
                 <span>
                   <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-white/72">Começar</span>
-                  <span className="mt-1 block">Criar anúncio grátis</span>
+                  <span className="mt-1 block">Registrar-se grátis</span>
                 </span>
                 <span aria-hidden="true" className="text-white/70">→</span>
               </Link>
@@ -126,8 +125,9 @@ export function SiteHeader({ ctaHref = "#ferramenta" }: { ctaHref?: string }) {
 
             <div className="grid divide-y divide-white/[0.08] border-y border-white/[0.08]">
               <Link href={toolsHref} onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Ferramentas</Link>
+              {session ? <Link href="/conta/produtos" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Biblioteca</Link> : null}
               <Link href="/guias" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Guias</Link>
-              <Link href="/sobre" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Sobre</Link>
+              {!session ? <Link href="/sobre" onClick={() => setOpen(false)} className="px-1 py-4 text-sm font-semibold text-white">Sobre</Link> : null}
             </div>
 
             <div className="mt-6">

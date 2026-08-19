@@ -25,6 +25,9 @@ const socialProviders = {
     clientId: googleClientId,
     clientSecret: googleClientSecret,
     scope: ["openid", "email", "profile"],
+    // O login normal só aceita contas já existentes. A criação de conta é
+    // solicitada explicitamente pelo fluxo "Registrar-se" no cliente.
+    disableImplicitSignUp: true,
     // Abre explicitamente o seletor de contas em desktop e mobile. Não há
     // restrição de domínio: contas Google pessoais e Google Workspace podem
     // autenticar, sujeito apenas ao estado público do app OAuth no Google.
@@ -35,6 +38,7 @@ const socialProviders = {
         facebook: {
           clientId: facebookClientId,
           clientSecret: facebookClientSecret,
+          disableImplicitSignUp: true,
         },
       }
     : {}),
