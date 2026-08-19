@@ -97,6 +97,8 @@ function PublicEntry({ facebookEnabled }: { facebookEnabled: boolean }) {
         </div>
       </header>
 
+      <span id="inicio-conteudo" tabIndex={-1} className="block h-0 scroll-mt-24" />
+
       <main id="topo" className="relative overflow-hidden">
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(60%_75%_at_30%_0%,rgba(241,102,42,0.08),transparent_72%)]" />
 
@@ -110,6 +112,7 @@ function PublicEntry({ facebookEnabled }: { facebookEnabled: boolean }) {
               O AnunciaAI organiza as informações do seu produto em uma primeira versão de anúncio para marketplaces, loja virtual e redes sociais.
             </p>
 
+            <span id="ferramenta" className="block h-0 scroll-mt-24" />
             <div id="acesso" className="scroll-mt-24 mt-8 border border-white/[0.11] bg-[#111216] p-5 sm:p-6">
               <p className="text-sm font-semibold text-white">Entrar no AnunciaAI</p>
               <p className="mt-1.5 text-xs leading-5 text-white/36">Google pessoal ou Google Workspace. Entrar não inicia cobrança.</p>
@@ -133,7 +136,7 @@ function PublicEntry({ facebookEnabled }: { facebookEnabled: boolean }) {
             </p>
           </div>
 
-          <div className="w-full lg:justify-self-end">
+          <div id="ferramentas" className="w-full scroll-mt-24 lg:justify-self-end">
             <EntryPreview />
           </div>
         </section>
