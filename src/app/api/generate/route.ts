@@ -1,4 +1,6 @@
+import { auth } from "@/lib/auth";
 import { generateWithGemini, isGeminiEnabled } from "@/lib/gemini-provider";
+import { effectivePlan } from "@/lib/plans";
 import type { Channel, GeneratorInput, Tone } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -32,11 +34,7 @@ const rateLimit =
 
 globalForRateLimit.__anunciaAiAdvancedGenerationRateLimit = rateLimit;
 
-function requestKey(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
-
-function isRateLimited(request: Request): boolean {
+function isRateLimited(userId: string): boolean {
   const now = Date.now();
 
   if (rateLimit.size > RATE_LIMIT_HARD_CAP) {
@@ -46,10 +44,9 @@ function isRateLimited(request: Request): boolean {
     if (rateLimit.size > RATE_LIMIT_HARD_CAP) rateLimit.clear();
   }
 
-  const key = requestKey(request);
-  const current = rateLimit.get(key);
+  const current = rateLimit.get(userId);
   if (!current || current.resetAt <= now) {
-    rateLimit.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    rateLimit.set(userId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return false;
   }
 
@@ -107,13 +104,6 @@ export function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!isGeminiEnabled()) {
-    return Response.json(
-      { ok: false, error: "disabled" },
-      { status: 503, headers: NO_STORE_HEADERS },
-    );
-  }
-
   if (!sameOrigin(request)) {
     return Response.json(
       { ok: false, error: "forbidden_origin" },
@@ -121,7 +111,35 @@ export async function POST(request: Request) {
     );
   }
 
-  if (isRateLimited(request)) {
+  const session = await auth.api.getSession({ headers: request.headers });
+  if (!session) {
+    return Response.json(
+      { ok: false, error: "unauthorized" },
+      { status: 401, headers: NO_STORE_HEADERS },
+    );
+  }
+
+  if (
+    effectivePlan(
+      session.user.plan,
+      session.user.subscriptionStatus,
+      session.user.proAccessUntil,
+    ) !== "pro"
+  ) {
+    return Response.json(
+      { ok: false, error: "pro_required" },
+      { status: 403, headers: NO_STORE_HEADERS },
+    );
+  }
+
+  if (!isGeminiEnabled()) {
+    return Response.json(
+      { ok: false, error: "disabled" },
+      { status: 503, headers: NO_STORE_HEADERS },
+    );
+  }
+
+  if (isRateLimited(session.user.id)) {
     return Response.json(
       { ok: false, error: "rate_limited" },
       { status: 429, headers: { "Retry-After": "60", ...NO_STORE_HEADERS } },
