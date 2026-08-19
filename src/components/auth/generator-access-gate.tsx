@@ -26,12 +26,21 @@ export function GeneratorAccessGate({ children }: { children: ReactNode }) {
     return (
       <div data-generator-reveal className="border-y border-white/[0.09] bg-[#0d0e11] px-5 py-5 text-white sm:px-7 sm:py-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="max-w-xl">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Ferramenta</p>
-            <h3 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">Gerador pronto para abrir.</h3>
-            <p className="mt-2 text-sm leading-6 text-white/40">
-              O formulário aparece somente quando você quiser criar, mantendo a página mais limpa e direta.
-            </p>
+          <div className="flex min-w-0 items-start gap-4">
+            <span aria-hidden="true" className="relative mt-0.5 grid size-11 shrink-0 place-items-center border border-white/[0.12] bg-[#15161a] text-brand-300">
+              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M6 4.5h9l3 3V19.5H6z" strokeLinejoin="round" />
+                <path d="M15 4.5v3h3M9 11h6M9 14.5h4.5" strokeLinecap="round" />
+              </svg>
+              <span className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-500" />
+            </span>
+            <div className="max-w-xl">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Criar anúncio</p>
+              <h3 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">Seu gerador fica a um clique.</h3>
+              <p className="mt-2 text-sm leading-6 text-white/40">
+                Informe o produto, escolha onde vai publicar e revise o resultado em um único fluxo.
+              </p>
+            </div>
           </div>
           <button
             type="button"
@@ -39,9 +48,10 @@ export function GeneratorAccessGate({ children }: { children: ReactNode }) {
               setRevealed(true);
               requestAnimationFrame(() => document.getElementById("ferramenta")?.scrollIntoView({ behavior: "smooth", block: "start" }));
             }}
-            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0e11]"
+            className="group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0e11]"
           >
-            Gerar anúncio <span aria-hidden="true">→</span>
+            Gerar anúncio
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
           </button>
         </div>
       </div>
