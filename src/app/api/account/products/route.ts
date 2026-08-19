@@ -21,6 +21,8 @@ const MAX_BODY_BYTES = 8_192;
 const MAX_PRODUCTS = 20;
 const MUTATION_WINDOW_MS = 60_000;
 const MUTATION_MAX = 30;
+const MUTATION_RATE_PRUNE_AT = 5_000;
+const MUTATION_RATE_HARD_CAP = 10_000;
 
 type MutationEntry = { count: number; resetAt: number };
 const globalForProductRate = globalThis as typeof globalThis & {
@@ -57,6 +59,14 @@ function boundedText(value: unknown, min: number, max: number, allowEmpty = fals
 
 function isMutationRateLimited(userId: string): boolean {
   const now = Date.now();
+
+  if (mutationRate.size >= MUTATION_RATE_PRUNE_AT) {
+    for (const [key, entry] of mutationRate) {
+      if (entry.resetAt <= now) mutationRate.delete(key);
+    }
+    if (mutationRate.size > MUTATION_RATE_HARD_CAP) mutationRate.clear();
+  }
+
   const current = mutationRate.get(userId);
   if (!current || current.resetAt <= now) {
     mutationRate.set(userId, { count: 1, resetAt: now + MUTATION_WINDOW_MS });
@@ -78,6 +88,11 @@ async function readJsonObject(request: Request): Promise<
   const contentType = request.headers.get("content-type") ?? "";
   if (!contentType.toLowerCase().startsWith("application/json")) {
     return { ok: false, response: Response.json({ ok: false, error: "unsupported_media_type" }, { status: 415, headers: NO_STORE_HEADERS }) };
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return { ok: false, response: Response.json({ ok: false, error: "payload_too_large" }, { status: 413, headers: NO_STORE_HEADERS }) };
   }
 
   const raw = await request.text();
