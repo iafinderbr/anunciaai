@@ -124,10 +124,18 @@ for (const required of [
   'process.env.STRIPE_SECRET_KEY',
   'process.env.STRIPE_WEBHOOK_SECRET',
   'process.env.STRIPE_PRO_PRICE_ID',
+  'process.env.VERCEL_ENV',
   'TEST_PRO_PRICE_ID = "price_1U5ofhBw7MQYFAhHe43J3ERq"',
   'createHmac("sha256"',
   "timingSafeEqual",
   "WEBHOOK_TOLERANCE_SECONDS = 300",
+  "stripeEnvironmentMatchesKey",
+  "stripeWebhookConfigured",
+  "stripeExpectedLivemode",
+  'environment === "production"',
+  'mode === "live"',
+  'environment === "preview"',
+  'mode === "test"',
   "subscriptionHasProPrice",
   'body.set("line_items[0][price]", stripeProPriceId())',
   'body.set("subscription_data[metadata][userId]", input.userId)',
@@ -138,6 +146,16 @@ for (const required of [
   'body.set("metadata[accessDays]", String(PRO_PIX_ACCESS_DAYS))',
 ]) {
   requireText(stripe, required, `Cliente Stripe perdeu proteção/configuração: ${required}.`);
+}
+
+const billingConfiguredStart = stripe.indexOf("export function stripeBillingConfigured");
+const billingConfiguredEnd = stripe.indexOf("export function stripePixConfigured");
+if (billingConfiguredStart < 0 || billingConfiguredEnd <= billingConfiguredStart) {
+  failures.push("Configuração segura do Stripe Billing não foi encontrada.");
+} else {
+  const billingConfiguredBlock = stripe.slice(billingConfiguredStart, billingConfiguredEnd);
+  requireText(billingConfiguredBlock, "stripeWebhookSecret();", "Checkout recorrente não pode ser considerado pronto sem webhook secret.");
+  requireText(billingConfiguredBlock, "stripeEnvironmentMatchesKey()", "Checkout recorrente precisa bloquear chave test em Production e live em Preview.");
 }
 
 for (const required of [
@@ -181,16 +199,25 @@ for (const required of [
   'request.headers.get("stripe-signature")',
   "request.text()",
   "verifyStripeWebhook",
+  "stripeWebhookConfigured",
+  "stripeExpectedLivemode",
+  'event.livemode !== expectedLivemode',
   "subscriptionHasProPrice",
+  "retrieveSubscription",
+  "syncCurrentSubscription",
   'event.type === "checkout.session.completed"',
   'event.type === "checkout.session.async_payment_succeeded"',
   'event.type === "customer.subscription.created"',
   'event.type === "customer.subscription.updated"',
   'event.type === "customer.subscription.deleted"',
   'paymentStatus !== "paid"',
+  'amountTotal !== PRO_MONTHLY_PRICE_CENTS',
+  'currency !== "brl"',
   'purchaseType !== "pix_30d"',
+  'accessDays !== String(PRO_PIX_ACCESS_DAYS)',
   "proAccessGrant",
   ".onConflictDoNothing()",
+  "greatest(coalesce(",
   "proAccessUntil",
   'subscriptionProvider: "stripe-pix"',
   'subscriptionProvider: "stripe"',
@@ -200,6 +227,9 @@ for (const required of [
 }
 if (webhookApi.includes("isAllowedOrigin(request)")) {
   failures.push("Webhook Stripe não deve depender de Origin; autenticidade vem da assinatura Stripe-Signature.");
+}
+if (webhookApi.includes("await syncSubscription(event.data.object")) {
+  failures.push("Webhook não pode aplicar snapshot de subscription diretamente; a Stripe não garante ordem de eventos.");
 }
 
 const attachStart = webhookApi.indexOf("async function attachCheckoutToUser");
@@ -260,4 +290,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Contas OK: login obrigatório, Pro R$ 19,90/mês no cartão, Pix avulso de 30 dias, webhook assinado e idempotente, ativação Pro só por assinatura ativa validada, preço server-side, Customer Portal e Premium planejado validados.");
+console.log("Contas OK: login obrigatório, ambientes Stripe separados, Pro R$ 19,90/mês no cartão, Pix avulso validado por valor/moeda e idempotente, webhook assinado com estado atual da assinatura, preço server-side, Customer Portal e Premium planejado validados.");
