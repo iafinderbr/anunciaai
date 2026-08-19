@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { authClient } from "@/lib/auth-client";
@@ -9,6 +10,43 @@ import { authClient } from "@/lib/auth-client";
 export function GeneratorAccessGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    function revealFromHash() {
+      if (window.location.hash === "#ferramenta") setRevealed(true);
+    }
+
+    revealFromHash();
+    window.addEventListener("hashchange", revealFromHash);
+    return () => window.removeEventListener("hashchange", revealFromHash);
+  }, []);
+
+  if (!revealed) {
+    return (
+      <div data-generator-reveal className="border-y border-white/[0.09] bg-[#0d0e11] px-5 py-5 text-white sm:px-7 sm:py-6">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-xl">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-300">Ferramenta</p>
+            <h3 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">Gerador pronto para abrir.</h3>
+            <p className="mt-2 text-sm leading-6 text-white/40">
+              O formulário aparece somente quando você quiser criar, mantendo a página mais limpa e direta.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setRevealed(true);
+              requestAnimationFrame(() => document.getElementById("ferramenta")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+            }}
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0e11]"
+          >
+            Gerar anúncio <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (isPending) {
     return (
@@ -29,7 +67,7 @@ export function GeneratorAccessGate({ children }: { children: ReactNode }) {
   }
 
   if (!session) {
-    const callbackURL = pathname === "/" ? "/#ferramenta" : pathname;
+    const callbackURL = pathname === "/" ? "/#ferramenta" : `${pathname}#ferramenta`;
     const allMethodsHref = `/entrar?voltar=${encodeURIComponent(callbackURL)}`;
 
     return (
