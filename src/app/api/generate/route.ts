@@ -104,6 +104,15 @@ export function GET() {
 }
 
 export async function POST(request: Request) {
+  // O backend generativo permanece opt-in. Enquanto estiver desligado, mantém
+  // o contrato 503 sem processar sessão, payload nem consumir qualquer quota.
+  if (!isGeminiEnabled()) {
+    return Response.json(
+      { ok: false, error: "disabled" },
+      { status: 503, headers: NO_STORE_HEADERS },
+    );
+  }
+
   if (!sameOrigin(request)) {
     return Response.json(
       { ok: false, error: "forbidden_origin" },
@@ -129,13 +138,6 @@ export async function POST(request: Request) {
     return Response.json(
       { ok: false, error: "pro_required" },
       { status: 403, headers: NO_STORE_HEADERS },
-    );
-  }
-
-  if (!isGeminiEnabled()) {
-    return Response.json(
-      { ok: false, error: "disabled" },
-      { status: 503, headers: NO_STORE_HEADERS },
     );
   }
 
